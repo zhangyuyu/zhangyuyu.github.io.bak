@@ -156,6 +156,188 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/25/SpringDI/" itemprop="url">
+                SpringDI
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-25T22:40:55+08:00" content="2015-08-25">
+            2015-08-25
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="Spring依赖注入">Spring依赖注入</h1><hr>
+<p>　　控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：<br></p>
+<blockquote>
+<p>　　<1>依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。<br><br>　　<2>依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者是时下最流行的IoC类型，其又有接口注入（Interface Injection），设值注入（Setter Injection）和构造子注入（Constructor Injection）三种方式。
+　　　　　</2></1></p>
+</blockquote>
+<h3 id="1、接口注入">1、接口注入</h3><pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassA</span> {
+    <span class="keyword">private</span> InterfaceB clzB;
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>{
+    Ojbect obj =Class.forName(Config.BImplementation).newInstance();
+    clzB = (InterfaceB)obj;
+    clzB.doIt()
+}
+</code></pre><p>　　ClassA依赖于InterfaceB的实现，传统的方法是在代码中创建 InterfaceB实现类的实例，ClassA在编译期即依赖于InterfaceB的实现。<br><br>　　我们预先在配置文件中设定的实现类的类名Config.BImplementation，动态加载实现类，并通过InterfaceB强制转型后为ClassA 所用，将调用者与实现者在编译期分离。</p>
+<h3 id="2、setter注入">2、setter注入</h3><h3 id="3、构造子注入">3、构造子注入</h3></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/25/Spring/" itemprop="url">
+                Spring初识
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-25T20:46:40+08:00" content="2015-08-25">
+            2015-08-25
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="Spring_初识">Spring 初识</h1><hr>
+<p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
+<h3 id="一、创建一个Spring_Bean">一、创建一个Spring Bean</h3><p>在HelloWorld.java文件中</p>
+<pre><code>package com.zhangyu.common;
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span> 
+{
+    <span class="keyword">private</span> String name;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{
+        <span class="keyword">this</span>.name = name;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printHello</span>(<span class="params"></span>) </span>{
+        System.<span class="keyword">out</span>.println(<span class="string">"Hello ! "</span> + name);
+    }
+}
+</code></pre><h3 id="二、创建Spring_Bean的配置文件">二、创建Spring Bean的配置文件</h3><p>在Spring-Module.xml文件中</p>
+<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.zhangyu.common.HelloWorld"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"name"</span> <span class="attribute">value</span>=<span class="value">"zhangyu"</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java文件中</p>
+<pre><code><span class="keyword">package</span> com.zhangyu.common;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
+</span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
+    </span>{
+        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"Spring-Module.xml"</span>);     
+        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
+        obj.printHello();           
+    }
+}
+</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="variable">Hello</span> <span class="exclamation_mark">!</span> <span class="function_or_atom">zhangyu</span>
+</code></pre><h3 id="五、目录结构">五、目录结构</h3><p><img src="/Users/yuzhang/Documents/Hexo/source/imgs/SpringHelloWorld.png" alt=""> </p>
+<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取我们所需的Action实现。<br><br>　　2、通过xml文件动态设置HelloWorld的name属性，无需知道实现类的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/15/我在TW的第一周/" itemprop="url">
                 我在TW的第一周
               </a>
@@ -323,7 +505,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -337,7 +519,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-count">1</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

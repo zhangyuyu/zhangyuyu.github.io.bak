@@ -28,7 +28,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+  <meta name="keywords" content="Spring," />
 
 
 
@@ -37,19 +37,35 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="Spring 初识
+　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。
+一、创建一个Spring Bean在HelloWorld.java文件中
+package com.zhangyu.common;
+
+public class HelloWorld 
+{">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2015/08/15/hello-world/index.html">
+<meta property="og:title" content="Spring初识">
+<meta property="og:url" content="http://yoursite.com/2015/08/25/Spring/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2015-08-15T10:33:28.000Z">
+<meta property="og:description" content="Spring 初识
+　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。
+一、创建一个Spring Bean在HelloWorld.java文件中
+package com.zhangyu.common;
+
+public class HelloWorld 
+{">
+<meta property="og:image" content="http://yoursite.com/Users/yuzhang/Documents/Hexo/source/imgs/SpringHelloWorld.png">
+<meta property="og:updated_time" content="2015-08-25T14:37:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Spring初识">
+<meta name="twitter:description" content="Spring 初识
+　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。
+一、创建一个Spring Bean在HelloWorld.java文件中
+package com.zhangyu.common;
+
+public class HelloWorld 
+{">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -59,7 +75,7 @@ Quick">
   };
 </script>
 
-  <title> Hello World | 若见喻笺 </title>
+  <title> Spring初识 | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="">
@@ -158,7 +174,7 @@ Quick">
           
           
             
-              Hello World
+              Spring初识
             
           
         </h1>
@@ -167,8 +183,8 @@ Quick">
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2015-08-15T18:33:28+08:00" content="2015-08-15">
-            2015-08-15
+          <time itemprop="dateCreated" datetime="2015-08-25T20:46:40+08:00" content="2015-08-25">
+            2015-08-25
           </time>
         </span>
 
@@ -186,31 +202,76 @@ Quick">
       
 
       
-        <span itemprop="articleBody"><p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <span itemprop="articleBody"><h1 id="Spring_初识">Spring 初识</h1><hr>
+<p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
+<h3 id="一、创建一个Spring_Bean">一、创建一个Spring Bean</h3><p>在HelloWorld.java文件中</p>
+<pre><code>package com.zhangyu.common;
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span> 
+{
+    <span class="keyword">private</span> String name;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{
+        <span class="keyword">this</span>.name = name;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printHello</span>(<span class="params"></span>) </span>{
+        System.<span class="keyword">out</span>.println(<span class="string">"Hello ! "</span> + name);
+    }
+}
+</code></pre><h3 id="二、创建Spring_Bean的配置文件">二、创建Spring Bean的配置文件</h3><p>在Spring-Module.xml文件中</p>
+<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.zhangyu.common.HelloWorld"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"name"</span> <span class="attribute">value</span>=<span class="value">"zhangyu"</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java文件中</p>
+<pre><code><span class="keyword">package</span> com.zhangyu.common;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
+</span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
+    </span>{
+        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"Spring-Module.xml"</span>);     
+        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
+        obj.printHello();           
+    }
+}
+</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="variable">Hello</span> <span class="exclamation_mark">!</span> <span class="function_or_atom">zhangyu</span>
+</code></pre><h3 id="五、目录结构">五、目录结构</h3><p><img src="/Users/yuzhang/Documents/Hexo/source/imgs/SpringHelloWorld.png" alt=""> </p>
+<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取我们所需的Action实现。<br><br>　　2、通过xml文件动态设置HelloWorld的name属性，无需知道实现类的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类。</p>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/15/我在TW的第一周/" rel="prev">我在TW的第一周</a>
+              <a href="/2015/08/25/SpringDI/" rel="prev">SpringDI</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/15/我在TW的第一周/" rel="next">我在TW的第一周</a>
             
           </div>
         </div>
@@ -314,7 +375,7 @@ Quick">
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick_Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create_a_new_post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run_server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate_static_files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy_to_remote_sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring_初识"><span class="nav-number">1.</span> <span class="nav-text">Spring 初识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、创建一个Spring_Bean"><span class="nav-number">1.0.1.</span> <span class="nav-text">一、创建一个Spring Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、创建Spring_Bean的配置文件"><span class="nav-number">1.0.2.</span> <span class="nav-text">二、创建Spring Bean的配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、创建测试App"><span class="nav-number">1.0.3.</span> <span class="nav-text">三、创建测试App</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、结果"><span class="nav-number">1.0.4.</span> <span class="nav-text">四、结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、目录结构"><span class="nav-number">1.0.5.</span> <span class="nav-text">五、目录结构</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
