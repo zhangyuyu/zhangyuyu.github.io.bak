@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+  <meta name="keywords" content="SpingMVC," />
 
 
 
@@ -41,37 +41,50 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="关于旅程
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。
+<meta name="description" content="一、Gradle Buildapply plugin: &apos;java&apos;
+apply plugin: &apos;war&apos;
+apply plugin: &apos;idea&apos;
+apply plugin: &apos;jetty&apos;
 
-关于住宿
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;好大的客厅和沙发、好新的床和柜子、好齐全的厨具和生活设备，我会不会变懒呢？
+// JDK 7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
-关于工作
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;新来的小伙伴们一部分直接去了TWU，留下">
+repositories {
+    mavenLocal()
+    mav">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我在TW的第一周">
-<meta property="og:url" content="http://yoursite.com/2015/08/15/我在TW的第一周/index.html">
+<meta property="og:title" content="SpringMVC_Gradle_xml">
+<meta property="og:url" content="http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="关于旅程
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。
+<meta property="og:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
+apply plugin: &apos;war&apos;
+apply plugin: &apos;idea&apos;
+apply plugin: &apos;jetty&apos;
 
-关于住宿
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;好大的客厅和沙发、好新的床和柜子、好齐全的厨具和生活设备，我会不会变懒呢？
+// JDK 7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
-关于工作
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;新来的小伙伴们一部分直接去了TWU，留下">
-<meta property="og:updated_time" content="2015-08-27T14:50:09.000Z">
+repositories {
+    mavenLocal()
+    mav">
+<meta property="og:image" content="http://yoursite.com/imgs/SpringMVC-Gradle-xml.png">
+<meta property="og:updated_time" content="2015-08-28T15:46:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我在TW的第一周">
-<meta name="twitter:description" content="关于旅程
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。
+<meta name="twitter:title" content="SpringMVC_Gradle_xml">
+<meta name="twitter:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
+apply plugin: &apos;war&apos;
+apply plugin: &apos;idea&apos;
+apply plugin: &apos;jetty&apos;
 
-关于住宿
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;好大的客厅和沙发、好新的床和柜子、好齐全的厨具和生活设备，我会不会变懒呢？
+// JDK 7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
-关于工作
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;新来的小伙伴们一部分直接去了TWU，留下">
+repositories {
+    mavenLocal()
+    mav">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -81,7 +94,7 @@
   };
 </script>
 
-  <title> 我在TW的第一周 | 若见喻笺 </title>
+  <title> SpringMVC_Gradle_xml | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -188,7 +201,7 @@
           
           
             
-              我在TW的第一周
+              SpringMVC_Gradle_xml
             
           
         </h1>
@@ -197,8 +210,8 @@
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2015-08-15T21:16:18+08:00" content="2015-08-15">
-            2015-08-15
+          <time itemprop="dateCreated" datetime="2015-08-28T12:35:55+08:00" content="2015-08-28">
+            2015-08-28
           </time>
         </span>
 
@@ -207,8 +220,8 @@
             &nbsp; | &nbsp; 分類於
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/生活/" itemprop="url" rel="index">
-                  <span itemprop="name">生活</span>
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
                 </a>
               </span>
 
@@ -231,36 +244,72 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="关于旅程">关于旅程</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。</p>
-</blockquote>
-<h3 id="关于住宿">关于住宿</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;好大的客厅和沙发、好新的床和柜子、好齐全的厨具和生活设备，我会不会变懒呢？</p>
-</blockquote>
-<h3 id="关于工作">关于工作</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;新来的小伙伴们一部分直接去了TWU，留下我们五个女生on the beach。<br><br>&emsp;&emsp;&emsp;&emsp;每天必刷微信、邮件、日历，但是手机却总是不见踪影。<br><br>&emsp;&emsp;&emsp;&emsp;融入工作，好多东西都想去了解。现实是回到宿舍，打开电脑，时间飞快，该睡觉了。</p>
-</blockquote>
-<h3 id="关于周末">关于周末</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;陌生的城市，闲逛，寻求一种最初的印象。</p>
-</blockquote>
+        <span itemprop="articleBody"><h3 id="一、Gradle_Build">一、Gradle Build</h3><pre><code>apply plugin: <span class="string">'java'</span>
+apply plugin: <span class="string">'war'</span>
+apply plugin: <span class="string">'idea'</span>
+apply plugin: <span class="string">'jetty'</span>
+
+<span class="comment">// JDK 7</span>
+<span class="keyword">sourceCompatibility</span> = <span class="number">1.7</span>
+<span class="keyword">targetCompatibility</span> = <span class="number">1.7</span>
+
+<span class="keyword">repositories</span> {
+    mavenLocal()
+    mavenCentral()
+}
+
+<span class="keyword">dependencies</span> {
+
+    <span class="keyword">compile</span> <span class="string">'ch.qos.logback:logback-classic:1.1.3'</span>
+    <span class="keyword">compile</span> <span class="string">'org.springframework:spring-webmvc:4.1.6.RELEASE'</span>
+    <span class="keyword">compile</span> <span class="string">'javax.servlet:jstl:1.2'</span>
+
+}
+
+<span class="comment">// Embeded Jetty for testing</span>
+jettyRun{
+    contextPath = <span class="string">"spring4"</span>
+    httpPort = <span class="number">8080</span>
+}
+
+jettyRunWar{
+    contextPath = <span class="string">"spring4"</span>
+    httpPort = <span class="number">8080</span>
+}
+</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
+<h3 id="二、Spring_MVC">二、Spring MVC</h3><h4 id="1、WelcomeController-java">1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java">2、HelloWorldService.java</h4><h4 id="3、logback-xml">3、logback.xml</h4><h4 id="4、spring-core-config-xml">4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml">5、spring-mvc-config.xml</h4><h4 id="6、web-xml">6、web.xml</h4><h3 id="三、运行，输出结果">三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
+<pre><code><span class="variable">$ </span>gradle jettyRun                    
+<span class="symbol">:compileJava</span>
+<span class="symbol">:processResources</span>
+<span class="symbol">:classes</span>
+<span class="symbol">:jettyRun</span>
+<span class="constant">Building </span><span class="number">75</span>% &gt; <span class="symbol">:jettyRun</span> &gt; <span class="constant">Running </span>at <span class="symbol">http:</span>/<span class="regexp">/localhost:8080/spring</span>4
+</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
+<h3 id="四、目录结构">四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
 </span>
       
     </div>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/SpingMVC/" rel="tag">#SpingMVC</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/25/Spring/" rel="prev">Spring初识</a>
+              <a href="/2015/08/29/Gradle/" rel="prev">Gradle</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/15/hello-world/" rel="next">Hello World</a>
+              <a href="/2015/08/27/SpringAOP-Pointcut-Advisor/" rel="next">SpringAOP_Pointcut&Advisor</a>
             
           </div>
         </div>
@@ -371,7 +420,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于旅程"><span class="nav-number">1.</span> <span class="nav-text">关于旅程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于住宿"><span class="nav-number">2.</span> <span class="nav-text">关于住宿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于工作"><span class="nav-number">3.</span> <span class="nav-text">关于工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于周末"><span class="nav-number">4.</span> <span class="nav-text">关于周末</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Gradle_Build"><span class="nav-number">1.</span> <span class="nav-text">一、Gradle Build</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Spring_MVC"><span class="nav-number">2.</span> <span class="nav-text">二、Spring MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、WelcomeController-java"><span class="nav-number">2.1.</span> <span class="nav-text">1、WelcomeController.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、HelloWorldService-java"><span class="nav-number">2.2.</span> <span class="nav-text">2、HelloWorldService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、logback-xml"><span class="nav-number">2.3.</span> <span class="nav-text">3、logback.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、spring-core-config-xml"><span class="nav-number">2.4.</span> <span class="nav-text">4、spring-core-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、spring-mvc-config-xml"><span class="nav-number">2.5.</span> <span class="nav-text">5、spring-mvc-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、web-xml"><span class="nav-number">2.6.</span> <span class="nav-text">6、web.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行，输出结果"><span class="nav-number">3.</span> <span class="nav-text">三、运行，输出结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、目录结构"><span class="nav-number">4.</span> <span class="nav-text">四、目录结构</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

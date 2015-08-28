@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com//"/>
-  <updated>2015-08-27T15:44:04.000Z</updated>
+  <updated>2015-08-29T13:57:29.000Z</updated>
   <id>http://yoursite.com//</id>
   
   <author>
@@ -14,6 +14,373 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Gradle-java-plugin]]></title>
+    <link href="http://yoursite.com/2015/08/29/Gradle-java-plugin/"/>
+    <id>http://yoursite.com/2015/08/29/Gradle-java-plugin/</id>
+    <published>2015-08-29T11:42:22.000Z</published>
+    <updated>2015-08-29T13:57:29.000Z</updated>
+    <content type="html"><![CDATA[<p>　　java plugin给项目添加了java编译，测试和捆绑的能力，是很多其他gradle plugin的基础。<br>在build.gradle中加入<code>apply plugin: &#39;java&#39;</code>，即可使用java plugin。</p>
+<h3 id="一、java_Plugin引入的主要Task">一、java Plugin引入的主要Task</h3><p>执行“gradle build”，我们已经可以看到java Plugin所引入的主要Task：</p>
+<blockquote>
+<p>:compileJava<br>:processResources<br>:classes<br>:jar<br>:assemble<br>:compileTestJava<br>:processTestResources<br>:testClasses<br>:test<br>:check<br>:build</p>
+</blockquote>
+<p>　　build也是java Plugin所引入的一个Task，它依赖于其他Task，其他Task又依赖于另外的Task，所以有了以上Task执行列表。以上Task执行列表基本上描述了java Plugin向项目中所引入的构建生命周期概念。<br>　　除了定义众多的Task外，java Plugin还向Project中加入了一些额外的Property。比如，sourceCompatibility用于指定在编译Java源文件时所使用的Java版本，archivesBaseName用于指定打包成Jar文件时的文件名称。
+　　</p>
+<h3 id="二、Source_sets">二、Source sets</h3><p>　　source set是一组编译和执行的源文件，和编译路径与执行路径有联系。Gradle的每个source set都包含有一个名字，并且包含有一个名为java的Property和一个名为resources的Property，他们分别用于表示该source set所包含的Java源文件集合和资源文件集合。</p>
+<pre><code><span class="title">sourceSets</span> {
+    <span class="title">main</span> {
+        <span class="title">java</span> {
+            <span class="title">srcDir</span> <span class="string">'src/java'</span>
+        }
+        resources {
+            <span class="title">srcDir</span> <span class="string">'src/resources'</span>
+        }
+    }
+}
+</code></pre><p>　　Gradle会自动地为每一个新创建的source set创建相应的Task。对于名为mySourceSet的source set，Gradle将为其创建compile<mysourceset>Java、process<mysourceset>Resources和<mysourceset>Classes这3个Task。对于这里api而言，Gradle会为其创建名为compileApiJava、processApiResource和apiClasses Task。我们可以在命令行中执行”gradle apiClasses”。<br></mysourceset></mysourceset></mysourceset></p>
+<blockquote>
+<p>注意，对于main而言，Gradle并没有相应的compileMainJava，原因在于：由于main是Gradle默认创建的source set，并且又是及其重要的source set，Gradle便省略掉了其中的“Main”，而是直接使用了compileJava作为main的编译Task。对于test来说，Gradle依然采用了compileTestJava。</p>
+</blockquote>
+<p>　　通常的情况是，我们自己创建的名为api的source set会被其他source set所依赖，比如main中的类需要实现api中的某个接口等。此时我们需要做两件事情。<br>　　<em> 第一，我们需要在编译main之前对api进行编译，即编译main中Java源文件的Task应该依赖于api中的Task：<code>classes.dependsOn apiClasses</code>
+　　</em> 第二，在编译main时，我们需要将api编译生成的class文件放在main的classpath下。此时，我们可以对main和test做以下配置：</p>
+<pre><code><span class="title">sourceSets</span> {
+  <span class="title">main</span> {
+     <span class="title">compileClasspath</span> = compileClasspath + files(api.output.classesDir)
+  }
+  test {
+     <span class="title">runtimeClasspath</span> = runtimeClasspath + files(api.output.classesDir)
+  }
+}
+</code></pre><h3 id="三、依赖管理">三、依赖管理</h3><h4 id="1、repositories">1、repositories</h4><p>　　在声明对第三方类库的依赖时，我们需要告诉Gradle在什么地方去获取这些依赖，即配置Gradle的Repository。在配置好依赖之后，Gradle会自动地下载这些依赖到本地。Gradle可以使用Maven和Ivy的Repository，同时它还可以使用本地文件系统作为Repository。<br>配置Maven的Repository如下：</p>
+<pre><code><span class="keyword">repositories</span> {
+  mavenCentral()
+}
+</code></pre><h4 id="2、configurations">2、configurations</h4><p>　　Gradle将对依赖进行分组，每一组依赖称为一个Configuration，在声明依赖时，我们实际上是在设置不同的Configuration。</p>
+<h5 id="(1）定义一个Configuration：">(1）定义一个Configuration：</h5><pre><code><span class="title">configurations</span> {
+  <span class="title">myDependency</span>
+}
+</code></pre><h5 id="(2)_加入实际的依赖项：">(2) 加入实际的依赖项：</h5><pre><code><span class="title">dependencies</span> {
+  <span class="title">myDependency</span> <span class="string">'org.apache.commons:commons-lang3:3.0'</span>
+}
+</code></pre><blockquote>
+<p>java Plugin定义了compile和testCompile这两个Configuration，分别用于编译Java源文件和编译Java测试源文件。也定义了runtime和testRuntime，分别用于在程序运行和测试运行时加入所配置的依赖。</p>
+</blockquote>
+<p>　　因此，下述声明依赖时，可以直接使用dependencies：</p>
+<pre><code>dependencies {
+    compile <span class="string">group:</span> <span class="string">'commons-collections'</span>, <span class="string">name:</span> <span class="string">'commons-collections'</span>, <span class="string">version:</span> <span class="string">'3.2'</span>
+    testCompile <span class="string">group:</span> <span class="string">'junit'</span>, <span class="string">name:</span> <span class="string">'junit'</span>, <span class="string">version:</span> <span class="string">'4.+'</span>
+}
+</code></pre><h5 id="(3）获取classpath">(3）获取classpath</h5><pre><code><span class="keyword">task</span> showMyDependency &lt;&lt; {
+  <span class="keyword">println</span> <span class="keyword">configurations</span>.myDependency.asPath
+}
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p>　　java plugin给项目添加了java编译，测试和捆绑的能力，是很多其他gradle plugin的基础。<br>在build.gradle中加入<code>apply plugin: &#39;java&#39;</code>，即可使用java plugin。</]]>
+    </summary>
+    
+      <category term="Gradle" scheme="http://yoursite.com/tags/Gradle/"/>
+    
+      <category term="Gradle" scheme="http://yoursite.com/categories/Gradle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Gradle-property]]></title>
+    <link href="http://yoursite.com/2015/08/29/Gradle-property/"/>
+    <id>http://yoursite.com/2015/08/29/Gradle-property/</id>
+    <published>2015-08-29T02:38:22.000Z</published>
+    <updated>2015-08-29T03:30:38.000Z</updated>
+    <content type="html"><![CDATA[<p>　　很多Plugin都会向Project中加入额外的Property，在使用这些Plugin时，我们需要对这些Property进行赋值。<br>　　Gradle在默认情况下已经为Project定义了很多Property，其中比较常用的有：</p>
+<blockquote>
+<p>project：Project本身<br>name：Project的名字<br>path：Project的绝对路径<br>description：Project的描述信息<br>buildDir：Project构建结果存放目录<br>version：Project的版本号</p>
+</blockquote>
+<h3 id="一、project属性配置">一、project属性配置</h3><pre><code>version = <span class="string">'this is the project version'</span>
+<span class="keyword">description</span> = <span class="string">'this is the project description'</span>
+<span class="keyword">task</span> showProjectProperties &lt;&lt; {
+  <span class="keyword">println</span> version
+  <span class="keyword">println</span> <span class="keyword">project</span>.<span class="keyword">description</span>
+}
+</code></pre><p>　　注意，在打印description时，我们使用了project.description，而不是直接使用description。原因在于，Project和Task都拥有description属性，而定义Task的闭包将delegate设置成了当前的Task，故如果直接使用description，此时打印的是showProjectProperties的description，而不是Project的，所以我们需要显式地指明project。</p>
+<h3 id="二、Task属性配置">二、Task属性配置</h3><h4 id="1、对desctiption属性的配置">1、对desctiption属性的配置</h4><h5 id="（1）定义时候对description属性的配置">（1）定义时候对description属性的配置</h5><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+  <span class="keyword">println</span> <span class="keyword">description</span>
+}
+</code></pre><h5 id="（2）myTask-description">（2）myTask.description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+      <span class="keyword">println</span> <span class="keyword">description</span>
+}
+myTask.<span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+</code></pre><h5 id="(3)_同名的方法中设置description">(3) 同名的方法中设置description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+      <span class="keyword">println</span> <span class="keyword">description</span>
+}
+myTask{
+      <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+}
+</code></pre><h5 id="(4）调用Task的configure()方法,配置description属性">(4）调用Task的configure()方法,配置description属性</h5><p>build.gradle</p>
+<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+  <span class="keyword">println</span> <span class="keyword">description</span>
+}
+myTask.configure {
+  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+}
+</code></pre><p>运行，结果：</p>
+<pre><code>$ gradle -q myTask
+<span class="keyword">this</span> <span class="keyword">is</span> myProperty
+</code></pre><h4 id="2、自定义属性的配置">2、自定义属性的配置</h4><h5 id="(1)_额外自定义属性的配置">(1) 额外自定义属性的配置</h5><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> myTask {
+    ext.myProperty = <span class="string">"this is myProperty"</span>
+}
+
+<span class="keyword">task</span> printTaskProperties &lt;&lt; {
+    <span class="keyword">println</span> myTask.myProperty
+}
+</code></pre><p>也可以使用闭包的方式：</p>
+<pre><code><span class="title">ext</span> { <span class="title">myProperty</span> = <span class="string">"this is myProperty"</span>}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q printTaskProperties
+<span class="keyword">this</span> <span class="keyword">is</span> myProperty
+</code></pre><h5 id="(2)_通过命令行参数自定义Property">(2) 通过命令行参数自定义Property</h5><p>build.gradle</p>
+<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+      <span class="keyword">println</span> myProperty
+}
+</code></pre><p>此时，会报错：</p>
+<pre><code>* What went wrong:
+Execution failed <span class="keyword">for</span> task <span class="string">':myTask'</span>.
+&gt; Could <span class="keyword">not</span> find <span class="keyword">property</span> <span class="string">'myProperty'</span> <span class="keyword">on</span> task <span class="string">':myTask'</span>.
+</code></pre><p>　　表示myProperty并没有被定义，在调用gradle命令时，通过-P参数传入该Property：</p>
+<pre><code>$ gradle -PmyProperty=<span class="string">"this is myProperty"</span> myTask                  
+:myTask
+<span class="keyword">this</span> <span class="keyword">is</span> myProperty
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p>　　很多Plugin都会向Project中加入额外的Property，在使用这些Plugin时，我们需要对这些Property进行赋值。<br>　　Gradle在默认情况下已经为Project定义了很多Property，其中比较常用的有：</p>
+<blockquote>
+]]>
+    </summary>
+    
+      <category term="Gradle" scheme="http://yoursite.com/tags/Gradle/"/>
+    
+      <category term="Gradle" scheme="http://yoursite.com/categories/Gradle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Gradle]]></title>
+    <link href="http://yoursite.com/2015/08/29/Gradle/"/>
+    <id>http://yoursite.com/2015/08/29/Gradle/</id>
+    <published>2015-08-28T16:01:59.000Z</published>
+    <updated>2015-08-29T02:37:39.000Z</updated>
+    <content type="html"><![CDATA[<p>　　Gradle本身的领域对象主要有Project和Task。<br>　　每个Gradle build由一个或多个projects组成，一个project代表的含义取决于用gradle做了什么，比如可能代表了一个库JAR或者一个网页应用程序。<br>　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Property以完成特定的操作。<br>　　gradle命令在当前路径下寻找一个叫build.gradle的文件夹，也叫做build script,严格来说build configuration script，它定义了project和其tasks.</p>
+<h3 id="一、HelloWorld">一、HelloWorld</h3><h4 id="1、调用Project的task()方法">1、调用Project的task()方法</h4><p>在build.gradle中</p>
+<pre><code><span class="keyword">task</span> hello &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+}
+</code></pre><p>　　其中<code>&lt;&lt;</code>表示向helloWorld中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
+<h4 id="2、使用doLast加入执行过程">2、使用doLast加入执行过程</h4><pre><code><span class="keyword">task</span> hello {
+        <span class="keyword">doLast</span> {
+            <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+        }
+    }    
+</code></pre><h4 id="3、create方式">3、create方式</h4><pre><code><span class="tag">tasks</span><span class="class">.create</span>(<span class="rule"><span class="attribute">name</span>:<span class="value"> <span class="string">'hello'</span>) &lt;&lt; {
+   println <span class="string">'Hello world!'</span>
+}</span></span>
+</code></pre><h4 id="4、运行，结果">4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
+<pre><code>$ gradle -<span class="tag">q</span> hello
+Hello world!
+</code></pre><p>　　</p>
+<h3 id="二、使用Grovvy">二、使用Grovvy</h3><h4 id="eg1:">eg1:</h4><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> upper &lt;&lt; {
+    String someString = <span class="string">'mY_nAmE'</span>
+    <span class="keyword">println</span> <span class="string">"Original: "</span> + someString 
+    <span class="keyword">println</span> <span class="string">"Upper case: "</span> + someString.toUpperCase()
+}
+</code></pre><p>Terminal：</p>
+<pre><code>$ gradle -q upper
+<span class="string">Original:</span> mY_nAmE
+Upper <span class="string">case:</span> MY_NAME
+</code></pre><h4 id="eg2:">eg2:</h4><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> <span class="keyword">count</span> &lt;&lt; {
+    <span class="number">4</span>.<span class="keyword">times</span> { <span class="keyword">print</span> <span class="string">"$it "</span> }
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q count
+<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> 
+</code></pre><h3 id="三、task依赖">三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
+<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候：">1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> taskX &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'taskY!'</span>
+}
+<span class="keyword">task</span> taskY(dependsOn: taskX){
+    <span class="keyword">println</span> <span class="string">"taskX!"</span>
+}
+</code></pre><p>Terminal:</p>
+<pre><code>&gt; gradle -<span class="tag">q</span> taskY
+taskX
+taskY
+</code></pre><h4 id="2、被依赖的Task还不存在的时候">2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
+<pre><code><span class="keyword">task</span> taskX(dependsOn: <span class="string">'taskY'</span>) &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'taskX'</span>
+}
+<span class="keyword">task</span> taskY &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'taskY'</span>    
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -<span class="tag">q</span> taskX
+taskY
+taskX    
+</code></pre><h4 id="3、Example">3、Example</h4><p>gradle.build</p>
+<pre><code><span class="title">task</span> branch &lt;&lt; {
+    <span class="title">println</span> <span class="string">"use version=<span class="variable">$version</span>"</span>
+}
+
+task myTask(dependsOn: <span class="string">'mybranch'</span>) &lt;&lt; {
+    <span class="title">println</span> <span class="string">'this is my task!'</span>
+}
+
+gradle.taskGraph.whenReady {<span class="title">taskGraph</span> -&gt;
+    if (taskGraph.hasTask(myTask)) {
+        <span class="title">version</span> = <span class="string">'1.0'</span>
+    } else {
+        <span class="title">version</span> = <span class="string">'2.0'</span>
+    }
+}    
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q branch  
+<span class="operator"><span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">2.0</span>
+$ gradle -q myTask
+<span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">1.0</span>
+this <span class="keyword">is</span> my task!</span>
+</code></pre><h3 id="四、动态task">四、动态task</h3><p>build.gradle:</p>
+<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
+    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
+        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
+    }
+}
+</code></pre><p>Ternimal:</p>
+<pre><code>$ gradle -<span class="tag">q</span> task1
+I<span class="string">'m task number 1</span>
+</code></pre><p>　　注意，task是从0开始的，即此处存在task0、task1、task2、task3。可输入<code>gradle tasks</code>查看所有task。</p>
+<h3 id="五、操控现有task">五、操控现有task</h3><h4 id="1、添加依赖">1、添加依赖</h4><p>build.gradle:</p>
+<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
+    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
+        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
+    }
+}
+task0.dependsOn task2, task3
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q task0
+I'm task <span class="type">number</span> <span class="number">2</span>
+I'm task <span class="type">number</span> <span class="number">3</span>
+I'm task <span class="type">number</span> <span class="number">0</span>
+</code></pre><h4 id="2、添加行为">2、添加行为</h4><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> hello &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+}
+hello.<span class="keyword">doFirst</span> {
+    <span class="keyword">println</span> <span class="string">'Hello first'</span>
+}
+hello.<span class="keyword">doLast</span> {
+    <span class="keyword">println</span> <span class="string">'Hello last'</span>
+}
+hello &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'Hello hello!'</span>
+}
+</code></pre><p>Treminal:</p>
+<pre><code>$ gradle -q hello
+Hello <span class="keyword">first</span>
+Hello world!
+Hello <span class="keyword">last</span>
+Hello hello!
+</code></pre><h3 id="六、默认task">六、默认task</h3><p>build.gradle:</p>
+<pre><code>defaultTasks <span class="string">'clean'</span>, <span class="string">'run'</span>
+
+<span class="keyword">task</span> clean &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'Default Cleaning!'</span>
+}
+
+<span class="keyword">task</span> run &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">'Default Running!'</span>
+}
+
+<span class="keyword">task</span> other &lt;&lt; {
+    <span class="keyword">println</span> <span class="string">"I'm not a default task!"</span>
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q
+<span class="keyword">Default</span> Cleaning!
+<span class="keyword">Default</span> Running!
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p>　　Gradle本身的领域对象主要有Project和Task。<br>　　每个Gradle build由一个或多个projects组成，一个project代表的含义取决于用gradle做了什么，比如可能代表了一个库JAR或者一个网页应用程序。<br>　　一个project由]]>
+    </summary>
+    
+      <category term="Gradle" scheme="http://yoursite.com/tags/Gradle/"/>
+    
+      <category term="Gradle" scheme="http://yoursite.com/categories/Gradle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[SpringMVC_Gradle_xml]]></title>
+    <link href="http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/"/>
+    <id>http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/</id>
+    <published>2015-08-28T04:35:55.000Z</published>
+    <updated>2015-08-28T15:46:19.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="一、Gradle_Build">一、Gradle Build</h3><pre><code>apply plugin: <span class="string">'java'</span>
+apply plugin: <span class="string">'war'</span>
+apply plugin: <span class="string">'idea'</span>
+apply plugin: <span class="string">'jetty'</span>
+
+<span class="comment">// JDK 7</span>
+<span class="keyword">sourceCompatibility</span> = <span class="number">1.7</span>
+<span class="keyword">targetCompatibility</span> = <span class="number">1.7</span>
+
+<span class="keyword">repositories</span> {
+    mavenLocal()
+    mavenCentral()
+}
+
+<span class="keyword">dependencies</span> {
+
+    <span class="keyword">compile</span> <span class="string">'ch.qos.logback:logback-classic:1.1.3'</span>
+    <span class="keyword">compile</span> <span class="string">'org.springframework:spring-webmvc:4.1.6.RELEASE'</span>
+    <span class="keyword">compile</span> <span class="string">'javax.servlet:jstl:1.2'</span>
+
+}
+
+<span class="comment">// Embeded Jetty for testing</span>
+jettyRun{
+    contextPath = <span class="string">"spring4"</span>
+    httpPort = <span class="number">8080</span>
+}
+
+jettyRunWar{
+    contextPath = <span class="string">"spring4"</span>
+    httpPort = <span class="number">8080</span>
+}
+</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
+<h3 id="二、Spring_MVC">二、Spring MVC</h3><h4 id="1、WelcomeController-java">1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java">2、HelloWorldService.java</h4><h4 id="3、logback-xml">3、logback.xml</h4><h4 id="4、spring-core-config-xml">4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml">5、spring-mvc-config.xml</h4><h4 id="6、web-xml">6、web.xml</h4><h3 id="三、运行，输出结果">三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
+<pre><code><span class="variable">$ </span>gradle jettyRun                    
+<span class="symbol">:compileJava</span>
+<span class="symbol">:processResources</span>
+<span class="symbol">:classes</span>
+<span class="symbol">:jettyRun</span>
+<span class="constant">Building </span><span class="number">75</span>% &gt; <span class="symbol">:jettyRun</span> &gt; <span class="constant">Running </span>at <span class="symbol">http:</span>/<span class="regexp">/localhost:8080/spring</span>4
+</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
+<h3 id="四、目录结构">四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="一、Gradle_Build">一、Gradle Build</h3><pre><code>apply plugin: <span class="string">'java'</span>
+apply plugin: <span class="string">'w]]>
+    </summary>
+    
+      <category term="SpingMVC" scheme="http://yoursite.com/tags/SpingMVC/"/>
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[SpringAOP_Pointcut&Advisor]]></title>
