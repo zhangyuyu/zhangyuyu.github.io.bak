@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="SpingMVC," />
+  <meta name="keywords" content="Spring," />
 
 
 
@@ -41,50 +41,73 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
+<meta name="description" content="Spring支持5种自动装配模式，如下：
 
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
-repositories {
-    mavenLocal()
-    mav">
+
+自动装配模式
+描述
+
+
+
+
+no
+默认情况下，不自动装配，通过“ref”attribute手动设定。
+
+
+byName
+根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。
+
+
+byType
+根据Property的数据类型（Type）自动装">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringMVC_Gradle_xml">
-<meta property="og:url" content="http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/index.html">
+<meta property="og:title" content="Spring-Auto-Wiring">
+<meta property="og:url" content="http://yoursite.com/2015/08/30/Spring-Auto-Wiring/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
+<meta property="og:description" content="Spring支持5种自动装配模式，如下：
 
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
-repositories {
-    mavenLocal()
-    mav">
-<meta property="og:image" content="http://yoursite.com/imgs/SpringMVC-Gradle-xml.png">
-<meta property="og:updated_time" content="2015-08-28T15:46:19.000Z">
+
+自动装配模式
+描述
+
+
+
+
+no
+默认情况下，不自动装配，通过“ref”attribute手动设定。
+
+
+byName
+根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。
+
+
+byType
+根据Property的数据类型（Type）自动装">
+<meta property="og:updated_time" content="2015-08-30T05:41:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringMVC_Gradle_xml">
-<meta name="twitter:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
+<meta name="twitter:title" content="Spring-Auto-Wiring">
+<meta name="twitter:description" content="Spring支持5种自动装配模式，如下：
 
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
-repositories {
-    mavenLocal()
-    mav">
+
+自动装配模式
+描述
+
+
+
+
+no
+默认情况下，不自动装配，通过“ref”attribute手动设定。
+
+
+byName
+根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。
+
+
+byType
+根据Property的数据类型（Type）自动装">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -94,7 +117,7 @@ repositories {
   };
 </script>
 
-  <title> SpringMVC_Gradle_xml | 若见喻笺 </title>
+  <title> Spring-Auto-Wiring | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -201,7 +224,7 @@ repositories {
           
           
             
-              SpringMVC_Gradle_xml
+              Spring-Auto-Wiring
             
           
         </h1>
@@ -210,8 +233,8 @@ repositories {
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2015-08-28T12:35:55+08:00" content="2015-08-28">
-            2015-08-28
+          <time itemprop="dateCreated" datetime="2015-08-30T12:09:07+08:00" content="2015-08-30">
+            2015-08-30
           </time>
         </span>
 
@@ -244,48 +267,86 @@ repositories {
       
 
       
-        <span itemprop="articleBody"><h3 id="一、Gradle_Build">一、Gradle Build</h3><pre><code>apply plugin: <span class="string">'java'</span>
-apply plugin: <span class="string">'war'</span>
-apply plugin: <span class="string">'idea'</span>
-apply plugin: <span class="string">'jetty'</span>
+        <span itemprop="articleBody"><p>Spring支持5种自动装配模式，如下：</p>
+<table>
+<thead>
+<tr>
+<th>自动装配模式</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no</td>
+<td style="text-align:left">默认情况下，不自动装配，通过“ref”attribute手动设定。</td>
+</tr>
+<tr>
+<td>byName</td>
+<td style="text-align:left">根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。</td>
+</tr>
+<tr>
+<td>byType</td>
+<td style="text-align:left">根据Property的数据类型（Type）自动装配，如果一个bean的数据类型，兼容另一个bean中Property的数据类型，则自动装配。</td>
+</tr>
+<tr>
+<td>constructor</td>
+<td style="text-align:left">根据构造函数参数的数据类型，进行byType模式的自动装配。</td>
+</tr>
+<tr>
+<td>autodetect</td>
+<td style="text-align:left">如果发现默认的构造函数，用constructor模式，否则，用byType模式。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="一、bean">一、bean</h3><p>CustomerDAO.java</p>
+<pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
 
-<span class="comment">// JDK 7</span>
-<span class="keyword">sourceCompatibility</span> = <span class="number">1.7</span>
-<span class="keyword">targetCompatibility</span> = <span class="number">1.7</span>
-
-<span class="keyword">repositories</span> {
-    mavenLocal()
-    mavenCentral()
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
+</span>{
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
+    }    
 }
+</code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
+<pre><code><span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
 
-<span class="keyword">dependencies</span> {
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
+</span>{
+    CustomerDAO customerDAO;
 
-    <span class="keyword">compile</span> <span class="string">'ch.qos.logback:logback-classic:1.1.3'</span>
-    <span class="keyword">compile</span> <span class="string">'org.springframework:spring-webmvc:4.1.6.RELEASE'</span>
-    <span class="keyword">compile</span> <span class="string">'javax.servlet:jstl:1.2'</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
+        <span class="keyword">this</span>.customerDAO = customerDAO;
+    }
 
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
+    }            
 }
+</code></pre><h3 id="二、装配">二、装配</h3><h4 id="1、Auto-Wiring_‘no’">1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
+<pre><code>&lt;bean id=<span class="string">"customerService"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
+        &lt;property name=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
+    &lt;/bean&gt;
 
-<span class="comment">// Embeded Jetty for testing</span>
-jettyRun{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
-}
+    &lt;bean id=<span class="string">"customerDAO"</span> class=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+</code></pre><h4 id="2、Auto-Wiring_‘byName’">2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
+<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byName"</span>&gt;
+&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+</code></pre><h4 id="3、Auto-Wiring_‘byType‘">3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
+<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byType"</span>&gt;
+&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+</code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
+<h4 id="4、Auto-Wiring_‘constructor’">4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
+<h4 id="5、Auto-Wiring_‘autodetect">5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
+<blockquote>
+<p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
+</blockquote>
+<pre><code>&lt;bean id=<span class="string">"customer"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span> 
+            autowire=<span class="string">"autodetect"</span> dependency-check=<span class="string">"objects /&gt;
 
-jettyRunWar{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
-}
-</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
-<h3 id="二、Spring_MVC">二、Spring MVC</h3><h4 id="1、WelcomeController-java">1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java">2、HelloWorldService.java</h4><h4 id="3、logback-xml">3、logback.xml</h4><h4 id="4、spring-core-config-xml">4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml">5、spring-mvc-config.xml</h4><h4 id="6、web-xml">6、web.xml</h4><h3 id="三、运行，输出结果">三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
-<pre><code><span class="variable">$ </span>gradle jettyRun                    
-<span class="symbol">:compileJava</span>
-<span class="symbol">:processResources</span>
-<span class="symbol">:classes</span>
-<span class="symbol">:jettyRun</span>
-<span class="constant">Building </span><span class="number">75</span>% &gt; <span class="symbol">:jettyRun</span> &gt; <span class="constant">Running </span>at <span class="symbol">http:</span>/<span class="regexp">/localhost:8080/spring</span>4
-</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
-<h3 id="四、目录结构">四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
+&lt;bean id="</span><span class="keyword">person</span><span class="string">" class="</span>com.mkyong.customer.dao.CustomerDAO<span class="string">" /</span>
+</code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
 </span>
       
     </div>
@@ -294,7 +355,7 @@ jettyRunWar{
       
         <div class="post-tags">
           
-            <a href="/tags/SpingMVC/" rel="tag">#SpingMVC</a>
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
           
         </div>
       
@@ -303,13 +364,13 @@ jettyRunWar{
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/29/Gradle/" rel="prev">Gradle</a>
+              <a href="/2015/08/30/Spring-Auto-Wiring-Autowired/" rel="prev">Spring-Auto-Wiring-@Autowired</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/27/SpringAOP-Pointcut-Advisor/" rel="next">SpringAOP_Pointcut&Advisor</a>
+              <a href="/2015/08/30/Spring-Auto-scanning/" rel="next">Spring-Auto-scanning</a>
             
           </div>
         </div>
@@ -420,7 +481,7 @@ jettyRunWar{
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Gradle_Build"><span class="nav-number">1.</span> <span class="nav-text">一、Gradle Build</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Spring_MVC"><span class="nav-number">2.</span> <span class="nav-text">二、Spring MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、WelcomeController-java"><span class="nav-number">2.1.</span> <span class="nav-text">1、WelcomeController.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、HelloWorldService-java"><span class="nav-number">2.2.</span> <span class="nav-text">2、HelloWorldService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、logback-xml"><span class="nav-number">2.3.</span> <span class="nav-text">3、logback.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、spring-core-config-xml"><span class="nav-number">2.4.</span> <span class="nav-text">4、spring-core-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、spring-mvc-config-xml"><span class="nav-number">2.5.</span> <span class="nav-text">5、spring-mvc-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、web-xml"><span class="nav-number">2.6.</span> <span class="nav-text">6、web.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行，输出结果"><span class="nav-number">3.</span> <span class="nav-text">三、运行，输出结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、目录结构"><span class="nav-number">4.</span> <span class="nav-text">四、目录结构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、bean"><span class="nav-number">1.</span> <span class="nav-text">一、bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、装配"><span class="nav-number">2.</span> <span class="nav-text">二、装配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Auto-Wiring_‘no’"><span class="nav-number">2.1.</span> <span class="nav-text">1、Auto-Wiring ‘no’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Auto-Wiring_‘byName’"><span class="nav-number">2.2.</span> <span class="nav-text">2、Auto-Wiring ‘byName’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Auto-Wiring_‘byType‘"><span class="nav-number">2.3.</span> <span class="nav-text">3、Auto-Wiring ‘byType‘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Auto-Wiring_‘constructor’"><span class="nav-number">2.4.</span> <span class="nav-text">4、Auto-Wiring ‘constructor’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、Auto-Wiring_‘autodetect"><span class="nav-number">2.5.</span> <span class="nav-text">5、Auto-Wiring ‘autodetect</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

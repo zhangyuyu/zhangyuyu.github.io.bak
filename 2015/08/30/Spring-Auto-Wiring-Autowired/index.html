@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="SpingMVC," />
+  <meta name="keywords" content="Spring," />
 
 
 
@@ -41,50 +41,43 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
+<meta name="description" content="一、beanCustomer.java
+package com.mkyong.common;
 
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+import org.springframework.beans.factory.annotation.Autowired;
 
-repositories {
-    mavenLocal()
-    mav">
+public class Customer 
+{
+    @Autowired
+    private Person person;
+    private int type;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringMVC_Gradle_xml">
-<meta property="og:url" content="http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/index.html">
+<meta property="og:title" content="Spring-Auto-Wiring-@Autowired">
+<meta property="og:url" content="http://yoursite.com/2015/08/30/Spring-Auto-Wiring-Autowired/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
+<meta property="og:description" content="一、beanCustomer.java
+package com.mkyong.common;
 
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+import org.springframework.beans.factory.annotation.Autowired;
 
-repositories {
-    mavenLocal()
-    mav">
-<meta property="og:image" content="http://yoursite.com/imgs/SpringMVC-Gradle-xml.png">
-<meta property="og:updated_time" content="2015-08-28T15:46:19.000Z">
+public class Customer 
+{
+    @Autowired
+    private Person person;
+    private int type;">
+<meta property="og:updated_time" content="2015-08-30T05:32:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringMVC_Gradle_xml">
-<meta name="twitter:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
+<meta name="twitter:title" content="Spring-Auto-Wiring-@Autowired">
+<meta name="twitter:description" content="一、beanCustomer.java
+package com.mkyong.common;
 
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+import org.springframework.beans.factory.annotation.Autowired;
 
-repositories {
-    mavenLocal()
-    mav">
+public class Customer 
+{
+    @Autowired
+    private Person person;
+    private int type;">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -94,7 +87,7 @@ repositories {
   };
 </script>
 
-  <title> SpringMVC_Gradle_xml | 若见喻笺 </title>
+  <title> Spring-Auto-Wiring-@Autowired | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -201,7 +194,7 @@ repositories {
           
           
             
-              SpringMVC_Gradle_xml
+              Spring-Auto-Wiring-@Autowired
             
           
         </h1>
@@ -210,8 +203,8 @@ repositories {
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2015-08-28T12:35:55+08:00" content="2015-08-28">
-            2015-08-28
+          <time itemprop="dateCreated" datetime="2015-08-30T12:52:14+08:00" content="2015-08-30">
+            2015-08-30
           </time>
         </span>
 
@@ -244,49 +237,126 @@ repositories {
       
 
       
-        <span itemprop="articleBody"><h3 id="一、Gradle_Build">一、Gradle Build</h3><pre><code>apply plugin: <span class="string">'java'</span>
-apply plugin: <span class="string">'war'</span>
-apply plugin: <span class="string">'idea'</span>
-apply plugin: <span class="string">'jetty'</span>
+        <span itemprop="articleBody"><h3 id="一、bean">一、bean</h3><p>Customer.java</p>
+<pre><code>package com.mkyong.common;
 
-<span class="comment">// JDK 7</span>
-<span class="keyword">sourceCompatibility</span> = <span class="number">1.7</span>
-<span class="keyword">targetCompatibility</span> = <span class="number">1.7</span>
+import org.springframework.beans.factory.annotation.Autowired;
 
-<span class="keyword">repositories</span> {
-    mavenLocal()
-    mavenCentral()
+public class Customer 
+{
+    @Autowired
+    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private int type;
+    private String action;
+
+    //getter and setter methods
+
+    @Override
+    public String toString() {
+        return <span class="string">"Customer <span class="subst">[person=" + person + ", type=" + type + ", action="
+                + action + "]</span>"</span>;
 }
-
-<span class="keyword">dependencies</span> {
-
-    <span class="keyword">compile</span> <span class="string">'ch.qos.logback:logback-classic:1.1.3'</span>
-    <span class="keyword">compile</span> <span class="string">'org.springframework:spring-webmvc:4.1.6.RELEASE'</span>
-    <span class="keyword">compile</span> <span class="string">'javax.servlet:jstl:1.2'</span>
-
 }
+</code></pre><p>Person.java</p>
+<pre><code><span class="keyword">package</span> com.mkyong.common;
 
-<span class="comment">// Embeded Jetty for testing</span>
-jettyRun{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
-}
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>{
+    <span class="keyword">private</span> String name;
 
-jettyRunWar{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> name;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>{
+        <span class="keyword">this</span>.name = name;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"Person [name="</span> + name + <span class="string">"]"</span>;
+    }
 }
-</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
-<h3 id="二、Spring_MVC">二、Spring MVC</h3><h4 id="1、WelcomeController-java">1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java">2、HelloWorldService.java</h4><h4 id="3、logback-xml">3、logback.xml</h4><h4 id="4、spring-core-config-xml">4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml">5、spring-mvc-config.xml</h4><h4 id="6、web-xml">6、web.xml</h4><h3 id="三、运行，输出结果">三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
-<pre><code><span class="variable">$ </span>gradle jettyRun                    
-<span class="symbol">:compileJava</span>
-<span class="symbol">:processResources</span>
-<span class="symbol">:classes</span>
-<span class="symbol">:jettyRun</span>
-<span class="constant">Building </span><span class="number">75</span>% &gt; <span class="symbol">:jettyRun</span> &gt; <span class="constant">Running </span>at <span class="symbol">http:</span>/<span class="regexp">/localhost:8080/spring</span>4
-</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
-<h3 id="四、目录结构">四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
-</span>
+</code></pre><h3 id="二、_AutowiredAnnotationBeanPostProcessor">二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
+<h4 id="1、context:annotation-config">1、context:annotation-config</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong"</span> /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor">2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
+class=&quot;org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor&quot;/&gt;</code></p>
+<h3 id="三、运行">三、运行</h3><p>在App.java中</p>
+<pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
+        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
+                <span class="string">"SpringBeans.xml"</span>);
+
+        Customer cust = (Customer) context.getBean(<span class="string">"customer"</span>);
+        System.out.println(cust);
+    }
+}
+</code></pre><h3 id="四、运行结果">四、运行结果</h3><pre><code>Customer [person=Person [<span class="keyword">name</span>=mkyongA], <span class="keyword">type</span>=<span class="number">1</span>, <span class="keyword">action</span>=buy]
+</code></pre><h3 id="五、Dependency_checking">五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
+<h3 id="六、@Qualifier">六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
+<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean1"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean2"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong2"</span> /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><p>此时，在Customer.java中用@Qualifier(“PersonBean1”)就可以将PersonBean1注入到Customer的person属性中。</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+public class Customer 
+{
+    @Autowired
+    @Qualifier(<span class="string">"PersonBean1"</span>)
+    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private int type;
+    private String action;
+    //getter and setter methods
+}
+</code></pre></span>
       
     </div>
 
@@ -294,7 +364,7 @@ jettyRunWar{
       
         <div class="post-tags">
           
-            <a href="/tags/SpingMVC/" rel="tag">#SpingMVC</a>
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
           
         </div>
       
@@ -303,13 +373,11 @@ jettyRunWar{
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/29/Gradle/" rel="prev">Gradle</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/27/SpringAOP-Pointcut-Advisor/" rel="next">SpringAOP_Pointcut&Advisor</a>
+              <a href="/2015/08/30/Spring-Auto-Wiring/" rel="next">Spring-Auto-Wiring</a>
             
           </div>
         </div>
@@ -420,7 +488,7 @@ jettyRunWar{
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Gradle_Build"><span class="nav-number">1.</span> <span class="nav-text">一、Gradle Build</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Spring_MVC"><span class="nav-number">2.</span> <span class="nav-text">二、Spring MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、WelcomeController-java"><span class="nav-number">2.1.</span> <span class="nav-text">1、WelcomeController.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、HelloWorldService-java"><span class="nav-number">2.2.</span> <span class="nav-text">2、HelloWorldService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、logback-xml"><span class="nav-number">2.3.</span> <span class="nav-text">3、logback.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、spring-core-config-xml"><span class="nav-number">2.4.</span> <span class="nav-text">4、spring-core-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、spring-mvc-config-xml"><span class="nav-number">2.5.</span> <span class="nav-text">5、spring-mvc-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、web-xml"><span class="nav-number">2.6.</span> <span class="nav-text">6、web.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行，输出结果"><span class="nav-number">3.</span> <span class="nav-text">三、运行，输出结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、目录结构"><span class="nav-number">4.</span> <span class="nav-text">四、目录结构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、bean"><span class="nav-number">1.</span> <span class="nav-text">一、bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、_AutowiredAnnotationBeanPostProcessor"><span class="nav-number">2.</span> <span class="nav-text">二、 AutowiredAnnotationBeanPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、context:annotation-config"><span class="nav-number">2.1.</span> <span class="nav-text">1、context:annotation-config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、直接包含AutowiredAnnotationBeanPostProcessor"><span class="nav-number">2.2.</span> <span class="nav-text">2、直接包含AutowiredAnnotationBeanPostProcessor</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行"><span class="nav-number">3.</span> <span class="nav-text">三、运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、运行结果"><span class="nav-number">4.</span> <span class="nav-text">四、运行结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Dependency_checking"><span class="nav-number">5.</span> <span class="nav-text">五、Dependency checking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、@Qualifier"><span class="nav-number">6.</span> <span class="nav-text">六、@Qualifier</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

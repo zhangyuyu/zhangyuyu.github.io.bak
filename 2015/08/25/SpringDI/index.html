@@ -51,7 +51,7 @@
 <meta property="og:description" content="控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：
 
 　　&amp;lt;1&amp;gt;依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。　　&amp;lt;2&amp;gt;依赖注入（Dependency Injection）：组件不做定位查询，">
-<meta property="og:updated_time" content="2015-08-27T14:50:47.000Z">
+<meta property="og:updated_time" content="2015-08-30T02:45:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring依赖注入">
 <meta name="twitter:description" content="控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：
@@ -221,7 +221,7 @@
 <p>　　<1>依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。<br><br>　　<2>依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者是时下最流行的IoC类型，其又有接口注入（Interface Injection），设值注入（Setter Injection）和构造子注入（Constructor Injection）三种方式。
 　　　　　</2></1></p>
 </blockquote>
-<h3 id="1、接口注入">1、接口注入</h3><pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassA</span> {
+<h3 id="一、接口注入">一、接口注入</h3><pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassA</span> {
     <span class="keyword">private</span> InterfaceB clzB;
     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>{
     Ojbect obj =Class.forName(Config.BImplementation).newInstance();
@@ -229,7 +229,202 @@
     clzB.doIt()
 }
 </code></pre><p>　　ClassA依赖于InterfaceB的实现，传统的方法是在代码中创建 InterfaceB实现类的实例，ClassA在编译期即依赖于InterfaceB的实现。<br><br>　　我们预先在配置文件中设定的实现类的类名Config.BImplementation，动态加载实现类，并通过InterfaceB强制转型后为ClassA 所用，将调用者与实现者在编译期分离。</p>
-<h3 id="2、setter注入">2、setter注入</h3><h3 id="3、构造子注入">3、构造子注入</h3></span>
+<h3 id="二、setter注入">二、setter注入</h3><p>先定义一个接口IOutputGenerator.java：</p>
+<pre><code><span class="keyword">package</span> com.mkyong.output;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IOutputGenerator</span>
+</span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span></span>;
+}
+</code></pre><h4 id="1、CsvOutputGenerator-java">1、CsvOutputGenerator.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output.impl;
+
+<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CsvOutputGenerator</span> <span class="keyword">implements</span> <span class="title">IOutputGenerator</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
+        System.out.println(<span class="string">"This is Csv Output Generator"</span>);
+    }
+}
+</code></pre><h4 id="2、OutputHelper-class">2、OutputHelper.class</h4><pre><code><span class="keyword">package</span> com.mkyong.output;
+
+<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutputHelper</span> </span>{
+    IOutputGenerator outputGenerator;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
+        outputGenerator.generateOutput();
+    }
+
+    <span class="comment">//DI via setter method</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOutputGenerator</span><span class="params">(IOutputGenerator outputGenerator)</span> </span>{
+        <span class="keyword">this</span>.outputGenerator = outputGenerator;
+    }
+}
+</code></pre><h4 id="3、配置Spring,在SpringBeans-xml中">3、配置Spring,在SpringBeans.xml中</h4><p> 把<code>CsvOutputGenerator</code>注入到<code>OutputHelper</code> </p>
+<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"OutputHelper"</span> <span class="type">class</span>=<span class="string">"com.mkyong.output.OutputHelper"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"outputGenerator"</span> <span class="keyword">ref</span>=<span class="string">"CsvOutputGenerator"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"CsvOutputGenerator"</span> <span class="type">class</span>=<span class="string">"com.mkyong.output.impl.CsvOutputGenerator"</span> /&gt;
+
+&lt;/beans&gt;
+</code></pre><h4 id="4、运行，在App-java中">4、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+<span class="keyword">import</span> com.mkyong.output.OutputHelper;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
+        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
+                <span class="string">"SpringBeans.xml"</span>);
+
+        OutputHelper output = (OutputHelper)context.getBean(<span class="string">"OutputHelper"</span>);
+                output.generateOutput();
+    }
+}
+</code></pre><h4 id="5、结果">5、结果</h4><pre><code>This <span class="keyword">is</span> Csv Output Generator
+</code></pre><h3 id="三、构造子注入">三、构造子注入</h3><h4 id="1、CsvOutputGenerator-java-1">1、CsvOutputGenerator.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output.impl;
+
+<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonOutputGenerator</span> <span class="keyword">implements</span> <span class="title">IOutputGenerator</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
+        System.out.println(<span class="string">"This is Json Output Generator"</span>);
+    }
+}
+</code></pre><h4 id="2、OutputHelper-java">2、OutputHelper.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output;
+
+<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutputHelper</span> </span>{
+    IOutputGenerator outputGenerator;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
+        outputGenerator.generateOutput();
+    }
+
+    <span class="comment">//DI via constructor</span>
+    <span class="function"><span class="keyword">public</span> <span class="title">OutputHelper</span><span class="params">(IOutputGenerator outputGenerator)</span></span>{
+        <span class="keyword">this</span>.outputGenerator = outputGenerator;
+    }
+
+}
+</code></pre><h4 id="3、Spring配置">3、Spring配置</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"OutputHelper"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.output.OutputHelper"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">ref</span> <span class="attribute">bean</span>=<span class="value">"JsonOutputGenerator"</span> /&gt;</span>
+        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"JsonOutputGenerator"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.output.impl.JsonOutputGenerator"</span> /&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><h4 id="4、运行，结果">4、运行，结果</h4><pre><code>This <span class="keyword">is</span> Json Output Generator
+</code></pre><blockquote>
+<p>当有两个构造函数，且参数个数一样但参数类型不同时，则会出现构造器注入参数类型歧义的问题。下面举出另外一个例子：</p>
+</blockquote>
+<h3 id="Example构造子注入">Example构造子注入</h3><h4 id="1、在Customer-java中">1、在Customer.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">public</span> class Customer 
+{
+    <span class="keyword">private</span> <span class="keyword">String</span> name;
+    <span class="keyword">private</span> <span class="keyword">String</span> address;
+    <span class="keyword">private</span> <span class="built_in">int</span> age;
+
+    <span class="keyword">public</span> Customer(<span class="keyword">String</span> name, <span class="keyword">String</span> address, <span class="built_in">int</span> age) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.address = address;
+        <span class="keyword">this</span>.age = age;
+    }
+
+    <span class="keyword">public</span> Customer(<span class="keyword">String</span> name, <span class="built_in">int</span> age, <span class="keyword">String</span> address) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.age = age;
+        <span class="keyword">this</span>.address = address;
+    }
+    <span class="comment">//getter and setter methods</span>
+    <span class="keyword">public</span> <span class="keyword">String</span> toString(){
+        <span class="keyword">return</span> <span class="string">" name : "</span> +name + <span class="string">"\n address : "</span>
+               + address + <span class="string">"\n age : "</span> + age;
+    }
+
+}
+</code></pre><h4 id="2、Spring配置，Spring-Customer-xml">2、Spring配置，Spring-Customer.xml</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"CustomerBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.common.Customer"</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">value</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">value</span>&gt;</span>188<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">value</span>&gt;</span>28<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><h4 id="3、运行，在App-java中">3、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
+</span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
+    </span>{
+        ApplicationContext context = 
+          <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="keyword">new</span> String[] {<span class="string">"Spring-Customer.xml"</span>});
+
+        Customer cust = (Customer)context.getBean(<span class="string">"CustomerBean"</span>);
+        System.out.println(cust);
+    }
+}
+</code></pre><h4 id="4、结果">4、结果</h4><pre><code><span class="string">name :</span> mkyong
+<span class="string">address :</span> <span class="number">28</span>
+<span class="string">age :</span> <span class="number">188</span>
+</code></pre><p>　　在Spring，参数<code>188</code>可以转换成int,所以Spring直接转换了它并用了第二个构造函数。</p>
+<h4 id="5、解决办法">5、解决办法</h4><p>在Spring-Customer.xml中给constructor-arg加入type。</p>
+<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"CustomerBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.common.Customer"</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">value</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">value</span>&gt;</span>188<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"int"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">value</span>&gt;</span>28<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
+
+    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre></span>
       
     </div>
 
@@ -314,7 +509,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -363,7 +558,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、接口注入"><span class="nav-number">1.</span> <span class="nav-text">1、接口注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、setter注入"><span class="nav-number">2.</span> <span class="nav-text">2、setter注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、构造子注入"><span class="nav-number">3.</span> <span class="nav-text">3、构造子注入</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、接口注入"><span class="nav-number">1.</span> <span class="nav-text">一、接口注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、setter注入"><span class="nav-number">2.</span> <span class="nav-text">二、setter注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、CsvOutputGenerator-java"><span class="nav-number">2.1.</span> <span class="nav-text">1、CsvOutputGenerator.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、OutputHelper-class"><span class="nav-number">2.2.</span> <span class="nav-text">2、OutputHelper.class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、配置Spring,在SpringBeans-xml中"><span class="nav-number">2.3.</span> <span class="nav-text">3、配置Spring,在SpringBeans.xml中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、运行，在App-java中"><span class="nav-number">2.4.</span> <span class="nav-text">4、运行，在App.java中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、结果"><span class="nav-number">2.5.</span> <span class="nav-text">5、结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、构造子注入"><span class="nav-number">3.</span> <span class="nav-text">三、构造子注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、CsvOutputGenerator-java-1"><span class="nav-number">3.1.</span> <span class="nav-text">1、CsvOutputGenerator.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、OutputHelper-java"><span class="nav-number">3.2.</span> <span class="nav-text">2、OutputHelper.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Spring配置"><span class="nav-number">3.3.</span> <span class="nav-text">3、Spring配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、运行，结果"><span class="nav-number">3.4.</span> <span class="nav-text">4、运行，结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example构造子注入"><span class="nav-number">4.</span> <span class="nav-text">Example构造子注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在Customer-java中"><span class="nav-number">4.1.</span> <span class="nav-text">1、在Customer.java中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Spring配置，Spring-Customer-xml"><span class="nav-number">4.2.</span> <span class="nav-text">2、Spring配置，Spring-Customer.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、运行，在App-java中"><span class="nav-number">4.3.</span> <span class="nav-text">3、运行，在App.java中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、结果"><span class="nav-number">4.4.</span> <span class="nav-text">4、结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、解决办法"><span class="nav-number">4.5.</span> <span class="nav-text">5、解决办法</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

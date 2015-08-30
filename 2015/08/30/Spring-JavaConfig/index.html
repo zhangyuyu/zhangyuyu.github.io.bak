@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="SpingMVC," />
+  <meta name="keywords" content="Spring," />
 
 
 
@@ -41,50 +41,23 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
-
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-repositories {
-    mavenLocal()
-    mav">
+<meta name="description" content="使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：
+&amp;lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringMVC_Gradle_xml">
-<meta property="og:url" content="http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/index.html">
+<meta property="og:title" content="Spring_JavaConfig">
+<meta property="og:url" content="http://yoursite.com/2015/08/30/Spring-JavaConfig/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
-
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-repositories {
-    mavenLocal()
-    mav">
-<meta property="og:image" content="http://yoursite.com/imgs/SpringMVC-Gradle-xml.png">
-<meta property="og:updated_time" content="2015-08-28T15:46:19.000Z">
+<meta property="og:description" content="使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：
+&amp;lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.">
+<meta property="og:image" content="http://yoursite.com/imgs/Spring-JavaConfig.png">
+<meta property="og:updated_time" content="2015-08-30T03:34:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringMVC_Gradle_xml">
-<meta name="twitter:description" content="一、Gradle Buildapply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
-
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-repositories {
-    mavenLocal()
-    mav">
+<meta name="twitter:title" content="Spring_JavaConfig">
+<meta name="twitter:description" content="使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：
+&amp;lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -94,7 +67,7 @@ repositories {
   };
 </script>
 
-  <title> SpringMVC_Gradle_xml | 若见喻笺 </title>
+  <title> Spring_JavaConfig | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -201,7 +174,7 @@ repositories {
           
           
             
-              SpringMVC_Gradle_xml
+              Spring_JavaConfig
             
           
         </h1>
@@ -210,8 +183,8 @@ repositories {
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2015-08-28T12:35:55+08:00" content="2015-08-28">
-            2015-08-28
+          <time itemprop="dateCreated" datetime="2015-08-30T10:47:46+08:00" content="2015-08-30">
+            2015-08-30
           </time>
         </span>
 
@@ -244,49 +217,124 @@ repositories {
       
 
       
-        <span itemprop="articleBody"><h3 id="一、Gradle_Build">一、Gradle Build</h3><pre><code>apply plugin: <span class="string">'java'</span>
-apply plugin: <span class="string">'war'</span>
-apply plugin: <span class="string">'idea'</span>
-apply plugin: <span class="string">'jetty'</span>
+        <span itemprop="articleBody"><p>　　使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：</p>
+<pre><code><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.mkyong.core<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
 
-<span class="comment">// JDK 7</span>
-<span class="keyword">sourceCompatibility</span> = <span class="number">1.7</span>
-<span class="keyword">targetCompatibility</span> = <span class="number">1.7</span>
+    <span class="tag">&lt;<span class="title">properties</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">spring.version</span>&gt;</span>3.0.5.RELEASE<span class="tag">&lt;/<span class="title">spring.version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
 
-<span class="keyword">repositories</span> {
-    mavenLocal()
-    mavenCentral()
+    <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>4.8.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+        <span class="comment">&lt;!-- Spring 3 dependencies --&gt;</span>
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+        <span class="comment">&lt;!-- JavaConfig need this library --&gt;</span>
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+    <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><h3 id="一、Spring_Bean">一、Spring Bean</h3><pre><code>package com.mkyong;
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span>{
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toString</span>(<span class="params">String msg</span>) </span>{
+
+        System.<span class="keyword">out</span>.println(<span class="string">"Hello : "</span> + msg);
+    }
+
 }
+</code></pre><h3 id="二、Spring配置">二、Spring配置</h3><p>1、回顾xml配置</p>
+<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"</span>&gt;</span>
 
-<span class="keyword">dependencies</span> {
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.HelloWorld"</span>&gt;</span>
 
-    <span class="keyword">compile</span> <span class="string">'ch.qos.logback:logback-classic:1.1.3'</span>
-    <span class="keyword">compile</span> <span class="string">'org.springframework:spring-webmvc:4.1.6.RELEASE'</span>
-    <span class="keyword">compile</span> <span class="string">'javax.servlet:jstl:1.2'</span>
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><p>2、JavaConfig，在AppConfig.java中</p>
+<pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span>;
+
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Bean</span>;
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
+
+<span class="at_rule">@<span class="keyword">Configuration</span>
+public class AppConfig </span>{
+
+    <span class="at_rule">@<span class="keyword">Bean(name="helloBean")</span>
+    public HelloWorld <span class="function">helloWorld</span>() </span>{
+        <span class="tag">return</span> <span class="tag">new</span> <span class="tag">HelloWorld</span>();
+    }
 
 }
+</code></pre><h3 id="三、运行，在App-java中">三、运行，在App.java中</h3><pre><code><span class="keyword">package</span> com.mkyong;
 
-<span class="comment">// Embeded Jetty for testing</span>
-jettyRun{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
-}
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-jettyRunWar{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> {</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="typename">void</span> main(String[] args) {
+
+        <span class="comment">//ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");</span>
+        ApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(AppConfig.<span class="keyword">class</span>);
+        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
+
+        obj.toString(<span class="string">"Hello,Spring Java Config"</span>);
+
+    }
 }
-</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
-<h3 id="二、Spring_MVC">二、Spring MVC</h3><h4 id="1、WelcomeController-java">1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java">2、HelloWorldService.java</h4><h4 id="3、logback-xml">3、logback.xml</h4><h4 id="4、spring-core-config-xml">4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml">5、spring-mvc-config.xml</h4><h4 id="6、web-xml">6、web.xml</h4><h3 id="三、运行，输出结果">三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
-<pre><code><span class="variable">$ </span>gradle jettyRun                    
-<span class="symbol">:compileJava</span>
-<span class="symbol">:processResources</span>
-<span class="symbol">:classes</span>
-<span class="symbol">:jettyRun</span>
-<span class="constant">Building </span><span class="number">75</span>% &gt; <span class="symbol">:jettyRun</span> &gt; <span class="constant">Running </span>at <span class="symbol">http:</span>/<span class="regexp">/localhost:8080/spring</span>4
-</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
-<h3 id="四、目录结构">四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
-</span>
+</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="rule"><span class="attribute">Hello </span>:<span class="value"> Hello,Spring Java Config</span></span>
+</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
+<h3 id="六、补充@Import">六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
+<h4 id="1、在xml中">1、在xml中</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/customer.xml"</span>/&gt;</span>
+        <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/scheduler.xml"</span>/&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><h4 id="2、在JavaConfig中">2、在JavaConfig中</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.config</span>;
+
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Import</span>;
+
+<span class="at_rule">@<span class="keyword">Configuration</span>
+@<span class="function">Import</span>(</span>{ <span class="tag">CustomerConfig</span><span class="class">.class</span>, <span class="tag">SchedulerConfig</span><span class="class">.class</span> })
+<span class="tag">public</span> <span class="tag">class</span> <span class="tag">AppConfig</span> <span class="rules">{
+
+}</span>
+</code></pre></span>
       
     </div>
 
@@ -294,7 +342,7 @@ jettyRunWar{
       
         <div class="post-tags">
           
-            <a href="/tags/SpingMVC/" rel="tag">#SpingMVC</a>
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
           
         </div>
       
@@ -303,13 +351,13 @@ jettyRunWar{
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/29/Gradle/" rel="prev">Gradle</a>
+              <a href="/2015/08/30/Spring-Auto-scanning/" rel="prev">Spring-Auto-scanning</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/27/SpringAOP-Pointcut-Advisor/" rel="next">SpringAOP_Pointcut&Advisor</a>
+              <a href="/2015/08/29/Gradle-java-plugin/" rel="next">Gradle-java-plugin</a>
             
           </div>
         </div>
@@ -420,7 +468,7 @@ jettyRunWar{
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Gradle_Build"><span class="nav-number">1.</span> <span class="nav-text">一、Gradle Build</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Spring_MVC"><span class="nav-number">2.</span> <span class="nav-text">二、Spring MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、WelcomeController-java"><span class="nav-number">2.1.</span> <span class="nav-text">1、WelcomeController.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、HelloWorldService-java"><span class="nav-number">2.2.</span> <span class="nav-text">2、HelloWorldService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、logback-xml"><span class="nav-number">2.3.</span> <span class="nav-text">3、logback.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、spring-core-config-xml"><span class="nav-number">2.4.</span> <span class="nav-text">4、spring-core-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、spring-mvc-config-xml"><span class="nav-number">2.5.</span> <span class="nav-text">5、spring-mvc-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、web-xml"><span class="nav-number">2.6.</span> <span class="nav-text">6、web.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行，输出结果"><span class="nav-number">3.</span> <span class="nav-text">三、运行，输出结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、目录结构"><span class="nav-number">4.</span> <span class="nav-text">四、目录结构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Spring_Bean"><span class="nav-number">1.</span> <span class="nav-text">一、Spring Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Spring配置"><span class="nav-number">2.</span> <span class="nav-text">二、Spring配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行，在App-java中"><span class="nav-number">3.</span> <span class="nav-text">三、运行，在App.java中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、结果"><span class="nav-number">4.</span> <span class="nav-text">四、结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、目录结构"><span class="nav-number">5.</span> <span class="nav-text">五、目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、补充@Import"><span class="nav-number">6.</span> <span class="nav-text">六、补充@Import</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在xml中"><span class="nav-number">6.1.</span> <span class="nav-text">1、在xml中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、在JavaConfig中"><span class="nav-number">6.2.</span> <span class="nav-text">2、在JavaConfig中</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

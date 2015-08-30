@@ -168,6 +168,768 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring-Autowired/" itemprop="url">
+                Spring-Auto-Wiring-@Autowired
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T12:52:14+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、bean">一、bean</h3><p>Customer.java</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class Customer 
+{
+    @Autowired
+    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private int type;
+    private String action;
+
+    //getter and setter methods
+
+    @Override
+    public String toString() {
+        return <span class="string">"Customer <span class="subst">[person=" + person + ", type=" + type + ", action="
+                + action + "]</span>"</span>;
+}
+}
+</code></pre><p>Person.java</p>
+<pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>{
+    <span class="keyword">private</span> String name;
+
+    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> name;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>{
+        <span class="keyword">this</span>.name = name;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"Person [name="</span> + name + <span class="string">"]"</span>;
+    }
+}
+</code></pre><h3 id="二、_AutowiredAnnotationBeanPostProcessor">二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
+<h4 id="1、context:annotation-config">1、context:annotation-config</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong"</span> /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor">2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
+class=&quot;org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor&quot;/&gt;</code></p>
+<h3 id="三、运行">三、运行</h3><p>在App.java中</p>
+<pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
+        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
+                <span class="string">"SpringBeans.xml"</span>);
+
+        Customer cust = (Customer) context.getBean(<span class="string">"customer"</span>);
+        System.out.println(cust);
+    }
+}
+</code></pre><h3 id="四、运行结果">四、运行结果</h3><pre><code>Customer [person=Person [<span class="keyword">name</span>=mkyongA], <span class="keyword">type</span>=<span class="number">1</span>, <span class="keyword">action</span>=buy]
+</code></pre><h3 id="五、Dependency_checking">五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
+<h3 id="六、@Qualifier">六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
+<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean1"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean2"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong2"</span> /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><p>此时，在Customer.java中用@Qualifier(“PersonBean1”)就可以将PersonBean1注入到Customer的person属性中。</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+public class Customer 
+{
+    @Autowired
+    @Qualifier(<span class="string">"PersonBean1"</span>)
+    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private int type;
+    private String action;
+    //getter and setter methods
+}
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring/" itemprop="url">
+                Spring-Auto-Wiring
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T12:09:07+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>Spring支持5种自动装配模式，如下：</p>
+<table>
+<thead>
+<tr>
+<th>自动装配模式</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no</td>
+<td style="text-align:left">默认情况下，不自动装配，通过“ref”attribute手动设定。</td>
+</tr>
+<tr>
+<td>byName</td>
+<td style="text-align:left">根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。</td>
+</tr>
+<tr>
+<td>byType</td>
+<td style="text-align:left">根据Property的数据类型（Type）自动装配，如果一个bean的数据类型，兼容另一个bean中Property的数据类型，则自动装配。</td>
+</tr>
+<tr>
+<td>constructor</td>
+<td style="text-align:left">根据构造函数参数的数据类型，进行byType模式的自动装配。</td>
+</tr>
+<tr>
+<td>autodetect</td>
+<td style="text-align:left">如果发现默认的构造函数，用constructor模式，否则，用byType模式。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="一、bean">一、bean</h3><p>CustomerDAO.java</p>
+<pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
+</span>{
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
+    }    
+}
+</code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
+<pre><code><span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
+</span>{
+    CustomerDAO customerDAO;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
+        <span class="keyword">this</span>.customerDAO = customerDAO;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
+    }            
+}
+</code></pre><h3 id="二、装配">二、装配</h3><h4 id="1、Auto-Wiring_‘no’">1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
+<pre><code>&lt;bean id=<span class="string">"customerService"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
+        &lt;property name=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=<span class="string">"customerDAO"</span> class=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+</code></pre><h4 id="2、Auto-Wiring_‘byName’">2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
+<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byName"</span>&gt;
+&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+</code></pre><h4 id="3、Auto-Wiring_‘byType‘">3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
+<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byType"</span>&gt;
+&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+</code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
+<h4 id="4、Auto-Wiring_‘constructor’">4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
+<h4 id="5、Auto-Wiring_‘autodetect">5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
+<blockquote>
+<p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
+</blockquote>
+<pre><code>&lt;bean id=<span class="string">"customer"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span> 
+            autowire=<span class="string">"autodetect"</span> dependency-check=<span class="string">"objects /&gt;
+
+&lt;bean id="</span><span class="keyword">person</span><span class="string">" class="</span>com.mkyong.customer.dao.CustomerDAO<span class="string">" /</span>
+</code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-scanning/" itemprop="url">
+                Spring-Auto-scanning
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T11:38:10+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、一般的bean">一、一般的bean</h3><h4 id="1、CustomerDAO-java">1、CustomerDAO.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
+</span>{
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java">2、CustomerService.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
+
+<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
+</span>{
+    CustomerDAO customerDAO;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
+        <span class="keyword">this</span>.customerDAO = customerDAO;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
+    }
+
+}
+</code></pre><h4 id="3、Spring-Customer-xml">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="二、auto_Scanning">二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1">1、CustomerDAO.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span>;
+
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
+
+<span class="at_rule">@<span class="keyword">Component</span>
+public class CustomerDAO 
+</span>{
+    <span class="at_rule">@<span class="keyword">Override</span>
+    public String <span class="function">toString</span>() </span>{
+        <span class="tag">return</span> "<span class="tag">Hello</span> , <span class="tag">This</span> <span class="tag">is</span> <span class="tag">CustomerDAO</span>";
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java-1">2、CustomerService.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.services</span>;
+
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.beans</span><span class="class">.factory</span><span class="class">.annotation</span><span class="class">.Autowired</span>;
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
+
+<span class="tag">import</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span><span class="class">.CustomerDAO</span>;
+
+<span class="at_rule">@<span class="keyword">Component</span>
+public class CustomerService 
+</span>{
+    <span class="at_rule">@<span class="keyword">Autowired</span>
+    CustomerDAO customerDAO</span>;
+
+    <span class="at_rule">@<span class="keyword">Override</span>
+    public String <span class="function">toString</span>() </span>{
+        <span class="tag">return</span> "<span class="tag">CustomerService</span> <span class="attr_selector">[customerDAO=" + customerDAO + "]</span>";
+    }
+}
+</code></pre><h4 id="3、Spring-Customer-xml-1">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span>
+    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
+    http:<span class="comment">//www.springframework.org/schema/context</span>
+    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
+
+    &lt;context:component-scan base-package=<span class="string">"com.mkyong.customer"</span> /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="三、Antotation_Types——自动扫描组件的注释类型">三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
+<p>@Component      ——表示一个自动扫描component</p>
+<p>@Repository              ——表示持久化层的DAO component</p>
+<p>@Service             ——表示业务逻辑层的Service component</p>
+<p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
+<p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
+<h3 id="四、Spring_Filter_Components_——_在自动扫描中过滤组件">四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter_Component——include">1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
+<h5 id="（1）DAO层，在CustomerDAO-java中">（1）DAO层，在CustomerDAO.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
+</span>{
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
+    }    
+}
+</code></pre><h5 id="（2）Service层，在CustomerService-java中">（2）Service层，在CustomerService.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
+
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
+</span>{
+    <span class="annotation">@Autowired</span>
+    CustomerDAO customerDAO;
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
+    }
+
+}
+</code></pre><h5 id="（3）在Spring-Customer-xml中">（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation="http:<span class="comment">//www.springframework.org/schema/beans</span>
+    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
+    http:<span class="comment">//www.springframework.org/schema/context</span>
+    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
+
+    &lt;context:component-scan base-package=<span class="string">"com.mkyong"</span> &gt;
+
+        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
+                       expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;
+
+        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
+                       expression=<span class="string">"com.mkyong.customer.services.*Service.*"</span> /&gt;
+
+    &lt;/context:component-scan&gt;
+
+&lt;/beans&gt;
+</code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
+<h4 id="2、Filter_Component——exclude">2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
+<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei.customer"</span> &gt;
+        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"annotation"</span> 
+            expression=<span class="string">"org.springframework.stereotype.Service"</span> /&gt;        
+&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
+</code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
+<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei"</span> &gt;
+        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
+            expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;        
+&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/30/Spring-JavaConfig/" itemprop="url">
+                Spring_JavaConfig
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T10:47:46+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：</p>
+<pre><code><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.mkyong.core<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">properties</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">spring.version</span>&gt;</span>3.0.5.RELEASE<span class="tag">&lt;/<span class="title">spring.version</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>4.8.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+        <span class="comment">&lt;!-- Spring 3 dependencies --&gt;</span>
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+        <span class="comment">&lt;!-- JavaConfig need this library --&gt;</span>
+        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+
+    <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
+</code></pre><h3 id="一、Spring_Bean">一、Spring Bean</h3><pre><code>package com.mkyong;
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span>{
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toString</span>(<span class="params">String msg</span>) </span>{
+
+        System.<span class="keyword">out</span>.println(<span class="string">"Hello : "</span> + msg);
+    }
+
+}
+</code></pre><h3 id="二、Spring配置">二、Spring配置</h3><p>1、回顾xml配置</p>
+<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.HelloWorld"</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><p>2、JavaConfig，在AppConfig.java中</p>
+<pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span>;
+
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Bean</span>;
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
+
+<span class="at_rule">@<span class="keyword">Configuration</span>
+public class AppConfig </span>{
+
+    <span class="at_rule">@<span class="keyword">Bean(name="helloBean")</span>
+    public HelloWorld <span class="function">helloWorld</span>() </span>{
+        <span class="tag">return</span> <span class="tag">new</span> <span class="tag">HelloWorld</span>();
+    }
+
+}
+</code></pre><h3 id="三、运行，在App-java中">三、运行，在App.java中</h3><pre><code><span class="keyword">package</span> com.mkyong;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> {</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="typename">void</span> main(String[] args) {
+
+        <span class="comment">//ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");</span>
+        ApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(AppConfig.<span class="keyword">class</span>);
+        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
+
+        obj.toString(<span class="string">"Hello,Spring Java Config"</span>);
+
+    }
+}
+</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="rule"><span class="attribute">Hello </span>:<span class="value"> Hello,Spring Java Config</span></span>
+</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
+<h3 id="六、补充@Import">六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
+<h4 id="1、在xml中">1、在xml中</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
+    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/customer.xml"</span>/&gt;</span>
+        <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/scheduler.xml"</span>/&gt;</span>
+
+<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+</code></pre><h4 id="2、在JavaConfig中">2、在JavaConfig中</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.config</span>;
+
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
+<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Import</span>;
+
+<span class="at_rule">@<span class="keyword">Configuration</span>
+@<span class="function">Import</span>(</span>{ <span class="tag">CustomerConfig</span><span class="class">.class</span>, <span class="tag">SchedulerConfig</span><span class="class">.class</span> })
+<span class="tag">public</span> <span class="tag">class</span> <span class="tag">AppConfig</span> <span class="rules">{
+
+}</span>
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/29/Gradle-java-plugin/" itemprop="url">
                 Gradle-java-plugin
               </a>
@@ -1026,7 +1788,7 @@ HelloAroundMethod : After method ,hello!
           
             
               <a class="post-title-link" href="/2015/08/27/SpringAOP-Advice/" itemprop="url">
-                SpringAOP Advice
+                SpringAOP_Advice
               </a>
             
           
@@ -1290,613 +2052,6 @@ HelloAroundMethod : Throw exception ,hello!
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/26/SpringBatch/" itemprop="url">
-                Spring Batch HelloWorld
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-26T20:28:47+08:00" content="2015-08-26">
-            2015-08-26
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、Spring_Batch流程">一、Spring Batch流程</h3><img src="/imgs/SpringBatch流程.png" width="600" height="300">
-<p>　　每个Batch都会包含一个Job，每个Job装了若干Step，Step读取数据，处理数据，然后将这些数据存储起来(ItemReader用来读取数据，ItemProcessor用来处理数据，ItemWriter用来写数据) 。JobLauncher用来启动Job，JobRepository是上述处理提供的一种持久化机制，它为JobLauncher，Job，和Step实例提供CRUD(Create\Retrieve\Update\Delete)操作。</p>
-<blockquote>
-<p>1 Job = Many Steps.<br>1 Step = 1 READ-PROCESS-WRITE or 1 Tasklet.<br>Job = {Step 1 -&gt; Step 2 -&gt; Step 3} (Chained together)</p>
-</blockquote>
-<p>　　从DB或是文件中取出数据的时候，read操作每次只读取一条记录，之后将读取的这条数据传递给processor(item)处理，框架将重复做这两步操作，直到读取记录的件数达到batch配置信息中”commin-interval”设定值的时候，就会调用一次write操作。然后再重复以上处理，直到处理完所有的数据。当这个Step的工作完成以后，或是跳到其他Step，或是结束处理。</p>
-<h3 id="二、Spring_Batch_Jobs">二、Spring Batch Jobs</h3><h4 id="1、job-hello-world-xml">1、job-hello-world.xml</h4><img src="/imgs/helloWorldJob.png" width="600" height="300">
-<p>　　首先，helloWorldJob里面配置了读（cvsFileItemReader），写（xmlItemWriter） 以及处理（itemProcessor），并设置了commit-interval=”10”。<br>　　之后，对cvsFileItemReader中涉及的resource和lineMapper进行配置。对xmlItemWriter中涉及的resource、marshaller、rootTagName进行配置。而处理过程，则由稍后讲述的itemProcessor.java完成。</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:batch</span>=<span class="value">"http://www.springframework.org/schema/batch"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/batch
-    http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
-    http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"../config/context.xml"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"../config/database.xml"</span> /&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"report"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.model.Report"</span> <span class="attribute">scope</span>=<span class="value">"prototype"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"itemProcessor"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.CustomItemProcessor"</span> /&gt;</span>
-
-    <span class="tag">&lt;<span class="title">batch:job</span> <span class="attribute">id</span>=<span class="value">"helloWorldJob"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">batch:step</span> <span class="attribute">id</span>=<span class="value">"step1"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">batch:tasklet</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">batch:chunk</span> <span class="attribute">reader</span>=<span class="value">"cvsFileItemReader"</span> <span class="attribute">writer</span>=<span class="value">"xmlItemWriter"</span> <span class="attribute">processor</span>=<span class="value">"itemProcessor"</span><span class="value">commit-interval="10"</span>&gt;</span>
-                <span class="tag">&lt;/<span class="title">batch:chunk</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">batch:tasklet</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">batch:step</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">batch:job</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"cvsFileItemReader"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.FlatFileItemReader"</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"resource"</span> <span class="attribute">value</span>=<span class="value">"classpath:cvs/input/report.csv"</span> /&gt;</span>
-
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"lineMapper"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.mapping.DefaultLineMapper"</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"lineTokenizer"</span>&gt;</span>
-                    <span class="tag">&lt;<span class="title">bean</span> 
-                        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.transform.DelimitedLineTokenizer"</span>&gt;</span>
-                        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"names"</span> <span class="attribute">value</span>=<span class="value">"id,sales,qty,staffName,date"</span> /&gt;</span>
-                    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"fieldSetMapper"</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.ReportFieldSetMapper"</span> /&gt;</span>
-                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"xmlItemWriter"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.xml.StaxEventItemWriter"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"resource"</span> <span class="attribute">value</span>=<span class="value">"file:xml/outputs/report.xml"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"marshaller"</span> <span class="attribute">ref</span>=<span class="value">"reportMarshaller"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"rootTagName"</span> <span class="attribute">value</span>=<span class="value">"report"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"reportMarshaller"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.oxm.jaxb.Jaxb2Marshaller"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"classesToBeBound"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">list</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">value</span>&gt;</span>com.mkyong.model.Report<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">list</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="2、ReportFieldSetMapper-java">2、ReportFieldSetMapper.java</h4><p>　　读取时，主要是通过ReportFieldSetMapper.java来完成report.csv到Report.java的映射。</p>
-<pre><code>package com.mkyong;
-
-<span class="built_in">import</span> java.<span class="built_in">text</span>.ParseException;
-<span class="built_in">import</span> java.<span class="built_in">text</span>.SimpleDateFormat;
-<span class="built_in">import</span> org.springframework.batch.item.file.mapping.FieldSetMapper;
-<span class="built_in">import</span> org.springframework.batch.item.file.transform.FieldSet;
-<span class="built_in">import</span> org.springframework.validation.BindException;
-<span class="built_in">import</span> com.mkyong.model.Report;
-
-public class ReportFieldSetMapper implements FieldSetMapper&lt;Report&gt; {
-
-private SimpleDateFormat dateFormat = new SimpleDateFormat<span class="params">(<span class="string">"dd/MM/yyyy"</span>)</span>;
-
-@Override
-public Report mapFieldSet<span class="params">(FieldSet fieldSet)</span> throws BindException {
-
-    Report report = new Report<span class="params">()</span>;
-    report.setId<span class="params">(fieldSet.readInt<span class="params">(<span class="number">0</span>)</span>)</span>;
-    report.setSales<span class="params">(fieldSet.readBigDecimal<span class="params">(<span class="number">1</span>)</span>)</span>;
-    report.setQty<span class="params">(fieldSet.readInt<span class="params">(<span class="number">2</span>)</span>)</span>;
-    report.setStaffName<span class="params">(fieldSet.readString<span class="params">(<span class="number">3</span>)</span>)</span>;
-
-    <span class="comment">//default format yyyy-MM-dd</span>
-    <span class="comment">//fieldSet.readDate(4);</span>
-    String date = fieldSet.readString<span class="params">(<span class="number">4</span>)</span>;
-    try {
-        report.setDate<span class="params">(dateFormat.parse<span class="params">(date)</span>)</span>;
-    } catch <span class="params">(ParseException e)</span> {
-        e.printStackTrace<span class="params">()</span>;
-    }
-
-    return report;
-}
-</code></pre><p>}</p>
-<h4 id="3、report-csv">3、report.csv</h4><pre><code><span class="number">1001</span>,<span class="string">"213,100"</span>,<span class="number">980</span>,<span class="string">"mkyong"</span>, <span class="number">29</span>/<span class="number">7</span>/<span class="number">2013</span>
-<span class="number">1002</span>,<span class="string">"320,200"</span>,<span class="number">1080</span>,<span class="string">"staff 1"</span>, <span class="number">30</span>/<span class="number">7</span>/<span class="number">2013</span>
-<span class="number">1003</span>,<span class="string">"342,197"</span>,<span class="number">1200</span>,<span class="string">"staff 2"</span>, <span class="number">31</span>/<span class="number">7</span>/<span class="number">2013</span>
-</code></pre><h4 id="4、Report-java">4、Report.java</h4><pre><code><span class="keyword">package</span> com.mkyong.model;
-
-<span class="keyword">import</span> java.math.BigDecimal;
-<span class="keyword">import</span> java.util.Date;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlAttribute;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlElement;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlRootElement;
-
-<span class="annotation">@XmlRootElement</span>(name = <span class="string">"record"</span>)
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Report</span> </span>{
-
-    <span class="keyword">private</span> <span class="keyword">int</span> id;
-    <span class="keyword">private</span> BigDecimal sales;
-    <span class="keyword">private</span> <span class="keyword">int</span> qty;
-    <span class="keyword">private</span> String staffName;
-    <span class="keyword">private</span> Date date;
-
-    <span class="annotation">@XmlAttribute</span>(name = <span class="string">"id"</span>)
-    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>{<span class="keyword">return</span> id;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>{<span class="keyword">this</span>.id = id;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"sales"</span>)
-    <span class="function"><span class="keyword">public</span> BigDecimal <span class="title">getSales</span><span class="params">()</span> </span>{<span class="keyword">return</span> sales;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSales</span><span class="params">(BigDecimal sales)</span> </span>{<span class="keyword">this</span>.sales = sales;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"qty"</span>)
-    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQty</span><span class="params">()</span> </span>{<span class="keyword">return</span> qty;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQty</span><span class="params">(<span class="keyword">int</span> qty)</span> </span>{    <span class="keyword">this</span>.qty = qty;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"staffName"</span>)
-    <span class="function"><span class="keyword">public</span> String <span class="title">getStaffName</span><span class="params">()</span> </span>{<span class="keyword">return</span> staffName;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStaffName</span><span class="params">(String staffName)</span> </span>{<span class="keyword">this</span>.staffName = staffName;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"date"</span>)
-    <span class="function"><span class="keyword">public</span> Date <span class="title">getDate</span><span class="params">()</span> </span>{<span class="keyword">return</span> date;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(Date date)</span> </span>{<span class="keyword">this</span>.date = date;}
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Report [id="</span> + id +
-                <span class="string">", sales="</span> + sales +
-                <span class="string">", qty="</span> + qty +
-                <span class="string">", staffName="</span> + staffName +
-                <span class="string">"]"</span>;
-    }
-}
-</code></pre><h4 id="5、CustomItemProcessor-java">5、CustomItemProcessor.java</h4><pre><code><span class="keyword">package</span> com.mkyong;
-
-<span class="keyword">import</span> org.springframework.batch.item.ItemProcessor;
-<span class="keyword">import</span> com.mkyong.model.Report;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomItemProcessor</span> <span class="keyword">implements</span> <span class="title">ItemProcessor</span>&lt;<span class="title">Report</span>, <span class="title">Report</span>&gt; </span>{
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> Report <span class="title">process</span><span class="params">(Report item)</span> <span class="keyword">throws</span> Exception </span>{
-
-        System.out.println(<span class="string">"Processing..."</span> + item);
-        <span class="keyword">return</span> item;
-    }
-}
-</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java中</p>
-<pre><code>package com.mkyong;
-
-<span class="keyword">import</span> org.springframework.batch.core.Job;
-<span class="keyword">import</span> org.springframework.batch.core.JobExecution;
-<span class="keyword">import</span> org.springframework.batch.core.JobParameters;
-<span class="keyword">import</span> org.springframework.batch.core.launch.JobLauncher;
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
-    public static <span class="keyword">void</span> main(<span class="built_in">String</span>[] args) {
-
-        <span class="built_in">String</span>[] springConfig  = {<span class="string">"spring/batch/jobs/job-hello-world.xml"</span>};
-        ApplicationContext context = 
-                <span class="keyword">new</span> ClassPathXmlApplicationContext(springConfig);
-
-        JobLauncher jobLauncher = (JobLauncher) context.getBean(<span class="string">"jobLauncher"</span>);
-        Job job = (Job) context.getBean(<span class="string">"helloWorldJob"</span>);
-
-        <span class="keyword">try</span> {
-            JobExecution execution = jobLauncher.run(job, <span class="keyword">new</span> JobParameters());
-            System.out.println(<span class="string">"Exit Status : "</span> + execution.getStatus());
-
-        } <span class="keyword">catch</span> (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(<span class="string">"Done"</span>);
-    }
-}
-</code></pre><h3 id="四、结果">四、结果</h3><p>report.xml</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-<span class="tag">&lt;<span class="title">report</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1001"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-29T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>980<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>213100<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1002"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-30T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>1080<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>320200<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>staff 1<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1003"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-31T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>1200<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>342197<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>staff 2<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">report</span>&gt;</span>
-</code></pre><p>console:</p>
-<pre><code>Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.launch.support.SimpleJobLauncher$<span class="number">1</span> run
-INFO: Job: [FlowJob: [name=helloWorldJob]] launched with the following parameters: [{}]
-Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.job.SimpleStepHandler handleStep
-INFO: Executing step: [step1]
-Processing...Report [id=<span class="number">1001</span>, sales=<span class="number">213100</span>, qty=<span class="number">980</span>, staffName=mkyong]
-Processing...Report [id=<span class="number">1002</span>, sales=<span class="number">320200</span>, qty=<span class="number">1080</span>, staffName=staff <span class="number">1</span>]
-Processing...Report [id=<span class="number">1003</span>, sales=<span class="number">342197</span>, qty=<span class="number">1200</span>, staffName=staff <span class="number">2</span>]
-Exit Status : COMPLETED
-Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.launch.support.SimpleJobLauncher$<span class="number">1</span> run
-Done
-INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following parameters: [{}] and the following status: [COMPLETED]
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/SpringBatchHelloWorld.png" width="300" height="500">
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/25/SpringDI/" itemprop="url">
-                Spring依赖注入
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-25T22:40:55+08:00" content="2015-08-25">
-            2015-08-25
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：<br></p>
-<blockquote>
-<p>　　<1>依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。<br><br>　　<2>依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者是时下最流行的IoC类型，其又有接口注入（Interface Injection），设值注入（Setter Injection）和构造子注入（Constructor Injection）三种方式。
-　　　　　</2></1></p>
-</blockquote>
-<h3 id="1、接口注入">1、接口注入</h3><pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassA</span> {
-    <span class="keyword">private</span> InterfaceB clzB;
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>{
-    Ojbect obj =Class.forName(Config.BImplementation).newInstance();
-    clzB = (InterfaceB)obj;
-    clzB.doIt()
-}
-</code></pre><p>　　ClassA依赖于InterfaceB的实现，传统的方法是在代码中创建 InterfaceB实现类的实例，ClassA在编译期即依赖于InterfaceB的实现。<br><br>　　我们预先在配置文件中设定的实现类的类名Config.BImplementation，动态加载实现类，并通过InterfaceB强制转型后为ClassA 所用，将调用者与实现者在编译期分离。</p>
-<h3 id="2、setter注入">2、setter注入</h3><h3 id="3、构造子注入">3、构造子注入</h3></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/25/Spring/" itemprop="url">
-                Spring初识
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-25T20:46:40+08:00" content="2015-08-25">
-            2015-08-25
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
-<h3 id="一、创建一个Spring_Bean">一、创建一个Spring Bean</h3><p>在HelloWorld.java文件中</p>
-<pre><code>package com.zhangyu.common;
-
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span> 
-{
-    <span class="keyword">private</span> String name;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{
-        <span class="keyword">this</span>.name = name;
-    }
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printHello</span>(<span class="params"></span>) </span>{
-        System.<span class="keyword">out</span>.println(<span class="string">"Hello ! "</span> + name);
-    }
-}
-</code></pre><h3 id="二、创建Spring_Bean的配置文件">二、创建Spring Bean的配置文件</h3><p>在Spring-Module.xml文件中</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.zhangyu.common.HelloWorld"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"name"</span> <span class="attribute">value</span>=<span class="value">"zhangyu"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java文件中</p>
-<pre><code><span class="keyword">package</span> com.zhangyu.common;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
-</span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
-    </span>{
-        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"Spring-Module.xml"</span>);     
-        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
-        obj.printHello();           
-    }
-}
-</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="variable">Hello</span> <span class="exclamation_mark">!</span> <span class="function_or_atom">zhangyu</span>
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/SpringHelloWorld.png" width="300" height="500">
-<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取我们所需的Action实现。<br><br>　　2、通过xml文件动态设置HelloWorld的name属性，无需知道实现类的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/15/我在TW的第一周/" itemprop="url">
-                我在TW的第一周
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-15T21:16:18+08:00" content="2015-08-15">
-            2015-08-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/生活/" itemprop="url" rel="index">
-                  <span itemprop="name">生活</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="关于旅程">关于旅程</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。</p>
-</blockquote>
-<h3 id="关于住宿">关于住宿</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;好大的客厅和沙发、好新的床和柜子、好齐全的厨具和生活设备，我会不会变懒呢？</p>
-</blockquote>
-<h3 id="关于工作">关于工作</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;新来的小伙伴们一部分直接去了TWU，留下我们五个女生on the beach。<br><br>&emsp;&emsp;&emsp;&emsp;每天必刷微信、邮件、日历，但是手机却总是不见踪影。<br><br>&emsp;&emsp;&emsp;&emsp;融入工作，好多东西都想去了解。现实是回到宿舍，打开电脑，时间飞快，该睡觉了。</p>
-</blockquote>
-<h3 id="关于周末">关于周末</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;陌生的城市，闲逛，寻求一种最初的印象。</p>
-</blockquote>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1935,7 +2090,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
