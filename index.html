@@ -1248,7 +1248,7 @@ Execution failed <span class="keyword">for</span> task <span class="string">':my
 <pre><code><span class="keyword">task</span> hello &lt;&lt; {
     <span class="keyword">println</span> <span class="string">'Hello world!'</span>
 }
-</code></pre><p>　　其中<code>&lt;&lt;</code>表示向helloWorld中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
+</code></pre><p>　　其中<code>&lt;&lt;</code>表示向hello中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
 <h4 id="2、使用doLast加入执行过程">2、使用doLast加入执行过程</h4><pre><code><span class="keyword">task</span> hello {
         <span class="keyword">doLast</span> {
             <span class="keyword">println</span> <span class="string">'Hello world!'</span>

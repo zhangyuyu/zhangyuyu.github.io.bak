@@ -222,26 +222,24 @@
 <p>　　从DB或是文件中取出数据的时候，read操作每次只读取一条记录，之后将读取的这条数据传递给processor(item)处理，框架将重复做这两步操作，直到读取记录的件数达到batch配置信息中”commin-interval”设定值的时候，就会调用一次write操作。然后再重复以上处理，直到处理完所有的数据。当这个Step的工作完成以后，或是跳到其他Step，或是结束处理。</p>
 <h3 id="二、Spring_Batch_Jobs">二、Spring Batch Jobs</h3><h4 id="1、content-xml">1、content.xml</h4><p>　　content.xml中定义了批处理任务中需要的基础设施，主要配置任务仓库、任务调度器、任务执行中用到的事务管理器。</p>
 <pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"
-        http://www.springframework.org/schema/beans 
-        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
+<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+<span class="attribute">xsi:schemaLocation</span>=<span class="value">"
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
 
     <span class="comment">&lt;!-- stored job-meta in memory --&gt;</span>
-    <span class="comment">&lt;!--  
-    &lt;bean id="jobRepository"
-        class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"&gt;
-        &lt;property name="transactionManager" ref="transactionManager" /&gt;
-    &lt;/bean&gt;
-      --&gt;</span>
+    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"jobRepository"</span>
+        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"transactionManager"</span> <span class="attribute">ref</span>=<span class="value">"transactionManager"</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
 
       <span class="comment">&lt;!-- stored job-meta in database --&gt;</span>
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"jobRepository"</span>
-        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.core.repository.support.JobRepositoryFactoryBean"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"dataSource"</span> <span class="attribute">ref</span>=<span class="value">"dataSource"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"transactionManager"</span> <span class="attribute">ref</span>=<span class="value">"transactionManager"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"databaseType"</span> <span class="attribute">value</span>=<span class="value">"mysql"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+    <span class="comment">&lt;!--&lt;bean id="jobRepository"
+        class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean"&gt;
+        &lt;property name="dataSource" ref="dataSource" /&gt;
+        &lt;property name="transactionManager" ref="transactionManager" /&gt;
+        &lt;property name="databaseType" value="mysql" /&gt;
+    &lt;/bean&gt;--&gt;</span>
 
     <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"transactionManager"</span>
         <span class="attribute">class</span>=<span class="value">"org.springframework.batch.support.transaction.ResourcelessTransactionManager"</span> /&gt;</span>
@@ -262,7 +260,7 @@
     http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
 
     <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"../config/context.xml"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"../config/database.xml"</span> /&gt;</span>
+    <span class="comment">&lt;!--&lt;import resource="../config/database.xml" /&gt;--&gt;</span>
 
     <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"report"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.model.Report"</span> <span class="attribute">scope</span>=<span class="value">"prototype"</span> /&gt;</span>
     <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"itemProcessor"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.CustomItemProcessor"</span> /&gt;</span>
