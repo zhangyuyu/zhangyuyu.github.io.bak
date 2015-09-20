@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com//"/>
-  <updated>2015-08-30T05:32:48.000Z</updated>
+  <updated>2015-09-20T03:12:51.000Z</updated>
   <id>http://yoursite.com//</id>
   
   <author>
@@ -14,6 +14,357 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[手动创建Servlet连接数据库]]></title>
+    <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <id>http://yoursite.com/2015/09/20/手动创建Servlet连接数据库/</id>
+    <published>2015-09-20T02:20:41.000Z</published>
+    <updated>2015-09-20T03:12:51.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="1、准备数据库">1、准备数据库</h3><h4 id="(1)在本地mysql中create_一个数据库">(1)在本地mysql中create 一个数据库</h4><pre><code>$ mysql.server start
+$ mysql -uroot -p
+mysql&gt; show databases;
+mysql&gt; create database test;
+mysql&gt; use test;
+mysql&gt; <span class="function">create table <span class="title">raw_report</span>(<span class="params">
+       name varchar(<span class="number">20</span></span>),
+       sex <span class="title">varchar</span>(<span class="params"><span class="number">10</span></span>),
+       age <span class="title">varchar</span>(<span class="params"><span class="number">10</span></span>),
+       birthday <span class="title">varchar</span>(<span class="params"><span class="number">20</span></span>)
+  )</span>;
+mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Alex'</span>,<span class="string">'M'</span>,<span class="string">'20'</span>,<span class="string">'08/07/1995'</span></span>)</span>;
+mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Alice'</span>,<span class="string">'F'</span>,<span class="string">'18'</span>,<span class="string">'08/07/1997'</span></span>)</span>;
+mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Bob'</span>,<span class="string">'M'</span>,<span class="string">'21'</span>,<span class="string">'08/07/1994'</span></span>)</span>;
+mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Mary'</span>,<span class="string">'F'</span>,<span class="string">'23'</span>,<span class="string">'08/07/1992'</span></span>)</span>;
+</code></pre><h3 id="2、创建servlet">2、创建servlet</h3><p>　　在test/WEB_INF/classes下新建一个DBServlet.java</p>
+<pre><code><span class="keyword">import</span> java.io.*;                                    <span class="comment">//导入java.io包</span>
+<span class="keyword">import</span> java.util.*;
+<span class="keyword">import</span> java.sql.*;
+<span class="keyword">import</span> javax.servlet.*;
+<span class="keyword">import</span> javax.servlet.http.*;
+<span class="keyword">public</span> class DBServlet extends HttpServlet{            <span class="comment">//定义一个继承HttpServlet的公有类</span>
+    ServletConfig config=<span class="keyword">null</span>;                        <span class="comment">//定义一个ServletConfig对象</span>
+    <span class="keyword">private</span> <span class="keyword">String</span> driverName=<span class="string">""</span>;                    <span class="comment">//定义私有字符串常量并初始化</span>
+    <span class="keyword">private</span> <span class="keyword">String</span> username=<span class="string">""</span>;                    <span class="comment">//定义的数据库用户名</span>
+    <span class="keyword">private</span> <span class="keyword">String</span> password=<span class="string">""</span>;                    <span class="comment">//定义的数据库连接密码</span>
+    <span class="keyword">private</span> <span class="keyword">String</span> dbName=<span class="string">""</span>;                        <span class="comment">//定义的数据库名</span>
+    <span class="keyword">private</span> Connection conn;                        <span class="comment">//初始化连接</span>
+    <span class="keyword">private</span> Statement stmt;                        <span class="comment">//初始化数据库操作</span>
+    ResultSet rs=<span class="keyword">null</span>;   
+                             <span class="comment">//初始化结果集</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> init(ServletConfig config)<span class="keyword">throws</span> ServletException{
+        <span class="keyword">super</span>.init(config);                            <span class="comment">//继承父类的init()方法</span>
+        <span class="keyword">this</span>.config=config;                            <span class="comment">//获取配置信息</span>
+        driverName=config.getInitParameter(<span class="string">"driverName"</span>);<span class="comment">//从配置文件中获取JDBC驱动名</span>
+        username=config.getInitParameter(<span class="string">"username"</span>);    <span class="comment">//获取数据库用户名</span>
+        password=config.getInitParameter(<span class="string">"password"</span>);    <span class="comment">//获取数据库连接密码</span>
+        dbName=config.getInitParameter(<span class="string">"dbName"</span>);    <span class="comment">//获取要连接的数据库</span>
+    }
+
+    <span class="keyword">public</span> <span class="keyword">void</span> doGet(HttpServletRequest req,HttpServletResponse resp)<span class="keyword">throws</span> IOException,ServletException{
+        resp.setContentType(<span class="string">"text/html;charset=GBK"</span>);    <span class="comment">//设置字符编码格式</span>
+        PrintWriter out=resp.getWriter();                <span class="comment">//实例化对象，用于页面输出</span>
+        out.<span class="built_in">println</span>(<span class="string">"&lt;html&gt;"</span>);                    <span class="comment">//实现生成静态Html</span>
+        out.<span class="built_in">println</span>(<span class="string">"&lt;head&gt;"</span>);
+        out.<span class="built_in">println</span>(<span class="string">"&lt;meta http-equiv=\"Content-Type\"content=\"text/html;charset=GBK\"&gt;"</span>);
+        out.<span class="built_in">println</span>(<span class="string">"&lt;title&gt;DataBase Connection&lt;/title&gt;"</span>);
+        out.<span class="built_in">println</span>(<span class="string">"&lt;/head&gt;"</span>);
+        out.<span class="built_in">println</span>(<span class="string">"&lt;body bgcolor=\"white\"&gt;"</span>);
+        out.<span class="built_in">println</span>(<span class="string">"&lt;center&gt;"</span>);
+        <span class="keyword">String</span> url=<span class="string">"jdbc:mysql://localhost:3306/test"</span>;
+        <span class="keyword">try</span>{
+                Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);
+                conn=DriverManager.getConnection(url,username,password);
+                stmt=conn.createStatement();
+                <span class="keyword">String</span> sql=<span class="string">"select * from raw_report"</span>;
+                rs=stmt.executeQuery(sql);
+
+                out.<span class="built_in">println</span>(<span class="string">"Servlet访问数据库成功"</span>);
+                out.<span class="built_in">println</span>(<span class="string">"&lt;table border=1 bordercolorlight=#000000&gt;"</span>);
+                out.<span class="built_in">println</span>(<span class="string">"&lt;tr&gt;&lt;td width=40&gt;name&lt;/td&gt;"</span>);
+                out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;sex&lt;/td&gt;"</span>);
+                out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;age&lt;/td&gt;"</span>);
+                out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;birthday&lt;/td&gt;"</span>);
+                <span class="keyword">while</span>(rs.next()){
+                     out.<span class="built_in">println</span>(<span class="string">"&lt;tr&gt;&lt;td&gt;"</span>+rs.getString(<span class="number">1</span>)+<span class="string">"&lt;/td&gt;"</span>);
+                     out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;"</span>+rs.getString(<span class="number">2</span>)+<span class="string">"&lt;/td&gt;"</span>);
+                     out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;"</span>+rs.getString(<span class="number">3</span>)+<span class="string">"&lt;/td&gt;"</span>);
+                     out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;"</span>+rs.getString(<span class="number">4</span>)+<span class="string">"&lt;/td&gt;"</span>);
+                     out.<span class="built_in">println</span>(<span class="string">"&lt;tr&gt;"</span>);
+                }
+                out.<span class="built_in">println</span>(<span class="string">"&lt;/table&gt;"</span>);
+
+                rs.close();
+                stmt.close();
+                conn.close();    
+
+            }<span class="keyword">catch</span>(Exception e){
+                e.printStackTrace();
+                out.<span class="built_in">println</span>(e.toString());    
+            }
+            out.<span class="built_in">println</span>(<span class="string">"&lt;/center&gt;"</span>);
+            out.<span class="built_in">println</span>(<span class="string">"&lt;/body&gt;"</span>);
+            out.<span class="built_in">println</span>(<span class="string">"&lt;/html&gt;"</span>);
+        }
+
+        <span class="keyword">public</span> <span class="keyword">void</span> doPost(HttpServletRequest req,HttpServletResponse resp)<span class="keyword">throws</span> IOException,ServletException{
+            <span class="keyword">this</span>.doGet(req,resp);
+        }
+
+        <span class="keyword">public</span> <span class="keyword">void</span> destory(){
+            config=<span class="keyword">null</span>;
+            driverName=<span class="keyword">null</span>;
+            username=<span class="keyword">null</span>;
+            password=<span class="keyword">null</span>;
+            dbName=<span class="keyword">null</span>;
+            conn=<span class="keyword">null</span>;
+            stmt=<span class="keyword">null</span>;
+            rs=<span class="keyword">null</span>;
+        }
+}
+</code></pre><h3 id="3、编译生成class文件">3、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/DBServlet.java</span>
+</code></pre><h3 id="4、部署">4、部署</h3><p>　　在web.xml中</p>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
+  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
+  <span class="attribute">version</span>=<span class="value">"3.1"</span>
+  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+    <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
+
+    <span class="tag">&lt;<span class="title">resource-ref</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">description</span>&gt;</span>MySQL Datasource example<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">res-ref-name</span>&gt;</span>jdbc:3306/test<span class="tag">&lt;/<span class="title">res-ref-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">res-type</span>&gt;</span>javax.sql.DataSource<span class="tag">&lt;/<span class="title">res-type</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">res-auth</span>&gt;</span>Container<span class="tag">&lt;/<span class="title">res-auth</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">resource-ref</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">description</span>&gt;</span>This is the description of my J2EE component<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">display-name</span>&gt;</span>This is the display name of my J2EE component<span class="tag">&lt;/<span class="title">display-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>DBServlet<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>DBServlet<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>driverName<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
+        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>username<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>            
+            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>用户名<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>                
+        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>password<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>        
+            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>密码<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>                
+        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>dbName<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>    
+            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>test<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>    
+        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+
+  <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>DBServlet<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+     <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/DB<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+   <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+
+<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
+</code></pre><h3 id="5、启动tomcat">5、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="6、运行">6、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/DB" target="_blank" rel="external">http://localhost:8080/test/DB</a></p>
+<h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
+    <span class="string">|---WEB-INF</span>
+        <span class="string">|---classes</span>
+            <span class="string">|---DBServlet.java</span>
+        <span class="string">|---lib</span>
+        <span class="string">|---web.xml</span>
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="1、准备数据库">1、准备数据库</h3><h4 id="(1)在本地mysql中create_一个数据库">(1)在本地mysql中create 一个数据库</h4><pre><code>$ mysql.server start
+$ mysql -uroot -]]>
+    </summary>
+    
+      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
+    
+      <category term="Servlet" scheme="http://yoursite.com/categories/Servlet/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[手动创建Servlet转发页面]]></title>
+    <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E8%BD%AC%E5%8F%91%E9%A1%B5%E9%9D%A2/"/>
+    <id>http://yoursite.com/2015/09/20/手动创建Servlet转发页面/</id>
+    <published>2015-09-20T02:12:41.000Z</published>
+    <updated>2015-09-20T02:30:43.000Z</updated>
+    <content type="html"><![CDATA[<p>　　在上一篇的基础上，本节实现转发页面。</p>
+<h3 id="1、创建servlet">1、创建servlet</h3><h4 id="（1）在test目录下，新建一个index-html">（1）在test目录下，新建一个index.html</h4><pre><code><span class="pi">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;</span>
+<span class="doctype">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span>
+<span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>
+      <span class="attribute">xmlns</span>=<span class="value">"http://www.w3.org/1999/xhtml"</span>
+      <span class="attribute">xmlns:h</span>=<span class="value">"http://java.sun.com/jsf/html"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello index!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"hello"</span> <span class="attribute">method</span>=<span class="value">"GET"</span>&gt;</span>
+            First Name: <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"first_name"</span> /&gt;</span><span class="tag">&lt;<span class="title">br</span> /&gt;</span>
+            Last Name: <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"last_name"</span>   /&gt;</span><span class="tag">&lt;<span class="title">br</span> /&gt;</span>
+            <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"submit"</span> <span class="attribute">value</span>=<span class="value">"Submit"</span> /&gt;</span>
+        <span class="tag">&lt;/<span class="title">form</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre><h4 id="（2）在test/WEB_INF/classes下新建一个HEllo-java">（2）在test/WEB_INF/classes下新建一个HEllo.java</h4><pre><code><span class="keyword">import</span> java.io.*;
+<span class="keyword">import</span> javax.servlet.*;
+<span class="keyword">import</span> javax.servlet.http.*;
+
+public <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">HttpServlet</span> {</span>
+
+    public void doGet(<span class="type">HttpServletRequest</span> request,<span class="type">HttpServletResponse</span> response)<span class="keyword">throws</span> <span class="type">ServletException</span>, <span class="type">IOException</span>{
+        response.setContentType(<span class="string">"text/html"</span>);
+
+        <span class="type">PrintWriter</span> out = response.getWriter();
+        <span class="type">String</span> title = <span class="string">"Using GET Method to Read Form Data"</span>;
+        <span class="type">String</span> docType =
+        <span class="string">"&lt;!doctype html public \"-//w3c//dtd html 4.0 "</span> +
+        <span class="string">"transitional//en\"&gt;\n"</span>;
+        out.println(docType +
+                  <span class="string">"&lt;html&gt;\n"</span> +
+                  <span class="string">"&lt;head&gt;&lt;title&gt;"</span> + title + <span class="string">"&lt;/title&gt;&lt;/head&gt;\n"</span> +
+                  <span class="string">"&lt;body&gt;\n"</span> +
+                  <span class="string">"&lt;h1 align=\"center\"&gt;"</span> + title + <span class="string">"&lt;/h1&gt;\n"</span> +
+                  <span class="string">"&lt;b&gt;First Name&lt;/b&gt;: "</span>
+                  + request.getParameter(<span class="string">"first_name"</span>) + <span class="string">"\n"</span> +
+                  <span class="string">"&lt;b&gt;Last Name?&lt;/b&gt;: "</span>
+                  + request.getParameter(<span class="string">"last_name"</span>) + <span class="string">"\n"</span> +
+                  <span class="string">"&lt;/body&gt;"</span>+<span class="string">"&lt;/html&gt;"</span>);
+  }
+}
+</code></pre><h3 id="2、编译生成class文件">2、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/Hello.java</span>
+</code></pre><h3 id="3、部署">3、部署</h3><p>　　在web.xml中<br>    &lt;?xml version=”1.0” encoding=”ISO-8859-1”?&gt;<br>    <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://xmlns.jcp.org/xml/ns/javaee
+                          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1" metadata-complete="true"><br>        <!-- Define servlets that are included in the example application --></web-app></p>
+<pre><code><span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>Hello<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>Hello<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>Hello<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/hello<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+</code></pre><h3 id="4、启动tomcat">4、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="5、运行">5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。" target="_blank" rel="external">http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。</a></p>
+<h3 id="6、目录结构">6、目录结构</h3><pre><code><span class="string">|---test</span>
+    <span class="string">|---index.html</span>
+    <span class="string">|---WEB-INF</span>
+        <span class="string">|---classes</span>
+            <span class="string">|---Hello.java</span>
+        <span class="string">|---lib</span>
+        <span class="string">|---web.xml</span>
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p>　　在上一篇的基础上，本节实现转发页面。</p>
+<h3 id="1、创建servlet">1、创建servlet</h3><h4 id="（1）在test目录下，新建一个index-html">（1）在test目录下，新建一个index.html</h4><pre><co]]>
+    </summary>
+    
+      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
+    
+      <category term="Servlet" scheme="http://yoursite.com/categories/Servlet/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[手动创建Servlet]]></title>
+    <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet/"/>
+    <id>http://yoursite.com/2015/09/20/手动创建Servlet/</id>
+    <published>2015-09-20T01:34:01.000Z</published>
+    <updated>2015-09-20T02:31:06.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="1、创建servlet">1、创建servlet</h3><p>　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.24/）<br>　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为<em>WEB-INF</em>的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件ServletExample.java</p>
+<pre><code><span class="keyword">import</span> javax.servlet.*;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.io.PrintWriter;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletExample</span> <span class="keyword">implements</span> <span class="title">Servlet</span> </span>{
+    <span class="keyword">private</span> <span class="keyword">int</span> count;
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException </span>{
+
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>{
+        PrintWriter print = servletResponse.getWriter();
+        print.print(<span class="string">"hello world"</span>);
+        print.print(<span class="string">"I finally success"</span>);
+
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">getServletInfo</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>{
+
+    }
+}
+</code></pre><h3 id="2、编译生成class文件">2、编译生成class文件</h3><p>　　进行编译，这时候要手动指明jar包的位置，不然的话会找不到。</p>
+<pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/ServletExample.java</span>
+</code></pre><h3 id="3、部署servlet">3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
+  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
+  <span class="attribute">version</span>=<span class="value">"3.1"</span>
+  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+    <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
+
+    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/test<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>　　
+</code></pre><p>　　其中，<servlet-name>对应创建的servlet的java文件名，<servlet-class>指明servlet所在的的路径包括包和类名，<url-pattern>可以任意取。每添加一个servlet时就必须在web.xml中进行部署。</url-pattern></servlet-class></servlet-name></p>
+<h3 id="4、启动tomcat">4、启动tomcat</h3><p>　　到tomcat的bin目录下，运行startup.sh文件。(保险起见，可以在运行startup.sh之前，先运行shutdown.sh)</p>
+<pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="5、运行">5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/test" target="_blank" rel="external">http://localhost:8080/test/test</a></p>
+<h3 id="6、目录结构">6、目录结构</h3><pre><code><span class="string">|---test</span>
+    <span class="string">|---WEB-INF</span>
+        <span class="string">|---classes</span>
+            <span class="string">|---ServletExample.java</span>
+        <span class="string">|---lib</span>
+        <span class="string">|---web.xml</span>
+</code></pre><p>　　</p>
+<blockquote>
+<p>此外，可以在tomcat下的conf里的tomcat-users.xml配置username和password进行manager webapp。</p>
+<pre><code><span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"zhang'yu"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">user</span> <span class="attribute">username</span>=<span class="value">"用户名"</span> <span class="attribute">password</span>=<span class="value">"密码"</span> <span class="attribute">roles</span>=<span class="value">"manager-gui"</span>/&gt;</span>
+</code></pre></blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="1、创建servlet">1、创建servlet</h3><p>　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.24/）<br>　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为]]>
+    </summary>
+    
+      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
+    
+      <category term="Servlet" scheme="http://yoursite.com/categories/Servlet/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Spring-Auto-Wiring-@Autowired]]></title>
