@@ -52,7 +52,7 @@
 
 在Spring AOP中，支持4中类型的">
 <meta property="og:image" content="http://yoursite.com/imgs/SpringAOP_Advice.png">
-<meta property="og:updated_time" content="2015-08-30T02:02:56.000Z">
+<meta property="og:updated_time" content="2015-10-11T12:04:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringAOP_Advice">
 <meta name="twitter:description" content="Spring AOP即Aspect-oriented programming，面向切面编程，专门用于处理系统中分布于各个模块（不同方法）中的交叉关注点的问题。简单地说，就是一个拦截器（interceptor）拦截一些处理过程。例如，当一个method被执行，Spring AOP能够劫持正在运行的method，在method执行前或者后加入一些额外的功能。
@@ -146,6 +146,14 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
 
       
       
@@ -207,6 +215,13 @@
 
         
           
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/27/SpringAOP-Advice/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/27/SpringAOP-Advice/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
         
       </div>
     </header>
@@ -221,9 +236,9 @@
 <blockquote>
 <p>在Spring AOP中，支持4中类型的通知（Advice）:<br></p>
 <ul>
-<li>Before advice      ——method执行前通知</li>
-<li>After returning advice ——method返回一个结果后通知</li>
-<li>After throwing advice – method抛出异常后通知&lt;b</li>
+<li>Before advice      ——method执行前通知<br></li>
+<li>After returning advice ——method返回一个结果后通知<br></li>
+<li>After throwing advice – method抛出异常后通知<br></li>
 <li>Around advice – 环绕通知，结合了以上三种</li>
 </ul>
 </blockquote>
@@ -391,7 +406,7 @@ public class <span class="type">HelloAroundMethod</span> implements <span class=
             <span class="type">Object</span> <span class="literal">result</span> = methodInvocation.proceed();
 
             // same <span class="keyword">with</span> <span class="type">AfterReturningAdvice</span>
-            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Before after ,hello!"</span>);
+            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : After method ,hello!"</span>);
             <span class="keyword">return</span> <span class="literal">result</span>;
         } catch (<span class="type">IllegalArgumentException</span> e) {
             // same <span class="keyword">with</span> <span class="type">ThrowsAdvice</span>
@@ -406,12 +421,12 @@ public class <span class="type">HelloAroundMethod</span> implements <span class=
 Method name : printName
 HelloAroundMethod : Before method ,hello!
 Customer name : Zhang Yu
-HelloAroundMethod : Before after ,hello!
+HelloAroundMethod : After method ,hello!
 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
 Method name : printOccupation
 HelloAroundMethod : Before method ,hello!
 Customer occupation : developer
-HelloAroundMethod : Before after ,hello!
+HelloAroundMethod : After method ,hello!
 <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
 Method name : printThrowException
 HelloAroundMethod : Before method ,hello!
@@ -464,6 +479,10 @@ HelloAroundMethod : Throw exception ,hello!
 
         
           <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/08/27/SpringAOP-Advice/"
+                   data-title="SpringAOP_Advice" data-url="http://yoursite.com/2015/08/27/SpringAOP-Advice/">
+              </div>
             
           </div>
         
@@ -599,11 +618,29 @@ HelloAroundMethod : Throw exception ,hello!
   
   
     
-    
 
   
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhangyuyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
 
+    
   
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>

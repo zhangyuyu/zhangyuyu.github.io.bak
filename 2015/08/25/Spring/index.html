@@ -60,7 +60,7 @@ public class HelloWorld
 {
     private S">
 <meta property="og:image" content="http://yoursite.com/imgs/SpringHelloWorld.png">
-<meta property="og:updated_time" content="2015-08-27T14:51:34.000Z">
+<meta property="og:updated_time" content="2015-10-11T10:02:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring初识">
 <meta name="twitter:description" content="Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。
@@ -158,6 +158,14 @@ public class HelloWorld
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
 
       
       
@@ -219,6 +227,13 @@ public class HelloWorld
 
         
           
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/25/Spring/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/25/Spring/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
         
       </div>
     </header>
@@ -273,7 +288,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
 }
 </code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="variable">Hello</span> <span class="exclamation_mark">!</span> <span class="function_or_atom">zhangyu</span>
 </code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/SpringHelloWorld.png" width="300" height="500">
-<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取我们所需的Action实现。<br><br>　　2、通过xml文件动态设置HelloWorld的name属性，无需知道实现类的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类。</p>
+<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取所需的实现。<br><br>　　2、通过xml文件，注册了一个bean（helloWorld），动态设置其name属性，无需知道实现类(App)的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类（com.zhangyu.common.HelloWorld）。</p>
 </span>
       
     </div>
@@ -321,6 +336,10 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
 
         
           <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/08/25/Spring/"
+                   data-title="Spring初识" data-url="http://yoursite.com/2015/08/25/Spring/">
+              </div>
             
           </div>
         
@@ -456,11 +475,29 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
   
   
     
-    
 
   
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhangyuyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
 
+    
   
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>

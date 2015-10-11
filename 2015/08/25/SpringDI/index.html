@@ -43,20 +43,20 @@
 
 <meta name="description" content="控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：
 
-　　&amp;lt;1&amp;gt;依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。　　&amp;lt;2&amp;gt;依赖注入（Dependency Injection）：组件不做定位查询，">
+　　&amp;lt;1&amp;gt;依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。　　&amp;lt;2&amp;gt;依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring依赖注入">
 <meta property="og:url" content="http://yoursite.com/2015/08/25/SpringDI/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：
 
-　　&amp;lt;1&amp;gt;依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。　　&amp;lt;2&amp;gt;依赖注入（Dependency Injection）：组件不做定位查询，">
-<meta property="og:updated_time" content="2015-08-30T02:45:03.000Z">
+　　&amp;lt;1&amp;gt;依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。　　&amp;lt;2&amp;gt;依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者">
+<meta property="og:updated_time" content="2015-10-11T11:49:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring依赖注入">
 <meta name="twitter:description" content="控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：
 
-　　&amp;lt;1&amp;gt;依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。　　&amp;lt;2&amp;gt;依赖注入（Dependency Injection）：组件不做定位查询，">
+　　&amp;lt;1&amp;gt;依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。　　&amp;lt;2&amp;gt;依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -145,6 +145,14 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
 
       
       
@@ -206,6 +214,13 @@
 
         
           
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/25/SpringDI/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/25/SpringDI/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
         
       </div>
     </header>
@@ -218,13 +233,13 @@
       
         <span itemprop="articleBody"><p>　　控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：<br></p>
 <blockquote>
-<p>　　<1>依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。EJB和Apache Avalon都使用这种方式。<br><br>　　<2>依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者是时下最流行的IoC类型，其又有接口注入（Interface Injection），设值注入（Setter Injection）和构造子注入（Constructor Injection）三种方式。
+<p>　　<1>依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。<br><br>　　<2>依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者是时下最流行的IoC类型，其又有接口注入（Interface Injection），设值注入（Setter Injection）和构造子注入（Constructor Injection）三种方式。
 　　　　　</2></1></p>
 </blockquote>
 <h3 id="一、接口注入">一、接口注入</h3><pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassA</span> {
     <span class="keyword">private</span> InterfaceB clzB;
     <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>{
-    Ojbect obj =Class.forName(Config.BImplementation).newInstance();
+    Ojbect obj = Class.forName(Config.BImplementation).newInstance();
     clzB = (InterfaceB)obj;
     clzB.doIt()
 }
@@ -286,7 +301,7 @@
                 <span class="string">"SpringBeans.xml"</span>);
 
         OutputHelper output = (OutputHelper)context.getBean(<span class="string">"OutputHelper"</span>);
-                output.generateOutput();
+        output.generateOutput();
     }
 }
 </code></pre><h4 id="5、结果">5、结果</h4><pre><code>This <span class="keyword">is</span> Csv Output Generator
@@ -472,6 +487,10 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
         
           <div class="comments" id="comments">
             
+              <div class="ds-thread" data-thread-key="2015/08/25/SpringDI/"
+                   data-title="Spring依赖注入" data-url="http://yoursite.com/2015/08/25/SpringDI/">
+              </div>
+            
           </div>
         
       </div>
@@ -606,11 +625,29 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
   
   
     
-    
 
   
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhangyuyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
 
+    
   
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>

@@ -52,7 +52,7 @@
 &amp;lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
     xsi:schemaLocation=&quot;http://maven.apache.">
 <meta property="og:image" content="http://yoursite.com/imgs/Spring-JavaConfig.png">
-<meta property="og:updated_time" content="2015-08-30T03:34:59.000Z">
+<meta property="og:updated_time" content="2015-10-11T12:52:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring_JavaConfig">
 <meta name="twitter:description" content="使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：
@@ -146,6 +146,14 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
 
       
       
@@ -206,6 +214,13 @@
         
 
         
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/30/Spring-JavaConfig/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-JavaConfig/" itemprop="commentsCount"></span>
+              </a>
+            </span>
           
         
       </div>
@@ -321,7 +336,7 @@ public class AppConfig </span>{
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
 
     <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/customer.xml"</span>/&gt;</span>
-        <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/scheduler.xml"</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/scheduler.xml"</span>/&gt;</span>
 
 <span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
 </code></pre><h4 id="2、在JavaConfig中">2、在JavaConfig中</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.config</span>;
@@ -381,6 +396,10 @@ public class AppConfig </span>{
 
         
           <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/08/30/Spring-JavaConfig/"
+                   data-title="Spring_JavaConfig" data-url="http://yoursite.com/2015/08/30/Spring-JavaConfig/">
+              </div>
             
           </div>
         
@@ -516,11 +535,29 @@ public class AppConfig </span>{
   
   
     
-    
 
   
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhangyuyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
 
+    
   
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>

@@ -521,6 +521,7 @@ td {
 .icon-next-tags,
 .icon-next-about,
 .icon-next-feed,
+.icon-next-guestbook,
 .icon-next-search {
   font-size: 24px;
   color: #000;
@@ -536,7 +537,8 @@ td {
   content: "\e0bc";
 }
 .icon-insert_emoticon:before,
-.icon-next-about:before {
+.icon-next-about:before,
+.icon-next-guestbook:before {
   content: "\e0e8";
 }
 .icon-brightness_4:before,
@@ -1055,7 +1057,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c3ff16;
+  background: #fcff70;
 }
 .sidebar-nav {
   margin: 0;
