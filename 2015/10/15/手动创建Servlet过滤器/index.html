@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Spring," />
+  <meta name="keywords" content="Servlet," />
 
 
 
@@ -41,73 +41,31 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Spring支持5种自动装配模式，如下：
+<meta name="description" content="Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：
 
+在客户端的请求访问后端资源之前，拦截这些请求。在服务器的响应发送回客户端之前，处理这些响应。
 
-
-自动装配模式
-描述
-
-
-
-
-no
-默认情况下，不自动装配，通过“ref”属性手动设定。
-
-
-byName
-根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。
-
-
-byType
-根据Property的数据类型（Type）自动装配，如果一个b">
+　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。
+1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring-Auto-Wiring">
-<meta property="og:url" content="http://yoursite.com/2015/08/30/Spring-Auto-Wiring/index.html">
+<meta property="og:title" content="手动创建Servlet过滤器">
+<meta property="og:url" content="http://yoursite.com/2015/10/15/手动创建Servlet过滤器/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="Spring支持5种自动装配模式，如下：
+<meta property="og:description" content="Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：
 
+在客户端的请求访问后端资源之前，拦截这些请求。在服务器的响应发送回客户端之前，处理这些响应。
 
-
-自动装配模式
-描述
-
-
-
-
-no
-默认情况下，不自动装配，通过“ref”属性手动设定。
-
-
-byName
-根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。
-
-
-byType
-根据Property的数据类型（Type）自动装配，如果一个b">
-<meta property="og:updated_time" content="2015-10-11T12:43:41.000Z">
+　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。
+1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.java">
+<meta property="og:updated_time" content="2015-10-15T13:22:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring-Auto-Wiring">
-<meta name="twitter:description" content="Spring支持5种自动装配模式，如下：
+<meta name="twitter:title" content="手动创建Servlet过滤器">
+<meta name="twitter:description" content="Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：
 
+在客户端的请求访问后端资源之前，拦截这些请求。在服务器的响应发送回客户端之前，处理这些响应。
 
-
-自动装配模式
-描述
-
-
-
-
-no
-默认情况下，不自动装配，通过“ref”属性手动设定。
-
-
-byName
-根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。
-
-
-byType
-根据Property的数据类型（Type）自动装配，如果一个b">
+　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。
+1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.java">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -117,7 +75,7 @@ byType
   };
 </script>
 
-  <title> Spring-Auto-Wiring | 若见喻笺 </title>
+  <title> 手动创建Servlet过滤器 | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -232,7 +190,7 @@ byType
           
           
             
-              Spring-Auto-Wiring
+              手动创建Servlet过滤器
             
           
         </h1>
@@ -241,8 +199,8 @@ byType
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T12:09:07+08:00" content="2015-08-30">
-            2015-08-30
+          <time itemprop="dateCreated" datetime="2015-10-15T20:18:09+08:00" content="2015-10-15">
+            2015-10-15
           </time>
         </span>
 
@@ -251,8 +209,8 @@ byType
             &nbsp; | &nbsp; 分類於
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
+                <a href="/categories/Servlet/" itemprop="url" rel="index">
+                  <span itemprop="name">Servlet</span>
                 </a>
               </span>
 
@@ -267,8 +225,8 @@ byType
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-Auto-Wiring/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-Wiring/" itemprop="commentsCount"></span>
+              <a href="/2015/10/15/手动创建Servlet过滤器/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/15/手动创建Servlet过滤器/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -282,87 +240,95 @@ byType
       
 
       
-        <span itemprop="articleBody"><p>Spring支持5种自动装配模式，如下：</p>
-<table>
-<thead>
-<tr>
-<th>自动装配模式</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>no</td>
-<td style="text-align:left">默认情况下，不自动装配，通过“ref”属性手动设定。</td>
-</tr>
-<tr>
-<td>byName</td>
-<td style="text-align:left">根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。</td>
-</tr>
-<tr>
-<td>byType</td>
-<td style="text-align:left">根据Property的数据类型（Type）自动装配，如果一个bean的数据类型，兼容另一个bean中Property的数据类型，则自动装配。</td>
-</tr>
-<tr>
-<td>constructor</td>
-<td style="text-align:left">根据构造函数参数的数据类型，进行byType模式的自动装配。</td>
-</tr>
-<tr>
-<td>autodetect</td>
-<td style="text-align:left">如果发现默认的构造函数，用constructor模式，否则，用byType模式。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="一、bean">一、bean</h3><p>CustomerDAO.java</p>
-<pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
-    }    
-}
-</code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
-<pre><code><span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    CustomerDAO customerDAO;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
-        <span class="keyword">this</span>.customerDAO = customerDAO;
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
-    }            
-}
-</code></pre><h3 id="二、装配">二、装配</h3><h4 id="1、Auto-Wiring_‘no’">1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
-<pre><code>&lt;bean id=<span class="string">"customerService"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
-        &lt;property name=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean id=<span class="string">"customerDAO"</span> class=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="2、Auto-Wiring_‘byName’">2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byName"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="3、Auto-Wiring_‘byType‘">3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byType"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
-<h4 id="4、Auto-Wiring_‘constructor’">4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
-<h4 id="5、Auto-Wiring_‘autodetect">5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
+        <span itemprop="articleBody"><p>　　Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：</p>
 <blockquote>
-<p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
+<p>在客户端的请求访问后端资源之前，拦截这些请求。<br><br>在服务器的响应发送回客户端之前，处理这些响应。</p>
 </blockquote>
-<pre><code>&lt;bean id=<span class="string">"customer"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span> 
-            autowire=<span class="string">"autodetect"</span> dependency-check=<span class="string">"objects /&gt;
+<p>　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。</p>
+<h3 id="1、创建Filter">1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
+<pre><code><span class="keyword">import</span> java.io.*;
+<span class="keyword">import</span> javax.servlet.*;
+<span class="keyword">import</span> javax.servlet.http.*;
+<span class="keyword">import</span> java.util.*;
 
-&lt;bean id="</span><span class="keyword">person</span><span class="string">" class="</span>com.mkyong.customer.dao.CustomerDAO<span class="string">" /</span>
-</code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
-</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span>  </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">init</span><span class="params">(FilterConfig config)</span> 
+                         <span class="keyword">throws</span> ServletException</span>{
+        <span class="comment">// 获取初始化参数</span>
+        String testParam = config.getInitParameter(<span class="string">"test-param"</span>); 
+
+        <span class="comment">// 输出初始化参数</span>
+        System.out.println(<span class="string">"********Test Param: "</span> + testParam); 
+
+   }
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">doFilter</span><span class="params">(ServletRequest request, 
+                 ServletResponse response,
+                 FilterChain chain)</span> 
+                 <span class="keyword">throws</span> java.io.IOException, ServletException </span>{
+
+        PrintWriter out = response.getWriter();
+        out.println(<span class="string">"[ Time : "</span>+ <span class="keyword">new</span> Date().toString()+<span class="string">" ]"</span>);    
+        <span class="comment">// 把请求传回过滤链</span>
+        chain.doFilter(request,response);
+   }
+   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">( )</span></span>{
+      <span class="comment">/* 在 Filter 实例被 Web 容器从服务移除之前调用 */</span>
+   }
+ }
+</code></pre><p>　　过滤器是一个实现了 javax.servlet.Filter 接口的Java类.javax.servlet.Filter 接口定义了三个方法:</p>
+<blockquote>
+<p>（1）public void doFilter (ServletRequest, ServletResponse, FilterChain)<br>该方法在每次一个请求/响应对因客户端在链的末端请求资源而通过链传递时由容器调用。<br><br>（2）public void init(FilterConfig filterConfig)<br>该方法由Web容器调用，指示一个过滤器被放入服务。<br><br>（3）public void destroy()<br>该方法由Web容器调用，指示一个过滤器被取出服务。</p>
+</blockquote>
+<h3 id="2、编译">2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
+<pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26、libexec/</span>webapps<span class="regexp">/test/</span>WEB-INF<span class="regexp">/classes/</span>LogFilter.java
+</code></pre><h3 id="3、部署">3、部署</h3><pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
+      <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
+      <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
+                          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
+      <span class="attribute">version</span>=<span class="value">"3.1"</span>
+      <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/test<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">filter</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">filter-class</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-class</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>test-param<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>Initialization Paramter<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
+       <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">filter</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">filter-mapping</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">filter-mapping</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
+</code></pre><p>　　过滤器被部署在部署web.xml中然后映射到部署的Servlet名称或 URL模式。有多个过滤器时，执行的顺序是按它们在声明的顺序。
+　　</p>
+<h3 id="4、启动tomcat">4、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="5、运行">5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
+　　</p>
+<h3 id="6、结果">6、结果</h3><pre><code>[ Time : Thu Oct <span class="number">15</span> <span class="number">20</span>:<span class="number">56</span>:<span class="number">29</span> CST <span class="number">2015</span> ]
+Hello World
+</code></pre><h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
+    <span class="string">|---WEB-INF</span>
+        <span class="string">|---classes</span>
+            <span class="string">|---ServletExample.java</span>
+            <span class="string">|---LogFilter.java</span>
+        <span class="string">|---lib</span>
+        <span class="string">|---web.xml</span>
+</code></pre></span>
       
     </div>
 
@@ -370,7 +336,7 @@ byType
       
         <div class="post-tags">
           
-            <a href="/tags/Spring/" rel="tag">#Spring</a>
+            <a href="/tags/Servlet/" rel="tag">#Servlet</a>
           
         </div>
       
@@ -379,13 +345,13 @@ byType
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/30/Spring-Auto-Wiring-Autowired/" rel="prev">Spring-Auto-Wiring-@Autowired</a>
+              <a href="/2015/10/15/手动创建Servlet异常处理/" rel="prev">手动创建Servlet异常处理</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/30/Spring-Auto-scanning/" rel="next">Spring-Auto-scanning</a>
+              <a href="/2015/09/20/手动创建Servlet连接数据库/" rel="next">手动创建Servlet连接数据库</a>
             
           </div>
         </div>
@@ -410,8 +376,8 @@ byType
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/08/30/Spring-Auto-Wiring/"
-                   data-title="Spring-Auto-Wiring" data-url="http://yoursite.com/2015/08/30/Spring-Auto-Wiring/">
+              <div class="ds-thread" data-thread-key="2015/10/15/手动创建Servlet过滤器/"
+                   data-title="手动创建Servlet过滤器" data-url="http://yoursite.com/2015/10/15/手动创建Servlet过滤器/">
               </div>
             
           </div>
@@ -500,7 +466,7 @@ byType
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、bean"><span class="nav-number">1.</span> <span class="nav-text">一、bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、装配"><span class="nav-number">2.</span> <span class="nav-text">二、装配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Auto-Wiring_‘no’"><span class="nav-number">2.1.</span> <span class="nav-text">1、Auto-Wiring ‘no’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Auto-Wiring_‘byName’"><span class="nav-number">2.2.</span> <span class="nav-text">2、Auto-Wiring ‘byName’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Auto-Wiring_‘byType‘"><span class="nav-number">2.3.</span> <span class="nav-text">3、Auto-Wiring ‘byType‘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Auto-Wiring_‘constructor’"><span class="nav-number">2.4.</span> <span class="nav-text">4、Auto-Wiring ‘constructor’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、Auto-Wiring_‘autodetect"><span class="nav-number">2.5.</span> <span class="nav-text">5、Auto-Wiring ‘autodetect</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、创建Filter"><span class="nav-number">1.</span> <span class="nav-text">1、创建Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、编译"><span class="nav-number">2.</span> <span class="nav-text">2、编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、部署"><span class="nav-number">3.</span> <span class="nav-text">3、部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、启动tomcat"><span class="nav-number">4.</span> <span class="nav-text">4、启动tomcat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、运行"><span class="nav-number">5.</span> <span class="nav-text">5、运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、结果"><span class="nav-number">6.</span> <span class="nav-text">6、结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、目录结构"><span class="nav-number">7.</span> <span class="nav-text">7、目录结构</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
