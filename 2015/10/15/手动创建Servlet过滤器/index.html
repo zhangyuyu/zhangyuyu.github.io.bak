@@ -57,7 +57,7 @@
 
 　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。
 1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.java">
-<meta property="og:updated_time" content="2015-10-15T13:22:50.000Z">
+<meta property="og:updated_time" content="2015-10-21T14:33:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet过滤器">
 <meta name="twitter:description" content="Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：
@@ -282,12 +282,7 @@
 <h3 id="2、编译">2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
 <pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26、libexec/</span>webapps<span class="regexp">/test/</span>WEB-INF<span class="regexp">/classes/</span>LogFilter.java
 </code></pre><h3 id="3、部署">3、部署</h3><pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-      <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-      <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-      <span class="attribute">version</span>=<span class="value">"3.1"</span>
-      <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
         <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>

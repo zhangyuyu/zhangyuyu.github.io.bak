@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com//"/>
-  <updated>2015-10-15T15:01:38.000Z</updated>
+  <updated>2015-10-17T09:08:23.000Z</updated>
   <id>http://yoursite.com//</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2015/10/15/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"/>
     <id>http://yoursite.com/2015/10/15/手动创建Servlet异常处理/</id>
     <published>2015-10-15T13:19:45.000Z</published>
-    <updated>2015-10-15T15:01:38.000Z</updated>
+    <updated>2015-10-17T09:08:23.000Z</updated>
     <content type="html"><![CDATA[<h3 id="1、创建产生异常的servlet">1、创建产生异常的servlet</h3><p>在ExceptionServlet.java中：</p>
 <pre><code><span class="keyword">import</span> javax.servlet.*;
 <span class="keyword">import</span> java.io.IOException;
@@ -98,18 +98,28 @@ public class ErrorHandler extends HttpServlet {
 <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
 
 <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
 
-<span class="comment">&lt;!-- error-code 相关的错误页面 --&gt;</span>
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>403<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>javax.servlet.ServletException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>java.io.IOException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/errorr<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
 </code></pre><h3 id="5、启动tomcat">5、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
 $ ./startup.sh    
@@ -143,7 +153,7 @@ $ ./startup.sh
     <link href="http://yoursite.com/2015/10/15/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
     <id>http://yoursite.com/2015/10/15/手动创建Servlet过滤器/</id>
     <published>2015-10-15T12:18:09.000Z</published>
-    <updated>2015-10-15T13:22:50.000Z</updated>
+    <updated>2015-10-21T14:33:24.000Z</updated>
     <content type="html"><![CDATA[<p>　　Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：</p>
 <blockquote>
 <p>在客户端的请求访问后端资源之前，拦截这些请求。<br><br>在服务器的响应发送回客户端之前，处理这些响应。</p>
@@ -186,12 +196,7 @@ $ ./startup.sh
 <h3 id="2、编译">2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
 <pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26、libexec/</span>webapps<span class="regexp">/test/</span>WEB-INF<span class="regexp">/classes/</span>LogFilter.java
 </code></pre><h3 id="3、部署">3、部署</h3><pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-      <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-      <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-      <span class="attribute">version</span>=<span class="value">"3.1"</span>
-      <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
         <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
@@ -252,7 +257,7 @@ Hello World
     <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     <id>http://yoursite.com/2015/09/20/手动创建Servlet连接数据库/</id>
     <published>2015-09-20T02:20:41.000Z</published>
-    <updated>2015-10-15T12:06:52.000Z</updated>
+    <updated>2015-10-21T14:34:03.000Z</updated>
     <content type="html"><![CDATA[<h3 id="1、准备数据库">1、准备数据库</h3><h4 id="(1)在本地mysql中create_一个数据库">(1)在本地mysql中create 一个数据库</h4><pre><code>$ mysql.server start
 $ mysql -uroot -p
 mysql&gt; show databases;
@@ -357,14 +362,7 @@ mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<s
 </code></pre><h3 id="3、编译生成class文件">3、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/DBServlet.java</span>
 </code></pre><h3 id="4、部署">4、部署</h3><p>　　在web.xml中</p>
 <pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-  <span class="attribute">version</span>=<span class="value">"3.1"</span>
-  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
-    <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
-
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
     <span class="tag">&lt;<span class="title">description</span>&gt;</span>This is the description of my J2EE component<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
     <span class="tag">&lt;<span class="title">display-name</span>&gt;</span>This is the display name of my J2EE component<span class="tag">&lt;/<span class="title">display-name</span>&gt;</span>
@@ -421,7 +419,7 @@ $ mysql -uroot -]]>
     <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E8%BD%AC%E5%8F%91%E9%A1%B5%E9%9D%A2/"/>
     <id>http://yoursite.com/2015/09/20/手动创建Servlet转发页面/</id>
     <published>2015-09-20T02:12:41.000Z</published>
-    <updated>2015-10-15T13:18:30.000Z</updated>
+    <updated>2015-10-21T14:33:04.000Z</updated>
     <content type="html"><![CDATA[<p>　　在上一篇的基础上，本节实现转发页面。</p>
 <h3 id="1、创建servlet">1、创建servlet</h3><h4 id="（1）在test目录下，新建一个index-html">（1）在test目录下，新建一个index.html</h4><pre><code><span class="pi">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;</span>
 <span class="doctype">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -469,12 +467,7 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 </code></pre><h3 id="2、编译生成class文件">2、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/Hello.java</span>
 </code></pre><h3 id="3、部署">3、部署</h3><p>　在web.xml中</p>
 <pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-  <span class="attribute">version</span>=<span class="value">"3.1"</span>
-  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
     <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
@@ -514,7 +507,7 @@ $ ./startup.sh
     <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet/"/>
     <id>http://yoursite.com/2015/09/20/手动创建Servlet/</id>
     <published>2015-09-20T01:34:01.000Z</published>
-    <updated>2015-10-15T13:17:28.000Z</updated>
+    <updated>2015-10-21T14:32:23.000Z</updated>
     <content type="html"><![CDATA[<h3 id="1、创建servlet">1、创建servlet</h3><p>　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）<br>　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为<em>WEB-INF</em>的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件ServletExample.java</p>
 <pre><code><span class="keyword">import</span> javax.servlet.*;
 <span class="keyword">import</span> java.io.IOException;
@@ -554,12 +547,7 @@ $ ./startup.sh
 <pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/ServletExample.java</span>
 </code></pre><h3 id="3、部署servlet">3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
 <pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-  <span class="attribute">version</span>=<span class="value">"3.1"</span>
-  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
     <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>

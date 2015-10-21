@@ -306,18 +306,28 @@ public class ErrorHandler extends HttpServlet {
 <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
 
 <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
 
-<span class="comment">&lt;!-- error-code 相关的错误页面 --&gt;</span>
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>403<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>javax.servlet.ServletException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>java.io.IOException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/errorr<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
 </code></pre><h3 id="5、启动tomcat">5、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
 $ ./startup.sh    
@@ -459,12 +469,7 @@ $ ./startup.sh
 <h3 id="2、编译">2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
 <pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26、libexec/</span>webapps<span class="regexp">/test/</span>WEB-INF<span class="regexp">/classes/</span>LogFilter.java
 </code></pre><h3 id="3、部署">3、部署</h3><pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-      <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-      <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-      <span class="attribute">version</span>=<span class="value">"3.1"</span>
-      <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
         <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
@@ -692,14 +697,7 @@ mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<s
 </code></pre><h3 id="3、编译生成class文件">3、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/DBServlet.java</span>
 </code></pre><h3 id="4、部署">4、部署</h3><p>　　在web.xml中</p>
 <pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-  <span class="attribute">version</span>=<span class="value">"3.1"</span>
-  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
-    <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
-
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
     <span class="tag">&lt;<span class="title">description</span>&gt;</span>This is the description of my J2EE component<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
     <span class="tag">&lt;<span class="title">display-name</span>&gt;</span>This is the display name of my J2EE component<span class="tag">&lt;/<span class="title">display-name</span>&gt;</span>
@@ -869,12 +867,7 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 </code></pre><h3 id="2、编译生成class文件">2、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/Hello.java</span>
 </code></pre><h3 id="3、部署">3、部署</h3><p>　在web.xml中</p>
 <pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-  <span class="attribute">version</span>=<span class="value">"3.1"</span>
-  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
     <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
@@ -1019,12 +1012,7 @@ $ ./startup.sh
 <pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/ServletExample.java</span>
 </code></pre><h3 id="3、部署servlet">3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
 <pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-  <span class="attribute">version</span>=<span class="value">"3.1"</span>
-  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
     <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>

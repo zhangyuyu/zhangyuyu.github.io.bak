@@ -63,7 +63,7 @@ public class ExceptionServlet implements Servlet {
 
     @Override
     public v">
-<meta property="og:updated_time" content="2015-10-15T15:01:38.000Z">
+<meta property="og:updated_time" content="2015-10-17T09:08:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet异常处理">
 <meta name="twitter:description" content="1、创建产生异常的servlet在ExceptionServlet.java中：
@@ -326,18 +326,28 @@ public class ErrorHandler extends HttpServlet {
 <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
 
 <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
 
-<span class="comment">&lt;!-- error-code 相关的错误页面 --&gt;</span>
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>403<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/ErrorHandler<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>javax.servlet.ServletException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>java.io.IOException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/errorr<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
 </code></pre><h3 id="5、启动tomcat">5、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
 $ ./startup.sh    

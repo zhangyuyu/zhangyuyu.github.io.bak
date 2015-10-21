@@ -47,7 +47,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/09/20/手动创建Servlet/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="1、创建servlet　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为WEB-INF的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件Ser">
-<meta property="og:updated_time" content="2015-10-15T13:17:28.000Z">
+<meta property="og:updated_time" content="2015-10-21T14:32:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet">
 <meta name="twitter:description" content="1、创建servlet　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为WEB-INF的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件Ser">
@@ -264,12 +264,7 @@
 <pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/ServletExample.java</span>
 </code></pre><h3 id="3、部署servlet">3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
 <pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">xmlns</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee"</span>
-  <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-  <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"</span>
-  <span class="attribute">version</span>=<span class="value">"3.1"</span>
-  <span class="attribute">metadata-complete</span>=<span class="value">"true"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
     <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
 
     <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
