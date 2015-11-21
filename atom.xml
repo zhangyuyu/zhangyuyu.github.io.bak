@@ -5,7 +5,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com//"/>
-  <updated>2015-10-26T14:20:38.000Z</updated>
+  <updated>2015-11-21T08:35:27.000Z</updated>
   <id>http://yoursite.com//</id>
   
   <author>
@@ -16,11 +16,323 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Vagrant]]></title>
+    <link href="http://yoursite.com/2015/11/21/Vagrant/"/>
+    <id>http://yoursite.com/2015/11/21/Vagrant/</id>
+    <published>2015-11-21T07:11:35.000Z</published>
+    <updated>2015-11-21T08:35:27.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="一、Vagrant的认识">一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
+<blockquote>
+<p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
+</blockquote>
+<h3 id="二、安装">二、安装</h3><h4 id="1、安装_VirtualBox">1、安装 VirtualBox</h4><h4 id="2、安装_Vagrant">2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
+<blockquote>
+<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
+</blockquote>
+<h4 id="3、安装系统镜像">3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
+<ul>
+<li>新建一个文件夹，如AgentBox,然后进入目录</li>
+<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
+</ul>
+<p>3.2 通过添加box方式</p>
+<ul>
+<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
+<li><code>$ vagrant box add {title} {url}</code><ul>
+<li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
+<li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
+</ul>
+</li>
+<li>初始化开发环境<br>　　先进入box里面，然后<code>$ vagrant init AgentBox</code></li>
+<li>启动环境<code>vagrant up</code></li>
+</ul>
+<h3 id="三、常用指令">三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
+<blockquote>
+<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
+</blockquote>
+<p>2、vagrant init，初始化</p>
+<blockquote>
+<p>如果你添加的box名称不是base，那么需要在初始化的时候指定名称，例如vagrant init AgentBox</p>
+</blockquote>
+<p>3、vagrant up，启动虚拟机<br>4、vagrant ssh，ssh到虚拟机<br>5、vagrant reload，重启虚拟机（重新载入配置文件）<br>6、vagrant package –base precise64_default_1447845103364_6382 –output precise64.box打包分发<br>7、vagrant box list<br>8、vagrant status</p>
+<h3 id="四、主要配置">四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
+<p>1、box设置</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.box</span> = <span class="string">"AgentBox"</span>
+</code></pre><p>2、hostname设置</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.hostname</span> = <span class="string">"for_work"</span>
+</code></pre><p>3、虚拟机网络设置</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"private_network"</span>, ip: <span class="string">"192.168.33.10"</span>
+config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"public_network"</span>
+</code></pre><p>4、同步目录</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.synced_folder</span> <span class="string">"../data"</span>, <span class="string">"/vagrant_data"</span>
+</code></pre><p>5、端口转发</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"forwarded_port"</span>, guest: <span class="number">80</span>, host: <span class="number">8080</span>
+</code></pre><p>6、内存和cpu核心</p>
+<pre><code>config.vm.provider <span class="string">"virtualbox"</span> do |vb|
+  <span class="comment">#Display the VirtualBox GUI when booting the machine</span>
+  vb.gui = <span class="constant">true</span>
+  <span class="comment">#Customize the amount of memory on the VM:</span>
+  vb.memory = <span class="string">"1024"</span>
+  vb.cpus = <span class="number">2</span>
+  vb.<span class="property">name</span> = <span class="string">"my_vm"</span>
+<span class="keyword">end</span>
+</code></pre><blockquote>
+<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="一、Vagrant的认识">一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
+<blockquote>
+<p>Vagrant的作用：<br>]]>
+    </summary>
+    
+      <category term="Vagrant" scheme="http://yoursite.com/tags/Vagrant/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[AnguarJS跨域请求]]></title>
+    <link href="http://yoursite.com/2015/11/21/Anguar%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82/"/>
+    <id>http://yoursite.com/2015/11/21/Anguar跨域请求/</id>
+    <published>2015-11-21T05:18:41.000Z</published>
+    <updated>2015-11-21T06:49:41.000Z</updated>
+    <content type="html"><![CDATA[<p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
+<h3 id="一、视图">一、视图</h3><h4 id="1-在main-html中">1.在<code>main.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"jumbotron"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"row marketing"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/createCustomer"</span>&gt;</span>Create<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/getCustomer"</span>&gt;</span>GetByName<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</code></pre><h4 id="2-在getView-html中">2.在<code>getView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the get customer by name view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"getCustomer()"</span> &gt;</span>Get<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="comment"></span>
+</code></pre><h4 id="3-在createView-html中">3.在<code>createView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the create customer view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Age<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"age"</span>/&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"createCustomer()"</span> &gt;</span>Create<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="comment"></span>
+</code></pre><h3 id="二、controller">二、controller</h3><h4 id="1-在getCustomer-js中">1.在<code>getCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>)
+  .controller(<span class="string">'GetCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
+
+     <span class="variable">$scope</span>.getCustomer = function(){
+       var url = <span class="string">'http://localhost:8080/customers?name='</span> + <span class="variable">$scope</span>.name;
+       <span class="variable">$http</span>({
+          url : url,
+          method : <span class="string">'GET'</span>
+       }).then(function(response) {
+          <span class="variable">$scope</span>.info = response.data;
+          alert(<span class="string">'Get '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
+        },function(response) {
+          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
+          alert(<span class="variable">$scope</span>.info);
+       });
+     };
+  }]);      
+</code></pre><h4 id="2-在createCustomer-js中">2.在<code>createCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>)
+  .controller(<span class="string">'CreateCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
+    <span class="variable">$scope</span>.createCustomer = function(){
+       <span class="variable">$http</span>({
+          url : <span class="string">'http://localhost:8080/customers'</span>,
+          method : <span class="string">'POST'</span>,
+          data: {
+              name : <span class="variable">$scope</span>.name,
+              age : <span class="variable">$scope</span>.age
+          }
+       }).then(function(response) {
+          <span class="variable">$scope</span>.info = response.data;
+          alert(<span class="string">'Create '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
+        },function(response) {
+          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
+          alert(<span class="variable">$scope</span>.info);
+       });
+    };
+
+  }]);
+</code></pre><h3 id="三、配置路由">三、配置路由</h3><p>在<code>app.js</code>中</p>
+<pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>, [<span class="string">'ngRoute'</span>])
+  .config(<span class="keyword">function</span> (<span class="variable">$routeProvider</span>) {
+    <span class="variable">$routeProvider</span>
+      .when(<span class="string">'/'</span>, {
+        templateUrl: <span class="string">'views/main.html'</span>
+      })
+      .when(<span class="string">'/createCustomer'</span>, {
+        templateUrl: <span class="string">'views/createView.html'</span>,
+        controller: <span class="string">'CreateCtrl'</span>
+      })
+      .when(<span class="string">'/getCustomer'</span>, {
+        templateUrl: <span class="string">'views/getView.html'</span>,
+        controller: <span class="string">'GetCtrl'</span>
+      })
+      .otherwise({
+        redirectTo: <span class="string">'/'</span>
+      });
+  });
+</code></pre><h3 id="四、基准HTML文件">四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
+<pre><code><span class="doctype">&lt;!doctype html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"utf-8"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>AngularTest<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"bower_components/bootstrap/dist/css/bootstrap.css"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"styles/main.css"</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-app</span>=<span class="value">"customerUiApp"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-view</span>=<span class="value">""</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/jquery/dist/jquery.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular/angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/bootstrap/dist/js/bootstrap.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular-route/angular-route.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/app.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/createCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/getCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
+<h3 id="五、测试">五、测试</h3><h4 id="1、在test/spec/controllers/getCustomer-js中">1、在test/spec/controllers/getCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
+
+describe(<span class="string">'Controller: GetCtrl'</span>, <span class="keyword">function</span> () {
+  beforeEach(module(<span class="string">'customerUiApp'</span>));
+
+  var GetCtrl,scope,<span class="variable">$httpBackend</span>;
+
+  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
+    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
+    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
+    GetCtrl = <span class="variable">$controller</span>(<span class="string">'GetCtrl'</span>, {
+      <span class="variable">$scope</span>: scope
+    });
+  }));
+
+  it(<span class="string">'should send get request'</span>, function () {
+    <span class="variable">$httpBackend</span>
+      .expect(<span class="string">'GET'</span>, <span class="string">'http://localhost:8080/customers?name=Alex'</span>)
+      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
+    scope.name = <span class="string">'Alex'</span>;
+
+    scope.getCustomer();
+    <span class="variable">$httpBackend</span>.flush();
+
+    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
+    expect(scope.info.age).toBe(<span class="string">'20'</span>);
+  });
+});
+</code></pre><h4 id="2、在test/spec/controllers/createCustomer-js中">2、在test/spec/controllers/createCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
+
+describe(<span class="string">'Controller: CreateCtrl'</span>, <span class="keyword">function</span> () {
+  beforeEach(module(<span class="string">'customerUiApp'</span>));
+
+  var CreateCtrl,scope,<span class="variable">$httpBackend</span>;
+
+  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
+    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
+    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
+    CreateCtrl = <span class="variable">$controller</span>(<span class="string">'CreateCtrl'</span>, {
+      <span class="variable">$scope</span>: scope
+    });
+  }));
+
+  it(<span class="string">'should send post request'</span>, function () {
+    <span class="variable">$httpBackend</span>
+      .expect(<span class="string">'POST'</span>, <span class="string">'http://localhost:8080/customers'</span>)
+      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
+    scope.name = <span class="string">'Alex'</span>;
+
+    scope.createCustomer();
+    <span class="variable">$httpBackend</span>.flush();
+
+    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
+    expect(scope.info.age).toBe(<span class="string">'20'</span>);
+  });
+});
+</code></pre><h3 id="六、运行及结果">六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口">1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt_serve启动CustomerUI">2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求">3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code><span class="keyword">open</span> /Applications/Google\ Chrome.<span class="keyword">app</span> --<span class="keyword">args</span> --allow-<span class="keyword">file</span>-access-from-files --disable-web-security
+</code></pre><h4 id="4、输入url">4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+<h4 id="5、点击GetByName">5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
+　　</p>
+<blockquote>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/]]>
+    </summary>
+    
+      <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Yeoman]]></title>
+    <link href="http://yoursite.com/2015/11/21/Yeoman/"/>
+    <id>http://yoursite.com/2015/11/21/Yeoman/</id>
+    <published>2015-11-21T01:15:32.000Z</published>
+    <updated>2015-11-21T06:38:05.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="一、认识Yeoman">一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
+<blockquote>
+<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
+</blockquote>
+<h3 id="二、安装">二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置：">1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
+<li>Node.js 版本在0.10以上</li>
+<li>npm 版本在1.3.7以上</li>
+</ul>
+<h4 id="2、安装">2、安装</h4><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> yo grunt-cli bower</span>
+</code></pre><h3 id="三、使用">三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入">1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器">2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
+<pre><code>yo
+</code></pre><img src="/imgs/yo.png" width="400" height="300">
+<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
+<p>2.2 如果你知道要安装的生成器的名字：</p>
+<pre><code><span class="title">yo</span> angular
+</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
+<h4 id="3、选择">3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
+<h4 id="4、目录">4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
+<ul>
+<li>app/：Web应用的父级目录。<ul>
+<li>index.html： Angular应用的基准HTML文件（base html file）</li>
+<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
+<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
+<li>scripts：我们的JS文件<ul>
+<li>app.js：主程序</li>
+<li>controllers：Angular控制器</li>
+</ul>
+</li>
+<li>styles：我们的CSS文件</li>
+<li>views：Angular模板</li>
+</ul>
+</li>
+<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
+<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
+</ul>
+<h4 id="5、运行">5、运行</h4><pre><code><span class="title">grunt</span> serve
+</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="一、认识Yeoman">一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供]]>
+    </summary>
+    
+      <category term="AngularJs" scheme="http://yoursite.com/tags/AngularJs/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Servlet life]]></title>
     <link href="http://yoursite.com/2015/10/25/servlet-life/"/>
     <id>http://yoursite.com/2015/10/25/servlet-life/</id>
     <published>2015-10-25T14:19:46.000Z</published>
-    <updated>2015-10-26T14:20:38.000Z</updated>
+    <updated>2015-10-26T14:20:49.000Z</updated>
     <content type="html"><![CDATA[<h3 id="一、整体工作流程">一、整体工作流程</h3><blockquote>
 <p>1、Client对Web Server发出请求<br><br>2、Web Server接收到请求后，将其发送给Servlet容器<br><br>3、Servlet容器产生Servlet实例对象并调用ServletAPI中相应的方法来对Client的请求进行处理，然后将处理的相应结果返回给WEB Server。<br><br>4、Web server将从Servlet实例中收到响应并发送回客户端。<br></p>
 </blockquote>
@@ -2320,326 +2632,6 @@ INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following paramete
       <category term="Spring Batch" scheme="http://yoursite.com/tags/Spring-Batch/"/>
     
       <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Spring依赖注入]]></title>
-    <link href="http://yoursite.com/2015/08/25/SpringDI/"/>
-    <id>http://yoursite.com/2015/08/25/SpringDI/</id>
-    <published>2015-08-25T14:40:55.000Z</published>
-    <updated>2015-10-11T11:49:48.000Z</updated>
-    <content type="html"><![CDATA[<p>　　控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：<br></p>
-<blockquote>
-<p>　　<1>依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。<br><br>　　<2>依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者是时下最流行的IoC类型，其又有接口注入（Interface Injection），设值注入（Setter Injection）和构造子注入（Constructor Injection）三种方式。
-　　　　　</2></1></p>
-</blockquote>
-<h3 id="一、接口注入">一、接口注入</h3><pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassA</span> {
-    <span class="keyword">private</span> InterfaceB clzB;
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>{
-    Ojbect obj = Class.forName(Config.BImplementation).newInstance();
-    clzB = (InterfaceB)obj;
-    clzB.doIt()
-}
-</code></pre><p>　　ClassA依赖于InterfaceB的实现，传统的方法是在代码中创建 InterfaceB实现类的实例，ClassA在编译期即依赖于InterfaceB的实现。<br><br>　　我们预先在配置文件中设定的实现类的类名Config.BImplementation，动态加载实现类，并通过InterfaceB强制转型后为ClassA 所用，将调用者与实现者在编译期分离。</p>
-<h3 id="二、setter注入">二、setter注入</h3><p>先定义一个接口IOutputGenerator.java：</p>
-<pre><code><span class="keyword">package</span> com.mkyong.output;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IOutputGenerator</span>
-</span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span></span>;
-}
-</code></pre><h4 id="1、CsvOutputGenerator-java">1、CsvOutputGenerator.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output.impl;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CsvOutputGenerator</span> <span class="keyword">implements</span> <span class="title">IOutputGenerator</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        System.out.println(<span class="string">"This is Csv Output Generator"</span>);
-    }
-}
-</code></pre><h4 id="2、OutputHelper-class">2、OutputHelper.class</h4><pre><code><span class="keyword">package</span> com.mkyong.output;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutputHelper</span> </span>{
-    IOutputGenerator outputGenerator;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        outputGenerator.generateOutput();
-    }
-
-    <span class="comment">//DI via setter method</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOutputGenerator</span><span class="params">(IOutputGenerator outputGenerator)</span> </span>{
-        <span class="keyword">this</span>.outputGenerator = outputGenerator;
-    }
-}
-</code></pre><h4 id="3、配置Spring,在SpringBeans-xml中">3、配置Spring,在SpringBeans.xml中</h4><p> 把<code>CsvOutputGenerator</code>注入到<code>OutputHelper</code> </p>
-<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"OutputHelper"</span> <span class="type">class</span>=<span class="string">"com.mkyong.output.OutputHelper"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"outputGenerator"</span> <span class="keyword">ref</span>=<span class="string">"CsvOutputGenerator"</span> /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"CsvOutputGenerator"</span> <span class="type">class</span>=<span class="string">"com.mkyong.output.impl.CsvOutputGenerator"</span> /&gt;
-
-&lt;/beans&gt;
-</code></pre><h4 id="4、运行，在App-java中">4、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-<span class="keyword">import</span> com.mkyong.output.OutputHelper;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
-        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
-                <span class="string">"SpringBeans.xml"</span>);
-
-        OutputHelper output = (OutputHelper)context.getBean(<span class="string">"OutputHelper"</span>);
-        output.generateOutput();
-    }
-}
-</code></pre><h4 id="5、结果">5、结果</h4><pre><code>This <span class="keyword">is</span> Csv Output Generator
-</code></pre><h3 id="三、构造子注入">三、构造子注入</h3><h4 id="1、CsvOutputGenerator-java-1">1、CsvOutputGenerator.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output.impl;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonOutputGenerator</span> <span class="keyword">implements</span> <span class="title">IOutputGenerator</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        System.out.println(<span class="string">"This is Json Output Generator"</span>);
-    }
-}
-</code></pre><h4 id="2、OutputHelper-java">2、OutputHelper.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutputHelper</span> </span>{
-    IOutputGenerator outputGenerator;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        outputGenerator.generateOutput();
-    }
-
-    <span class="comment">//DI via constructor</span>
-    <span class="function"><span class="keyword">public</span> <span class="title">OutputHelper</span><span class="params">(IOutputGenerator outputGenerator)</span></span>{
-        <span class="keyword">this</span>.outputGenerator = outputGenerator;
-    }
-
-}
-</code></pre><h4 id="3、Spring配置">3、Spring配置</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"OutputHelper"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.output.OutputHelper"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">ref</span> <span class="attribute">bean</span>=<span class="value">"JsonOutputGenerator"</span> /&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"JsonOutputGenerator"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.output.impl.JsonOutputGenerator"</span> /&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="4、运行，结果">4、运行，结果</h4><pre><code>This <span class="keyword">is</span> Json Output Generator
-</code></pre><blockquote>
-<p>当有两个构造函数，且参数个数一样但参数类型不同时，则会出现构造器注入参数类型歧义的问题。下面举出另外一个例子：</p>
-</blockquote>
-<h3 id="Example构造子注入">Example构造子注入</h3><h4 id="1、在Customer-java中">1、在Customer.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
-
-<span class="keyword">public</span> class Customer 
-{
-    <span class="keyword">private</span> <span class="keyword">String</span> name;
-    <span class="keyword">private</span> <span class="keyword">String</span> address;
-    <span class="keyword">private</span> <span class="built_in">int</span> age;
-
-    <span class="keyword">public</span> Customer(<span class="keyword">String</span> name, <span class="keyword">String</span> address, <span class="built_in">int</span> age) {
-        <span class="keyword">this</span>.name = name;
-        <span class="keyword">this</span>.address = address;
-        <span class="keyword">this</span>.age = age;
-    }
-
-    <span class="keyword">public</span> Customer(<span class="keyword">String</span> name, <span class="built_in">int</span> age, <span class="keyword">String</span> address) {
-        <span class="keyword">this</span>.name = name;
-        <span class="keyword">this</span>.age = age;
-        <span class="keyword">this</span>.address = address;
-    }
-    <span class="comment">//getter and setter methods</span>
-    <span class="keyword">public</span> <span class="keyword">String</span> toString(){
-        <span class="keyword">return</span> <span class="string">" name : "</span> +name + <span class="string">"\n address : "</span>
-               + address + <span class="string">"\n age : "</span> + age;
-    }
-
-}
-</code></pre><h4 id="2、Spring配置，Spring-Customer-xml">2、Spring配置，Spring-Customer.xml</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"CustomerBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.common.Customer"</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>188<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>28<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="3、运行，在App-java中">3、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
-</span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
-    </span>{
-        ApplicationContext context = 
-          <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="keyword">new</span> String[] {<span class="string">"Spring-Customer.xml"</span>});
-
-        Customer cust = (Customer)context.getBean(<span class="string">"CustomerBean"</span>);
-        System.out.println(cust);
-    }
-}
-</code></pre><h4 id="4、结果">4、结果</h4><pre><code><span class="string">name :</span> mkyong
-<span class="string">address :</span> <span class="number">28</span>
-<span class="string">age :</span> <span class="number">188</span>
-</code></pre><p>　　在Spring，参数<code>188</code>可以转换成int,所以Spring直接转换了它并用了第二个构造函数。</p>
-<h4 id="5、解决办法">5、解决办法</h4><p>在Spring-Customer.xml中给constructor-arg加入type。</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"CustomerBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.common.Customer"</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>188<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"int"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>28<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre>]]></content>
-    <summary type="html">
-    <![CDATA[<p>　　控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：<br></p>
-<blockquote>
-<p>　　<1>依赖查找（Dependency Look]]>
-    </summary>
-    
-      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
-    
-      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Spring初识]]></title>
-    <link href="http://yoursite.com/2015/08/25/Spring/"/>
-    <id>http://yoursite.com/2015/08/25/Spring/</id>
-    <published>2015-08-25T12:46:40.000Z</published>
-    <updated>2015-10-11T10:02:37.000Z</updated>
-    <content type="html"><![CDATA[<p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
-<h3 id="一、创建一个Spring_Bean">一、创建一个Spring Bean</h3><p>在HelloWorld.java文件中</p>
-<pre><code>package com.zhangyu.common;
-
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span> 
-{
-    <span class="keyword">private</span> String name;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{
-        <span class="keyword">this</span>.name = name;
-    }
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printHello</span>(<span class="params"></span>) </span>{
-        System.<span class="keyword">out</span>.println(<span class="string">"Hello ! "</span> + name);
-    }
-}
-</code></pre><h3 id="二、创建Spring_Bean的配置文件">二、创建Spring Bean的配置文件</h3><p>在Spring-Module.xml文件中</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.zhangyu.common.HelloWorld"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"name"</span> <span class="attribute">value</span>=<span class="value">"zhangyu"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java文件中</p>
-<pre><code><span class="keyword">package</span> com.zhangyu.common;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
-</span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
-    </span>{
-        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"Spring-Module.xml"</span>);     
-        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
-        obj.printHello();           
-    }
-}
-</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="variable">Hello</span> <span class="exclamation_mark">!</span> <span class="function_or_atom">zhangyu</span>
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/SpringHelloWorld.png" width="300" height="500">
-<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取所需的实现。<br><br>　　2、通过xml文件，注册了一个bean（helloWorld），动态设置其name属性，无需知道实现类(App)的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类（com.zhangyu.common.HelloWorld）。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
-<h3 id="一、创建一个Spring_Bean">一、创建一个Spri]]>
-    </summary>
-    
-      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
-    
-      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[我在TW的第一周]]></title>
-    <link href="http://yoursite.com/2015/08/15/%E6%88%91%E5%9C%A8TW%E7%9A%84%E7%AC%AC%E4%B8%80%E5%91%A8/"/>
-    <id>http://yoursite.com/2015/08/15/我在TW的第一周/</id>
-    <published>2015-08-15T13:16:18.000Z</published>
-    <updated>2015-08-27T14:50:09.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="关于旅程">关于旅程</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。</p>
-</blockquote>
-<h3 id="关于住宿">关于住宿</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;好大的客厅和沙发、好新的床和柜子、好齐全的厨具和生活设备，我会不会变懒呢？</p>
-</blockquote>
-<h3 id="关于工作">关于工作</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;新来的小伙伴们一部分直接去了TWU，留下我们五个女生on the beach。<br><br>&emsp;&emsp;&emsp;&emsp;每天必刷微信、邮件、日历，但是手机却总是不见踪影。<br><br>&emsp;&emsp;&emsp;&emsp;融入工作，好多东西都想去了解。现实是回到宿舍，打开电脑，时间飞快，该睡觉了。</p>
-</blockquote>
-<h3 id="关于周末">关于周末</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;陌生的城市，闲逛，寻求一种最初的印象。</p>
-</blockquote>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="关于旅程">关于旅程</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。</p>
-</blockquote>
-<h3 id]]>
-    </summary>
-    
-      <category term="生活" scheme="http://yoursite.com/categories/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   

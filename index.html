@@ -176,6 +176,475 @@
           
           
             
+              <a class="post-title-link" href="/2015/11/21/Vagrant/" itemprop="url">
+                Vagrant
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T15:11:35+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Vagrant/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Vagrant/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、Vagrant的认识">一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
+<blockquote>
+<p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
+</blockquote>
+<h3 id="二、安装">二、安装</h3><h4 id="1、安装_VirtualBox">1、安装 VirtualBox</h4><h4 id="2、安装_Vagrant">2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
+<blockquote>
+<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
+</blockquote>
+<h4 id="3、安装系统镜像">3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
+<ul>
+<li>新建一个文件夹，如AgentBox,然后进入目录</li>
+<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
+</ul>
+<p>3.2 通过添加box方式</p>
+<ul>
+<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
+<li><code>$ vagrant box add {title} {url}</code><ul>
+<li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
+<li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
+</ul>
+</li>
+<li>初始化开发环境<br>　　先进入box里面，然后<code>$ vagrant init AgentBox</code></li>
+<li>启动环境<code>vagrant up</code></li>
+</ul>
+<h3 id="三、常用指令">三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
+<blockquote>
+<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
+</blockquote>
+<p>2、vagrant init，初始化</p>
+<blockquote>
+<p>如果你添加的box名称不是base，那么需要在初始化的时候指定名称，例如vagrant init AgentBox</p>
+</blockquote>
+<p>3、vagrant up，启动虚拟机<br>4、vagrant ssh，ssh到虚拟机<br>5、vagrant reload，重启虚拟机（重新载入配置文件）<br>6、vagrant package –base precise64_default_1447845103364_6382 –output precise64.box打包分发<br>7、vagrant box list<br>8、vagrant status</p>
+<h3 id="四、主要配置">四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
+<p>1、box设置</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.box</span> = <span class="string">"AgentBox"</span>
+</code></pre><p>2、hostname设置</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.hostname</span> = <span class="string">"for_work"</span>
+</code></pre><p>3、虚拟机网络设置</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"private_network"</span>, ip: <span class="string">"192.168.33.10"</span>
+config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"public_network"</span>
+</code></pre><p>4、同步目录</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.synced_folder</span> <span class="string">"../data"</span>, <span class="string">"/vagrant_data"</span>
+</code></pre><p>5、端口转发</p>
+<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"forwarded_port"</span>, guest: <span class="number">80</span>, host: <span class="number">8080</span>
+</code></pre><p>6、内存和cpu核心</p>
+<pre><code>config.vm.provider <span class="string">"virtualbox"</span> do |vb|
+  <span class="comment">#Display the VirtualBox GUI when booting the machine</span>
+  vb.gui = <span class="constant">true</span>
+  <span class="comment">#Customize the amount of memory on the VM:</span>
+  vb.memory = <span class="string">"1024"</span>
+  vb.cpus = <span class="number">2</span>
+  vb.<span class="property">name</span> = <span class="string">"my_vm"</span>
+<span class="keyword">end</span>
+</code></pre><blockquote>
+<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/21/Anguar跨域请求/" itemprop="url">
+                AnguarJS跨域请求
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T13:18:41+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Anguar跨域请求/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Anguar跨域请求/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
+<h3 id="一、视图">一、视图</h3><h4 id="1-在main-html中">1.在<code>main.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"jumbotron"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"row marketing"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/createCustomer"</span>&gt;</span>Create<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/getCustomer"</span>&gt;</span>GetByName<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</code></pre><h4 id="2-在getView-html中">2.在<code>getView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the get customer by name view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"getCustomer()"</span> &gt;</span>Get<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="comment"></span>
+</code></pre><h4 id="3-在createView-html中">3.在<code>createView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the create customer view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Age<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"age"</span>/&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"createCustomer()"</span> &gt;</span>Create<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="comment"></span>
+</code></pre><h3 id="二、controller">二、controller</h3><h4 id="1-在getCustomer-js中">1.在<code>getCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>)
+  .controller(<span class="string">'GetCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
+
+     <span class="variable">$scope</span>.getCustomer = function(){
+       var url = <span class="string">'http://localhost:8080/customers?name='</span> + <span class="variable">$scope</span>.name;
+       <span class="variable">$http</span>({
+          url : url,
+          method : <span class="string">'GET'</span>
+       }).then(function(response) {
+          <span class="variable">$scope</span>.info = response.data;
+          alert(<span class="string">'Get '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
+        },function(response) {
+          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
+          alert(<span class="variable">$scope</span>.info);
+       });
+     };
+  }]);      
+</code></pre><h4 id="2-在createCustomer-js中">2.在<code>createCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>)
+  .controller(<span class="string">'CreateCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
+    <span class="variable">$scope</span>.createCustomer = function(){
+       <span class="variable">$http</span>({
+          url : <span class="string">'http://localhost:8080/customers'</span>,
+          method : <span class="string">'POST'</span>,
+          data: {
+              name : <span class="variable">$scope</span>.name,
+              age : <span class="variable">$scope</span>.age
+          }
+       }).then(function(response) {
+          <span class="variable">$scope</span>.info = response.data;
+          alert(<span class="string">'Create '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
+        },function(response) {
+          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
+          alert(<span class="variable">$scope</span>.info);
+       });
+    };
+
+  }]);
+</code></pre><h3 id="三、配置路由">三、配置路由</h3><p>在<code>app.js</code>中</p>
+<pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>, [<span class="string">'ngRoute'</span>])
+  .config(<span class="keyword">function</span> (<span class="variable">$routeProvider</span>) {
+    <span class="variable">$routeProvider</span>
+      .when(<span class="string">'/'</span>, {
+        templateUrl: <span class="string">'views/main.html'</span>
+      })
+      .when(<span class="string">'/createCustomer'</span>, {
+        templateUrl: <span class="string">'views/createView.html'</span>,
+        controller: <span class="string">'CreateCtrl'</span>
+      })
+      .when(<span class="string">'/getCustomer'</span>, {
+        templateUrl: <span class="string">'views/getView.html'</span>,
+        controller: <span class="string">'GetCtrl'</span>
+      })
+      .otherwise({
+        redirectTo: <span class="string">'/'</span>
+      });
+  });
+</code></pre><h3 id="四、基准HTML文件">四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
+<pre><code><span class="doctype">&lt;!doctype html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"utf-8"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>AngularTest<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"bower_components/bootstrap/dist/css/bootstrap.css"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"styles/main.css"</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-app</span>=<span class="value">"customerUiApp"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-view</span>=<span class="value">""</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/jquery/dist/jquery.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular/angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/bootstrap/dist/js/bootstrap.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular-route/angular-route.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/app.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/createCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/getCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
+<h3 id="五、测试">五、测试</h3><h4 id="1、在test/spec/controllers/getCustomer-js中">1、在test/spec/controllers/getCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
+
+describe(<span class="string">'Controller: GetCtrl'</span>, <span class="keyword">function</span> () {
+  beforeEach(module(<span class="string">'customerUiApp'</span>));
+
+  var GetCtrl,scope,<span class="variable">$httpBackend</span>;
+
+  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
+    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
+    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
+    GetCtrl = <span class="variable">$controller</span>(<span class="string">'GetCtrl'</span>, {
+      <span class="variable">$scope</span>: scope
+    });
+  }));
+
+  it(<span class="string">'should send get request'</span>, function () {
+    <span class="variable">$httpBackend</span>
+      .expect(<span class="string">'GET'</span>, <span class="string">'http://localhost:8080/customers?name=Alex'</span>)
+      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
+    scope.name = <span class="string">'Alex'</span>;
+
+    scope.getCustomer();
+    <span class="variable">$httpBackend</span>.flush();
+
+    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
+    expect(scope.info.age).toBe(<span class="string">'20'</span>);
+  });
+});
+</code></pre><h4 id="2、在test/spec/controllers/createCustomer-js中">2、在test/spec/controllers/createCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
+
+describe(<span class="string">'Controller: CreateCtrl'</span>, <span class="keyword">function</span> () {
+  beforeEach(module(<span class="string">'customerUiApp'</span>));
+
+  var CreateCtrl,scope,<span class="variable">$httpBackend</span>;
+
+  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
+    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
+    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
+    CreateCtrl = <span class="variable">$controller</span>(<span class="string">'CreateCtrl'</span>, {
+      <span class="variable">$scope</span>: scope
+    });
+  }));
+
+  it(<span class="string">'should send post request'</span>, function () {
+    <span class="variable">$httpBackend</span>
+      .expect(<span class="string">'POST'</span>, <span class="string">'http://localhost:8080/customers'</span>)
+      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
+    scope.name = <span class="string">'Alex'</span>;
+
+    scope.createCustomer();
+    <span class="variable">$httpBackend</span>.flush();
+
+    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
+    expect(scope.info.age).toBe(<span class="string">'20'</span>);
+  });
+});
+</code></pre><h3 id="六、运行及结果">六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口">1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt_serve启动CustomerUI">2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求">3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code><span class="keyword">open</span> /Applications/Google\ Chrome.<span class="keyword">app</span> --<span class="keyword">args</span> --allow-<span class="keyword">file</span>-access-from-files --disable-web-security
+</code></pre><h4 id="4、输入url">4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+<h4 id="5、点击GetByName">5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
+　　</p>
+<blockquote>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/21/Yeoman/" itemprop="url">
+                Yeoman
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T09:15:32+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Yeoman/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Yeoman/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、认识Yeoman">一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
+<blockquote>
+<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
+</blockquote>
+<h3 id="二、安装">二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置：">1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
+<li>Node.js 版本在0.10以上</li>
+<li>npm 版本在1.3.7以上</li>
+</ul>
+<h4 id="2、安装">2、安装</h4><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> yo grunt-cli bower</span>
+</code></pre><h3 id="三、使用">三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入">1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器">2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
+<pre><code>yo
+</code></pre><img src="/imgs/yo.png" width="400" height="300">
+<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
+<p>2.2 如果你知道要安装的生成器的名字：</p>
+<pre><code><span class="title">yo</span> angular
+</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
+<h4 id="3、选择">3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
+<h4 id="4、目录">4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
+<ul>
+<li>app/：Web应用的父级目录。<ul>
+<li>index.html： Angular应用的基准HTML文件（base html file）</li>
+<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
+<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
+<li>scripts：我们的JS文件<ul>
+<li>app.js：主程序</li>
+<li>controllers：Angular控制器</li>
+</ul>
+</li>
+<li>styles：我们的CSS文件</li>
+<li>views：Angular模板</li>
+</ul>
+</li>
+<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
+<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
+</ul>
+<h4 id="5、运行">5、运行</h4><pre><code><span class="title">grunt</span> serve
+</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/10/25/servlet-life/" itemprop="url">
                 Servlet life
               </a>
@@ -1390,594 +1859,6 @@ public class Customer
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring/" itemprop="url">
-                Spring-Auto-Wiring
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T12:09:07+08:00" content="2015-08-30">
-            2015-08-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-Auto-Wiring/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-Wiring/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>Spring支持5种自动装配模式，如下：</p>
-<table>
-<thead>
-<tr>
-<th>自动装配模式</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>no</td>
-<td style="text-align:left">默认情况下，不自动装配，通过“ref”属性手动设定。</td>
-</tr>
-<tr>
-<td>byName</td>
-<td style="text-align:left">根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。</td>
-</tr>
-<tr>
-<td>byType</td>
-<td style="text-align:left">根据Property的数据类型（Type）自动装配，如果一个bean的数据类型，兼容另一个bean中Property的数据类型，则自动装配。</td>
-</tr>
-<tr>
-<td>constructor</td>
-<td style="text-align:left">根据构造函数参数的数据类型，进行byType模式的自动装配。</td>
-</tr>
-<tr>
-<td>autodetect</td>
-<td style="text-align:left">如果发现默认的构造函数，用constructor模式，否则，用byType模式。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="一、bean">一、bean</h3><p>CustomerDAO.java</p>
-<pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
-    }    
-}
-</code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
-<pre><code><span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    CustomerDAO customerDAO;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
-        <span class="keyword">this</span>.customerDAO = customerDAO;
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
-    }            
-}
-</code></pre><h3 id="二、装配">二、装配</h3><h4 id="1、Auto-Wiring_‘no’">1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
-<pre><code>&lt;bean id=<span class="string">"customerService"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
-        &lt;property name=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean id=<span class="string">"customerDAO"</span> class=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="2、Auto-Wiring_‘byName’">2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byName"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="3、Auto-Wiring_‘byType‘">3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byType"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
-<h4 id="4、Auto-Wiring_‘constructor’">4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
-<h4 id="5、Auto-Wiring_‘autodetect">5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
-<blockquote>
-<p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
-</blockquote>
-<pre><code>&lt;bean id=<span class="string">"customer"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span> 
-            autowire=<span class="string">"autodetect"</span> dependency-check=<span class="string">"objects /&gt;
-
-&lt;bean id="</span><span class="keyword">person</span><span class="string">" class="</span>com.mkyong.customer.dao.CustomerDAO<span class="string">" /</span>
-</code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/30/Spring-Auto-scanning/" itemprop="url">
-                Spring-Auto-scanning
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T11:38:10+08:00" content="2015-08-30">
-            2015-08-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-Auto-scanning/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-scanning/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、一般的bean">一、一般的bean</h3><h4 id="1、CustomerDAO-java">1、CustomerDAO.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
-    }    
-}
-</code></pre><h4 id="2、CustomerService-java">2、CustomerService.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
-
-<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    CustomerDAO customerDAO;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
-        <span class="keyword">this</span>.customerDAO = customerDAO;
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
-    }
-
-}
-</code></pre><h4 id="3、Spring-Customer-xml">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-
-&lt;/beans&gt;
-</code></pre><h3 id="二、auto_Scanning">二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1">1、CustomerDAO.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
-
-<span class="at_rule">@<span class="keyword">Component</span>
-public class CustomerDAO 
-</span>{
-    <span class="at_rule">@<span class="keyword">Override</span>
-    public String <span class="function">toString</span>() </span>{
-        <span class="tag">return</span> "<span class="tag">Hello</span> , <span class="tag">This</span> <span class="tag">is</span> <span class="tag">CustomerDAO</span>";
-    }    
-}
-</code></pre><h4 id="2、CustomerService-java-1">2、CustomerService.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.services</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.beans</span><span class="class">.factory</span><span class="class">.annotation</span><span class="class">.Autowired</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
-
-<span class="tag">import</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span><span class="class">.CustomerDAO</span>;
-
-<span class="at_rule">@<span class="keyword">Component</span>
-public class CustomerService 
-</span>{
-    <span class="at_rule">@<span class="keyword">Autowired</span>
-    CustomerDAO customerDAO</span>;
-
-    <span class="at_rule">@<span class="keyword">Override</span>
-    public String <span class="function">toString</span>() </span>{
-        <span class="tag">return</span> "<span class="tag">CustomerService</span> <span class="attr_selector">[customerDAO=" + customerDAO + "]</span>";
-    }
-}
-</code></pre><h4 id="3、Spring-Customer-xml-1">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span>
-    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
-    http:<span class="comment">//www.springframework.org/schema/context</span>
-    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
-
-    &lt;context:component-scan base-package=<span class="string">"com.mkyong.customer"</span> /&gt;
-
-&lt;/beans&gt;
-</code></pre><h3 id="三、Antotation_Types——自动扫描组件的注释类型">三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
-<p>@Component      ——表示一个自动扫描component</p>
-<p>@Repository              ——表示持久化层的DAO component</p>
-<p>@Service             ——表示业务逻辑层的Service component</p>
-<p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
-<p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
-<h3 id="四、Spring_Filter_Components_——_在自动扫描中过滤组件">四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter_Component——include">1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
-<h5 id="（1）DAO层，在CustomerDAO-java中">（1）DAO层，在CustomerDAO.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
-    }    
-}
-</code></pre><h5 id="（2）Service层，在CustomerService-java中">（2）Service层，在CustomerService.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
-
-<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
-<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    <span class="annotation">@Autowired</span>
-    CustomerDAO customerDAO;
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
-    }
-
-}
-</code></pre><h5 id="（3）在Spring-Customer-xml中">（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation="http:<span class="comment">//www.springframework.org/schema/beans</span>
-    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
-    http:<span class="comment">//www.springframework.org/schema/context</span>
-    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
-
-    &lt;context:component-scan base-package=<span class="string">"com.mkyong"</span> &gt;
-
-        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-                       expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;
-
-        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-                       expression=<span class="string">"com.mkyong.customer.services.*Service.*"</span> /&gt;
-
-    &lt;/context:component-scan&gt;
-
-&lt;/beans&gt;
-</code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
-<h4 id="2、Filter_Component——exclude">2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
-<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei.customer"</span> &gt;
-        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"annotation"</span> 
-            expression=<span class="string">"org.springframework.stereotype.Service"</span> /&gt;        
-&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
-</code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
-<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei"</span> &gt;
-        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-            expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;        
-&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/30/Spring-JavaConfig/" itemprop="url">
-                Spring_JavaConfig
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T10:47:46+08:00" content="2015-08-30">
-            2015-08-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-JavaConfig/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-JavaConfig/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：</p>
-<pre><code><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.mkyong.core<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">properties</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">spring.version</span>&gt;</span>3.0.5.RELEASE<span class="tag">&lt;/<span class="title">spring.version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>4.8.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-        <span class="comment">&lt;!-- Spring 3 dependencies --&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-        <span class="comment">&lt;!-- JavaConfig need this library --&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-    <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
-</code></pre><h3 id="一、Spring_Bean">一、Spring Bean</h3><pre><code>package com.mkyong;
-
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span>{
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toString</span>(<span class="params">String msg</span>) </span>{
-
-        System.<span class="keyword">out</span>.println(<span class="string">"Hello : "</span> + msg);
-    }
-
-}
-</code></pre><h3 id="二、Spring配置">二、Spring配置</h3><p>1、回顾xml配置</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.HelloWorld"</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><p>2、JavaConfig，在AppConfig.java中</p>
-<pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Bean</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
-
-<span class="at_rule">@<span class="keyword">Configuration</span>
-public class AppConfig </span>{
-
-    <span class="at_rule">@<span class="keyword">Bean(name="helloBean")</span>
-    public HelloWorld <span class="function">helloWorld</span>() </span>{
-        <span class="tag">return</span> <span class="tag">new</span> <span class="tag">HelloWorld</span>();
-    }
-
-}
-</code></pre><h3 id="三、运行，在App-java中">三、运行，在App.java中</h3><pre><code><span class="keyword">package</span> com.mkyong;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> {</span>
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="typename">void</span> main(String[] args) {
-
-        <span class="comment">//ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");</span>
-        ApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(AppConfig.<span class="keyword">class</span>);
-        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
-
-        obj.toString(<span class="string">"Hello,Spring Java Config"</span>);
-
-    }
-}
-</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="rule"><span class="attribute">Hello </span>:<span class="value"> Hello,Spring Java Config</span></span>
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
-<h3 id="六、补充@Import">六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
-<h4 id="1、在xml中">1、在xml中</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/customer.xml"</span>/&gt;</span>
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/scheduler.xml"</span>/&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="2、在JavaConfig中">2、在JavaConfig中</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.config</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Import</span>;
-
-<span class="at_rule">@<span class="keyword">Configuration</span>
-@<span class="function">Import</span>(</span>{ <span class="tag">CustomerConfig</span><span class="class">.class</span>, <span class="tag">SchedulerConfig</span><span class="class">.class</span> })
-<span class="tag">public</span> <span class="tag">class</span> <span class="tag">AppConfig</span> <span class="rules">{
-
-}</span>
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2016,7 +1897,7 @@ public class AppConfig </span>{
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -2030,7 +1911,7 @@ public class AppConfig </span>{
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

@@ -1,0 +1,807 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="行是知之始，知是行之成" />
+
+
+
+  <meta name="keywords" content="AngularJS," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AnguarJS跨域请求">
+<meta property="og:url" content="http://yoursite.com/2015/11/21/Anguar跨域请求/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy">
+<meta property="og:image" content="http://yoursite.com/imgs/CustomerUI.png">
+<meta property="og:image" content="http://yoursite.com/imgs/GetByName.png">
+<meta property="og:image" content="http://yoursite.com/imgs/Authentication.png">
+<meta property="og:image" content="http://yoursite.com/imgs/GetSuccessfully.png">
+<meta property="og:image" content="http://yoursite.com/imgs/GetResults.png">
+<meta property="og:updated_time" content="2015-11-21T06:49:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AnguarJS跨域请求">
+<meta name="twitter:description" content="本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> AnguarJS跨域请求 | 若见喻笺 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">若见喻笺</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              AnguarJS跨域请求
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T13:18:41+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Anguar跨域请求/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Anguar跨域请求/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
+<h3 id="一、视图">一、视图</h3><h4 id="1-在main-html中">1.在<code>main.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"jumbotron"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"row marketing"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/createCustomer"</span>&gt;</span>Create<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/getCustomer"</span>&gt;</span>GetByName<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</code></pre><h4 id="2-在getView-html中">2.在<code>getView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the get customer by name view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"getCustomer()"</span> &gt;</span>Get<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="comment"></span>
+</code></pre><h4 id="3-在createView-html中">3.在<code>createView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the create customer view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
+<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Age<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
+<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"age"</span>/&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"createCustomer()"</span> &gt;</span>Create<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
+<span class="comment"></span>
+</code></pre><h3 id="二、controller">二、controller</h3><h4 id="1-在getCustomer-js中">1.在<code>getCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>)
+  .controller(<span class="string">'GetCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
+
+     <span class="variable">$scope</span>.getCustomer = function(){
+       var url = <span class="string">'http://localhost:8080/customers?name='</span> + <span class="variable">$scope</span>.name;
+       <span class="variable">$http</span>({
+          url : url,
+          method : <span class="string">'GET'</span>
+       }).then(function(response) {
+          <span class="variable">$scope</span>.info = response.data;
+          alert(<span class="string">'Get '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
+        },function(response) {
+          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
+          alert(<span class="variable">$scope</span>.info);
+       });
+     };
+  }]);      
+</code></pre><h4 id="2-在createCustomer-js中">2.在<code>createCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>)
+  .controller(<span class="string">'CreateCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
+    <span class="variable">$scope</span>.createCustomer = function(){
+       <span class="variable">$http</span>({
+          url : <span class="string">'http://localhost:8080/customers'</span>,
+          method : <span class="string">'POST'</span>,
+          data: {
+              name : <span class="variable">$scope</span>.name,
+              age : <span class="variable">$scope</span>.age
+          }
+       }).then(function(response) {
+          <span class="variable">$scope</span>.info = response.data;
+          alert(<span class="string">'Create '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
+        },function(response) {
+          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
+          alert(<span class="variable">$scope</span>.info);
+       });
+    };
+
+  }]);
+</code></pre><h3 id="三、配置路由">三、配置路由</h3><p>在<code>app.js</code>中</p>
+<pre><code><span class="string">'use strict'</span>;
+
+angular.module(<span class="string">'customerUiApp'</span>, [<span class="string">'ngRoute'</span>])
+  .config(<span class="keyword">function</span> (<span class="variable">$routeProvider</span>) {
+    <span class="variable">$routeProvider</span>
+      .when(<span class="string">'/'</span>, {
+        templateUrl: <span class="string">'views/main.html'</span>
+      })
+      .when(<span class="string">'/createCustomer'</span>, {
+        templateUrl: <span class="string">'views/createView.html'</span>,
+        controller: <span class="string">'CreateCtrl'</span>
+      })
+      .when(<span class="string">'/getCustomer'</span>, {
+        templateUrl: <span class="string">'views/getView.html'</span>,
+        controller: <span class="string">'GetCtrl'</span>
+      })
+      .otherwise({
+        redirectTo: <span class="string">'/'</span>
+      });
+  });
+</code></pre><h3 id="四、基准HTML文件">四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
+<pre><code><span class="doctype">&lt;!doctype html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"utf-8"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>AngularTest<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"bower_components/bootstrap/dist/css/bootstrap.css"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"styles/main.css"</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+
+  <span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-app</span>=<span class="value">"customerUiApp"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-view</span>=<span class="value">""</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/jquery/dist/jquery.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular/angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/bootstrap/dist/js/bootstrap.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular-route/angular-route.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/app.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/createCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/getCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
+<h3 id="五、测试">五、测试</h3><h4 id="1、在test/spec/controllers/getCustomer-js中">1、在test/spec/controllers/getCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
+
+describe(<span class="string">'Controller: GetCtrl'</span>, <span class="keyword">function</span> () {
+  beforeEach(module(<span class="string">'customerUiApp'</span>));
+
+  var GetCtrl,scope,<span class="variable">$httpBackend</span>;
+
+  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
+    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
+    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
+    GetCtrl = <span class="variable">$controller</span>(<span class="string">'GetCtrl'</span>, {
+      <span class="variable">$scope</span>: scope
+    });
+  }));
+
+  it(<span class="string">'should send get request'</span>, function () {
+    <span class="variable">$httpBackend</span>
+      .expect(<span class="string">'GET'</span>, <span class="string">'http://localhost:8080/customers?name=Alex'</span>)
+      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
+    scope.name = <span class="string">'Alex'</span>;
+
+    scope.getCustomer();
+    <span class="variable">$httpBackend</span>.flush();
+
+    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
+    expect(scope.info.age).toBe(<span class="string">'20'</span>);
+  });
+});
+</code></pre><h4 id="2、在test/spec/controllers/createCustomer-js中">2、在test/spec/controllers/createCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
+
+describe(<span class="string">'Controller: CreateCtrl'</span>, <span class="keyword">function</span> () {
+  beforeEach(module(<span class="string">'customerUiApp'</span>));
+
+  var CreateCtrl,scope,<span class="variable">$httpBackend</span>;
+
+  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
+    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
+    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
+    CreateCtrl = <span class="variable">$controller</span>(<span class="string">'CreateCtrl'</span>, {
+      <span class="variable">$scope</span>: scope
+    });
+  }));
+
+  it(<span class="string">'should send post request'</span>, function () {
+    <span class="variable">$httpBackend</span>
+      .expect(<span class="string">'POST'</span>, <span class="string">'http://localhost:8080/customers'</span>)
+      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
+    scope.name = <span class="string">'Alex'</span>;
+
+    scope.createCustomer();
+    <span class="variable">$httpBackend</span>.flush();
+
+    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
+    expect(scope.info.age).toBe(<span class="string">'20'</span>);
+  });
+});
+</code></pre><h3 id="六、运行及结果">六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口">1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt_serve启动CustomerUI">2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求">3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code><span class="keyword">open</span> /Applications/Google\ Chrome.<span class="keyword">app</span> --<span class="keyword">args</span> --allow-<span class="keyword">file</span>-access-from-files --disable-web-security
+</code></pre><h4 id="4、输入url">4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+<h4 id="5、点击GetByName">5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
+　　</p>
+<blockquote>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+</blockquote>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AngularJS/" rel="tag">#AngularJS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/21/Vagrant/" rel="prev">Vagrant</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/21/Yeoman/" rel="next">Yeoman</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/11/21/Anguar跨域请求/"
+                   data-title="AnguarJS跨域请求" data-url="http://yoursite.com/2015/11/21/Anguar跨域请求/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/imgs/figure.jpg" alt="Zhang Yu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Zhang Yu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">分類</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">標籤</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、视图"><span class="nav-number">1.</span> <span class="nav-text">一、视图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-在main-html中"><span class="nav-number">1.1.</span> <span class="nav-text">1.在main.html中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-在getView-html中"><span class="nav-number">1.2.</span> <span class="nav-text">2.在getView.html中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-在createView-html中"><span class="nav-number">1.3.</span> <span class="nav-text">3.在createView.html中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、controller"><span class="nav-number">2.</span> <span class="nav-text">二、controller</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-在getCustomer-js中"><span class="nav-number">2.1.</span> <span class="nav-text">1.在getCustomer.js中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-在createCustomer-js中"><span class="nav-number">2.2.</span> <span class="nav-text">2.在createCustomer.js中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、配置路由"><span class="nav-number">3.</span> <span class="nav-text">三、配置路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、基准HTML文件"><span class="nav-number">4.</span> <span class="nav-text">四、基准HTML文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、测试"><span class="nav-number">5.</span> <span class="nav-text">五、测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在test/spec/controllers/getCustomer-js中"><span class="nav-number">5.1.</span> <span class="nav-text">1、在test/spec/controllers/getCustomer.js中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、在test/spec/controllers/createCustomer-js中"><span class="nav-number">5.2.</span> <span class="nav-text">2、在test/spec/controllers/createCustomer.js中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、运行及结果"><span class="nav-number">6.</span> <span class="nav-text">六、运行及结果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、本地启动CustomerApi运行在8080端口"><span class="nav-number">6.1.</span> <span class="nav-text">1、本地启动CustomerApi运行在8080端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、grunt_serve启动CustomerUI"><span class="nav-number">6.2.</span> <span class="nav-text">2、grunt serve启动CustomerUI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、在terminal中输入下述命令，使其允许跨域请求"><span class="nav-number">6.3.</span> <span class="nav-text">3、在terminal中输入下述命令，使其允许跨域请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、输入url"><span class="nav-number">6.4.</span> <span class="nav-text">4、输入url</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、点击GetByName"><span class="nav-number">6.5.</span> <span class="nav-text">5、点击GetByName</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhangyuyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+<a href="https://github.com/zhangyuyu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-
+</body>
+</html>
