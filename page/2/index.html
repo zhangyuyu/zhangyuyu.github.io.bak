@@ -176,6 +176,208 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring-Autowired/" itemprop="url">
+                Spring-Auto-Wiring-@Autowired
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T12:52:14+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/30/Spring-Auto-Wiring-Autowired/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-Wiring-Autowired/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、bean">一、bean</h3><p>Customer.java</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class Customer 
+{
+    @Autowired
+    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private int type;
+    private String action;
+
+    //getter and setter methods
+
+    @Override
+    public String toString() {
+        return <span class="string">"Customer <span class="subst">[person=" + person + ", type=" + type + ", action="
+                + action + "]</span>"</span>;
+}
+}
+</code></pre><p>Person.java</p>
+<pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>{
+    <span class="keyword">private</span> String name;
+
+    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> name;
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>{
+        <span class="keyword">this</span>.name = name;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="string">"Person [name="</span> + name + <span class="string">"]"</span>;
+    }
+}
+</code></pre><h3 id="二、_AutowiredAnnotationBeanPostProcessor">二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
+<h4 id="1、context:annotation-config">1、context:annotation-config</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong"</span> /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor">2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
+class=&quot;org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor&quot;/&gt;</code></p>
+<h3 id="三、运行">三、运行</h3><p>在App.java中</p>
+<pre><code><span class="keyword">package</span> com.mkyong.common;
+
+<span class="keyword">import</span> org.springframework.context.ApplicationContext;
+<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
+        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
+                <span class="string">"SpringBeans.xml"</span>);
+
+        Customer cust = (Customer) context.getBean(<span class="string">"customer"</span>);
+        System.out.println(cust);
+    }
+}
+</code></pre><h3 id="四、运行结果">四、运行结果</h3><pre><code>Customer [person=Person [<span class="keyword">name</span>=mkyongA], <span class="keyword">type</span>=<span class="number">1</span>, <span class="keyword">action</span>=buy]
+</code></pre><h3 id="五、Dependency_checking">五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
+<h3 id="六、@Qualifier">六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
+<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
+    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
+    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
+    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean1"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong1"</span> /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean2"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
+        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong2"</span> /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><p>此时，在Customer.java中用@Qualifier(“PersonBean1”)就可以将PersonBean1注入到Customer的person属性中。</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+public class Customer 
+{
+    @Autowired
+    @Qualifier(<span class="string">"PersonBean1"</span>)
+    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private int type;
+    private String action;
+    //getter and setter methods
+}
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring/" itemprop="url">
                 Spring-Auto-Wiring
               </a>
@@ -1928,422 +2130,6 @@ HelloAroundMethod : Throw exception ,hello!
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/26/SpringBatch/" itemprop="url">
-                Spring Batch HelloWorld
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-26T20:28:47+08:00" content="2015-08-26">
-            2015-08-26
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/26/SpringBatch/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/26/SpringBatch/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、Spring_Batch流程">一、Spring Batch流程</h3><img src="/imgs/SpringBatch流程.png" width="600" height="300">
-<p>　　每个Batch都会包含一个Job，每个Job装了若干Step，Step读取数据，处理数据，然后将这些数据存储起来(ItemReader用来读取数据，ItemProcessor用来处理数据，ItemWriter用来写数据) 。JobLauncher用来启动Job，JobRepository是上述处理提供的一种持久化机制，它为JobLauncher，Job，和Step实例提供CRUD(Create\Retrieve\Update\Delete)操作。</p>
-<blockquote>
-<p>1 Job = Many Steps.<br>1 Step = 1 READ-PROCESS-WRITE or 1 Tasklet.<br>Job = {Step 1 -&gt; Step 2 -&gt; Step 3} (Chained together)</p>
-</blockquote>
-<p>　　从DB或是文件中取出数据的时候，read操作每次只读取一条记录，之后将读取的这条数据传递给processor(item)处理，框架将重复做这两步操作，直到读取记录的件数达到batch配置信息中”commin-interval”设定值的时候，就会调用一次write操作。然后再重复以上处理，直到处理完所有的数据。当这个Step的工作完成以后，或是跳到其他Step，或是结束处理。</p>
-<h3 id="二、Spring_Batch_Jobs">二、Spring Batch Jobs</h3><h4 id="1、content-xml">1、content.xml</h4><p>　　content.xml中定义了批处理任务中需要的基础设施，主要配置任务仓库、任务调度器、任务执行中用到的事务管理器。</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"
-    http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
-
-    <span class="comment">&lt;!-- stored job-meta in memory --&gt;</span>
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"jobRepository"</span>
-        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"transactionManager"</span> <span class="attribute">ref</span>=<span class="value">"transactionManager"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-      <span class="comment">&lt;!-- stored job-meta in database --&gt;</span>
-    <span class="comment">&lt;!--&lt;bean id="jobRepository"
-        class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean"&gt;
-        &lt;property name="dataSource" ref="dataSource" /&gt;
-        &lt;property name="transactionManager" ref="transactionManager" /&gt;
-        &lt;property name="databaseType" value="mysql" /&gt;
-    &lt;/bean&gt;--&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"transactionManager"</span>
-        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.support.transaction.ResourcelessTransactionManager"</span> /&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"jobLauncher"</span>
-        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.core.launch.support.SimpleJobLauncher"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"jobRepository"</span> <span class="attribute">ref</span>=<span class="value">"jobRepository"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="2、job-hello-world-xml">2、job-hello-world.xml</h4><img src="/imgs/helloWorldJob.png" width="600" height="300">
-<p>　　首先，helloWorldJob里面配置了读（cvsFileItemReader），写（xmlItemWriter） 以及处理（itemProcessor），并设置了commit-interval=”10”。<br>　　之后，对cvsFileItemReader中涉及的resource和lineMapper进行配置。对xmlItemWriter中涉及的resource、marshaller、rootTagName进行配置。而处理过程，则由稍后讲述的itemProcessor.java完成。</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:batch</span>=<span class="value">"http://www.springframework.org/schema/batch"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/batch
-    http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
-    http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"../config/context.xml"</span> /&gt;</span>
-    <span class="comment">&lt;!--&lt;import resource="../config/database.xml" /&gt;--&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"report"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.model.Report"</span> <span class="attribute">scope</span>=<span class="value">"prototype"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"itemProcessor"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.CustomItemProcessor"</span> /&gt;</span>
-
-    <span class="tag">&lt;<span class="title">batch:job</span> <span class="attribute">id</span>=<span class="value">"helloWorldJob"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">batch:step</span> <span class="attribute">id</span>=<span class="value">"step1"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">batch:tasklet</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">batch:chunk</span> <span class="attribute">reader</span>=<span class="value">"cvsFileItemReader"</span> <span class="attribute">writer</span>=<span class="value">"xmlItemWriter"</span> <span class="attribute">processor</span>=<span class="value">"itemProcessor"</span><span class="value">commit-interval="10"</span>&gt;</span>
-                <span class="tag">&lt;/<span class="title">batch:chunk</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">batch:tasklet</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">batch:step</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">batch:job</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"cvsFileItemReader"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.FlatFileItemReader"</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"resource"</span> <span class="attribute">value</span>=<span class="value">"classpath:cvs/input/report.csv"</span> /&gt;</span>
-
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"lineMapper"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.mapping.DefaultLineMapper"</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"lineTokenizer"</span>&gt;</span>
-                    <span class="tag">&lt;<span class="title">bean</span> 
-                        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.transform.DelimitedLineTokenizer"</span>&gt;</span>
-                        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"names"</span> <span class="attribute">value</span>=<span class="value">"id,sales,qty,staffName,date"</span> /&gt;</span>
-                    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"fieldSetMapper"</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.ReportFieldSetMapper"</span> /&gt;</span>
-                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"xmlItemWriter"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.xml.StaxEventItemWriter"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"resource"</span> <span class="attribute">value</span>=<span class="value">"file:xml/outputs/report.xml"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"marshaller"</span> <span class="attribute">ref</span>=<span class="value">"reportMarshaller"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"rootTagName"</span> <span class="attribute">value</span>=<span class="value">"report"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"reportMarshaller"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.oxm.jaxb.Jaxb2Marshaller"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"classesToBeBound"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">list</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">value</span>&gt;</span>com.mkyong.model.Report<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">list</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="3、ReportFieldSetMapper-java">3、ReportFieldSetMapper.java</h4><p>　　读取时，主要是通过ReportFieldSetMapper.java来完成report.csv到Report.java的映射。</p>
-<pre><code>package com.mkyong;
-
-<span class="built_in">import</span> java.<span class="built_in">text</span>.ParseException;
-<span class="built_in">import</span> java.<span class="built_in">text</span>.SimpleDateFormat;
-<span class="built_in">import</span> org.springframework.batch.item.file.mapping.FieldSetMapper;
-<span class="built_in">import</span> org.springframework.batch.item.file.transform.FieldSet;
-<span class="built_in">import</span> org.springframework.validation.BindException;
-<span class="built_in">import</span> com.mkyong.model.Report;
-
-public class ReportFieldSetMapper implements FieldSetMapper&lt;Report&gt; {
-
-private SimpleDateFormat dateFormat = new SimpleDateFormat<span class="params">(<span class="string">"dd/MM/yyyy"</span>)</span>;
-
-@Override
-public Report mapFieldSet<span class="params">(FieldSet fieldSet)</span> throws BindException {
-
-    Report report = new Report<span class="params">()</span>;
-    report.setId<span class="params">(fieldSet.readInt<span class="params">(<span class="number">0</span>)</span>)</span>;
-    report.setSales<span class="params">(fieldSet.readBigDecimal<span class="params">(<span class="number">1</span>)</span>)</span>;
-    report.setQty<span class="params">(fieldSet.readInt<span class="params">(<span class="number">2</span>)</span>)</span>;
-    report.setStaffName<span class="params">(fieldSet.readString<span class="params">(<span class="number">3</span>)</span>)</span>;
-
-    <span class="comment">//default format yyyy-MM-dd</span>
-    <span class="comment">//fieldSet.readDate(4);</span>
-    String date = fieldSet.readString<span class="params">(<span class="number">4</span>)</span>;
-    try {
-        report.setDate<span class="params">(dateFormat.parse<span class="params">(date)</span>)</span>;
-    } catch <span class="params">(ParseException e)</span> {
-        e.printStackTrace<span class="params">()</span>;
-    }
-
-    return report;
-}
-</code></pre><p>}</p>
-<h4 id="4、report-csv">4、report.csv</h4><pre><code><span class="number">1001</span>,<span class="string">"213,100"</span>,<span class="number">980</span>,<span class="string">"mkyong"</span>, <span class="number">29</span>/<span class="number">7</span>/<span class="number">2013</span>
-<span class="number">1002</span>,<span class="string">"320,200"</span>,<span class="number">1080</span>,<span class="string">"staff 1"</span>, <span class="number">30</span>/<span class="number">7</span>/<span class="number">2013</span>
-<span class="number">1003</span>,<span class="string">"342,197"</span>,<span class="number">1200</span>,<span class="string">"staff 2"</span>, <span class="number">31</span>/<span class="number">7</span>/<span class="number">2013</span>
-</code></pre><h4 id="5、Report-java">5、Report.java</h4><pre><code><span class="keyword">package</span> com.mkyong.model;
-
-<span class="keyword">import</span> java.math.BigDecimal;
-<span class="keyword">import</span> java.util.Date;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlAttribute;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlElement;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlRootElement;
-
-<span class="annotation">@XmlRootElement</span>(name = <span class="string">"record"</span>)
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Report</span> </span>{
-
-    <span class="keyword">private</span> <span class="keyword">int</span> id;
-    <span class="keyword">private</span> BigDecimal sales;
-    <span class="keyword">private</span> <span class="keyword">int</span> qty;
-    <span class="keyword">private</span> String staffName;
-    <span class="keyword">private</span> Date date;
-
-    <span class="annotation">@XmlAttribute</span>(name = <span class="string">"id"</span>)
-    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>{<span class="keyword">return</span> id;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>{<span class="keyword">this</span>.id = id;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"sales"</span>)
-    <span class="function"><span class="keyword">public</span> BigDecimal <span class="title">getSales</span><span class="params">()</span> </span>{<span class="keyword">return</span> sales;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSales</span><span class="params">(BigDecimal sales)</span> </span>{<span class="keyword">this</span>.sales = sales;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"qty"</span>)
-    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQty</span><span class="params">()</span> </span>{<span class="keyword">return</span> qty;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQty</span><span class="params">(<span class="keyword">int</span> qty)</span> </span>{    <span class="keyword">this</span>.qty = qty;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"staffName"</span>)
-    <span class="function"><span class="keyword">public</span> String <span class="title">getStaffName</span><span class="params">()</span> </span>{<span class="keyword">return</span> staffName;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStaffName</span><span class="params">(String staffName)</span> </span>{<span class="keyword">this</span>.staffName = staffName;}
-
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"date"</span>)
-    <span class="function"><span class="keyword">public</span> Date <span class="title">getDate</span><span class="params">()</span> </span>{<span class="keyword">return</span> date;}
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(Date date)</span> </span>{<span class="keyword">this</span>.date = date;}
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Report [id="</span> + id +
-                <span class="string">", sales="</span> + sales +
-                <span class="string">", qty="</span> + qty +
-                <span class="string">", staffName="</span> + staffName +
-                <span class="string">"]"</span>;
-    }
-}
-</code></pre><h4 id="6、CustomItemProcessor-java">6、CustomItemProcessor.java</h4><pre><code><span class="keyword">package</span> com.mkyong;
-
-<span class="keyword">import</span> org.springframework.batch.item.ItemProcessor;
-<span class="keyword">import</span> com.mkyong.model.Report;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomItemProcessor</span> <span class="keyword">implements</span> <span class="title">ItemProcessor</span>&lt;<span class="title">Report</span>, <span class="title">Report</span>&gt; </span>{
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> Report <span class="title">process</span><span class="params">(Report item)</span> <span class="keyword">throws</span> Exception </span>{
-
-        System.out.println(<span class="string">"Processing..."</span> + item);
-        <span class="keyword">return</span> item;
-    }
-}
-</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java中</p>
-<pre><code>package com.mkyong;
-
-<span class="keyword">import</span> org.springframework.batch.core.Job;
-<span class="keyword">import</span> org.springframework.batch.core.JobExecution;
-<span class="keyword">import</span> org.springframework.batch.core.JobParameters;
-<span class="keyword">import</span> org.springframework.batch.core.launch.JobLauncher;
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
-    public static <span class="keyword">void</span> main(<span class="built_in">String</span>[] args) {
-
-        <span class="built_in">String</span>[] springConfig  = {<span class="string">"spring/batch/jobs/job-hello-world.xml"</span>};
-        ApplicationContext context = 
-                <span class="keyword">new</span> ClassPathXmlApplicationContext(springConfig);
-
-        JobLauncher jobLauncher = (JobLauncher) context.getBean(<span class="string">"jobLauncher"</span>);
-        Job job = (Job) context.getBean(<span class="string">"helloWorldJob"</span>);
-
-        <span class="keyword">try</span> {
-            JobExecution execution = jobLauncher.run(job, <span class="keyword">new</span> JobParameters());
-            System.out.println(<span class="string">"Exit Status : "</span> + execution.getStatus());
-
-        } <span class="keyword">catch</span> (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(<span class="string">"Done"</span>);
-    }
-}
-</code></pre><h3 id="四、结果">四、结果</h3><p>report.xml</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-<span class="tag">&lt;<span class="title">report</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1001"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-29T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>980<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>213100<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1002"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-30T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>1080<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>320200<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>staff 1<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1003"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-31T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>1200<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>342197<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>staff 2<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">report</span>&gt;</span>
-</code></pre><p>console:</p>
-<pre><code>Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.launch.support.SimpleJobLauncher$<span class="number">1</span> run
-INFO: Job: [FlowJob: [name=helloWorldJob]] launched with the following parameters: [{}]
-Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.job.SimpleStepHandler handleStep
-INFO: Executing step: [step1]
-Processing...Report [id=<span class="number">1001</span>, sales=<span class="number">213100</span>, qty=<span class="number">980</span>, staffName=mkyong]
-Processing...Report [id=<span class="number">1002</span>, sales=<span class="number">320200</span>, qty=<span class="number">1080</span>, staffName=staff <span class="number">1</span>]
-Processing...Report [id=<span class="number">1003</span>, sales=<span class="number">342197</span>, qty=<span class="number">1200</span>, staffName=staff <span class="number">2</span>]
-Exit Status : COMPLETED
-Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.launch.support.SimpleJobLauncher$<span class="number">1</span> run
-Done
-INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following parameters: [{}] and the following status: [COMPLETED]
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/SpringBatchHelloWorld.png" width="300" height="500">
-<h3 id="六、主要领域对象">六、主要领域对象</h3><table>
-<thead>
-<tr>
-<th>领域对象</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Job</td>
-<td style="text-align:left">Batch操作的基础单元</td>
-</tr>
-<tr>
-<td>Job Instance</td>
-<td style="text-align:left">每次job执行时，都会生成一个实例，存放在JobRepository。</td>
-</tr>
-<tr>
-<td>Job Parameters</td>
-<td style="text-align:left">不同的实例是通过job参数来区分的</td>
-</tr>
-<tr>
-<td>Job Execution</td>
-<td style="text-align:left">负责具体Job的执行，每次运行Job都会启动一个新的Job执行器</td>
-</tr>
-<tr>
-<td>Job Respository</td>
-<td style="text-align:left">负责存储Job执行过程中的状态数据及结果，为JobLaunter、Job、Step提供标准的CRUD实现。</td>
-</tr>
-<tr>
-<td>Job Launcher</td>
-<td style="text-align:left">根据给定的Jon Parameter执行Job</td>
-</tr>
-<tr>
-<td>Step</td>
-<td style="text-align:left">Job的一个执行环节，一个或多个step组装成Job，封装批处理任务中得一个独立连续阶段。</td>
-</tr>
-<tr>
-<td>Step Execution</td>
-<td style="text-align:left">每次运行Step都会启动一个新的Step执行器</td>
-</tr>
-<tr>
-<td>Tasklet</td>
-<td style="text-align:left">Step中具体执行的逻辑操作，可以重复执行，可以设置具体的同步、异步操作等。</td>
-</tr>
-<tr>
-<td>Execution Context</td>
-<td style="text-align:left">执行上下文，是一组框架持久化与控制的key/value对，能够让开发者在step Execution或Job Execution范畴保存需要进行持久化的状态。</td>
-</tr>
-<tr>
-<td>Item</td>
-<td style="text-align:left">条目，一条数据记录</td>
-</tr>
-<tr>
-<td>Chunk</td>
-<td style="text-align:left">Item集合，它给定数量Item的集合，可以定义对Chunk的读操作、处理操作、写操作、提交间隔等。</td>
-</tr>
-<tr>
-<td>Item Reader</td>
-<td style="text-align:left">条目读，其表示Step读数据，一次读取一条</td>
-</tr>
-<tr>
-<td>Item Processor</td>
-<td style="text-align:left">条目处理，用于表示item的业务处理</td>
-</tr>
-<tr>
-<td>Item Writer</td>
-<td style="text-align:left">条目写，用于表示Step输出数据，一次输出一批</td>
-</tr>
-</tbody>
-</table>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2382,21 +2168,21 @@ INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following paramete
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -2437,7 +2223,7 @@ INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following paramete
       <div class="footer-inner"> <div class="copyright" >
   
   &copy; &nbsp; 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart"></i>
   </span>
