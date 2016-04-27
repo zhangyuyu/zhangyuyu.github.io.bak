@@ -176,6 +176,172 @@
           
           
             
+              <a class="post-title-link" href="/2015/10/15/手动创建Servlet过滤器/" itemprop="url">
+                手动创建Servlet过滤器
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-10-15T20:18:09+08:00" content="2015-10-15">
+            2015-10-15
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Servlet/" itemprop="url" rel="index">
+                  <span itemprop="name">Servlet</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/15/手动创建Servlet过滤器/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/15/手动创建Servlet过滤器/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：</p>
+<blockquote>
+<p>在客户端的请求访问后端资源之前，拦截这些请求。<br><br>在服务器的响应发送回客户端之前，处理这些响应。</p>
+</blockquote>
+<p>　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。</p>
+<h3 id="1、创建Filter">1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
+<pre><code><span class="keyword">import</span> java.io.*;
+<span class="keyword">import</span> javax.servlet.*;
+<span class="keyword">import</span> javax.servlet.http.*;
+<span class="keyword">import</span> java.util.*;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span>  </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">init</span><span class="params">(FilterConfig config)</span> 
+                         <span class="keyword">throws</span> ServletException</span>{
+        <span class="comment">// 获取初始化参数</span>
+        String testParam = config.getInitParameter(<span class="string">"test-param"</span>); 
+
+        <span class="comment">// 输出初始化参数</span>
+        System.out.println(<span class="string">"********Test Param: "</span> + testParam); 
+
+   }
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">doFilter</span><span class="params">(ServletRequest request, 
+                 ServletResponse response,
+                 FilterChain chain)</span> 
+                 <span class="keyword">throws</span> java.io.IOException, ServletException </span>{
+
+        PrintWriter out = response.getWriter();
+        out.println(<span class="string">"[ Time : "</span>+ <span class="keyword">new</span> Date().toString()+<span class="string">" ]"</span>);    
+        <span class="comment">// 把请求传回过滤链</span>
+        chain.doFilter(request,response);
+   }
+   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">( )</span></span>{
+      <span class="comment">/* 在 Filter 实例被 Web 容器从服务移除之前调用 */</span>
+   }
+ }
+</code></pre><p>　　过滤器是一个实现了 javax.servlet.Filter 接口的Java类.javax.servlet.Filter 接口定义了三个方法:</p>
+<blockquote>
+<p>（1）public void doFilter (ServletRequest, ServletResponse, FilterChain)<br>该方法在每次一个请求/响应对因客户端在链的末端请求资源而通过链传递时由容器调用。<br><br>（2）public void init(FilterConfig filterConfig)<br>该方法由Web容器调用，指示一个过滤器被放入服务。<br><br>（3）public void destroy()<br>该方法由Web容器调用，指示一个过滤器被取出服务。</p>
+</blockquote>
+<h3 id="2、编译">2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
+<pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26、libexec/</span>webapps<span class="regexp">/test/</span>WEB-INF<span class="regexp">/classes/</span>LogFilter.java
+</code></pre><h3 id="3、部署">3、部署</h3><pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
+<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/test<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">filter</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">filter-class</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-class</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>test-param<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>Initialization Paramter<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
+       <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">filter</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">filter-mapping</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
+       <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">filter-mapping</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
+</code></pre><p>　　过滤器被部署在部署web.xml中然后映射到部署的Servlet名称或 URL模式。有多个过滤器时，执行的顺序是按它们在声明的顺序。
+　　</p>
+<h3 id="4、启动tomcat">4、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="5、运行">5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
+　　</p>
+<h3 id="6、结果">6、结果</h3><pre><code>[ Time : Thu Oct <span class="number">15</span> <span class="number">20</span>:<span class="number">56</span>:<span class="number">29</span> CST <span class="number">2015</span> ]
+Hello World
+</code></pre><h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
+    <span class="string">|---WEB-INF</span>
+        <span class="string">|---classes</span>
+            <span class="string">|---ServletExample.java</span>
+            <span class="string">|---LogFilter.java</span>
+        <span class="string">|---lib</span>
+        <span class="string">|---web.xml</span>
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/09/20/手动创建Servlet连接数据库/" itemprop="url">
                 手动创建Servlet连接数据库
               </a>
@@ -1767,228 +1933,6 @@ Execution failed <span class="keyword">for</span> task <span class="string">':my
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/29/Gradle/" itemprop="url">
-                Gradle
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-29T00:01:59+08:00" content="2015-08-29">
-            2015-08-29
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Gradle/" itemprop="url" rel="index">
-                  <span itemprop="name">Gradle</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/29/Gradle/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/29/Gradle/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。<br>　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Property以完成特定的操作。<br>　　gradle命令在当前路径下寻找一个叫build.gradle的文件夹，也叫做build script,严格来说build configuration script，它定义了project和其tasks.</p>
-<h3 id="一、HelloWorld">一、HelloWorld</h3><h4 id="1、调用Project的task()方法">1、调用Project的task()方法</h4><p>在build.gradle中</p>
-<pre><code><span class="keyword">task</span> hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
-}
-</code></pre><p>　　其中<code>&lt;&lt;</code>表示向hello中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
-<h4 id="2、使用doLast加入执行过程">2、使用doLast加入执行过程</h4><pre><code><span class="keyword">task</span> hello {
-        <span class="keyword">doLast</span> {
-            <span class="keyword">println</span> <span class="string">'Hello world!'</span>
-        }
-    }    
-</code></pre><h4 id="3、create方式">3、create方式</h4><pre><code><span class="tag">tasks</span><span class="class">.create</span>(<span class="rule"><span class="attribute">name</span>:<span class="value"> <span class="string">'hello'</span>) &lt;&lt; {
-   println <span class="string">'Hello world!'</span>
-}</span></span>
-</code></pre><h4 id="4、运行，结果">4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
-<pre><code>$ gradle -<span class="tag">q</span> hello
-Hello world!
-</code></pre><p>　　</p>
-<h3 id="二、使用Grovvy">二、使用Grovvy</h3><h4 id="eg1:">eg1:</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> upper &lt;&lt; {
-    String someString = <span class="string">'mY_nAmE'</span>
-    <span class="keyword">println</span> <span class="string">"Original: "</span> + someString 
-    <span class="keyword">println</span> <span class="string">"Upper case: "</span> + someString.toUpperCase()
-}
-</code></pre><p>Terminal：</p>
-<pre><code>$ gradle -q upper
-<span class="string">Original:</span> mY_nAmE
-Upper <span class="string">case:</span> MY_NAME
-</code></pre><h4 id="eg2:">eg2:</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> <span class="keyword">count</span> &lt;&lt; {
-    <span class="number">4</span>.<span class="keyword">times</span> { <span class="keyword">print</span> <span class="string">"$it "</span> }
-}
-</code></pre><p>Terminal:</p>
-<pre><code>$ gradle -q count
-<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> 
-</code></pre><h3 id="三、task依赖">三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
-<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候：">1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> taskX &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskY!'</span>
-}
-<span class="keyword">task</span> taskY(dependsOn: taskX){
-    <span class="keyword">println</span> <span class="string">"taskX!"</span>
-}
-</code></pre><p>Terminal:</p>
-<pre><code>&gt; gradle -<span class="tag">q</span> taskY
-taskX
-taskY
-</code></pre><h4 id="2、被依赖的Task还不存在的时候">2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
-<pre><code><span class="keyword">task</span> taskX(dependsOn: <span class="string">'taskY'</span>) &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskX'</span>
-}
-<span class="keyword">task</span> taskY &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskY'</span>    
-}
-</code></pre><p>Terminal:</p>
-<pre><code>$ gradle -<span class="tag">q</span> taskX
-taskY
-taskX    
-</code></pre><h4 id="3、Example">3、Example</h4><p>gradle.build</p>
-<pre><code><span class="title">task</span> branch &lt;&lt; {
-    <span class="title">println</span> <span class="string">"use version=<span class="variable">$version</span>"</span>
-}
-
-task myTask(dependsOn: <span class="string">'mybranch'</span>) &lt;&lt; {
-    <span class="title">println</span> <span class="string">'this is my task!'</span>
-}
-
-gradle.taskGraph.whenReady {<span class="title">taskGraph</span> -&gt;
-    if (taskGraph.hasTask(myTask)) {
-        <span class="title">version</span> = <span class="string">'1.0'</span>
-    } else {
-        <span class="title">version</span> = <span class="string">'2.0'</span>
-    }
-}    
-</code></pre><p>Terminal:</p>
-<pre><code>$ gradle -q branch  
-<span class="operator"><span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">2.0</span>
-$ gradle -q myTask
-<span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">1.0</span>
-this <span class="keyword">is</span> my task!</span>
-</code></pre><h3 id="四、动态task">四、动态task</h3><p>build.gradle:</p>
-<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
-    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
-        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
-    }
-}
-</code></pre><p>Ternimal:</p>
-<pre><code>$ gradle -<span class="tag">q</span> task1
-I<span class="string">'m task number 1</span>
-</code></pre><p>　　注意，task是从0开始的，即此处存在task0、task1、task2、task3。可输入<code>gradle tasks</code>查看所有task。</p>
-<h3 id="五、操控现有task">五、操控现有task</h3><h4 id="1、添加依赖">1、添加依赖</h4><p>build.gradle:</p>
-<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
-    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
-        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
-    }
-}
-task0.dependsOn task2, task3
-</code></pre><p>Terminal:</p>
-<pre><code>$ gradle -q task0
-I'm task <span class="type">number</span> <span class="number">2</span>
-I'm task <span class="type">number</span> <span class="number">3</span>
-I'm task <span class="type">number</span> <span class="number">0</span>
-</code></pre><h4 id="2、添加行为">2、添加行为</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
-}
-hello.<span class="keyword">doFirst</span> {
-    <span class="keyword">println</span> <span class="string">'Hello first'</span>
-}
-hello.<span class="keyword">doLast</span> {
-    <span class="keyword">println</span> <span class="string">'Hello last'</span>
-}
-hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello hello!'</span>
-}
-</code></pre><p>Treminal:</p>
-<pre><code>$ gradle -q hello
-Hello <span class="keyword">first</span>
-Hello world!
-Hello <span class="keyword">last</span>
-Hello hello!
-</code></pre><h3 id="六、默认task">六、默认task</h3><p>build.gradle:</p>
-<pre><code>defaultTasks <span class="string">'clean'</span>, <span class="string">'run'</span>
-
-<span class="keyword">task</span> clean &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Default Cleaning!'</span>
-}
-
-<span class="keyword">task</span> run &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Default Running!'</span>
-}
-
-<span class="keyword">task</span> other &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">"I'm not a default task!"</span>
-}
-</code></pre><p>Terminal:</p>
-<pre><code>$ gradle -q
-<span class="keyword">Default</span> Cleaning!
-<span class="keyword">Default</span> Running!
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2027,7 +1971,7 @@ Hello hello!
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">29</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -2041,7 +1985,7 @@ Hello hello!
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

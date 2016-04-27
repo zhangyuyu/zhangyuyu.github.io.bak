@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Servlet," />
+  <meta name="keywords" content="MicroServices Consul," />
 
 
 
@@ -41,16 +41,45 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="1、创建servlet　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为WEB-INF的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件Ser">
+<meta name="description" content="术语
+Agent
+Client
+Server
+DataCenter
+Gossip
+Consensus
+RPC
+
+Agent　　Consul agent有两种运行模式：Server 和 Client。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只">
 <meta property="og:type" content="article">
-<meta property="og:title" content="手动创建Servlet">
-<meta property="og:url" content="http://yoursite.com/2015/09/20/手动创建Servlet/index.html">
+<meta property="og:title" content="Consul架构">
+<meta property="og:url" content="http://yoursite.com/2016/04/27/微服务-consul架构/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="1、创建servlet　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为WEB-INF的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件Ser">
-<meta property="og:updated_time" content="2015-10-21T14:32:23.000Z">
+<meta property="og:description" content="术语
+Agent
+Client
+Server
+DataCenter
+Gossip
+Consensus
+RPC
+
+Agent　　Consul agent有两种运行模式：Server 和 Client。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只">
+<meta property="og:image" content="http://yoursite.com/imgs/consul-arch.jpg">
+<meta property="og:image" content="http://yoursite.com/imgs/consul-EC2.png">
+<meta property="og:updated_time" content="2016-04-27T12:44:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="手动创建Servlet">
-<meta name="twitter:description" content="1、创建servlet　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为WEB-INF的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件Ser">
+<meta name="twitter:title" content="Consul架构">
+<meta name="twitter:description" content="术语
+Agent
+Client
+Server
+DataCenter
+Gossip
+Consensus
+RPC
+
+Agent　　Consul agent有两种运行模式：Server 和 Client。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -60,7 +89,7 @@
   };
 </script>
 
-  <title> 手动创建Servlet | 若见喻笺 </title>
+  <title> Consul架构 | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -175,7 +204,7 @@
           
           
             
-              手动创建Servlet
+              Consul架构
             
           
         </h1>
@@ -184,8 +213,8 @@
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2015-09-20T09:34:01+08:00" content="2015-09-20">
-            2015-09-20
+          <time itemprop="dateCreated" datetime="2016-04-27T19:10:52+08:00" content="2016-04-27">
+            2016-04-27
           </time>
         </span>
 
@@ -194,8 +223,8 @@
             &nbsp; | &nbsp; 分類於
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Servlet/" itemprop="url" rel="index">
-                  <span itemprop="name">Servlet</span>
+                <a href="/categories/MicroServices/" itemprop="url" rel="index">
+                  <span itemprop="name">MicroServices</span>
                 </a>
               </span>
 
@@ -210,8 +239,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/09/20/手动创建Servlet/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/20/手动创建Servlet/" itemprop="commentsCount"></span>
+              <a href="/2016/04/27/微服务-consul架构/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/27/微服务-consul架构/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -225,74 +254,36 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="1、创建servlet">1、创建servlet</h3><p>　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）<br>　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为<em>WEB-INF</em>的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件ServletExample.java</p>
-<pre><code><span class="keyword">import</span> javax.servlet.*;
-<span class="keyword">import</span> java.io.IOException;
-<span class="keyword">import</span> java.io.PrintWriter;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletExample</span> <span class="keyword">implements</span> <span class="title">Servlet</span> </span>{
-    <span class="keyword">private</span> <span class="keyword">int</span> count;
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException </span>{
-
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="keyword">null</span>;
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>{
-        PrintWriter out = servletResponse.getWriter();
-        out.print(<span class="string">"Hello World"</span>);
-
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">getServletInfo</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="keyword">null</span>;
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>{
-
-    }
-}
-</code></pre><h3 id="2、编译生成class文件">2、编译生成class文件</h3><p>　　进行编译，这时候要手动指明jar包的位置，不然的话会找不到。</p>
-<pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/ServletExample.java</span>
-</code></pre><h3 id="3、部署servlet">3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
-    <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
-
-    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/test<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>　　
-</code></pre><p>　　其中，<servlet-name>对应创建的servlet的java文件名，<servlet-class>指明servlet所在的的路径包括包和类名，<url-pattern>可以任意取。每添加一个servlet时就必须在web.xml中进行部署。</url-pattern></servlet-class></servlet-name></p>
-<h3 id="4、启动tomcat">4、启动tomcat</h3><p>　　到tomcat的bin目录下，运行startup.sh文件。(保险起见，可以在运行startup.sh之前，先运行shutdown.sh)</p>
-<pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
-$ ./startup.sh    
-</code></pre><h3 id="5、运行及结果">5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/test，结果为显示`Hello" target="_blank" rel="external">http://localhost:8080/test/test，结果为显示`Hello</a> World`　</p>
-<h3 id="6、目录结构">6、目录结构</h3><pre><code><span class="string">|---test</span>
-    <span class="string">|---WEB-INF</span>
-        <span class="string">|---classes</span>
-            <span class="string">|---ServletExample.java</span>
-        <span class="string">|---lib</span>
-        <span class="string">|---web.xml</span>
-</code></pre><p>　　</p>
+        <span itemprop="articleBody"><h3 id="术语">术语</h3><ul>
+<li><a href="#agent">Agent</a></li>
+<li><a href="#client">Client</a></li>
+<li><a href="#server">Server</a></li>
+<li><a href="#datacenter">DataCenter</a></li>
+<li><a href="#gossip">Gossip</a></li>
+<li><a href="#consensus">Consensus</a></li>
+<li><a href="#rpc">RPC</a></li>
+</ul>
+<h4 id="Agent"><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
+<h4 id="Client"><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
+<h4 id="Server"><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
+<h4 id="DataCenter"><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
+<h4 id="Gossip"><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
+<h4 id="Consensus"><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a></p>
+<h4 id="RPC"><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="external">Remote Procedure Call</a></p>
+<p>　　下图为Consul的架构图：<br><img src="/imgs/consul-arch.jpg" width="400" height="250"></p>
+<h3 id="使用Consul发现服务的三个组件">使用Consul发现服务的三个组件</h3><ol>
+<li><p>Consul 存储服务信息<br>　　tool to store information about services</p>
+</li>
+<li><p>Registrator 注册Docker服务<br>　　tool to register Docker servicecs</p>
+</li>
+<li><p>Consul-template 查询注册的服务并应用配置<br>　　tool to query registered services and apply configuration</p>
+</li>
+</ol>
+<p>　　下图为Consul和ECS之间一起运作的架构：<br><img src="/imgs/consul-EC2.png" width="400" height="250"></p>
 <blockquote>
-<p>此外，可以在tomcat下的conf里的tomcat-users.xml配置username和password进行manager webapp。</p>
-<pre><code><span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"zhang'yu"</span>/&gt;</span>
-<span class="tag">&lt;<span class="title">user</span> <span class="attribute">username</span>=<span class="value">"用户名"</span> <span class="attribute">password</span>=<span class="value">"密码"</span> <span class="attribute">roles</span>=<span class="value">"manager-gui"</span>/&gt;</span>
-</code></pre></blockquote>
+<p>Consul官网对于Consul架构的解释:<br><br><a href="https://www.consul.io/docs/internals/architecture.html" target="_blank" rel="external">CONSUL ARCHITECTURE</a><br></p>
+<p>Amazon官网上的博客:<br><br><a href="https://aws.amazon.com/blogs/compute/service-discovery-via-consul-with-amazon-ecs/" target="_blank" rel="external">Service Discovery via Consul with Amazon ECS</a><br><br>翻译的中文版地址:<br><br><a href="http://yaowenjie.github.io/cloud/service-discovery-via-consul-with-amazon-ecs" target="_blank" rel="external">在ECS上使用Consul实现服务发现</a></p>
+</blockquote>
 </span>
       
     </div>
@@ -301,7 +292,7 @@ $ ./startup.sh
       
         <div class="post-tags">
           
-            <a href="/tags/Servlet/" rel="tag">#Servlet</a>
+            <a href="/tags/MicroServices-Consul/" rel="tag">#MicroServices Consul</a>
           
         </div>
       
@@ -310,13 +301,11 @@ $ ./startup.sh
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/20/手动创建Servlet转发页面/" rel="prev">手动创建Servlet转发页面</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/30/Spring-Auto-Wiring-Autowired/" rel="next">Spring-Auto-Wiring-@Autowired</a>
+              <a href="/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/" rel="next">微服务-服务发现工具：ZooKeeper vs etcd vs Consul</a>
             
           </div>
         </div>
@@ -341,8 +330,8 @@ $ ./startup.sh
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/09/20/手动创建Servlet/"
-                   data-title="手动创建Servlet" data-url="http://yoursite.com/2015/09/20/手动创建Servlet/">
+              <div class="ds-thread" data-thread-key="2016/04/27/微服务-consul架构/"
+                   data-title="Consul架构" data-url="http://yoursite.com/2016/04/27/微服务-consul架构/">
               </div>
             
           </div>
@@ -431,7 +420,7 @@ $ ./startup.sh
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、创建servlet"><span class="nav-number">1.</span> <span class="nav-text">1、创建servlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、编译生成class文件"><span class="nav-number">2.</span> <span class="nav-text">2、编译生成class文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、部署servlet"><span class="nav-number">3.</span> <span class="nav-text">3、部署servlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、启动tomcat"><span class="nav-number">4.</span> <span class="nav-text">4、启动tomcat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、运行及结果"><span class="nav-number">5.</span> <span class="nav-text">5、运行及结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、目录结构"><span class="nav-number">6.</span> <span class="nav-text">6、目录结构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#术语"><span class="nav-number">1.</span> <span class="nav-text">术语</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Agent"><span class="nav-number">1.1.</span> <span class="nav-text">Agent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Client"><span class="nav-number">1.2.</span> <span class="nav-text">Client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Server"><span class="nav-number">1.3.</span> <span class="nav-text">Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DataCenter"><span class="nav-number">1.4.</span> <span class="nav-text">DataCenter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gossip"><span class="nav-number">1.5.</span> <span class="nav-text">Gossip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Consensus"><span class="nav-number">1.6.</span> <span class="nav-text">Consensus</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPC"><span class="nav-number">1.7.</span> <span class="nav-text">RPC</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Consul发现服务的三个组件"><span class="nav-number">2.</span> <span class="nav-text">使用Consul发现服务的三个组件</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
