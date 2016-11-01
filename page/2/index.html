@@ -176,6 +176,204 @@
           
           
             
+              <a class="post-title-link" href="/2015/10/15/手动创建Servlet异常处理/" itemprop="url">
+                手动创建Servlet异常处理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-10-15T21:19:45+08:00" content="2015-10-15">
+            2015-10-15
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Servlet/" itemprop="url" rel="index">
+                  <span itemprop="name">Servlet</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/15/手动创建Servlet异常处理/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/15/手动创建Servlet异常处理/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="1、创建产生异常的servlet">1、创建产生异常的servlet</h3><p>在ExceptionServlet.java中：</p>
+<pre><code><span class="keyword">import</span> javax.servlet.*;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.io.PrintWriter;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionServlet</span> <span class="keyword">implements</span> <span class="title">Servlet</span> </span>{
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span> </span>{
+
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>{
+        <span class="keyword">throw</span> <span class="keyword">new</span> ServletException(<span class="string">"hello"</span>);  
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> String <span class="title">getServletInfo</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>{
+
+    }
+}
+</code></pre><h3 id="2、创建异常处理类">2、创建异常处理类</h3><p>在ErrorHandle.java中：</p>
+<pre><code><span class="built_in">import</span> java.io.<span class="built_in">*</span>;
+<span class="built_in">import</span> javax.servlet.<span class="built_in">*</span>;
+<span class="built_in">import</span> javax.servlet.http.<span class="built_in">*</span>;
+<span class="built_in">import</span> java.util.<span class="built_in">*</span>;
+
+<span class="comment">// 扩展 HttpServlet 类</span>
+public class ErrorHandler extends HttpServlet {
+
+  <span class="comment">// 处理 GET 方法请求的方法</span>
+  public void doGet<span class="params">(HttpServletRequest request, HttpServletResponse response)</span>
+            throws ServletException, IOException
+  {
+      PrintWriter out = response.getWriter<span class="params">()</span>;
+      <span class="comment">// 分析 Servlet 异常       </span>
+      Throwable throwable = <span class="params">(Throwable)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.exception"</span>)</span>;
+      Integer statusCode = <span class="params">(Integer)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.status_code"</span>)</span>;
+      String servletName = <span class="params">(String)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.servlet_name"</span>)</span>;
+      String requestUri = <span class="params">(String)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.request_uri"</span>)</span>;
+
+      <span class="keyword">if</span> <span class="params">(throwable != null)</span>{
+         out.println<span class="params">(<span class="string">"Exception Type : "</span> + throwable.getClass<span class="params">( )</span>.getName<span class="params">( )</span>)</span>;
+         out.println<span class="params">(<span class="string">"The exception message: "</span> + throwable.getMessage<span class="params">( )</span>)</span>;
+      }
+      <span class="keyword">if</span> <span class="params">(statusCode != null)</span>{
+         out.println<span class="params">(<span class="string">"The status code : "</span> + statusCode)</span>;
+      }
+      out.println<span class="params">(<span class="string">"Servlet Name : "</span> + servletName)</span>;
+      out.println<span class="params">(<span class="string">"The request URI: "</span> + requestUri)</span>;
+
+  }
+  <span class="comment">// 处理 POST 方法请求的方法</span>
+  public void doPost<span class="params">(HttpServletRequest request, HttpServletResponse response)</span>
+      throws ServletException, IOException {
+     doGet<span class="params">(request, response)</span>;
+  }
+}
+</code></pre><h3 id="3、编译">3、编译</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="comment">/*.java</span>
+</code></pre><h3 id="4、部署">4、部署</h3><p>在web.xml中</p>
+<pre><code><span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>403<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>javax.servlet.ServletException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>java.io.IOException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/errorr<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+</code></pre><h3 id="5、启动tomcat">5、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="6、运行及结果">6、运行及结果</h3><p>　　使用上面会产生异常的Servlet，或者输入一个错误的URL，会触发Web容器调用ErrorHandler的Servlet，并显示适当的信息。<br><br>　　如果使用上面会产生异常的ExceptionServlet(<a href="http://localhost:8080/test/exception)，那么它将显示：" target="_blank" rel="external">http://localhost:8080/test/exception)，那么它将显示：</a></p>
+<blockquote>
+<p>Exception Type : javax.servlet.ServletException<br><br>The exception message: hello<br><br>The status code : 500<br><br>Servlet Name : ExceptionServlet<br><br>The request URI: /test/exception</p>
+</blockquote>
+<p>　　如果输入了一个错误的URL(<a href="http://localhost:8080/test/ex)，那么它将显示`The" target="_blank" rel="external">http://localhost:8080/test/ex)，那么它将显示`The</a> status code : 404`
+　　</p>
+<h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
+    <span class="string">|---WEB-INF</span>
+        <span class="string">|---classes</span>
+            <span class="string">|---ServletException.java</span>
+            <span class="string">|---ErrorHandler.java</span>
+        <span class="string">|---lib</span>
+        <span class="string">|---web.xml</span>
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/10/15/手动创建Servlet过滤器/" itemprop="url">
                 手动创建Servlet过滤器
               </a>
@@ -1789,150 +1987,6 @@ public class AppConfig </span>{
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/29/Gradle-property/" itemprop="url">
-                Gradle-property
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-29T10:38:22+08:00" content="2015-08-29">
-            2015-08-29
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Gradle/" itemprop="url" rel="index">
-                  <span itemprop="name">Gradle</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/29/Gradle-property/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/29/Gradle-property/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　很多Plugin都会向Project中加入额外的Property，在使用这些Plugin时，我们需要对这些Property进行赋值。<br>　　Gradle在默认情况下已经为Project定义了很多Property，其中比较常用的有：</p>
-<blockquote>
-<p>project：Project本身<br>name：Project的名字<br>path：Project的绝对路径<br>description：Project的描述信息<br>buildDir：Project构建结果存放目录<br>version：Project的版本号</p>
-</blockquote>
-<h3 id="一、project属性配置">一、project属性配置</h3><pre><code>version = <span class="string">'this is the project version'</span>
-<span class="keyword">description</span> = <span class="string">'this is the project description'</span>
-<span class="keyword">task</span> showProjectProperties &lt;&lt; {
-  <span class="keyword">println</span> version
-  <span class="keyword">println</span> <span class="keyword">project</span>.<span class="keyword">description</span>
-}
-</code></pre><p>　　注意，在打印description时，我们使用了project.description，而不是直接使用description。原因在于，Project和Task都拥有description属性，而定义Task的闭包将delegate设置成了当前的Task，故如果直接使用description，此时打印的是showProjectProperties的description，而不是Project的，所以我们需要显式地指明project。</p>
-<h3 id="二、Task属性配置">二、Task属性配置</h3><h4 id="1、对desctiption属性的配置">1、对desctiption属性的配置</h4><h5 id="（1）定义时候对description属性的配置">（1）定义时候对description属性的配置</h5><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
-  <span class="keyword">println</span> <span class="keyword">description</span>
-}
-</code></pre><h5 id="（2）myTask-description">（2）myTask.description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-      <span class="keyword">println</span> <span class="keyword">description</span>
-}
-myTask.<span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
-</code></pre><h5 id="(3)_同名的方法中设置description">(3) 同名的方法中设置description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-      <span class="keyword">println</span> <span class="keyword">description</span>
-}
-myTask{
-      <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
-}
-</code></pre><h5 id="(4）调用Task的configure()方法,配置description属性">(4）调用Task的configure()方法,配置description属性</h5><p>build.gradle</p>
-<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-  <span class="keyword">println</span> <span class="keyword">description</span>
-}
-myTask.configure {
-  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
-}
-</code></pre><p>运行，结果：</p>
-<pre><code>$ gradle -q myTask
-<span class="keyword">this</span> <span class="keyword">is</span> myProperty
-</code></pre><h4 id="2、自定义属性的配置">2、自定义属性的配置</h4><h5 id="(1)_额外自定义属性的配置">(1) 额外自定义属性的配置</h5><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> myTask {
-    ext.myProperty = <span class="string">"this is myProperty"</span>
-}
-
-<span class="keyword">task</span> printTaskProperties &lt;&lt; {
-    <span class="keyword">println</span> myTask.myProperty
-}
-</code></pre><p>也可以使用闭包的方式：</p>
-<pre><code><span class="title">ext</span> { <span class="title">myProperty</span> = <span class="string">"this is myProperty"</span>}
-</code></pre><p>Terminal:</p>
-<pre><code>$ gradle -q printTaskProperties
-<span class="keyword">this</span> <span class="keyword">is</span> myProperty
-</code></pre><h5 id="(2)_通过命令行参数自定义Property">(2) 通过命令行参数自定义Property</h5><p>build.gradle</p>
-<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-      <span class="keyword">println</span> myProperty
-}
-</code></pre><p>此时，会报错：</p>
-<pre><code>* What went wrong:
-Execution failed <span class="keyword">for</span> task <span class="string">':myTask'</span>.
-&gt; Could <span class="keyword">not</span> find <span class="keyword">property</span> <span class="string">'myProperty'</span> <span class="keyword">on</span> task <span class="string">':myTask'</span>.
-</code></pre><p>　　表示myProperty并没有被定义，在调用gradle命令时，通过-P参数传入该Property：</p>
-<pre><code>$ gradle -PmyProperty=<span class="string">"this is myProperty"</span> myTask                  
-:myTask
-<span class="keyword">this</span> <span class="keyword">is</span> myProperty
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1971,21 +2025,21 @@ Execution failed <span class="keyword">for</span> task <span class="string">':my
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

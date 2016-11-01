@@ -176,6 +176,150 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/29/Gradle-property/" itemprop="url">
+                Gradle-property
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-29T10:38:22+08:00" content="2015-08-29">
+            2015-08-29
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Gradle/" itemprop="url" rel="index">
+                  <span itemprop="name">Gradle</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/29/Gradle-property/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/29/Gradle-property/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　很多Plugin都会向Project中加入额外的Property，在使用这些Plugin时，我们需要对这些Property进行赋值。<br>　　Gradle在默认情况下已经为Project定义了很多Property，其中比较常用的有：</p>
+<blockquote>
+<p>project：Project本身<br>name：Project的名字<br>path：Project的绝对路径<br>description：Project的描述信息<br>buildDir：Project构建结果存放目录<br>version：Project的版本号</p>
+</blockquote>
+<h3 id="一、project属性配置">一、project属性配置</h3><pre><code>version = <span class="string">'this is the project version'</span>
+<span class="keyword">description</span> = <span class="string">'this is the project description'</span>
+<span class="keyword">task</span> showProjectProperties &lt;&lt; {
+  <span class="keyword">println</span> version
+  <span class="keyword">println</span> <span class="keyword">project</span>.<span class="keyword">description</span>
+}
+</code></pre><p>　　注意，在打印description时，我们使用了project.description，而不是直接使用description。原因在于，Project和Task都拥有description属性，而定义Task的闭包将delegate设置成了当前的Task，故如果直接使用description，此时打印的是showProjectProperties的description，而不是Project的，所以我们需要显式地指明project。</p>
+<h3 id="二、Task属性配置">二、Task属性配置</h3><h4 id="1、对desctiption属性的配置">1、对desctiption属性的配置</h4><h5 id="（1）定义时候对description属性的配置">（1）定义时候对description属性的配置</h5><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+  <span class="keyword">println</span> <span class="keyword">description</span>
+}
+</code></pre><h5 id="（2）myTask-description">（2）myTask.description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+      <span class="keyword">println</span> <span class="keyword">description</span>
+}
+myTask.<span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+</code></pre><h5 id="(3)_同名的方法中设置description">(3) 同名的方法中设置description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+      <span class="keyword">println</span> <span class="keyword">description</span>
+}
+myTask{
+      <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+}
+</code></pre><h5 id="(4）调用Task的configure()方法,配置description属性">(4）调用Task的configure()方法,配置description属性</h5><p>build.gradle</p>
+<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+  <span class="keyword">println</span> <span class="keyword">description</span>
+}
+myTask.configure {
+  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+}
+</code></pre><p>运行，结果：</p>
+<pre><code>$ gradle -q myTask
+<span class="keyword">this</span> <span class="keyword">is</span> myProperty
+</code></pre><h4 id="2、自定义属性的配置">2、自定义属性的配置</h4><h5 id="(1)_额外自定义属性的配置">(1) 额外自定义属性的配置</h5><p>build.gradle:</p>
+<pre><code><span class="keyword">task</span> myTask {
+    ext.myProperty = <span class="string">"this is myProperty"</span>
+}
+
+<span class="keyword">task</span> printTaskProperties &lt;&lt; {
+    <span class="keyword">println</span> myTask.myProperty
+}
+</code></pre><p>也可以使用闭包的方式：</p>
+<pre><code><span class="title">ext</span> { <span class="title">myProperty</span> = <span class="string">"this is myProperty"</span>}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q printTaskProperties
+<span class="keyword">this</span> <span class="keyword">is</span> myProperty
+</code></pre><h5 id="(2)_通过命令行参数自定义Property">(2) 通过命令行参数自定义Property</h5><p>build.gradle</p>
+<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
+      <span class="keyword">println</span> myProperty
+}
+</code></pre><p>此时，会报错：</p>
+<pre><code>* What went wrong:
+Execution failed <span class="keyword">for</span> task <span class="string">':myTask'</span>.
+&gt; Could <span class="keyword">not</span> find <span class="keyword">property</span> <span class="string">'myProperty'</span> <span class="keyword">on</span> task <span class="string">':myTask'</span>.
+</code></pre><p>　　表示myProperty并没有被定义，在调用gradle命令时，通过-P参数传入该Property：</p>
+<pre><code>$ gradle -PmyProperty=<span class="string">"this is myProperty"</span> myTask                  
+:myTask
+<span class="keyword">this</span> <span class="keyword">is</span> myProperty
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/29/Gradle/" itemprop="url">
                 Gradle
               </a>
@@ -2104,21 +2248,21 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
