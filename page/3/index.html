@@ -176,6 +176,731 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring/" itemprop="url">
+                Spring-Auto-Wiring
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T12:09:07+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/30/Spring-Auto-Wiring/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-Wiring/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>Spring支持5种自动装配模式，如下：</p>
+<table>
+<thead>
+<tr>
+<th>自动装配模式</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no</td>
+<td style="text-align:left">默认情况下，不自动装配，通过“ref”属性手动设定。</td>
+</tr>
+<tr>
+<td>byName</td>
+<td style="text-align:left">根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。</td>
+</tr>
+<tr>
+<td>byType</td>
+<td style="text-align:left">根据Property的数据类型（Type）自动装配，如果一个bean的数据类型，兼容另一个bean中Property的数据类型，则自动装配。</td>
+</tr>
+<tr>
+<td>constructor</td>
+<td style="text-align:left">根据构造函数参数的数据类型，进行byType模式的自动装配。</td>
+</tr>
+<tr>
+<td>autodetect</td>
+<td style="text-align:left">如果发现默认的构造函数，用constructor模式，否则，用byType模式。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="一、bean"><a href="#一、bean" class="headerlink" title="一、bean"></a>一、bean</h3><p>CustomerDAO.java</p>
+<pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
+<pre><code>import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    CustomerDAO customerDAO;
+
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }            
+}
+</code></pre><h3 id="二、装配"><a href="#二、装配" class="headerlink" title="二、装配"></a>二、装配</h3><h4 id="1、Auto-Wiring-‘no’"><a href="#1、Auto-Wiring-‘no’" class="headerlink" title="1、Auto-Wiring ‘no’"></a>1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><h4 id="2、Auto-Wiring-‘byName’"><a href="#2、Auto-Wiring-‘byName’" class="headerlink" title="2、Auto-Wiring ‘byName’"></a>2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; autowire=&quot;byName&quot;&gt;
+&lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><h4 id="3、Auto-Wiring-‘byType‘"><a href="#3、Auto-Wiring-‘byType‘" class="headerlink" title="3、Auto-Wiring ‘byType‘"></a>3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; autowire=&quot;byType&quot;&gt;
+&lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
+<h4 id="4、Auto-Wiring-‘constructor’"><a href="#4、Auto-Wiring-‘constructor’" class="headerlink" title="4、Auto-Wiring ‘constructor’"></a>4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
+<h4 id="5、Auto-Wiring-‘autodetect"><a href="#5、Auto-Wiring-‘autodetect" class="headerlink" title="5、Auto-Wiring ‘autodetect"></a>5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
+<blockquote>
+<p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
+</blockquote>
+<pre><code>&lt;bean id=&quot;customer&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; 
+            autowire=&quot;autodetect&quot; dependency-check=&quot;objects /&gt;
+
+&lt;bean id=&quot;person&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /
+</code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-scanning/" itemprop="url">
+                Spring-Auto-scanning
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T11:38:10+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/30/Spring-Auto-scanning/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-scanning/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、一般的bean"><a href="#一、一般的bean" class="headerlink" title="一、一般的bean"></a>一、一般的bean</h3><h4 id="1、CustomerDAO-java"><a href="#1、CustomerDAO-java" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java"><a href="#2、CustomerService-java" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
+
+import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    CustomerDAO customerDAO;
+
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+
+}
+</code></pre><h4 id="3、Spring-Customer-xml"><a href="#3、Spring-Customer-xml" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="二、auto-Scanning"><a href="#二、auto-Scanning" class="headerlink" title="二、auto Scanning"></a>二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1"><a href="#1、CustomerDAO-java-1" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java-1"><a href="#2、CustomerService-java-1" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.mkyong.customer.dao.CustomerDAO;
+
+@Component
+public class CustomerService 
+{
+    @Autowired
+    CustomerDAO customerDAO;
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+}
+</code></pre><h4 id="3、Spring-Customer-xml-1"><a href="#3、Spring-Customer-xml-1" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;com.mkyong.customer&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="三、Antotation-Types——自动扫描组件的注释类型"><a href="#三、Antotation-Types——自动扫描组件的注释类型" class="headerlink" title="三、Antotation Types——自动扫描组件的注释类型"></a>三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
+<p>@Component      ——表示一个自动扫描component</p>
+<p>@Repository              ——表示持久化层的DAO component</p>
+<p>@Service             ——表示业务逻辑层的Service component</p>
+<p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
+<p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
+<h3 id="四、Spring-Filter-Components-——-在自动扫描中过滤组件"><a href="#四、Spring-Filter-Components-——-在自动扫描中过滤组件" class="headerlink" title="四、Spring Filter Components —— 在自动扫描中过滤组件"></a>四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter-Component——include"><a href="#1、Filter-Component——include" class="headerlink" title="1、Filter Component——include"></a>1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
+<h5 id="（1）DAO层，在CustomerDAO-java中"><a href="#（1）DAO层，在CustomerDAO-java中" class="headerlink" title="（1）DAO层，在CustomerDAO.java中"></a>（1）DAO层，在CustomerDAO.java中</h5><pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h5 id="（2）Service层，在CustomerService-java中"><a href="#（2）Service层，在CustomerService-java中" class="headerlink" title="（2）Service层，在CustomerService.java中"></a>（2）Service层，在CustomerService.java中</h5><pre><code>package com.mkyong.customer.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    @Autowired
+    CustomerDAO customerDAO;
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+
+}
+</code></pre><h5 id="（3）在Spring-Customer-xml中"><a href="#（3）在Spring-Customer-xml中" class="headerlink" title="（3）在Spring-Customer.xml中"></a>（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;com.mkyong&quot; &gt;
+
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;
+
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.services.*Service.*&quot; /&gt;
+
+    &lt;/context:component-scan&gt;
+
+&lt;/beans&gt;
+</code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
+<h4 id="2、Filter-Component——exclude"><a href="#2、Filter-Component——exclude" class="headerlink" title="2、Filter Component——exclude"></a>2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei.customer&quot; &gt;
+        &lt;context:exclude-filter type=&quot;annotation&quot; 
+            expression=&quot;org.springframework.stereotype.Service&quot; /&gt;        
+&lt;/context:component-scan&gt;
+</code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei&quot; &gt;
+        &lt;context:exclude-filter type=&quot;regex&quot; 
+            expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;        
+&lt;/context:component-scan&gt;
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/30/Spring-JavaConfig/" itemprop="url">
+                Spring_JavaConfig
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T10:47:46+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/30/Spring-JavaConfig/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-JavaConfig/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：</p>
+<pre><code>&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.mkyong.core&lt;/groupId&gt;
+    &lt;artifactId&gt;Spring3Example&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;Spring3Example&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+    &lt;properties&gt;
+        &lt;spring.version&gt;3.0.5.RELEASE&lt;/spring.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.8.2&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring 3 dependencies --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- JavaConfig need this library --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cglib&lt;/groupId&gt;
+            &lt;artifactId&gt;cglib&lt;/artifactId&gt;
+            &lt;version&gt;2.2.2&lt;/version&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre><h3 id="一、Spring-Bean"><a href="#一、Spring-Bean" class="headerlink" title="一、Spring Bean"></a>一、Spring Bean</h3><pre><code>package com.mkyong;
+
+public class HelloWorld{
+
+    public void toString(String msg) {
+
+        System.out.println(&quot;Hello : &quot; + msg);
+    }
+
+}
+</code></pre><h3 id="二、Spring配置"><a href="#二、Spring配置" class="headerlink" title="二、Spring配置"></a>二、Spring配置</h3><p>1、回顾xml配置</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;
+
+    &lt;bean id=&quot;helloBean&quot; class=&quot;com.mkyong.HelloWorld&quot;&gt;
+
+&lt;/beans&gt;
+</code></pre><p>2、JavaConfig，在AppConfig.java中</p>
+<pre><code>package com.mkyong;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean(name=&quot;helloBean&quot;)
+    public HelloWorld helloWorld() {
+        return new HelloWorld();
+    }
+
+}
+</code></pre><h3 id="三、运行，在App-java中"><a href="#三、运行，在App-java中" class="headerlink" title="三、运行，在App.java中"></a>三、运行，在App.java中</h3><pre><code>package com.mkyong;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+
+        //ApplicationContext context = new ClassPathXmlApplicationContext(&quot;SpringBeans.xml&quot;);
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        HelloWorld obj = (HelloWorld) context.getBean(&quot;helloBean&quot;);
+
+        obj.toString(&quot;Hello,Spring Java Config&quot;);
+
+    }
+}
+</code></pre><h3 id="四、结果"><a href="#四、结果" class="headerlink" title="四、结果"></a>四、结果</h3><pre><code>Hello : Hello,Spring Java Config
+</code></pre><h3 id="五、目录结构"><a href="#五、目录结构" class="headerlink" title="五、目录结构"></a>五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
+<h3 id="六、补充-Import"><a href="#六、补充-Import" class="headerlink" title="六、补充@Import"></a>六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
+<h4 id="1、在xml中"><a href="#1、在xml中" class="headerlink" title="1、在xml中"></a>1、在xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+
+    &lt;import resource=&quot;config/customer.xml&quot;/&gt;
+    &lt;import resource=&quot;config/scheduler.xml&quot;/&gt;
+
+&lt;/beans&gt;
+</code></pre><h4 id="2、在JavaConfig中"><a href="#2、在JavaConfig中" class="headerlink" title="2、在JavaConfig中"></a>2、在JavaConfig中</h4><pre><code>package com.mkyong.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+@Configuration
+@Import({ CustomerConfig.class, SchedulerConfig.class })
+public class AppConfig {
+
+}
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/29/Gradle-java-plugin/" itemprop="url">
+                Gradle-java-plugin
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-29T19:42:22+08:00" content="2015-08-29">
+            2015-08-29
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Gradle/" itemprop="url" rel="index">
+                  <span itemprop="name">Gradle</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/29/Gradle-java-plugin/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/29/Gradle-java-plugin/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　java plugin给项目添加了java编译，测试和捆绑的能力，是很多其他gradle plugin的基础。<br>在build.gradle中加入<code>apply plugin: &#39;java&#39;</code>，即可使用java plugin。</p>
+<h3 id="一、java-Plugin引入的主要Task"><a href="#一、java-Plugin引入的主要Task" class="headerlink" title="一、java Plugin引入的主要Task"></a>一、java Plugin引入的主要Task</h3><p>执行“gradle build”，我们已经可以看到java Plugin所引入的主要Task：</p>
+<blockquote>
+<p>:compileJava<br>:processResources<br>:classes<br>:jar<br>:assemble<br>:compileTestJava<br>:processTestResources<br>:testClasses<br>:test<br>:check<br>:build</p>
+</blockquote>
+<p>　　build也是java Plugin所引入的一个Task，它依赖于其他Task，其他Task又依赖于另外的Task，所以有了以上Task执行列表。以上Task执行列表基本上描述了java Plugin向项目中所引入的构建生命周期概念。<br>　　除了定义众多的Task外，java Plugin还向Project中加入了一些额外的Property。比如，sourceCompatibility用于指定在编译Java源文件时所使用的Java版本，archivesBaseName用于指定打包成Jar文件时的文件名称。
+　　</p>
+<h3 id="二、Source-sets"><a href="#二、Source-sets" class="headerlink" title="二、Source sets"></a>二、Source sets</h3><p>　　source set是一组编译和执行的源文件，和编译路径与执行路径有联系。Gradle的每个source set都包含有一个名字，并且包含有一个名为java的Property和一个名为resources的Property，他们分别用于表示该source set所包含的Java源文件集合和资源文件集合。</p>
+<pre><code>sourceSets {
+    main {
+        java {
+            srcDir &apos;src/java&apos;
+        }
+        resources {
+            srcDir &apos;src/resources&apos;
+        }
+    }
+}
+</code></pre><p>　　Gradle会自动地为每一个新创建的source set创建相应的Task。对于名为mySourceSet的source set，Gradle将为其创建compile<mysourceset>Java、process<mysourceset>Resources和<mysourceset>Classes这3个Task。对于这里api而言，Gradle会为其创建名为compileApiJava、processApiResource和apiClasses Task。我们可以在命令行中执行”gradle apiClasses”。<br></mysourceset></mysourceset></mysourceset></p>
+<blockquote>
+<p>注意，对于main而言，Gradle并没有相应的compileMainJava，原因在于：由于main是Gradle默认创建的source set，并且又是及其重要的source set，Gradle便省略掉了其中的“Main”，而是直接使用了compileJava作为main的编译Task。对于test来说，Gradle依然采用了compileTestJava。</p>
+</blockquote>
+<p>　　通常的情况是，我们自己创建的名为api的source set会被其他source set所依赖，比如main中的类需要实现api中的某个接口等。此时我们需要做两件事情。<br>　　<em> 第一，我们需要在编译main之前对api进行编译，即编译main中Java源文件的Task应该依赖于api中的Task：<code>classes.dependsOn apiClasses</code>
+　　</em> 第二，在编译main时，我们需要将api编译生成的class文件放在main的classpath下。此时，我们可以对main和test做以下配置：</p>
+<pre><code>sourceSets {
+  main {
+     compileClasspath = compileClasspath + files(api.output.classesDir)
+  }
+  test {
+     runtimeClasspath = runtimeClasspath + files(api.output.classesDir)
+  }
+}
+</code></pre><h3 id="三、依赖管理"><a href="#三、依赖管理" class="headerlink" title="三、依赖管理"></a>三、依赖管理</h3><h4 id="1、repositories"><a href="#1、repositories" class="headerlink" title="1、repositories"></a>1、repositories</h4><p>　　在声明对第三方类库的依赖时，我们需要告诉Gradle在什么地方去获取这些依赖，即配置Gradle的Repository。在配置好依赖之后，Gradle会自动地下载这些依赖到本地。Gradle可以使用Maven和Ivy的Repository，同时它还可以使用本地文件系统作为Repository。<br>配置Maven的Repository如下：</p>
+<pre><code>repositories {
+  mavenCentral()
+}
+</code></pre><h4 id="2、configurations"><a href="#2、configurations" class="headerlink" title="2、configurations"></a>2、configurations</h4><p>　　Gradle将对依赖进行分组，每一组依赖称为一个Configuration，在声明依赖时，我们实际上是在设置不同的Configuration。</p>
+<h5 id="1）定义一个Configuration："><a href="#1）定义一个Configuration：" class="headerlink" title="(1）定义一个Configuration："></a>(1）定义一个Configuration：</h5><pre><code>configurations {
+  myDependency
+}
+</code></pre><h5 id="2-加入实际的依赖项："><a href="#2-加入实际的依赖项：" class="headerlink" title="(2) 加入实际的依赖项："></a>(2) 加入实际的依赖项：</h5><pre><code>dependencies {
+  myDependency &apos;org.apache.commons:commons-lang3:3.0&apos;
+}
+</code></pre><blockquote>
+<p>java Plugin定义了compile和testCompile这两个Configuration，分别用于编译Java源文件和编译Java测试源文件。也定义了runtime和testRuntime，分别用于在程序运行和测试运行时加入所配置的依赖。</p>
+</blockquote>
+<p>　　因此，下述声明依赖时，可以直接使用dependencies：</p>
+<pre><code>dependencies {
+    compile group: &apos;commons-collections&apos;, name: &apos;commons-collections&apos;, version: &apos;3.2&apos;
+    testCompile group: &apos;junit&apos;, name: &apos;junit&apos;, version: &apos;4.+&apos;
+}
+</code></pre><h5 id="3）获取classpath"><a href="#3）获取classpath" class="headerlink" title="(3）获取classpath"></a>(3）获取classpath</h5><pre><code>task showMyDependency &lt;&lt; {
+  println configurations.myDependency.asPath
+}
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/29/Gradle-property/" itemprop="url">
                 Gradle-property
               </a>
@@ -233,63 +958,63 @@
 <blockquote>
 <p>project：Project本身<br>name：Project的名字<br>path：Project的绝对路径<br>description：Project的描述信息<br>buildDir：Project构建结果存放目录<br>version：Project的版本号</p>
 </blockquote>
-<h3 id="一、project属性配置">一、project属性配置</h3><pre><code>version = <span class="string">'this is the project version'</span>
-<span class="keyword">description</span> = <span class="string">'this is the project description'</span>
-<span class="keyword">task</span> showProjectProperties &lt;&lt; {
-  <span class="keyword">println</span> version
-  <span class="keyword">println</span> <span class="keyword">project</span>.<span class="keyword">description</span>
+<h3 id="一、project属性配置"><a href="#一、project属性配置" class="headerlink" title="一、project属性配置"></a>一、project属性配置</h3><pre><code>version = &apos;this is the project version&apos;
+description = &apos;this is the project description&apos;
+task showProjectProperties &lt;&lt; {
+  println version
+  println project.description
 }
 </code></pre><p>　　注意，在打印description时，我们使用了project.description，而不是直接使用description。原因在于，Project和Task都拥有description属性，而定义Task的闭包将delegate设置成了当前的Task，故如果直接使用description，此时打印的是showProjectProperties的description，而不是Project的，所以我们需要显式地指明project。</p>
-<h3 id="二、Task属性配置">二、Task属性配置</h3><h4 id="1、对desctiption属性的配置">1、对desctiption属性的配置</h4><h5 id="（1）定义时候对description属性的配置">（1）定义时候对description属性的配置</h5><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
-  <span class="keyword">println</span> <span class="keyword">description</span>
+<h3 id="二、Task属性配置"><a href="#二、Task属性配置" class="headerlink" title="二、Task属性配置"></a>二、Task属性配置</h3><h4 id="1、对desctiption属性的配置"><a href="#1、对desctiption属性的配置" class="headerlink" title="1、对desctiption属性的配置"></a>1、对desctiption属性的配置</h4><h5 id="（1）定义时候对description属性的配置"><a href="#（1）定义时候对description属性的配置" class="headerlink" title="（1）定义时候对description属性的配置"></a>（1）定义时候对description属性的配置</h5><p>build.gradle:</p>
+<pre><code>task myTask &lt;&lt; {
+  description = &quot;this is myProperty&quot;
+  println description
 }
-</code></pre><h5 id="（2）myTask-description">（2）myTask.description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-      <span class="keyword">println</span> <span class="keyword">description</span>
+</code></pre><h5 id="（2）myTask-description"><a href="#（2）myTask-description" class="headerlink" title="（2）myTask.description"></a>（2）myTask.description</h5><pre><code>task myTask &lt;&lt; {
+      println description
 }
-myTask.<span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
-</code></pre><h5 id="(3)_同名的方法中设置description">(3) 同名的方法中设置description</h5><pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-      <span class="keyword">println</span> <span class="keyword">description</span>
+myTask.description = &quot;this is myProperty&quot;
+</code></pre><h5 id="3-同名的方法中设置description"><a href="#3-同名的方法中设置description" class="headerlink" title="(3) 同名的方法中设置description"></a>(3) 同名的方法中设置description</h5><pre><code>task myTask &lt;&lt; {
+      println description
 }
 myTask{
-      <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+      description = &quot;this is myProperty&quot;
 }
-</code></pre><h5 id="(4）调用Task的configure()方法,配置description属性">(4）调用Task的configure()方法,配置description属性</h5><p>build.gradle</p>
-<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-  <span class="keyword">println</span> <span class="keyword">description</span>
+</code></pre><h5 id="4）调用Task的configure-方法-配置description属性"><a href="#4）调用Task的configure-方法-配置description属性" class="headerlink" title="(4）调用Task的configure()方法,配置description属性"></a>(4）调用Task的configure()方法,配置description属性</h5><p>build.gradle</p>
+<pre><code>task myTask &lt;&lt; {
+  println description
 }
 myTask.configure {
-  <span class="keyword">description</span> = <span class="string">"this is myProperty"</span>
+  description = &quot;this is myProperty&quot;
 }
 </code></pre><p>运行，结果：</p>
 <pre><code>$ gradle -q myTask
-<span class="keyword">this</span> <span class="keyword">is</span> myProperty
-</code></pre><h4 id="2、自定义属性的配置">2、自定义属性的配置</h4><h5 id="(1)_额外自定义属性的配置">(1) 额外自定义属性的配置</h5><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> myTask {
-    ext.myProperty = <span class="string">"this is myProperty"</span>
+this is myProperty
+</code></pre><h4 id="2、自定义属性的配置"><a href="#2、自定义属性的配置" class="headerlink" title="2、自定义属性的配置"></a>2、自定义属性的配置</h4><h5 id="1-额外自定义属性的配置"><a href="#1-额外自定义属性的配置" class="headerlink" title="(1) 额外自定义属性的配置"></a>(1) 额外自定义属性的配置</h5><p>build.gradle:</p>
+<pre><code>task myTask {
+    ext.myProperty = &quot;this is myProperty&quot;
 }
 
-<span class="keyword">task</span> printTaskProperties &lt;&lt; {
-    <span class="keyword">println</span> myTask.myProperty
+task printTaskProperties &lt;&lt; {
+    println myTask.myProperty
 }
 </code></pre><p>也可以使用闭包的方式：</p>
-<pre><code><span class="title">ext</span> { <span class="title">myProperty</span> = <span class="string">"this is myProperty"</span>}
+<pre><code>ext { myProperty = &quot;this is myProperty&quot;}
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q printTaskProperties
-<span class="keyword">this</span> <span class="keyword">is</span> myProperty
-</code></pre><h5 id="(2)_通过命令行参数自定义Property">(2) 通过命令行参数自定义Property</h5><p>build.gradle</p>
-<pre><code><span class="keyword">task</span> myTask &lt;&lt; {
-      <span class="keyword">println</span> myProperty
+this is myProperty
+</code></pre><h5 id="2-通过命令行参数自定义Property"><a href="#2-通过命令行参数自定义Property" class="headerlink" title="(2) 通过命令行参数自定义Property"></a>(2) 通过命令行参数自定义Property</h5><p>build.gradle</p>
+<pre><code>task myTask &lt;&lt; {
+      println myProperty
 }
 </code></pre><p>此时，会报错：</p>
 <pre><code>* What went wrong:
-Execution failed <span class="keyword">for</span> task <span class="string">':myTask'</span>.
-&gt; Could <span class="keyword">not</span> find <span class="keyword">property</span> <span class="string">'myProperty'</span> <span class="keyword">on</span> task <span class="string">':myTask'</span>.
+Execution failed for task &apos;:myTask&apos;.
+&gt; Could not find property &apos;myProperty&apos; on task &apos;:myTask&apos;.
 </code></pre><p>　　表示myProperty并没有被定义，在调用gradle命令时，通过-P参数传入该Property：</p>
-<pre><code>$ gradle -PmyProperty=<span class="string">"this is myProperty"</span> myTask                  
+<pre><code>$ gradle -PmyProperty=&quot;this is myProperty&quot; myTask                  
 :myTask
-<span class="keyword">this</span> <span class="keyword">is</span> myProperty
+this is myProperty
 </code></pre></span>
         
       
@@ -374,144 +1099,144 @@ Execution failed <span class="keyword">for</span> task <span class="string">':my
       
         
           <span itemprop="articleBody"><p>　　每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。<br>　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Property以完成特定的操作。<br>　　gradle命令在当前路径下寻找一个叫build.gradle的文件夹，也叫做build script,严格来说build configuration script，它定义了project和其tasks.</p>
-<h3 id="一、HelloWorld">一、HelloWorld</h3><h4 id="1、调用Project的task()方法">1、调用Project的task()方法</h4><p>在build.gradle中</p>
-<pre><code><span class="keyword">task</span> hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+<h3 id="一、HelloWorld"><a href="#一、HelloWorld" class="headerlink" title="一、HelloWorld"></a>一、HelloWorld</h3><h4 id="1、调用Project的task-方法"><a href="#1、调用Project的task-方法" class="headerlink" title="1、调用Project的task()方法"></a>1、调用Project的task()方法</h4><p>在build.gradle中</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
 }
 </code></pre><p>　　其中<code>&lt;&lt;</code>表示向hello中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
-<h4 id="2、使用doLast加入执行过程">2、使用doLast加入执行过程</h4><pre><code><span class="keyword">task</span> hello {
-        <span class="keyword">doLast</span> {
-            <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+<h4 id="2、使用doLast加入执行过程"><a href="#2、使用doLast加入执行过程" class="headerlink" title="2、使用doLast加入执行过程"></a>2、使用doLast加入执行过程</h4><pre><code>task hello {
+        doLast {
+            println &apos;Hello world!&apos;
         }
     }    
-</code></pre><h4 id="3、create方式">3、create方式</h4><pre><code><span class="tag">tasks</span><span class="class">.create</span>(<span class="rule"><span class="attribute">name</span>:<span class="value"> <span class="string">'hello'</span>) &lt;&lt; {
-   println <span class="string">'Hello world!'</span>
-}</span></span>
-</code></pre><h4 id="4、运行，结果">4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
-<pre><code>$ gradle -<span class="tag">q</span> hello
+</code></pre><h4 id="3、create方式"><a href="#3、create方式" class="headerlink" title="3、create方式"></a>3、create方式</h4><pre><code>tasks.create(name: &apos;hello&apos;) &lt;&lt; {
+   println &apos;Hello world!&apos;
+}
+</code></pre><h4 id="4、运行，结果"><a href="#4、运行，结果" class="headerlink" title="4、运行，结果"></a>4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
+<pre><code>$ gradle -q hello
 Hello world!
 </code></pre><p>　　</p>
-<h3 id="二、使用Grovvy">二、使用Grovvy</h3><h4 id="eg1:">eg1:</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> upper &lt;&lt; {
-    String someString = <span class="string">'mY_nAmE'</span>
-    <span class="keyword">println</span> <span class="string">"Original: "</span> + someString 
-    <span class="keyword">println</span> <span class="string">"Upper case: "</span> + someString.toUpperCase()
+<h3 id="二、使用Grovvy"><a href="#二、使用Grovvy" class="headerlink" title="二、使用Grovvy"></a>二、使用Grovvy</h3><h4 id="eg1"><a href="#eg1" class="headerlink" title="eg1:"></a>eg1:</h4><p>build.gradle:</p>
+<pre><code>task upper &lt;&lt; {
+    String someString = &apos;mY_nAmE&apos;
+    println &quot;Original: &quot; + someString 
+    println &quot;Upper case: &quot; + someString.toUpperCase()
 }
 </code></pre><p>Terminal：</p>
 <pre><code>$ gradle -q upper
-<span class="string">Original:</span> mY_nAmE
-Upper <span class="string">case:</span> MY_NAME
-</code></pre><h4 id="eg2:">eg2:</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> <span class="keyword">count</span> &lt;&lt; {
-    <span class="number">4</span>.<span class="keyword">times</span> { <span class="keyword">print</span> <span class="string">"$it "</span> }
+Original: mY_nAmE
+Upper case: MY_NAME
+</code></pre><h4 id="eg2"><a href="#eg2" class="headerlink" title="eg2:"></a>eg2:</h4><p>build.gradle:</p>
+<pre><code>task count &lt;&lt; {
+    4.times { print &quot;$it &quot; }
 }
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q count
-<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> 
-</code></pre><h3 id="三、task依赖">三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
-<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候：">1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> taskX &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskY!'</span>
+0 1 2 3 
+</code></pre><h3 id="三、task依赖"><a href="#三、task依赖" class="headerlink" title="三、task依赖"></a>三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
+<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候："><a href="#1、声明Task依赖关系的一种方式是在定义一个Task的时候：" class="headerlink" title="1、声明Task依赖关系的一种方式是在定义一个Task的时候："></a>1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
+<pre><code>task taskX &lt;&lt; {
+    println &apos;taskY!&apos;
 }
-<span class="keyword">task</span> taskY(dependsOn: taskX){
-    <span class="keyword">println</span> <span class="string">"taskX!"</span>
+task taskY(dependsOn: taskX){
+    println &quot;taskX!&quot;
 }
 </code></pre><p>Terminal:</p>
-<pre><code>&gt; gradle -<span class="tag">q</span> taskY
+<pre><code>&gt; gradle -q taskY
 taskX
 taskY
-</code></pre><h4 id="2、被依赖的Task还不存在的时候">2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
-<pre><code><span class="keyword">task</span> taskX(dependsOn: <span class="string">'taskY'</span>) &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskX'</span>
+</code></pre><h4 id="2、被依赖的Task还不存在的时候"><a href="#2、被依赖的Task还不存在的时候" class="headerlink" title="2、被依赖的Task还不存在的时候"></a>2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
+<pre><code>task taskX(dependsOn: &apos;taskY&apos;) &lt;&lt; {
+    println &apos;taskX&apos;
 }
-<span class="keyword">task</span> taskY &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskY'</span>    
+task taskY &lt;&lt; {
+    println &apos;taskY&apos;    
 }
 </code></pre><p>Terminal:</p>
-<pre><code>$ gradle -<span class="tag">q</span> taskX
+<pre><code>$ gradle -q taskX
 taskY
 taskX    
-</code></pre><h4 id="3、Example">3、Example</h4><p>gradle.build</p>
-<pre><code><span class="title">task</span> branch &lt;&lt; {
-    <span class="title">println</span> <span class="string">"use version=<span class="variable">$version</span>"</span>
+</code></pre><h4 id="3、Example"><a href="#3、Example" class="headerlink" title="3、Example"></a>3、Example</h4><p>gradle.build</p>
+<pre><code>task branch &lt;&lt; {
+    println &quot;use version=$version&quot;
 }
 
-task myTask(dependsOn: <span class="string">'mybranch'</span>) &lt;&lt; {
-    <span class="title">println</span> <span class="string">'this is my task!'</span>
+task myTask(dependsOn: &apos;mybranch&apos;) &lt;&lt; {
+    println &apos;this is my task!&apos;
 }
 
-gradle.taskGraph.whenReady {<span class="title">taskGraph</span> -&gt;
+gradle.taskGraph.whenReady {taskGraph -&gt;
     if (taskGraph.hasTask(myTask)) {
-        <span class="title">version</span> = <span class="string">'1.0'</span>
+        version = &apos;1.0&apos;
     } else {
-        <span class="title">version</span> = <span class="string">'2.0'</span>
+        version = &apos;2.0&apos;
     }
 }    
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q branch  
-<span class="operator"><span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">2.0</span>
+use version=2.0
 $ gradle -q myTask
-<span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">1.0</span>
-this <span class="keyword">is</span> my task!</span>
-</code></pre><h3 id="四、动态task">四、动态task</h3><p>build.gradle:</p>
-<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
-    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
-        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
+use version=1.0
+this is my task!
+</code></pre><h3 id="四、动态task"><a href="#四、动态task" class="headerlink" title="四、动态task"></a>四、动态task</h3><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
     }
 }
 </code></pre><p>Ternimal:</p>
-<pre><code>$ gradle -<span class="tag">q</span> task1
-I<span class="string">'m task number 1</span>
+<pre><code>$ gradle -q task1
+I&apos;m task number 1
 </code></pre><p>　　注意，task是从0开始的，即此处存在task0、task1、task2、task3。可输入<code>gradle tasks</code>查看所有task。</p>
-<h3 id="五、操控现有task">五、操控现有task</h3><h4 id="1、添加依赖">1、添加依赖</h4><p>build.gradle:</p>
-<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
-    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
-        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
+<h3 id="五、操控现有task"><a href="#五、操控现有task" class="headerlink" title="五、操控现有task"></a>五、操控现有task</h3><h4 id="1、添加依赖"><a href="#1、添加依赖" class="headerlink" title="1、添加依赖"></a>1、添加依赖</h4><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
     }
 }
 task0.dependsOn task2, task3
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q task0
-I'm task <span class="type">number</span> <span class="number">2</span>
-I'm task <span class="type">number</span> <span class="number">3</span>
-I'm task <span class="type">number</span> <span class="number">0</span>
-</code></pre><h4 id="2、添加行为">2、添加行为</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+I&apos;m task number 2
+I&apos;m task number 3
+I&apos;m task number 0
+</code></pre><h4 id="2、添加行为"><a href="#2、添加行为" class="headerlink" title="2、添加行为"></a>2、添加行为</h4><p>build.gradle:</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
 }
-hello.<span class="keyword">doFirst</span> {
-    <span class="keyword">println</span> <span class="string">'Hello first'</span>
+hello.doFirst {
+    println &apos;Hello first&apos;
 }
-hello.<span class="keyword">doLast</span> {
-    <span class="keyword">println</span> <span class="string">'Hello last'</span>
+hello.doLast {
+    println &apos;Hello last&apos;
 }
 hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello hello!'</span>
+    println &apos;Hello hello!&apos;
 }
 </code></pre><p>Treminal:</p>
 <pre><code>$ gradle -q hello
-Hello <span class="keyword">first</span>
+Hello first
 Hello world!
-Hello <span class="keyword">last</span>
+Hello last
 Hello hello!
-</code></pre><h3 id="六、默认task">六、默认task</h3><p>build.gradle:</p>
-<pre><code>defaultTasks <span class="string">'clean'</span>, <span class="string">'run'</span>
+</code></pre><h3 id="六、默认task"><a href="#六、默认task" class="headerlink" title="六、默认task"></a>六、默认task</h3><p>build.gradle:</p>
+<pre><code>defaultTasks &apos;clean&apos;, &apos;run&apos;
 
-<span class="keyword">task</span> clean &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Default Cleaning!'</span>
+task clean &lt;&lt; {
+    println &apos;Default Cleaning!&apos;
 }
 
-<span class="keyword">task</span> run &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Default Running!'</span>
+task run &lt;&lt; {
+    println &apos;Default Running!&apos;
 }
 
-<span class="keyword">task</span> other &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">"I'm not a default task!"</span>
+task other &lt;&lt; {
+    println &quot;I&apos;m not a default task!&quot;
 }
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q
-<span class="keyword">Default</span> Cleaning!
-<span class="keyword">Default</span> Running!
+Default Cleaning!
+Default Running!
 </code></pre></span>
         
       
@@ -595,48 +1320,48 @@ Hello hello!
 
       
         
-          <span itemprop="articleBody"><h3 id="一、Gradle_Build">一、Gradle Build</h3><pre><code>apply plugin: <span class="string">'java'</span>
-apply plugin: <span class="string">'war'</span>
-apply plugin: <span class="string">'idea'</span>
-apply plugin: <span class="string">'jetty'</span>
+          <span itemprop="articleBody"><h3 id="一、Gradle-Build"><a href="#一、Gradle-Build" class="headerlink" title="一、Gradle Build"></a>一、Gradle Build</h3><pre><code>apply plugin: &apos;java&apos;
+apply plugin: &apos;war&apos;
+apply plugin: &apos;idea&apos;
+apply plugin: &apos;jetty&apos;
 
-<span class="comment">// JDK 7</span>
-<span class="keyword">sourceCompatibility</span> = <span class="number">1.7</span>
-<span class="keyword">targetCompatibility</span> = <span class="number">1.7</span>
+// JDK 7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
-<span class="keyword">repositories</span> {
+repositories {
     mavenLocal()
     mavenCentral()
 }
 
-<span class="keyword">dependencies</span> {
+dependencies {
 
-    <span class="keyword">compile</span> <span class="string">'ch.qos.logback:logback-classic:1.1.3'</span>
-    <span class="keyword">compile</span> <span class="string">'org.springframework:spring-webmvc:4.1.6.RELEASE'</span>
-    <span class="keyword">compile</span> <span class="string">'javax.servlet:jstl:1.2'</span>
+    compile &apos;ch.qos.logback:logback-classic:1.1.3&apos;
+    compile &apos;org.springframework:spring-webmvc:4.1.6.RELEASE&apos;
+    compile &apos;javax.servlet:jstl:1.2&apos;
 
 }
 
-<span class="comment">// Embeded Jetty for testing</span>
+// Embeded Jetty for testing
 jettyRun{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
+    contextPath = &quot;spring4&quot;
+    httpPort = 8080
 }
 
 jettyRunWar{
-    contextPath = <span class="string">"spring4"</span>
-    httpPort = <span class="number">8080</span>
+    contextPath = &quot;spring4&quot;
+    httpPort = 8080
 }
 </code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
-<h3 id="二、Spring_MVC">二、Spring MVC</h3><h4 id="1、WelcomeController-java">1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java">2、HelloWorldService.java</h4><h4 id="3、logback-xml">3、logback.xml</h4><h4 id="4、spring-core-config-xml">4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml">5、spring-mvc-config.xml</h4><h4 id="6、web-xml">6、web.xml</h4><h3 id="三、运行，输出结果">三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
-<pre><code><span class="variable">$ </span>gradle jettyRun                    
-<span class="symbol">:compileJava</span>
-<span class="symbol">:processResources</span>
-<span class="symbol">:classes</span>
-<span class="symbol">:jettyRun</span>
-<span class="constant">Building </span><span class="number">75</span>% &gt; <span class="symbol">:jettyRun</span> &gt; <span class="constant">Running </span>at <span class="symbol">http:</span>/<span class="regexp">/localhost:8080/spring</span>4
+<h3 id="二、Spring-MVC"><a href="#二、Spring-MVC" class="headerlink" title="二、Spring MVC"></a>二、Spring MVC</h3><h4 id="1、WelcomeController-java"><a href="#1、WelcomeController-java" class="headerlink" title="1、WelcomeController.java"></a>1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java"><a href="#2、HelloWorldService-java" class="headerlink" title="2、HelloWorldService.java"></a>2、HelloWorldService.java</h4><h4 id="3、logback-xml"><a href="#3、logback-xml" class="headerlink" title="3、logback.xml"></a>3、logback.xml</h4><h4 id="4、spring-core-config-xml"><a href="#4、spring-core-config-xml" class="headerlink" title="4、spring-core-config.xml"></a>4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml"><a href="#5、spring-mvc-config-xml" class="headerlink" title="5、spring-mvc-config.xml"></a>5、spring-mvc-config.xml</h4><h4 id="6、web-xml"><a href="#6、web-xml" class="headerlink" title="6、web.xml"></a>6、web.xml</h4><h3 id="三、运行，输出结果"><a href="#三、运行，输出结果" class="headerlink" title="三、运行，输出结果"></a>三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
+<pre><code>$ gradle jettyRun                    
+:compileJava
+:processResources
+:classes
+:jettyRun
+Building 75% &gt; :jettyRun &gt; Running at http://localhost:8080/spring4
 </code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
-<h3 id="四、目录结构">四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
+<h3 id="四、目录结构"><a href="#四、目录结构" class="headerlink" title="四、目录结构"></a>四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
 </span>
         
       
@@ -729,177 +1454,177 @@ jettyRunWar{
 <li>Advisor：Advice和Pointcut组成的独立的单元，并且能够传给proxy factory 对象。</li>
 </ul>
 </blockquote>
-<h3 id="一、回顾Around_advice">一、回顾Around advice</h3><h4 id="1、在CustomerService-java中">1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
+<h3 id="一、回顾Around-advice"><a href="#一、回顾Around-advice" class="headerlink" title="一、回顾Around advice"></a>一、回顾Around advice</h3><h4 id="1、在CustomerService-java中"><a href="#1、在CustomerService-java中" class="headerlink" title="1、在CustomerService.java中"></a>1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
 
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomerService</span> {
-    <span class="keyword">private</span> String name;
-    <span class="keyword">private</span> String occupation;
+public class CustomerService {
+    private String name;
+    private String occupation;
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{    <span class="keyword">this</span>.name = name;}
+    public void setName(String name) {    this.name = name;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span>(<span class="params"></span>) </span>{System.<span class="keyword">out</span>.println(<span class="string">"Customer name : "</span> + <span class="keyword">this</span>.name);}
+    public void printName() {System.out.println(&quot;Customer name : &quot; + this.name);}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printOccupation</span>(<span class="params"></span>) </span>{System.<span class="keyword">out</span>.println(<span class="string">"Customer occupation : "</span> + <span class="keyword">this</span>.occupation);}
+    public void printOccupation() {System.out.println(&quot;Customer occupation : &quot; + this.occupation);}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOccupation</span>(<span class="params">String occupation</span>) </span>{<span class="keyword">this</span>.occupation = occupation;}
+    public void setOccupation(String occupation) {this.occupation = occupation;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printThrowException</span>(<span class="params"></span>) </span>{
-        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();
+    public void printThrowException() {
+        throw new IllegalArgumentException();
     }    
 }
-</code></pre><h4 id="2、_在HelloAroundMethod-java中">2、 在HelloAroundMethod.java中</h4><pre><code>package com.zhangyu.aop;
+</code></pre><h4 id="2、-在HelloAroundMethod-java中"><a href="#2、-在HelloAroundMethod-java中" class="headerlink" title="2、 在HelloAroundMethod.java中"></a>2、 在HelloAroundMethod.java中</h4><pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> org.aopalliance.intercept.<span class="type">MethodInterceptor</span>;
-<span class="keyword">import</span> org.aopalliance.intercept.<span class="type">MethodInvocation</span>;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
-public class <span class="type">HelloAroundMethod</span> implements <span class="type">MethodInterceptor</span> {
-    @<span class="type">Override</span>
-    public <span class="type">Object</span> invoke(<span class="type">MethodInvocation</span> methodInvocation) throws <span class="type">Throwable</span> {
+public class HelloAroundMethod implements MethodInterceptor {
+    @Override
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 
-        <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"Method name : "</span> + methodInvocation.getMethod().getName());
+        System.out.println(&quot;Method name : &quot; + methodInvocation.getMethod().getName());
 
-        // same <span class="keyword">with</span> <span class="type">MethodBeforeAdvice</span>
-        <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Before method ,hello"</span>);
+        // same with MethodBeforeAdvice
+        System.out.println(&quot;HelloAroundMethod : Before method ,hello&quot;);
 
-        <span class="keyword">try</span> {
-            <span class="type">Object</span> <span class="literal">result</span> = methodInvocation.proceed();
+        try {
+            Object result = methodInvocation.proceed();
 
-            // same <span class="keyword">with</span> <span class="type">AfterReturningAdvice</span>
-            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Before after ,hello!"</span>);
-            <span class="keyword">return</span> <span class="literal">result</span>;
-        } catch (<span class="type">IllegalArgumentException</span> e) {
-            // same <span class="keyword">with</span> <span class="type">ThrowsAdvice</span>
-            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Throw exception ,hello!"</span>);
+            // same with AfterReturningAdvice
+            System.out.println(&quot;HelloAroundMethod : Before after ,hello!&quot;);
+            return result;
+        } catch (IllegalArgumentException e) {
+            // same with ThrowsAdvice
+            System.out.println(&quot;HelloAroundMethod : Throw exception ,hello!&quot;);
             throw e;
         }
     }
 }
-</code></pre><h4 id="3、_在Spring-Customer-xml中">3、 在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
+</code></pre><h4 id="3、-在Spring-Customer-xml中"><a href="#3、-在Spring-Customer-xml中" class="headerlink" title="3、 在Spring-Customer.xml中"></a>3、 在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"Zhang Yu"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"occupation"</span> value=<span class="string">"developer"</span> /&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"helloAroundMethodBean"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.aop.HelloAroundMethod"</span> /&gt;
+    &lt;bean id=&quot;helloAroundMethodBean&quot; class=&quot;com.zhangyu.aop.HelloAroundMethod&quot; /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerServiceProxy"</span> <span class="type">class</span>=<span class="string">"org.springframework.aop.framework.ProxyFactoryBean"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"target"</span> <span class="keyword">ref</span>=<span class="string">"customerService"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"interceptorNames"</span>&gt;
-            &lt;<span class="type">list</span>&gt;
+    &lt;bean id=&quot;customerServiceProxy&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
+        &lt;property name=&quot;target&quot; ref=&quot;customerService&quot; /&gt;
+        &lt;property name=&quot;interceptorNames&quot;&gt;
+            &lt;list&gt;
                 &lt;value&gt;helloAroundMethodBean&lt;/value&gt;
-            &lt;/<span class="type">list</span>&gt;
-        &lt;/<span class="keyword">property</span>&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
     &lt;/bean&gt;
 &lt;/beans&gt;
-</code></pre><h4 id="4、运行，在App-java中">4、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.zhangyu.common;
+</code></pre><h4 id="4、运行，在App-java中"><a href="#4、运行，在App-java中" class="headerlink" title="4、运行，在App.java中"></a>4、运行，在App.java中</h4><pre><code>package com.zhangyu.common;
 
-<span class="keyword">import</span> com.zhangyu.customer.services.CustomerService;
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.zhangyu.customer.services.CustomerService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-<span class="keyword">public</span> class App {
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) {
-        ApplicationContext appContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(
-                <span class="keyword">new</span> <span class="keyword">String</span>[] { <span class="string">"Spring-Customer.xml"</span> });
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext(
+                new String[] { &quot;Spring-Customer.xml&quot; });
 
         CustomerService cust = (CustomerService) appContext
-                .getBean(<span class="string">"customerService"</span>);
+                .getBean(&quot;customerService&quot;);
 
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
+        System.out.println(&quot;*************************&quot;);
         cust.printName();
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
+        System.out.println(&quot;*************************&quot;);
         cust.printOccupation();
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
-        <span class="keyword">try</span> {
+        System.out.println(&quot;*************************&quot;);
+        try {
             cust.printThrowException();
-        } <span class="keyword">catch</span> (Exception e) {
+        } catch (Exception e) {
 
         }
     }
 }    　　
-</code></pre><h4 id="5、运行结果">5、运行结果</h4><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+</code></pre><h4 id="5、运行结果"><a href="#5、运行结果" class="headerlink" title="5、运行结果"></a>5、运行结果</h4><pre><code>*************************
 Method name : printName
 HelloAroundMethod : Before method ,hello!
 Customer name : Zhang Yu
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Method name : printOccupation
 HelloAroundMethod : Before method ,hello!
 Customer occupation : developer
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Method name : printThrowException
 HelloAroundMethod : Before method ,hello!
 HelloAroundMethod : Throw exception ,hello!
-</code></pre><h3 id="二、Pointcut">二、Pointcut</h3><p>　　可以用名字匹配法和正则表达式匹配法去匹配要拦截的method。</p>
-<h4 id="1、Pointcut——名字匹配法">1、Pointcut——名字匹配法</h4><h5 id="（1）通过pointcut和advisor拦截printName()方法。">（1）通过pointcut和advisor拦截printName()方法。</h5><p>　　<em> 创建一个NameMatchMethodPointcut的bean，将你想拦截的方法的名字printName注入到属性mappedName。
+</code></pre><h3 id="二、Pointcut"><a href="#二、Pointcut" class="headerlink" title="二、Pointcut"></a>二、Pointcut</h3><p>　　可以用名字匹配法和正则表达式匹配法去匹配要拦截的method。</p>
+<h4 id="1、Pointcut——名字匹配法"><a href="#1、Pointcut——名字匹配法" class="headerlink" title="1、Pointcut——名字匹配法"></a>1、Pointcut——名字匹配法</h4><h5 id="（1）通过pointcut和advisor拦截printName-方法。"><a href="#（1）通过pointcut和advisor拦截printName-方法。" class="headerlink" title="（1）通过pointcut和advisor拦截printName()方法。"></a>（1）通过pointcut和advisor拦截printName()方法。</h5><p>　　<em> 创建一个NameMatchMethodPointcut的bean，将你想拦截的方法的名字printName注入到属性mappedName。
 　　</em> 创建一个DefaultPointcutAdvisor的advisor bean，将pointcut和advice关联起来。<br>　　* 更改代理的interceptorNames的value值为customerAdvisor。</p>
-<pre><code>    &lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
+<pre><code>    &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"Zhang Yu"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"occupation"</span> value=<span class="string">"developer"</span> /&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"helloAroundMethodBean"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.aop.HelloAroundMethod"</span> /&gt;
+    &lt;bean id=&quot;helloAroundMethodBean&quot; class=&quot;com.zhangyu.aop.HelloAroundMethod&quot; /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerServiceProxy"</span> <span class="type">class</span>=<span class="string">"org.springframework.aop.framework.ProxyFactoryBean"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"target"</span> <span class="keyword">ref</span>=<span class="string">"customerService"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"interceptorNames"</span>&gt;
-            &lt;<span class="type">list</span>&gt;
+    &lt;bean id=&quot;customerServiceProxy&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
+        &lt;property name=&quot;target&quot; ref=&quot;customerService&quot; /&gt;
+        &lt;property name=&quot;interceptorNames&quot;&gt;
+            &lt;list&gt;
                 &lt;value&gt;customerAdvisor&lt;/value&gt;
-            &lt;/<span class="type">list</span>&gt;
-        &lt;/<span class="keyword">property</span>&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerPointcut"</span> <span class="type">class</span>=<span class="string">"org.springframework.aop.support.NameMatchMethodPointcut"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"mappedName"</span> value=<span class="string">"printName"</span> /&gt;
+    &lt;bean id=&quot;customerPointcut&quot; class=&quot;org.springframework.aop.support.NameMatchMethodPointcut&quot;&gt;
+        &lt;property name=&quot;mappedName&quot; value=&quot;printName&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerAdvisor"</span> <span class="type">class</span>=<span class="string">"org.springframework.aop.support.DefaultPointcutAdvisor"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"pointcut"</span> <span class="keyword">ref</span>=<span class="string">"customerPointcut"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"advice"</span> <span class="keyword">ref</span>=<span class="string">"helloAroundMethodBean"</span> /&gt;
+    &lt;bean id=&quot;customerAdvisor&quot; class=&quot;org.springframework.aop.support.DefaultPointcutAdvisor&quot;&gt;
+        &lt;property name=&quot;pointcut&quot; ref=&quot;customerPointcut&quot; /&gt;
+        &lt;property name=&quot;advice&quot; ref=&quot;helloAroundMethodBean&quot; /&gt;
     &lt;/bean&gt;
 &lt;/beans&gt;
 </code></pre><p>#####（2）运行，结果如下：</p>
-<pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<pre><code>*************************
 Method name : printName
 HelloAroundMethod : Before method ,hello!
 Customer name : Zhang Yu
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Customer occupation : developer
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 </code></pre><p>　　可以看到，只拦截了printName（），在其前后分别输出了“Before method ，hello!”和“After method ,hello!”</p>
 <p>#####（3）另外<br>　　以上配置中pointcut和advisor可以合并在一起配置，即不用单独配置customerPointcut和customerAdvisor，只要配置customerAdvisor时class选择NameMatchMethodPointcutAdvisor如下：</p>
-<pre><code>&lt;bean id=<span class="string">"customerAdvisor"</span> class=<span class="string">"org.springframework.aop.support.NameMatchMethodPointcutAdvisor"</span>&gt;
-    &lt;property name=<span class="string">"mappedName"</span> value=<span class="string">"printName"</span> /&gt;
-    &lt;property name=<span class="string">"advice"</span> <span class="keyword">ref</span>=<span class="string">"helloAroundMethodBean"</span> /&gt;
+<pre><code>&lt;bean id=&quot;customerAdvisor&quot; class=&quot;org.springframework.aop.support.NameMatchMethodPointcutAdvisor&quot;&gt;
+    &lt;property name=&quot;mappedName&quot; value=&quot;printName&quot; /&gt;
+    &lt;property name=&quot;advice&quot; ref=&quot;helloAroundMethodBean&quot; /&gt;
 &lt;/bean&gt;
 </code></pre><p>　　但是，如果将method名字单独配置成pointcut（切入点），advice和pointcut的结合会更灵活，使一个pointcut可以和多个advice结合，更符合松耦合理念。</p>
-<h4 id="2、Pointcut——正则表达式匹配法">2、Pointcut——正则表达式匹配法</h4><h5 id="(1)_你可以配置用正则表达式匹配需要拦截的method：">(1) 你可以配置用正则表达式匹配需要拦截的method：</h5><pre><code>    &lt;bean <span class="property">id</span>=<span class="string">"customerAdvisor"</span> <span class="type">class</span>=<span class="string">"org.springframework.aop.support.RegexpMethodPointcutAdvisor"</span>&gt;
-    &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"patterns"</span>&gt;
-        &lt;<span class="type">list</span>&gt;
+<h4 id="2、Pointcut——正则表达式匹配法"><a href="#2、Pointcut——正则表达式匹配法" class="headerlink" title="2、Pointcut——正则表达式匹配法"></a>2、Pointcut——正则表达式匹配法</h4><h5 id="1-你可以配置用正则表达式匹配需要拦截的method："><a href="#1-你可以配置用正则表达式匹配需要拦截的method：" class="headerlink" title="(1) 你可以配置用正则表达式匹配需要拦截的method："></a>(1) 你可以配置用正则表达式匹配需要拦截的method：</h5><pre><code>    &lt;bean id=&quot;customerAdvisor&quot; class=&quot;org.springframework.aop.support.RegexpMethodPointcutAdvisor&quot;&gt;
+    &lt;property name=&quot;patterns&quot;&gt;
+        &lt;list&gt;
             &lt;value&gt;.*Occu.*&lt;/value&gt;
-        &lt;/<span class="type">list</span>&gt;
-    &lt;/<span class="keyword">property</span>&gt;
-    &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"advice"</span> <span class="keyword">ref</span>=<span class="string">"helloAroundMethodBean"</span> /&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name=&quot;advice&quot; ref=&quot;helloAroundMethodBean&quot; /&gt;
 &lt;/bean&gt;
-</code></pre><h5 id="(2)_结果">(2) 结果</h5><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+</code></pre><h5 id="2-结果"><a href="#2-结果" class="headerlink" title="(2) 结果"></a>(2) 结果</h5><pre><code>*************************
 Customer name : Zhang Yu
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Method name : printOccupation
 HelloAroundMethod : Before method ,hello!
 Customer occupation : developer
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 </code></pre><p>　可以看到，拦截名字中包含了Occu字符的method，这里是printOccupation()。</p>
 </span>
         
@@ -994,196 +1719,196 @@ HelloAroundMethod : After method ,hello!
 <li>Around advice – 环绕通知，结合了以上三种</li>
 </ul>
 </blockquote>
-<h3 id="一、不使用AOP的简单例子">一、不使用AOP的简单例子</h3><h4 id="1、在CustomerService-java中">1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
+<h3 id="一、不使用AOP的简单例子"><a href="#一、不使用AOP的简单例子" class="headerlink" title="一、不使用AOP的简单例子"></a>一、不使用AOP的简单例子</h3><h4 id="1、在CustomerService-java中"><a href="#1、在CustomerService-java中" class="headerlink" title="1、在CustomerService.java中"></a>1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
 
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomerService</span> {
-    <span class="keyword">private</span> String name;
-    <span class="keyword">private</span> String occupation;
+public class CustomerService {
+    private String name;
+    private String occupation;
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{<span class="keyword">this</span>.name = name;}
+    public void setName(String name) {this.name = name;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span>(<span class="params"></span>) </span>{System.<span class="keyword">out</span>.println(<span class="string">"Customer name : "</span> + <span class="keyword">this</span>.name);}
+    public void printName() {System.out.println(&quot;Customer name : &quot; + this.name);}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printOccupation</span>(<span class="params"></span>) </span>{System.<span class="keyword">out</span>.println(<span class="string">"Customer occupation : "</span> + <span class="keyword">this</span>.occupation);}
+    public void printOccupation() {System.out.println(&quot;Customer occupation : &quot; + this.occupation);}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOccupation</span>(<span class="params">String occupation</span>) </span>{<span class="keyword">this</span>.occupation = occupation;}
+    public void setOccupation(String occupation) {this.occupation = occupation;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printThrowException</span>(<span class="params"></span>) </span>{
-        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();
+    public void printThrowException() {
+        throw new IllegalArgumentException();
     }    
 }
-</code></pre><h4 id="2、在Spring-Customer-xml中">2、在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
+</code></pre><h4 id="2、在Spring-Customer-xml中"><a href="#2、在Spring-Customer-xml中" class="headerlink" title="2、在Spring-Customer.xml中"></a>2、在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"Zhang Yu"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"occupation"</span> value=<span class="string">"developer"</span> /&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
     &lt;/bean&gt;
 &lt;/beans&gt;
-</code></pre><h4 id="3、运行，在App-java中">3、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.zhangyu.common;
+</code></pre><h4 id="3、运行，在App-java中"><a href="#3、运行，在App-java中" class="headerlink" title="3、运行，在App.java中"></a>3、运行，在App.java中</h4><pre><code>package com.zhangyu.common;
 
-<span class="keyword">import</span> com.zhangyu.customer.services.CustomerService;
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.zhangyu.customer.services.CustomerService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-<span class="keyword">public</span> class App {
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) {
-        ApplicationContext appContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(
-                <span class="keyword">new</span> <span class="keyword">String</span>[] { <span class="string">"Spring-Customer.xml"</span> });
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext(
+                new String[] { &quot;Spring-Customer.xml&quot; });
 
         CustomerService cust = (CustomerService) appContext
-                .getBean(<span class="string">"customerService"</span>);
+                .getBean(&quot;customerService&quot;);
 
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
+        System.out.println(&quot;*************************&quot;);
         cust.printName();
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
+        System.out.println(&quot;*************************&quot;);
         cust.printOccupation();
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
-        <span class="keyword">try</span> {
+        System.out.println(&quot;*************************&quot;);
+        try {
             cust.printThrowException();
-        } <span class="keyword">catch</span> (Exception e) {
+        } catch (Exception e) {
 
         }
     }
 }
-</code></pre><h4 id="4、结果">4、结果</h4><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+</code></pre><h4 id="4、结果"><a href="#4、结果" class="headerlink" title="4、结果"></a>4、结果</h4><pre><code>*************************
 Customer name : Zhang Yu
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Customer occupation : developer
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-</code></pre><h3 id="二、使用AOP">二、使用AOP</h3><h4 id="1、Before_Advice">1、Before Advice</h4><h5 id="（1）HelloBeforeMethod-java中">（1）HelloBeforeMethod.java中</h5><p>　　创建一个实现了接口MethodBeforeAdvice的class，method运行前，将运行HelloBeforeMethod.java　　</p>
-<pre><code><span class="keyword">package</span> com.zhangyu.aop;
+*************************
+</code></pre><h3 id="二、使用AOP"><a href="#二、使用AOP" class="headerlink" title="二、使用AOP"></a>二、使用AOP</h3><h4 id="1、Before-Advice"><a href="#1、Before-Advice" class="headerlink" title="1、Before Advice"></a>1、Before Advice</h4><h5 id="（1）HelloBeforeMethod-java中"><a href="#（1）HelloBeforeMethod-java中" class="headerlink" title="（1）HelloBeforeMethod.java中"></a>（1）HelloBeforeMethod.java中</h5><p>　　创建一个实现了接口MethodBeforeAdvice的class，method运行前，将运行HelloBeforeMethod.java　　</p>
+<pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> java.lang.reflect.Method;
-<span class="keyword">import</span> org.springframework.aop.MethodBeforeAdvice;
+import java.lang.reflect.Method;
+import org.springframework.aop.MethodBeforeAdvice;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloBeforeMethod</span> <span class="keyword">implements</span> <span class="title">MethodBeforeAdvice</span> </span>{
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">before</span><span class="params">(Method method, Object[] args, Object <span class="keyword">target</span>)</span>
-            <span class="keyword">throws</span> Throwable </span>{
-        System.out.println(<span class="string">"HelloBeforeMethod : Before method ,hello"</span>);
+public class HelloBeforeMethod implements MethodBeforeAdvice {
+    @Override
+    public void before(Method method, Object[] args, Object target)
+            throws Throwable {
+        System.out.println(&quot;HelloBeforeMethod : Before method ,hello&quot;);
     }
 }
-</code></pre><h5 id="(2)_Spring-Customer-xml中">(2) Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloBeforeMethodBean</code>，然后创建一个新的代理（proxy），命名为<code>customerServiceProxy</code>。其中,<code>target</code>定义你想劫持哪个bean，<code>interceptorNames</code>定义你想用哪个class(advice)劫持target。</p>
-<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"Zhang Yu"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"occupation"</span> value=<span class="string">"developer"</span> /&gt;
+</code></pre><h5 id="2-Spring-Customer-xml中"><a href="#2-Spring-Customer-xml中" class="headerlink" title="(2) Spring-Customer.xml中"></a>(2) Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloBeforeMethodBean</code>，然后创建一个新的代理（proxy），命名为<code>customerServiceProxy</code>。其中,<code>target</code>定义你想劫持哪个bean，<code>interceptorNames</code>定义你想用哪个class(advice)劫持target。</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"helloAroundMethodBean"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.aop.HelloAroundMethod"</span> /&gt;
-    &lt;bean <span class="property">id</span>=<span class="string">"helloBeforeMethodBean"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.aop.HelloBeforeMethod"</span> /&gt;
+    &lt;bean id=&quot;helloAroundMethodBean&quot; class=&quot;com.zhangyu.aop.HelloAroundMethod&quot; /&gt;
+    &lt;bean id=&quot;helloBeforeMethodBean&quot; class=&quot;com.zhangyu.aop.HelloBeforeMethod&quot; /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerServiceProxy"</span> <span class="type">class</span>=<span class="string">"org.springframework.aop.framework.ProxyFactoryBean"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"target"</span> <span class="keyword">ref</span>=<span class="string">"customerService"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"interceptorNames"</span>&gt;
-            &lt;<span class="type">list</span>&gt;
+    &lt;bean id=&quot;customerServiceProxy&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
+        &lt;property name=&quot;target&quot; ref=&quot;customerService&quot; /&gt;
+        &lt;property name=&quot;interceptorNames&quot;&gt;
+            &lt;list&gt;
                 &lt;value&gt;helloBeforeMethodBean&lt;/value&gt;
-            &lt;/<span class="type">list</span>&gt;
-        &lt;/<span class="keyword">property</span>&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
     &lt;/bean&gt;
 &lt;/beans&gt;
-</code></pre><h5 id="(3)_运行，在App-java中">(3) 运行，在App.java中　　</h5><p>　　将CustomerService cust改为从<code>customerServiceProxy</code>中getBean:</p>
-<pre><code>CustomerService cust = <span class="params">(CustomerService)</span>appContext.getBean<span class="params">(<span class="string">"customerServiceProxy"</span>)</span>;
+</code></pre><h5 id="3-运行，在App-java中"><a href="#3-运行，在App-java中" class="headerlink" title="(3) 运行，在App.java中　　"></a>(3) 运行，在App.java中　　</h5><p>　　将CustomerService cust改为从<code>customerServiceProxy</code>中getBean:</p>
+<pre><code>CustomerService cust = (CustomerService)appContext.getBean(&quot;customerServiceProxy&quot;);
 </code></pre><p>#####（4）结果</p>
-<pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<pre><code>*************************
 HelloBeforeMethod : Before method ,hello
 Customer name : Zhang Yu
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 HelloBeforeMethod : Before method ,hello
 Customer occupation : developer
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 HelloBeforeMethod : Before method ,hello
-</code></pre><h4 id="2、After_Advice">2、After Advice</h4><h5 id="(1)_在HelloAfterMethod-java中">(1) 在HelloAfterMethod.java中</h5><pre><code><span class="keyword">package</span> com.zhangyu.aop;
+</code></pre><h4 id="2、After-Advice"><a href="#2、After-Advice" class="headerlink" title="2、After Advice"></a>2、After Advice</h4><h5 id="1-在HelloAfterMethod-java中"><a href="#1-在HelloAfterMethod-java中" class="headerlink" title="(1) 在HelloAfterMethod.java中"></a>(1) 在HelloAfterMethod.java中</h5><pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> java.lang.reflect.Method;
-<span class="keyword">import</span> org.springframework.aop.AfterReturningAdvice;
+import java.lang.reflect.Method;
+import org.springframework.aop.AfterReturningAdvice;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloAfterMethod</span> <span class="keyword">implements</span> <span class="title">AfterReturningAdvice</span> </span>{
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">(Object returnValue, Method method,
-            Object[] args, Object <span class="keyword">target</span>)</span> <span class="keyword">throws</span> Throwable </span>{
-        System.out.println(<span class="string">"HelloAfterMethod : After method ,hello!"</span>);
+public class HelloAfterMethod implements AfterReturningAdvice {
+    @Override
+    public void afterReturning(Object returnValue, Method method,
+            Object[] args, Object target) throws Throwable {
+        System.out.println(&quot;HelloAfterMethod : After method ,hello!&quot;);
     }
 }
-</code></pre><h5 id="(2)_在Spring-Customer-xml中">(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAfterMethodBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAfterMethodBean</code>。
+</code></pre><h5 id="2-在Spring-Customer-xml中"><a href="#2-在Spring-Customer-xml中" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAfterMethodBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAfterMethodBean</code>。
 　　</p>
-<h5 id="（3）运行结果">（3）运行结果</h5><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<h5 id="（3）运行结果"><a href="#（3）运行结果" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
 Customer name : Zhang Yu
 HelloAfterMethod : After method ,hello
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Customer occupation : developer
 HelloAfterMethod : After method ,hello
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 </code></pre><p>　　执行到cust.printThrowException()后，直接抛出异常，方法没有正常执行完毕（或者说没有返回结果），所以不运行切入的afterReturning方法。</p>
-<h4 id="3、After_throwing_advice">3、After throwing advice</h4><p>　　创建一个实现了ThrowsAdvice接口的class，劫持IllegalArgumentException异常，目标method运行时，抛出IllegalArgumentException异常后，运行切入的方法。</p>
-<h5 id="(1)_在HelloThrowException-java中">(1) 在HelloThrowException.java中</h5><pre><code><span class="keyword">package</span> com.zhangyu.aop;
+<h4 id="3、After-throwing-advice"><a href="#3、After-throwing-advice" class="headerlink" title="3、After throwing advice"></a>3、After throwing advice</h4><p>　　创建一个实现了ThrowsAdvice接口的class，劫持IllegalArgumentException异常，目标method运行时，抛出IllegalArgumentException异常后，运行切入的方法。</p>
+<h5 id="1-在HelloThrowException-java中"><a href="#1-在HelloThrowException-java中" class="headerlink" title="(1) 在HelloThrowException.java中"></a>(1) 在HelloThrowException.java中</h5><pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> org.springframework.aop.ThrowsAdvice;
+import org.springframework.aop.ThrowsAdvice;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloThrowException</span> <span class="keyword">implements</span> <span class="title">ThrowsAdvice</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterThrowing</span><span class="params">(IllegalArgumentException e)</span> <span class="keyword">throws</span> Throwable </span>{
-        System.out.println(<span class="string">"HelloThrowException : Throw exception ,hello"</span>);
+public class HelloThrowException implements ThrowsAdvice {
+    public void afterThrowing(IllegalArgumentException e) throws Throwable {
+        System.out.println(&quot;HelloThrowException : Throw exception ,hello&quot;);
     }
 }
-</code></pre><h5 id="(2)_在Spring-Customer-xml中-1">(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloThrowExceptionBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloThrowExceptionBean</code>。
+</code></pre><h5 id="2-在Spring-Customer-xml中-1"><a href="#2-在Spring-Customer-xml中-1" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloThrowExceptionBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloThrowExceptionBean</code>。
 　　</p>
-<h5 id="（3）运行结果-1">（3）运行结果　　</h5><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<h5 id="（3）运行结果-1"><a href="#（3）运行结果-1" class="headerlink" title="（3）运行结果　　"></a>（3）运行结果　　</h5><pre><code>*************************
 Customer name : Zhang Yu
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Customer occupation : developer
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 HelloThrowException : Throw exception ,hello
 </code></pre><p>者说没有返回结果），所以不运行切入的afterReturning方法。</p>
-<h4 id="4、Around_advice">4、Around advice</h4><h5 id="(1)_在HelloAroundMethod-java中">(1) 在HelloAroundMethod.java中</h5><pre><code>package com.zhangyu.aop;
+<h4 id="4、Around-advice"><a href="#4、Around-advice" class="headerlink" title="4、Around advice"></a>4、Around advice</h4><h5 id="1-在HelloAroundMethod-java中"><a href="#1-在HelloAroundMethod-java中" class="headerlink" title="(1) 在HelloAroundMethod.java中"></a>(1) 在HelloAroundMethod.java中</h5><pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> org.aopalliance.intercept.<span class="type">MethodInterceptor</span>;
-<span class="keyword">import</span> org.aopalliance.intercept.<span class="type">MethodInvocation</span>;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
-public class <span class="type">HelloAroundMethod</span> implements <span class="type">MethodInterceptor</span> {
-    @<span class="type">Override</span>
-    public <span class="type">Object</span> invoke(<span class="type">MethodInvocation</span> methodInvocation) throws <span class="type">Throwable</span> {
+public class HelloAroundMethod implements MethodInterceptor {
+    @Override
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 
-        <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"Method name : "</span> + methodInvocation.getMethod().getName());
+        System.out.println(&quot;Method name : &quot; + methodInvocation.getMethod().getName());
 
-        // same <span class="keyword">with</span> <span class="type">MethodBeforeAdvice</span>
-        <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Before method ,hello"</span>);
+        // same with MethodBeforeAdvice
+        System.out.println(&quot;HelloAroundMethod : Before method ,hello&quot;);
 
-        <span class="keyword">try</span> {
-            <span class="type">Object</span> <span class="literal">result</span> = methodInvocation.proceed();
+        try {
+            Object result = methodInvocation.proceed();
 
-            // same <span class="keyword">with</span> <span class="type">AfterReturningAdvice</span>
-            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : After method ,hello!"</span>);
-            <span class="keyword">return</span> <span class="literal">result</span>;
-        } catch (<span class="type">IllegalArgumentException</span> e) {
-            // same <span class="keyword">with</span> <span class="type">ThrowsAdvice</span>
-            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Throw exception ,hello!"</span>);
+            // same with AfterReturningAdvice
+            System.out.println(&quot;HelloAroundMethod : After method ,hello!&quot;);
+            return result;
+        } catch (IllegalArgumentException e) {
+            // same with ThrowsAdvice
+            System.out.println(&quot;HelloAroundMethod : Throw exception ,hello!&quot;);
             throw e;
         }
     }
 }
-</code></pre><h5 id="(2)_在Spring-Customer-xml中-2">(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAroundMethod</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAroundMethodBean</code>。
+</code></pre><h5 id="2-在Spring-Customer-xml中-2"><a href="#2-在Spring-Customer-xml中-2" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAroundMethod</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAroundMethodBean</code>。
 　　</p>
-<h5 id="（3）运行结果-2">（3）运行结果</h5><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<h5 id="（3）运行结果-2"><a href="#（3）运行结果-2" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
 Method name : printName
 HelloAroundMethod : Before method ,hello!
 Customer name : Zhang Yu
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Method name : printOccupation
 HelloAroundMethod : Before method ,hello!
 Customer occupation : developer
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Method name : printThrowException
 HelloAroundMethod : Before method ,hello!
 HelloAroundMethod : Throw exception ,hello!
-</code></pre><h3 id="三、目录结构">三、目录结构</h3><img src="/imgs/SpringAOP_Advice.png" width="300" height="500">
+</code></pre><h3 id="三、目录结构"><a href="#三、目录结构" class="headerlink" title="三、目录结构"></a>三、目录结构</h3><img src="/imgs/SpringAOP_Advice.png" width="300" height="500">
 </span>
         
       
@@ -1267,270 +1992,270 @@ HelloAroundMethod : Throw exception ,hello!
 
       
         
-          <span itemprop="articleBody"><h3 id="一、Spring_Batch流程">一、Spring Batch流程</h3><img src="/imgs/SpringBatch流程.png" width="600" height="300">
+          <span itemprop="articleBody"><h3 id="一、Spring-Batch流程"><a href="#一、Spring-Batch流程" class="headerlink" title="一、Spring Batch流程"></a>一、Spring Batch流程</h3><img src="/imgs/SpringBatch流程.png" width="600" height="300">
 <p>　　每个Batch都会包含一个Job，每个Job装了若干Step，Step读取数据，处理数据，然后将这些数据存储起来(ItemReader用来读取数据，ItemProcessor用来处理数据，ItemWriter用来写数据) 。JobLauncher用来启动Job，JobRepository是上述处理提供的一种持久化机制，它为JobLauncher，Job，和Step实例提供CRUD(Create\Retrieve\Update\Delete)操作。</p>
 <blockquote>
 <p>1 Job = Many Steps.<br>1 Step = 1 READ-PROCESS-WRITE or 1 Tasklet.<br>Job = {Step 1 -&gt; Step 2 -&gt; Step 3} (Chained together)</p>
 </blockquote>
 <p>　　从DB或是文件中取出数据的时候，read操作每次只读取一条记录，之后将读取的这条数据传递给processor(item)处理，框架将重复做这两步操作，直到读取记录的件数达到batch配置信息中”commin-interval”设定值的时候，就会调用一次write操作。然后再重复以上处理，直到处理完所有的数据。当这个Step的工作完成以后，或是跳到其他Step，或是结束处理。</p>
-<h3 id="二、Spring_Batch_Jobs">二、Spring Batch Jobs</h3><h4 id="1、content-xml">1、content.xml</h4><p>　　content.xml中定义了批处理任务中需要的基础设施，主要配置任务仓库、任务调度器、任务执行中用到的事务管理器。</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"
+<h3 id="二、Spring-Batch-Jobs"><a href="#二、Spring-Batch-Jobs" class="headerlink" title="二、Spring Batch Jobs"></a>二、Spring Batch Jobs</h3><h4 id="1、content-xml"><a href="#1、content-xml" class="headerlink" title="1、content.xml"></a>1、content.xml</h4><p>　　content.xml中定义了批处理任务中需要的基础设施，主要配置任务仓库、任务调度器、任务执行中用到的事务管理器。</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&quot;
     http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd&quot;&gt;
 
-    <span class="comment">&lt;!-- stored job-meta in memory --&gt;</span>
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"jobRepository"</span>
-        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"transactionManager"</span> <span class="attribute">ref</span>=<span class="value">"transactionManager"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+    &lt;!-- stored job-meta in memory --&gt;
+    &lt;bean id=&quot;jobRepository&quot;
+        class=&quot;org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean&quot;&gt;
+        &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot; /&gt;
+    &lt;/bean&gt;
 
-      <span class="comment">&lt;!-- stored job-meta in database --&gt;</span>
-    <span class="comment">&lt;!--&lt;bean id="jobRepository"
-        class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean"&gt;
-        &lt;property name="dataSource" ref="dataSource" /&gt;
-        &lt;property name="transactionManager" ref="transactionManager" /&gt;
-        &lt;property name="databaseType" value="mysql" /&gt;
-    &lt;/bean&gt;--&gt;</span>
+      &lt;!-- stored job-meta in database --&gt;
+    &lt;!--&lt;bean id=&quot;jobRepository&quot;
+        class=&quot;org.springframework.batch.core.repository.support.JobRepositoryFactoryBean&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
+        &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot; /&gt;
+        &lt;property name=&quot;databaseType&quot; value=&quot;mysql&quot; /&gt;
+    &lt;/bean&gt;--&gt;
 
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"transactionManager"</span>
-        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.support.transaction.ResourcelessTransactionManager"</span> /&gt;</span>
+    &lt;bean id=&quot;transactionManager&quot;
+        class=&quot;org.springframework.batch.support.transaction.ResourcelessTransactionManager&quot; /&gt;
 
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"jobLauncher"</span>
-        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.core.launch.support.SimpleJobLauncher"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"jobRepository"</span> <span class="attribute">ref</span>=<span class="value">"jobRepository"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+    &lt;bean id=&quot;jobLauncher&quot;
+        class=&quot;org.springframework.batch.core.launch.support.SimpleJobLauncher&quot;&gt;
+        &lt;property name=&quot;jobRepository&quot; ref=&quot;jobRepository&quot; /&gt;
+    &lt;/bean&gt;
 
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="2、job-hello-world-xml">2、job-hello-world.xml</h4><img src="/imgs/helloWorldJob.png" width="600" height="300">
+&lt;/beans&gt;
+</code></pre><h4 id="2、job-hello-world-xml"><a href="#2、job-hello-world-xml" class="headerlink" title="2、job-hello-world.xml"></a>2、job-hello-world.xml</h4><img src="/imgs/helloWorldJob.png" width="600" height="300">
 <p>　　首先，helloWorldJob里面配置了读（cvsFileItemReader），写（xmlItemWriter） 以及处理（itemProcessor），并设置了commit-interval=”10”。<br>　　之后，对cvsFileItemReader中涉及的resource和lineMapper进行配置。对xmlItemWriter中涉及的resource、marshaller、rootTagName进行配置。而处理过程，则由稍后讲述的itemProcessor.java完成。</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:batch</span>=<span class="value">"http://www.springframework.org/schema/batch"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/batch
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:batch=&quot;http://www.springframework.org/schema/batch&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/batch
     http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
     http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"</span>&gt;</span>
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd&quot;&gt;
 
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"../config/context.xml"</span> /&gt;</span>
-    <span class="comment">&lt;!--&lt;import resource="../config/database.xml" /&gt;--&gt;</span>
+    &lt;import resource=&quot;../config/context.xml&quot; /&gt;
+    &lt;!--&lt;import resource=&quot;../config/database.xml&quot; /&gt;--&gt;
 
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"report"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.model.Report"</span> <span class="attribute">scope</span>=<span class="value">"prototype"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"itemProcessor"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.CustomItemProcessor"</span> /&gt;</span>
+    &lt;bean id=&quot;report&quot; class=&quot;com.mkyong.model.Report&quot; scope=&quot;prototype&quot; /&gt;
+    &lt;bean id=&quot;itemProcessor&quot; class=&quot;com.mkyong.CustomItemProcessor&quot; /&gt;
 
-    <span class="tag">&lt;<span class="title">batch:job</span> <span class="attribute">id</span>=<span class="value">"helloWorldJob"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">batch:step</span> <span class="attribute">id</span>=<span class="value">"step1"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">batch:tasklet</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">batch:chunk</span> <span class="attribute">reader</span>=<span class="value">"cvsFileItemReader"</span> <span class="attribute">writer</span>=<span class="value">"xmlItemWriter"</span> <span class="attribute">processor</span>=<span class="value">"itemProcessor"</span><span class="value">commit-interval="10"</span>&gt;</span>
-                <span class="tag">&lt;/<span class="title">batch:chunk</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">batch:tasklet</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">batch:step</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">batch:job</span>&gt;</span>
+    &lt;batch:job id=&quot;helloWorldJob&quot;&gt;
+        &lt;batch:step id=&quot;step1&quot;&gt;
+            &lt;batch:tasklet&gt;
+                &lt;batch:chunk reader=&quot;cvsFileItemReader&quot; writer=&quot;xmlItemWriter&quot; processor=&quot;itemProcessor&quot;commit-interval=&quot;10&quot;&gt;
+                &lt;/batch:chunk&gt;
+            &lt;/batch:tasklet&gt;
+        &lt;/batch:step&gt;
+    &lt;/batch:job&gt;
 
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"cvsFileItemReader"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.FlatFileItemReader"</span>&gt;</span>
+    &lt;bean id=&quot;cvsFileItemReader&quot; class=&quot;org.springframework.batch.item.file.FlatFileItemReader&quot;&gt;
 
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"resource"</span> <span class="attribute">value</span>=<span class="value">"classpath:cvs/input/report.csv"</span> /&gt;</span>
+        &lt;property name=&quot;resource&quot; value=&quot;classpath:cvs/input/report.csv&quot; /&gt;
 
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"lineMapper"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.mapping.DefaultLineMapper"</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"lineTokenizer"</span>&gt;</span>
-                    <span class="tag">&lt;<span class="title">bean</span> 
-                        <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.file.transform.DelimitedLineTokenizer"</span>&gt;</span>
-                        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"names"</span> <span class="attribute">value</span>=<span class="value">"id,sales,qty,staffName,date"</span> /&gt;</span>
-                    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"fieldSetMapper"</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.ReportFieldSetMapper"</span> /&gt;</span>
-                <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
+        &lt;property name=&quot;lineMapper&quot;&gt;
+            &lt;bean class=&quot;org.springframework.batch.item.file.mapping.DefaultLineMapper&quot;&gt;
+                &lt;property name=&quot;lineTokenizer&quot;&gt;
+                    &lt;bean 
+                        class=&quot;org.springframework.batch.item.file.transform.DelimitedLineTokenizer&quot;&gt;
+                        &lt;property name=&quot;names&quot; value=&quot;id,sales,qty,staffName,date&quot; /&gt;
+                    &lt;/bean&gt;
+                &lt;/property&gt;
+                &lt;property name=&quot;fieldSetMapper&quot;&gt;
+                &lt;bean class=&quot;com.mkyong.ReportFieldSetMapper&quot; /&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/property&gt;
 
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+    &lt;/bean&gt;
 
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"xmlItemWriter"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.batch.item.xml.StaxEventItemWriter"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"resource"</span> <span class="attribute">value</span>=<span class="value">"file:xml/outputs/report.xml"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"marshaller"</span> <span class="attribute">ref</span>=<span class="value">"reportMarshaller"</span> /&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"rootTagName"</span> <span class="attribute">value</span>=<span class="value">"report"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+    &lt;bean id=&quot;xmlItemWriter&quot; class=&quot;org.springframework.batch.item.xml.StaxEventItemWriter&quot;&gt;
+        &lt;property name=&quot;resource&quot; value=&quot;file:xml/outputs/report.xml&quot; /&gt;
+        &lt;property name=&quot;marshaller&quot; ref=&quot;reportMarshaller&quot; /&gt;
+        &lt;property name=&quot;rootTagName&quot; value=&quot;report&quot; /&gt;
+    &lt;/bean&gt;
 
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"reportMarshaller"</span> <span class="attribute">class</span>=<span class="value">"org.springframework.oxm.jaxb.Jaxb2Marshaller"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"classesToBeBound"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">list</span>&gt;</span>
-                <span class="tag">&lt;<span class="title">value</span>&gt;</span>com.mkyong.model.Report<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">list</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">property</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="3、ReportFieldSetMapper-java">3、ReportFieldSetMapper.java</h4><p>　　读取时，主要是通过ReportFieldSetMapper.java来完成report.csv到Report.java的映射。</p>
+    &lt;bean id=&quot;reportMarshaller&quot; class=&quot;org.springframework.oxm.jaxb.Jaxb2Marshaller&quot;&gt;
+        &lt;property name=&quot;classesToBeBound&quot;&gt;
+            &lt;list&gt;
+                &lt;value&gt;com.mkyong.model.Report&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre><h4 id="3、ReportFieldSetMapper-java"><a href="#3、ReportFieldSetMapper-java" class="headerlink" title="3、ReportFieldSetMapper.java"></a>3、ReportFieldSetMapper.java</h4><p>　　读取时，主要是通过ReportFieldSetMapper.java来完成report.csv到Report.java的映射。</p>
 <pre><code>package com.mkyong;
 
-<span class="built_in">import</span> java.<span class="built_in">text</span>.ParseException;
-<span class="built_in">import</span> java.<span class="built_in">text</span>.SimpleDateFormat;
-<span class="built_in">import</span> org.springframework.batch.item.file.mapping.FieldSetMapper;
-<span class="built_in">import</span> org.springframework.batch.item.file.transform.FieldSet;
-<span class="built_in">import</span> org.springframework.validation.BindException;
-<span class="built_in">import</span> com.mkyong.model.Report;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.FieldSet;
+import org.springframework.validation.BindException;
+import com.mkyong.model.Report;
 
 public class ReportFieldSetMapper implements FieldSetMapper&lt;Report&gt; {
 
-private SimpleDateFormat dateFormat = new SimpleDateFormat<span class="params">(<span class="string">"dd/MM/yyyy"</span>)</span>;
+private SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);
 
 @Override
-public Report mapFieldSet<span class="params">(FieldSet fieldSet)</span> throws BindException {
+public Report mapFieldSet(FieldSet fieldSet) throws BindException {
 
-    Report report = new Report<span class="params">()</span>;
-    report.setId<span class="params">(fieldSet.readInt<span class="params">(<span class="number">0</span>)</span>)</span>;
-    report.setSales<span class="params">(fieldSet.readBigDecimal<span class="params">(<span class="number">1</span>)</span>)</span>;
-    report.setQty<span class="params">(fieldSet.readInt<span class="params">(<span class="number">2</span>)</span>)</span>;
-    report.setStaffName<span class="params">(fieldSet.readString<span class="params">(<span class="number">3</span>)</span>)</span>;
+    Report report = new Report();
+    report.setId(fieldSet.readInt(0));
+    report.setSales(fieldSet.readBigDecimal(1));
+    report.setQty(fieldSet.readInt(2));
+    report.setStaffName(fieldSet.readString(3));
 
-    <span class="comment">//default format yyyy-MM-dd</span>
-    <span class="comment">//fieldSet.readDate(4);</span>
-    String date = fieldSet.readString<span class="params">(<span class="number">4</span>)</span>;
+    //default format yyyy-MM-dd
+    //fieldSet.readDate(4);
+    String date = fieldSet.readString(4);
     try {
-        report.setDate<span class="params">(dateFormat.parse<span class="params">(date)</span>)</span>;
-    } catch <span class="params">(ParseException e)</span> {
-        e.printStackTrace<span class="params">()</span>;
+        report.setDate(dateFormat.parse(date));
+    } catch (ParseException e) {
+        e.printStackTrace();
     }
 
     return report;
 }
 </code></pre><p>}</p>
-<h4 id="4、report-csv">4、report.csv</h4><pre><code><span class="number">1001</span>,<span class="string">"213,100"</span>,<span class="number">980</span>,<span class="string">"mkyong"</span>, <span class="number">29</span>/<span class="number">7</span>/<span class="number">2013</span>
-<span class="number">1002</span>,<span class="string">"320,200"</span>,<span class="number">1080</span>,<span class="string">"staff 1"</span>, <span class="number">30</span>/<span class="number">7</span>/<span class="number">2013</span>
-<span class="number">1003</span>,<span class="string">"342,197"</span>,<span class="number">1200</span>,<span class="string">"staff 2"</span>, <span class="number">31</span>/<span class="number">7</span>/<span class="number">2013</span>
-</code></pre><h4 id="5、Report-java">5、Report.java</h4><pre><code><span class="keyword">package</span> com.mkyong.model;
+<h4 id="4、report-csv"><a href="#4、report-csv" class="headerlink" title="4、report.csv"></a>4、report.csv</h4><pre><code>1001,&quot;213,100&quot;,980,&quot;mkyong&quot;, 29/7/2013
+1002,&quot;320,200&quot;,1080,&quot;staff 1&quot;, 30/7/2013
+1003,&quot;342,197&quot;,1200,&quot;staff 2&quot;, 31/7/2013
+</code></pre><h4 id="5、Report-java"><a href="#5、Report-java" class="headerlink" title="5、Report.java"></a>5、Report.java</h4><pre><code>package com.mkyong.model;
 
-<span class="keyword">import</span> java.math.BigDecimal;
-<span class="keyword">import</span> java.util.Date;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlAttribute;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlElement;
-<span class="keyword">import</span> javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-<span class="annotation">@XmlRootElement</span>(name = <span class="string">"record"</span>)
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Report</span> </span>{
+@XmlRootElement(name = &quot;record&quot;)
+public class Report {
 
-    <span class="keyword">private</span> <span class="keyword">int</span> id;
-    <span class="keyword">private</span> BigDecimal sales;
-    <span class="keyword">private</span> <span class="keyword">int</span> qty;
-    <span class="keyword">private</span> String staffName;
-    <span class="keyword">private</span> Date date;
+    private int id;
+    private BigDecimal sales;
+    private int qty;
+    private String staffName;
+    private Date date;
 
-    <span class="annotation">@XmlAttribute</span>(name = <span class="string">"id"</span>)
-    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>{<span class="keyword">return</span> id;}
+    @XmlAttribute(name = &quot;id&quot;)
+    public int getId() {return id;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>{<span class="keyword">this</span>.id = id;}
+    public void setId(int id) {this.id = id;}
 
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"sales"</span>)
-    <span class="function"><span class="keyword">public</span> BigDecimal <span class="title">getSales</span><span class="params">()</span> </span>{<span class="keyword">return</span> sales;}
+    @XmlElement(name = &quot;sales&quot;)
+    public BigDecimal getSales() {return sales;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSales</span><span class="params">(BigDecimal sales)</span> </span>{<span class="keyword">this</span>.sales = sales;}
+    public void setSales(BigDecimal sales) {this.sales = sales;}
 
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"qty"</span>)
-    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQty</span><span class="params">()</span> </span>{<span class="keyword">return</span> qty;}
+    @XmlElement(name = &quot;qty&quot;)
+    public int getQty() {return qty;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQty</span><span class="params">(<span class="keyword">int</span> qty)</span> </span>{    <span class="keyword">this</span>.qty = qty;}
+    public void setQty(int qty) {    this.qty = qty;}
 
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"staffName"</span>)
-    <span class="function"><span class="keyword">public</span> String <span class="title">getStaffName</span><span class="params">()</span> </span>{<span class="keyword">return</span> staffName;}
+    @XmlElement(name = &quot;staffName&quot;)
+    public String getStaffName() {return staffName;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStaffName</span><span class="params">(String staffName)</span> </span>{<span class="keyword">this</span>.staffName = staffName;}
+    public void setStaffName(String staffName) {this.staffName = staffName;}
 
-    <span class="annotation">@XmlElement</span>(name = <span class="string">"date"</span>)
-    <span class="function"><span class="keyword">public</span> Date <span class="title">getDate</span><span class="params">()</span> </span>{<span class="keyword">return</span> date;}
+    @XmlElement(name = &quot;date&quot;)
+    public Date getDate() {return date;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(Date date)</span> </span>{<span class="keyword">this</span>.date = date;}
+    public void setDate(Date date) {this.date = date;}
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Report [id="</span> + id +
-                <span class="string">", sales="</span> + sales +
-                <span class="string">", qty="</span> + qty +
-                <span class="string">", staffName="</span> + staffName +
-                <span class="string">"]"</span>;
+    @Override
+    public String toString() {
+        return &quot;Report [id=&quot; + id +
+                &quot;, sales=&quot; + sales +
+                &quot;, qty=&quot; + qty +
+                &quot;, staffName=&quot; + staffName +
+                &quot;]&quot;;
     }
 }
-</code></pre><h4 id="6、CustomItemProcessor-java">6、CustomItemProcessor.java</h4><pre><code><span class="keyword">package</span> com.mkyong;
+</code></pre><h4 id="6、CustomItemProcessor-java"><a href="#6、CustomItemProcessor-java" class="headerlink" title="6、CustomItemProcessor.java"></a>6、CustomItemProcessor.java</h4><pre><code>package com.mkyong;
 
-<span class="keyword">import</span> org.springframework.batch.item.ItemProcessor;
-<span class="keyword">import</span> com.mkyong.model.Report;
+import org.springframework.batch.item.ItemProcessor;
+import com.mkyong.model.Report;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomItemProcessor</span> <span class="keyword">implements</span> <span class="title">ItemProcessor</span>&lt;<span class="title">Report</span>, <span class="title">Report</span>&gt; </span>{
+public class CustomItemProcessor implements ItemProcessor&lt;Report, Report&gt; {
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> Report <span class="title">process</span><span class="params">(Report item)</span> <span class="keyword">throws</span> Exception </span>{
+    @Override
+    public Report process(Report item) throws Exception {
 
-        System.out.println(<span class="string">"Processing..."</span> + item);
-        <span class="keyword">return</span> item;
+        System.out.println(&quot;Processing...&quot; + item);
+        return item;
     }
 }
-</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java中</p>
+</code></pre><h3 id="三、创建测试App"><a href="#三、创建测试App" class="headerlink" title="三、创建测试App"></a>三、创建测试App</h3><p>在App.java中</p>
 <pre><code>package com.mkyong;
 
-<span class="keyword">import</span> org.springframework.batch.core.Job;
-<span class="keyword">import</span> org.springframework.batch.core.JobExecution;
-<span class="keyword">import</span> org.springframework.batch.core.JobParameters;
-<span class="keyword">import</span> org.springframework.batch.core.launch.JobLauncher;
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
-    public static <span class="keyword">void</span> main(<span class="built_in">String</span>[] args) {
+public class App {
+    public static void main(String[] args) {
 
-        <span class="built_in">String</span>[] springConfig  = {<span class="string">"spring/batch/jobs/job-hello-world.xml"</span>};
+        String[] springConfig  = {&quot;spring/batch/jobs/job-hello-world.xml&quot;};
         ApplicationContext context = 
-                <span class="keyword">new</span> ClassPathXmlApplicationContext(springConfig);
+                new ClassPathXmlApplicationContext(springConfig);
 
-        JobLauncher jobLauncher = (JobLauncher) context.getBean(<span class="string">"jobLauncher"</span>);
-        Job job = (Job) context.getBean(<span class="string">"helloWorldJob"</span>);
+        JobLauncher jobLauncher = (JobLauncher) context.getBean(&quot;jobLauncher&quot;);
+        Job job = (Job) context.getBean(&quot;helloWorldJob&quot;);
 
-        <span class="keyword">try</span> {
-            JobExecution execution = jobLauncher.run(job, <span class="keyword">new</span> JobParameters());
-            System.out.println(<span class="string">"Exit Status : "</span> + execution.getStatus());
+        try {
+            JobExecution execution = jobLauncher.run(job, new JobParameters());
+            System.out.println(&quot;Exit Status : &quot; + execution.getStatus());
 
-        } <span class="keyword">catch</span> (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.out.println(<span class="string">"Done"</span>);
+        System.out.println(&quot;Done&quot;);
     }
 }
-</code></pre><h3 id="四、结果">四、结果</h3><p>report.xml</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-<span class="tag">&lt;<span class="title">report</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1001"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-29T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>980<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>213100<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1002"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-30T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>1080<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>320200<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>staff 1<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">record</span> <span class="attribute">id</span>=<span class="value">"1003"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">date</span>&gt;</span>2013-07-31T00:00:00+08:00<span class="tag">&lt;/<span class="title">date</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">qty</span>&gt;</span>1200<span class="tag">&lt;/<span class="title">qty</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">sales</span>&gt;</span>342197<span class="tag">&lt;/<span class="title">sales</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">staffName</span>&gt;</span>staff 2<span class="tag">&lt;/<span class="title">staffName</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">record</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">report</span>&gt;</span>
+</code></pre><h3 id="四、结果"><a href="#四、结果" class="headerlink" title="四、结果"></a>四、结果</h3><p>report.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;report&gt;
+    &lt;record id=&quot;1001&quot;&gt;
+        &lt;date&gt;2013-07-29T00:00:00+08:00&lt;/date&gt;
+        &lt;qty&gt;980&lt;/qty&gt;
+        &lt;sales&gt;213100&lt;/sales&gt;
+        &lt;staffName&gt;mkyong&lt;/staffName&gt;
+    &lt;/record&gt;
+    &lt;record id=&quot;1002&quot;&gt;
+        &lt;date&gt;2013-07-30T00:00:00+08:00&lt;/date&gt;
+        &lt;qty&gt;1080&lt;/qty&gt;
+        &lt;sales&gt;320200&lt;/sales&gt;
+        &lt;staffName&gt;staff 1&lt;/staffName&gt;
+    &lt;/record&gt;
+    &lt;record id=&quot;1003&quot;&gt;
+        &lt;date&gt;2013-07-31T00:00:00+08:00&lt;/date&gt;
+        &lt;qty&gt;1200&lt;/qty&gt;
+        &lt;sales&gt;342197&lt;/sales&gt;
+        &lt;staffName&gt;staff 2&lt;/staffName&gt;
+    &lt;/record&gt;
+&lt;/report&gt;
 </code></pre><p>console:</p>
-<pre><code>Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.launch.support.SimpleJobLauncher$<span class="number">1</span> run
+<pre><code>Aug 26, 2015 8:15:40 PM org.springframework.batch.core.launch.support.SimpleJobLauncher$1 run
 INFO: Job: [FlowJob: [name=helloWorldJob]] launched with the following parameters: [{}]
-Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.job.SimpleStepHandler handleStep
+Aug 26, 2015 8:15:40 PM org.springframework.batch.core.job.SimpleStepHandler handleStep
 INFO: Executing step: [step1]
-Processing...Report [id=<span class="number">1001</span>, sales=<span class="number">213100</span>, qty=<span class="number">980</span>, staffName=mkyong]
-Processing...Report [id=<span class="number">1002</span>, sales=<span class="number">320200</span>, qty=<span class="number">1080</span>, staffName=staff <span class="number">1</span>]
-Processing...Report [id=<span class="number">1003</span>, sales=<span class="number">342197</span>, qty=<span class="number">1200</span>, staffName=staff <span class="number">2</span>]
+Processing...Report [id=1001, sales=213100, qty=980, staffName=mkyong]
+Processing...Report [id=1002, sales=320200, qty=1080, staffName=staff 1]
+Processing...Report [id=1003, sales=342197, qty=1200, staffName=staff 2]
 Exit Status : COMPLETED
-Aug <span class="number">26</span>, <span class="number">2015</span> <span class="number">8</span>:<span class="number">15</span>:<span class="number">40</span> PM org.springframework.batch.core.launch.support.SimpleJobLauncher$<span class="number">1</span> run
+Aug 26, 2015 8:15:40 PM org.springframework.batch.core.launch.support.SimpleJobLauncher$1 run
 Done
 INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following parameters: [{}] and the following status: [COMPLETED]
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/SpringBatchHelloWorld.png" width="300" height="500">
-<h3 id="六、主要领域对象">六、主要领域对象</h3><table>
+</code></pre><h3 id="五、目录结构"><a href="#五、目录结构" class="headerlink" title="五、目录结构"></a>五、目录结构</h3><img src="/imgs/SpringBatchHelloWorld.png" width="300" height="500">
+<h3 id="六、主要领域对象"><a href="#六、主要领域对象" class="headerlink" title="六、主要领域对象"></a>六、主要领域对象</h3><table>
 <thead>
 <tr>
 <th>领域对象</th>
@@ -1619,602 +2344,11 @@ INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following paramete
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/25/SpringDI/" itemprop="url">
-                Spring依赖注入
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-25T22:40:55+08:00" content="2015-08-25">
-            2015-08-25
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/25/SpringDI/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/25/SpringDI/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　控制反转IoC(Inversion of Control),它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。其主要实现方式有两种：<br></p>
-<blockquote>
-<p>　　<1>依赖查找（Dependency Lookup）：容器提供回调接口和上下文环境给组件。<br><br>　　<2>依赖注入（Dependency Injection）：组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。后者是时下最流行的IoC类型，其又有接口注入（Interface Injection），设值注入（Setter Injection）和构造子注入（Constructor Injection）三种方式。
-　　　　　</2></1></p>
-</blockquote>
-<h3 id="一、接口注入">一、接口注入</h3><pre><code><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassA</span> {
-    <span class="keyword">private</span> InterfaceB clzB;
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span>(<span class="params"></span>) </span>{
-    Ojbect obj = Class.forName(Config.BImplementation).newInstance();
-    clzB = (InterfaceB)obj;
-    clzB.doIt()
-}
-</code></pre><p>　　ClassA依赖于InterfaceB的实现，传统的方法是在代码中创建 InterfaceB实现类的实例，ClassA在编译期即依赖于InterfaceB的实现。<br><br>　　我们预先在配置文件中设定的实现类的类名Config.BImplementation，动态加载实现类，并通过InterfaceB强制转型后为ClassA 所用，将调用者与实现者在编译期分离。</p>
-<h3 id="二、setter注入">二、setter注入</h3><p>先定义一个接口IOutputGenerator.java：</p>
-<pre><code><span class="keyword">package</span> com.mkyong.output;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IOutputGenerator</span>
-</span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span></span>;
-}
-</code></pre><h4 id="1、CsvOutputGenerator-java">1、CsvOutputGenerator.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output.impl;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CsvOutputGenerator</span> <span class="keyword">implements</span> <span class="title">IOutputGenerator</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        System.out.println(<span class="string">"This is Csv Output Generator"</span>);
-    }
-}
-</code></pre><h4 id="2、OutputHelper-class">2、OutputHelper.class</h4><pre><code><span class="keyword">package</span> com.mkyong.output;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutputHelper</span> </span>{
-    IOutputGenerator outputGenerator;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        outputGenerator.generateOutput();
-    }
-
-    <span class="comment">//DI via setter method</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOutputGenerator</span><span class="params">(IOutputGenerator outputGenerator)</span> </span>{
-        <span class="keyword">this</span>.outputGenerator = outputGenerator;
-    }
-}
-</code></pre><h4 id="3、配置Spring,在SpringBeans-xml中">3、配置Spring,在SpringBeans.xml中</h4><p> 把<code>CsvOutputGenerator</code>注入到<code>OutputHelper</code> </p>
-<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"OutputHelper"</span> <span class="type">class</span>=<span class="string">"com.mkyong.output.OutputHelper"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"outputGenerator"</span> <span class="keyword">ref</span>=<span class="string">"CsvOutputGenerator"</span> /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"CsvOutputGenerator"</span> <span class="type">class</span>=<span class="string">"com.mkyong.output.impl.CsvOutputGenerator"</span> /&gt;
-
-&lt;/beans&gt;
-</code></pre><h4 id="4、运行，在App-java中">4、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-<span class="keyword">import</span> com.mkyong.output.OutputHelper;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
-        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
-                <span class="string">"SpringBeans.xml"</span>);
-
-        OutputHelper output = (OutputHelper)context.getBean(<span class="string">"OutputHelper"</span>);
-        output.generateOutput();
-    }
-}
-</code></pre><h4 id="5、结果">5、结果</h4><pre><code>This <span class="keyword">is</span> Csv Output Generator
-</code></pre><h3 id="三、构造子注入">三、构造子注入</h3><h4 id="1、CsvOutputGenerator-java-1">1、CsvOutputGenerator.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output.impl;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonOutputGenerator</span> <span class="keyword">implements</span> <span class="title">IOutputGenerator</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        System.out.println(<span class="string">"This is Json Output Generator"</span>);
-    }
-}
-</code></pre><h4 id="2、OutputHelper-java">2、OutputHelper.java</h4><pre><code><span class="keyword">package</span> com.mkyong.output;
-
-<span class="keyword">import</span> com.mkyong.output.IOutputGenerator;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutputHelper</span> </span>{
-    IOutputGenerator outputGenerator;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateOutput</span><span class="params">()</span> </span>{
-        outputGenerator.generateOutput();
-    }
-
-    <span class="comment">//DI via constructor</span>
-    <span class="function"><span class="keyword">public</span> <span class="title">OutputHelper</span><span class="params">(IOutputGenerator outputGenerator)</span></span>{
-        <span class="keyword">this</span>.outputGenerator = outputGenerator;
-    }
-
-}
-</code></pre><h4 id="3、Spring配置">3、Spring配置</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"OutputHelper"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.output.OutputHelper"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">ref</span> <span class="attribute">bean</span>=<span class="value">"JsonOutputGenerator"</span> /&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"JsonOutputGenerator"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.output.impl.JsonOutputGenerator"</span> /&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="4、运行，结果">4、运行，结果</h4><pre><code>This <span class="keyword">is</span> Json Output Generator
-</code></pre><blockquote>
-<p>当有两个构造函数，且参数个数一样但参数类型不同时，则会出现构造器注入参数类型歧义的问题。下面举出另外一个例子：</p>
-</blockquote>
-<h3 id="Example构造子注入">Example构造子注入</h3><h4 id="1、在Customer-java中">1、在Customer.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
-
-<span class="keyword">public</span> class Customer 
-{
-    <span class="keyword">private</span> <span class="keyword">String</span> name;
-    <span class="keyword">private</span> <span class="keyword">String</span> address;
-    <span class="keyword">private</span> <span class="built_in">int</span> age;
-
-    <span class="keyword">public</span> Customer(<span class="keyword">String</span> name, <span class="keyword">String</span> address, <span class="built_in">int</span> age) {
-        <span class="keyword">this</span>.name = name;
-        <span class="keyword">this</span>.address = address;
-        <span class="keyword">this</span>.age = age;
-    }
-
-    <span class="keyword">public</span> Customer(<span class="keyword">String</span> name, <span class="built_in">int</span> age, <span class="keyword">String</span> address) {
-        <span class="keyword">this</span>.name = name;
-        <span class="keyword">this</span>.age = age;
-        <span class="keyword">this</span>.address = address;
-    }
-    <span class="comment">//getter and setter methods</span>
-    <span class="keyword">public</span> <span class="keyword">String</span> toString(){
-        <span class="keyword">return</span> <span class="string">" name : "</span> +name + <span class="string">"\n address : "</span>
-               + address + <span class="string">"\n age : "</span> + age;
-    }
-
-}
-</code></pre><h4 id="2、Spring配置，Spring-Customer-xml">2、Spring配置，Spring-Customer.xml</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"CustomerBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.common.Customer"</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>188<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>28<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="3、运行，在App-java中">3、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.mkyong.common;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
-</span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
-    </span>{
-        ApplicationContext context = 
-          <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="keyword">new</span> String[] {<span class="string">"Spring-Customer.xml"</span>});
-
-        Customer cust = (Customer)context.getBean(<span class="string">"CustomerBean"</span>);
-        System.out.println(cust);
-    }
-}
-</code></pre><h4 id="4、结果">4、结果</h4><pre><code><span class="string">name :</span> mkyong
-<span class="string">address :</span> <span class="number">28</span>
-<span class="string">age :</span> <span class="number">188</span>
-</code></pre><p>　　在Spring，参数<code>188</code>可以转换成int,所以Spring直接转换了它并用了第二个构造函数。</p>
-<h4 id="5、解决办法">5、解决办法</h4><p>在Spring-Customer.xml中给constructor-arg加入type。</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"CustomerBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.common.Customer"</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>mkyong<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"java.lang.String"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>188<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">constructor-arg</span> <span class="attribute">type</span>=<span class="value">"int"</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">value</span>&gt;</span>28<span class="tag">&lt;/<span class="title">value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span>
-
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/25/Spring/" itemprop="url">
-                Spring初识
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-25T20:46:40+08:00" content="2015-08-25">
-            2015-08-25
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/25/Spring/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/25/Spring/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
-<h3 id="一、创建一个Spring_Bean">一、创建一个Spring Bean</h3><p>在HelloWorld.java文件中</p>
-<pre><code>package com.zhangyu.common;
-
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span> 
-{
-    <span class="keyword">private</span> String name;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{
-        <span class="keyword">this</span>.name = name;
-    }
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printHello</span>(<span class="params"></span>) </span>{
-        System.<span class="keyword">out</span>.println(<span class="string">"Hello ! "</span> + name);
-    }
-}
-</code></pre><h3 id="二、创建Spring_Bean的配置文件">二、创建Spring Bean的配置文件</h3><p>在Spring-Module.xml文件中</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-<span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-<span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.zhangyu.common.HelloWorld"</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"name"</span> <span class="attribute">value</span>=<span class="value">"zhangyu"</span> /&gt;</span>
-    <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h3 id="三、创建测试App">三、创建测试App</h3><p>在App.java文件中</p>
-<pre><code><span class="keyword">package</span> com.zhangyu.common;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> 
-</span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span>
-    </span>{
-        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"Spring-Module.xml"</span>);     
-        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
-        obj.printHello();           
-    }
-}
-</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="variable">Hello</span> <span class="exclamation_mark">!</span> <span class="function_or_atom">zhangyu</span>
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/SpringHelloWorld.png" width="300" height="500">
-<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取所需的实现。<br><br>　　2、通过xml文件，注册了一个bean（helloWorld），动态设置其name属性，无需知道实现类(App)的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类（com.zhangyu.common.HelloWorld）。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/15/我在TW的第一周/" itemprop="url">
-                我在TW的第一周
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-15T21:16:18+08:00" content="2015-08-15">
-            2015-08-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/生活/" itemprop="url" rel="index">
-                  <span itemprop="name">生活</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/15/我在TW的第一周/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/15/我在TW的第一周/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="关于旅程">关于旅程</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;以前“看天上云卷云舒”，如今第一次坐飞机，感受着穿梭、萦绕、凌驾的快感，体会由低至高不一样的感观与享受。</p>
-</blockquote>
-<h3 id="关于住宿">关于住宿</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;好大的客厅和沙发、好新的床和柜子、好齐全的厨具和生活设备，我会不会变懒呢？</p>
-</blockquote>
-<h3 id="关于工作">关于工作</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;新来的小伙伴们一部分直接去了TWU，留下我们五个女生on the beach。<br><br>&emsp;&emsp;&emsp;&emsp;每天必刷微信、邮件、日历，但是手机却总是不见踪影。<br><br>&emsp;&emsp;&emsp;&emsp;融入工作，好多东西都想去了解。现实是回到宿舍，打开电脑，时间飞快，该睡觉了。</p>
-</blockquote>
-<h3 id="关于周末">关于周末</h3><blockquote>
-<p>&emsp;&emsp;&emsp;&emsp;陌生的城市，闲逛，寻求一种最初的印象。</p>
-</blockquote>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/15/hello-world/" itemprop="url">
-                Hello World
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-15T18:33:28+08:00" content="2015-08-15">
-            2015-08-15
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/15/hello-world/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/15/hello-world/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">&raquo;</a>
   </nav>
 
  </div>
@@ -2248,21 +2382,21 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</sp
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

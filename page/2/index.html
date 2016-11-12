@@ -176,6 +176,603 @@
           
           
             
+              <a class="post-title-link" href="/2015/11/21/Vagrant/" itemprop="url">
+                Vagrant
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T15:11:35+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Vagrant/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Vagrant/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、Vagrant的认识"><a href="#一、Vagrant的认识" class="headerlink" title="一、Vagrant的认识"></a>一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
+<blockquote>
+<p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
+</blockquote>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
+<blockquote>
+<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
+</blockquote>
+<h4 id="3、安装系统镜像"><a href="#3、安装系统镜像" class="headerlink" title="3、安装系统镜像"></a>3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
+<ul>
+<li>新建一个文件夹，如AgentBox,然后进入目录</li>
+<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
+</ul>
+<p>3.2 通过添加box方式</p>
+<ul>
+<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
+<li><code>$ vagrant box add {title} {url}</code><ul>
+<li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
+<li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
+</ul>
+</li>
+<li>初始化开发环境<br>　　先进入box里面，然后<code>$ vagrant init AgentBox</code></li>
+<li>启动环境<code>vagrant up</code></li>
+</ul>
+<h3 id="三、常用指令"><a href="#三、常用指令" class="headerlink" title="三、常用指令"></a>三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
+<blockquote>
+<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
+</blockquote>
+<p>2、vagrant init，初始化</p>
+<blockquote>
+<p>如果你添加的box名称不是base，那么需要在初始化的时候指定名称，例如vagrant init AgentBox</p>
+</blockquote>
+<p>3、vagrant up，启动虚拟机<br>4、vagrant ssh，ssh到虚拟机<br>5、vagrant reload，重启虚拟机（重新载入配置文件）<br>6、vagrant package –base precise64_default_1447845103364_6382 –output precise64.box打包分发<br>7、vagrant box list<br>8、vagrant status</p>
+<h3 id="四、主要配置"><a href="#四、主要配置" class="headerlink" title="四、主要配置"></a>四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
+<p>1、box设置</p>
+<pre><code>config.vm.box = &quot;AgentBox&quot;
+</code></pre><p>2、hostname设置</p>
+<pre><code>config.vm.hostname = &quot;for_work&quot;
+</code></pre><p>3、虚拟机网络设置</p>
+<pre><code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;
+config.vm.network &quot;public_network&quot;
+</code></pre><p>4、同步目录</p>
+<pre><code>config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;
+</code></pre><p>5、端口转发</p>
+<pre><code>config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080
+</code></pre><p>6、内存和cpu核心</p>
+<pre><code>config.vm.provider &quot;virtualbox&quot; do |vb|
+  #Display the VirtualBox GUI when booting the machine
+  vb.gui = true
+  #Customize the amount of memory on the VM:
+  vb.memory = &quot;1024&quot;
+  vb.cpus = 2
+  vb.name = &quot;my_vm&quot;
+end
+</code></pre><blockquote>
+<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/21/Anguar跨域请求/" itemprop="url">
+                AnguarJS跨域请求
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T13:18:41+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Anguar跨域请求/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Anguar跨域请求/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
+<h3 id="一、视图"><a href="#一、视图" class="headerlink" title="一、视图"></a>一、视图</h3><h4 id="1-在main-html中"><a href="#1-在main-html中" class="headerlink" title="1.在main.html中"></a>1.在<code>main.html</code>中</h4><pre><code>&lt;div class=&quot;jumbotron&quot;&gt;
+  &lt;h1&gt;Hello!&lt;/h1&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;row marketing&quot;&gt;
+  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/createCustomer&quot;&gt;Create&lt;/a&gt;
+  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/getCustomer&quot;&gt;GetByName&lt;/a&gt;
+&lt;/div&gt;
+</code></pre><h4 id="2-在getView-html中"><a href="#2-在getView-html中" class="headerlink" title="2.在getView.html中"></a>2.在<code>getView.html</code>中</h4><pre><code>&lt;p&gt;This is the get customer by name view.&lt;/p&gt;
+&lt;h4&gt;Name&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
+&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;getCustomer()&quot; &gt;Get&lt;/button&gt;&lt;br&gt;&lt;br&gt;
+{{info}}
+</code></pre><h4 id="3-在createView-html中"><a href="#3-在createView-html中" class="headerlink" title="3.在createView.html中"></a>3.在<code>createView.html</code>中</h4><pre><code>&lt;p&gt;This is the create customer view.&lt;/p&gt;
+&lt;h4&gt;Name&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
+&lt;h4&gt;Age&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;age&quot;/&gt;&lt;br&gt;&lt;br&gt;
+&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;createCustomer()&quot; &gt;Create&lt;/button&gt;&lt;br&gt;&lt;br&gt;
+{{info}}
+</code></pre><h3 id="二、controller"><a href="#二、controller" class="headerlink" title="二、controller"></a>二、controller</h3><h4 id="1-在getCustomer-js中"><a href="#1-在getCustomer-js中" class="headerlink" title="1.在getCustomer.js中"></a>1.在<code>getCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;)
+  .controller(&apos;GetCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
+
+     $scope.getCustomer = function(){
+       var url = &apos;http://localhost:8080/customers?name=&apos; + $scope.name;
+       $http({
+          url : url,
+          method : &apos;GET&apos;
+       }).then(function(response) {
+          $scope.info = response.data;
+          alert(&apos;Get &apos;+$scope.name+&apos; successfully!&apos;);
+        },function(response) {
+          $scope.info = response.data || &quot;Request failed&quot;;
+          alert($scope.info);
+       });
+     };
+  }]);      
+</code></pre><h4 id="2-在createCustomer-js中"><a href="#2-在createCustomer-js中" class="headerlink" title="2.在createCustomer.js中"></a>2.在<code>createCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;)
+  .controller(&apos;CreateCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
+    $scope.createCustomer = function(){
+       $http({
+          url : &apos;http://localhost:8080/customers&apos;,
+          method : &apos;POST&apos;,
+          data: {
+              name : $scope.name,
+              age : $scope.age
+          }
+       }).then(function(response) {
+          $scope.info = response.data;
+          alert(&apos;Create &apos;+$scope.name+&apos; successfully!&apos;);
+        },function(response) {
+          $scope.info = response.data || &quot;Request failed&quot;;
+          alert($scope.info);
+       });
+    };
+
+  }]);
+</code></pre><h3 id="三、配置路由"><a href="#三、配置路由" class="headerlink" title="三、配置路由"></a>三、配置路由</h3><p>在<code>app.js</code>中</p>
+<pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;, [&apos;ngRoute&apos;])
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when(&apos;/&apos;, {
+        templateUrl: &apos;views/main.html&apos;
+      })
+      .when(&apos;/createCustomer&apos;, {
+        templateUrl: &apos;views/createView.html&apos;,
+        controller: &apos;CreateCtrl&apos;
+      })
+      .when(&apos;/getCustomer&apos;, {
+        templateUrl: &apos;views/getView.html&apos;,
+        controller: &apos;GetCtrl&apos;
+      })
+      .otherwise({
+        redirectTo: &apos;/&apos;
+      });
+  });
+</code></pre><h3 id="四、基准HTML文件"><a href="#四、基准HTML文件" class="headerlink" title="四、基准HTML文件"></a>四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;AngularTest&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bower_components/bootstrap/dist/css/bootstrap.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
+  &lt;/head&gt;
+
+  &lt;body ng-app=&quot;customerUiApp&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    &lt;div ng-view=&quot;&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;bower_components/jquery/dist/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/angular/angular.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/bootstrap/dist/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/angular-route/angular-route.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/app.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/controllers/createCustomer.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/controllers/getCustomer.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
+<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><h4 id="1、在test-spec-controllers-getCustomer-js中"><a href="#1、在test-spec-controllers-getCustomer-js中" class="headerlink" title="1、在test/spec/controllers/getCustomer.js中"></a>1、在test/spec/controllers/getCustomer.js中</h4><pre><code>&apos;use strict&apos;;
+
+describe(&apos;Controller: GetCtrl&apos;, function () {
+  beforeEach(module(&apos;customerUiApp&apos;));
+
+  var GetCtrl,scope,$httpBackend;
+
+  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
+    scope = $rootScope.$new();
+    $httpBackend = _$httpBackend_;
+    GetCtrl = $controller(&apos;GetCtrl&apos;, {
+      $scope: scope
+    });
+  }));
+
+  it(&apos;should send get request&apos;, function () {
+    $httpBackend
+      .expect(&apos;GET&apos;, &apos;http://localhost:8080/customers?name=Alex&apos;)
+      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
+    scope.name = &apos;Alex&apos;;
+
+    scope.getCustomer();
+    $httpBackend.flush();
+
+    expect(scope.info.name).toBe(&apos;Alex&apos;);
+    expect(scope.info.age).toBe(&apos;20&apos;);
+  });
+});
+</code></pre><h4 id="2、在test-spec-controllers-createCustomer-js中"><a href="#2、在test-spec-controllers-createCustomer-js中" class="headerlink" title="2、在test/spec/controllers/createCustomer.js中"></a>2、在test/spec/controllers/createCustomer.js中</h4><pre><code>&apos;use strict&apos;;
+
+describe(&apos;Controller: CreateCtrl&apos;, function () {
+  beforeEach(module(&apos;customerUiApp&apos;));
+
+  var CreateCtrl,scope,$httpBackend;
+
+  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
+    scope = $rootScope.$new();
+    $httpBackend = _$httpBackend_;
+    CreateCtrl = $controller(&apos;CreateCtrl&apos;, {
+      $scope: scope
+    });
+  }));
+
+  it(&apos;should send post request&apos;, function () {
+    $httpBackend
+      .expect(&apos;POST&apos;, &apos;http://localhost:8080/customers&apos;)
+      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
+    scope.name = &apos;Alex&apos;;
+
+    scope.createCustomer();
+    $httpBackend.flush();
+
+    expect(scope.info.name).toBe(&apos;Alex&apos;);
+    expect(scope.info.age).toBe(&apos;20&apos;);
+  });
+});
+</code></pre><h3 id="六、运行及结果"><a href="#六、运行及结果" class="headerlink" title="六、运行及结果"></a>六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口"><a href="#1、本地启动CustomerApi运行在8080端口" class="headerlink" title="1、本地启动CustomerApi运行在8080端口"></a>1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt-serve启动CustomerUI"><a href="#2、grunt-serve启动CustomerUI" class="headerlink" title="2、grunt serve启动CustomerUI"></a>2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求"><a href="#3、在terminal中输入下述命令，使其允许跨域请求" class="headerlink" title="3、在terminal中输入下述命令，使其允许跨域请求"></a>3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code>open /Applications/Google\ Chrome.app --args --allow-file-access-from-files --disable-web-security
+</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+<h4 id="5、点击GetByName"><a href="#5、点击GetByName" class="headerlink" title="5、点击GetByName"></a>5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
+　　</p>
+<blockquote>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/21/Yeoman/" itemprop="url">
+                Yeoman
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T09:15:32+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Yeoman/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Yeoman/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、认识Yeoman"><a href="#一、认识Yeoman" class="headerlink" title="一、认识Yeoman"></a>一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
+<blockquote>
+<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
+</blockquote>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置："><a href="#1、在安装Yeoman之前，你需要确认以下配置：" class="headerlink" title="1、在安装Yeoman之前，你需要确认以下配置："></a>1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
+<li>Node.js 版本在0.10以上</li>
+<li>npm 版本在1.3.7以上</li>
+</ul>
+<h4 id="2、安装"><a href="#2、安装" class="headerlink" title="2、安装"></a>2、安装</h4><pre><code>npm install -g yo grunt-cli bower
+</code></pre><h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入"><a href="#1、创建一个文件夹CustomerUI，并进入" class="headerlink" title="1、创建一个文件夹CustomerUI，并进入"></a>1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器"><a href="#2、安装Yeoman生成器" class="headerlink" title="2、安装Yeoman生成器"></a>2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
+<pre><code>yo
+</code></pre><img src="/imgs/yo.png" width="400" height="300">
+<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
+<p>2.2 如果你知道要安装的生成器的名字：</p>
+<pre><code>yo angular
+</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
+<h4 id="3、选择"><a href="#3、选择" class="headerlink" title="3、选择"></a>3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
+<h4 id="4、目录"><a href="#4、目录" class="headerlink" title="4、目录"></a>4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
+<ul>
+<li>app/：Web应用的父级目录。<ul>
+<li>index.html： Angular应用的基准HTML文件（base html file）</li>
+<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
+<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
+<li>scripts：我们的JS文件<ul>
+<li>app.js：主程序</li>
+<li>controllers：Angular控制器</li>
+</ul>
+</li>
+<li>styles：我们的CSS文件</li>
+<li>views：Angular模板</li>
+</ul>
+</li>
+<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
+<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
+</ul>
+<h4 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h4><pre><code>grunt serve
+</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/25/servlet-life/" itemprop="url">
+                Servlet life
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-10-25T22:19:46+08:00" content="2015-10-25">
+            2015-10-25
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Servlet/" itemprop="url" rel="index">
+                  <span itemprop="name">Servlet</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/25/servlet-life/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/25/servlet-life/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、整体工作流程"><a href="#一、整体工作流程" class="headerlink" title="一、整体工作流程"></a>一、整体工作流程</h3><blockquote>
+<p>1、Client对Web Server发出请求<br><br>2、Web Server接收到请求后，将其发送给Servlet容器<br><br>3、Servlet容器产生Servlet实例对象并调用ServletAPI中相应的方法来对Client的请求进行处理，然后将处理的相应结果返回给WEB Server。<br><br>4、Web server将从Servlet实例中收到响应并发送回客户端。<br></p>
+</blockquote>
+<img src="/imgs/client-server.png" width="600" height="200">
+<h3 id="二、阶段流程"><a href="#二、阶段流程" class="headerlink" title="二、阶段流程"></a>二、阶段流程</h3><p>　　为了细化上述过程，可分为application的deploy过程和request的发送过程来讲：</p>
+<h4 id="1、deploy阶段："><a href="#1、deploy阶段：" class="headerlink" title="1、deploy阶段："></a>1、deploy阶段：</h4><p>　　以Tomcat的容器为例，真正管理Servlet的容器是Context容器。一个Context对应一个Web工程。Context容器直接管理Servlet在容器中的包装类Wrapper。<br>　　deploy过程中，首先会生成context对象，config对象。（listener、filter的初始化过程也是在此阶段先后完成的）。<br>　　<img src="/imgs/servlet-container.png" width="300" height="500"></p>
+<h4 id="2、发送request阶段"><a href="#2、发送request阶段" class="headerlink" title="2、发送request阶段"></a>2、发送request阶段</h4><p>(1）在默认情况下，Servlet实例是在第一个请求到来的时候创建，以后复用。如果有的Servlet需要复杂的操作需要载初始化时完成，比如打开文件、初始化网络连接等，可以通知服务器在启动的时候创建该Servlet的实例，配置<code>&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</code>。<br>(2）init()<br>　　一旦Servlet实例被创建，Web服务器会自动调用init(ServletConfig config)方法来初始化该Servlet。其中方法参数config中包含了Servlet的配置信息，比如初始化参数，该对象在deploy阶段创建。<br>　　init()方法只执行一次。<br>(3)service()<br>　　 service()方法为Servlet的核心方法，Client的业务逻辑应该在该方法内执行，解析Client请求-〉执行业务逻辑-〉输出响应页面到Client。<br>(4）destroy()<br>　　当Web Server认为Servlet实例没有存在的必要了，比如应用重新装载，或服务器关闭，以及Servlet很长时间都没有被访问过。Web Server可以从内存中销毁该实例。Web Server必须保证在销毁Servlet实例之前调用该实例的destroy()方法，以便回收Servlet申请的资源或进行其它的重要的处理。</p>
+<blockquote>
+<p>当先后发送多个request时候，init()只执行一次。servlet容器处理多个请求通过产生多个线程，每个线程执行servlet的单实例的service()方法。</p>
+</blockquote>
+<img src="/imgs/servletLife.png" width="600" height="280">
+<h3 id="三、Filter"><a href="#三、Filter" class="headerlink" title="三、Filter"></a>三、Filter</h3><p>　　Filter不是一个servlet,它不能产生一个response,但是它能够在一个request到达servlet之前预处理request,也可以在离开servlet时处理response。</p>
+<blockquote>
+<p>Filter常用来：<br></p>
+<ul>
+<li>日志文件记录request参数<br></li>
+<li>身份验证或认证request的resource<br></li>
+<li>在request发送给Servlet之前格式化request的header或者body<br></li>
+<li>压缩发回给Client的reponse数据</li>
+</ul>
+</blockquote>
+<p>　　一个filter有三个阶段init()、doFilter()、destroy()。</p>
+<h4 id="1、init"><a href="#1、init" class="headerlink" title="1、init()"></a>1、init()</h4><p>　　filter的init()是在上述的deploy阶段完成的。</p>
+<h4 id="2、doFilter"><a href="#2、doFilter" class="headerlink" title="2、doFilter()　"></a>2、doFilter()　</h4><p>　　一个Servlet初始化之后，每次request到达该Servlet的service()方法之前，都会先做doFilter()。能够配置一个filter到一个或多个servlet；单个servlet或servlet组能够被多个filter使用。</p>
+<h4 id="3、destroy"><a href="#3、destroy" class="headerlink" title="3、destroy()"></a>3、destroy()</h4><p>　　　当Servlet进行destroy之后，对应的Filter也会destroy。</p>
+<blockquote>
+<p>当有多个Filter时，按照web.xml中声明的顺序执行filter。</p>
+</blockquote>
+<h3 id="四、Listener"><a href="#四、Listener" class="headerlink" title="四、Listener"></a>四、Listener</h3><p>　　Listener是Servlet的监听器，它可以监听客户端的请求、服务端的操作等。如监听context、session、application的create,destroy,可以监听到context、session、application<br>属性绑定的变化。通过监听器，可以自动激发一些操作，比如监听在线的用户的数量。<br>　　以实现ServletContextListener接口监听context的create和destroy为例：<br>　　contextInitialized()是在上述deploy阶段Filter的init()之前执行的。<br>　　contextDestroyed()是在Servlet的destroy()及Filter的destroy()之后执行的。
+　　</p>
+<h3 id="五、执行顺序"><a href="#五、执行顺序" class="headerlink" title="五、执行顺序"></a>五、执行顺序</h3><p>　　在<a href="https://github.com/zhangyuyu/ServletLife" target="_blank" rel="external">ServletLife</a>的工程下，执行命令<code>gradle tomcatRunWar</code>。根据下面控制台打印信息，可以看出listen-&gt;filter-&gt;servlet的顺序：</p>
+<pre><code>*************Context created on*************
+***********This is the filter init***********
+Started Tomcat Server
+The Server is running at http://localhost:8080/ServletLife
+**********This is the servlet init***********
+*****************do filter*****************
+***********This is the servlet service***********
+***********This is the servlet destroy***********
+***********This is the filter destroy***********
+*************Context destroy*************
+</code></pre><h3 id="六、对应一个故事"><a href="#六、对应一个故事" class="headerlink" title="六、对应一个故事"></a>六、对应一个故事</h3><blockquote>
+<p></p><h5 align="center">T公司CX项目开发经历</h5><br>1、T公司接到一个CX项目<br><br>　　根据项目计划书划分职能（BA、开发A功能人员、开发B功能人员……）<br><br>　　确定BA具体人员<br><br>2、需求R1<br><br>　　准备安排具体人员A、B<br><br>　　BA分析问题<br><br>　　A、B开始认真干活<br><br>3、需求R2<br><br>　　BA分析问题<br><br>　　A、B继续干活<br><br>　　……<br><br>4、项目完成了，开发人员解散<br><br>　　BA也role off<br><p></p>
+</blockquote>
+<p>　　故事中，T对应一个Web container, CX对应一个context, BA对应Filter，A\B分别对应一个Servlet，需求R1\R2分别对应两次request。<br>　　第一个阶段对应deploy阶段：划分职能可以代表生成context、config对象；确定BA的具体人员则代表着Filter的初始化。<br>　　第二个阶段对应发送request阶段：安排A、B的巨头人员代表Servlet的初始化；BA分析问题代表着Filter的doFilter(）操作；认真干活则代表Servlet的service()操作。<br>　　第三个阶段是发送另一个request，此过程中没有安排具体的人员（Servlet的初始化），对应的是servlet的多线程操作。<br>　　第四个阶段对应destroy过程，开发人员解散代表Servlet的destroy，BA的role off则代表着Filter的destroy。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/10/15/手动创建Servlet异常处理/" itemprop="url">
                 手动创建Servlet异常处理
               </a>
@@ -229,121 +826,121 @@
 
       
         
-          <span itemprop="articleBody"><h3 id="1、创建产生异常的servlet">1、创建产生异常的servlet</h3><p>在ExceptionServlet.java中：</p>
-<pre><code><span class="keyword">import</span> javax.servlet.*;
-<span class="keyword">import</span> java.io.IOException;
-<span class="keyword">import</span> java.io.PrintWriter;
+          <span itemprop="articleBody"><h3 id="1、创建产生异常的servlet"><a href="#1、创建产生异常的servlet" class="headerlink" title="1、创建产生异常的servlet"></a>1、创建产生异常的servlet</h3><p>在ExceptionServlet.java中：</p>
+<pre><code>import javax.servlet.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExceptionServlet</span> <span class="keyword">implements</span> <span class="title">Servlet</span> </span>{
+public class ExceptionServlet implements Servlet {
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span> </span>{
+    @Override
+    public void init(ServletConfig servletConfig) {
 
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="keyword">null</span>;
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>{
-        <span class="keyword">throw</span> <span class="keyword">new</span> ServletException(<span class="string">"hello"</span>);  
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        throw new ServletException(&quot;hello&quot;);  
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">getServletInfo</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="keyword">null</span>;
+    @Override
+    public String getServletInfo() {
+        return null;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>{
+    @Override
+    public void destroy() {
 
     }
 }
-</code></pre><h3 id="2、创建异常处理类">2、创建异常处理类</h3><p>在ErrorHandle.java中：</p>
-<pre><code><span class="built_in">import</span> java.io.<span class="built_in">*</span>;
-<span class="built_in">import</span> javax.servlet.<span class="built_in">*</span>;
-<span class="built_in">import</span> javax.servlet.http.<span class="built_in">*</span>;
-<span class="built_in">import</span> java.util.<span class="built_in">*</span>;
+</code></pre><h3 id="2、创建异常处理类"><a href="#2、创建异常处理类" class="headerlink" title="2、创建异常处理类"></a>2、创建异常处理类</h3><p>在ErrorHandle.java中：</p>
+<pre><code>import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.*;
 
-<span class="comment">// 扩展 HttpServlet 类</span>
+// 扩展 HttpServlet 类
 public class ErrorHandler extends HttpServlet {
 
-  <span class="comment">// 处理 GET 方法请求的方法</span>
-  public void doGet<span class="params">(HttpServletRequest request, HttpServletResponse response)</span>
+  // 处理 GET 方法请求的方法
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
   {
-      PrintWriter out = response.getWriter<span class="params">()</span>;
-      <span class="comment">// 分析 Servlet 异常       </span>
-      Throwable throwable = <span class="params">(Throwable)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.exception"</span>)</span>;
-      Integer statusCode = <span class="params">(Integer)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.status_code"</span>)</span>;
-      String servletName = <span class="params">(String)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.servlet_name"</span>)</span>;
-      String requestUri = <span class="params">(String)</span>request.getAttribute<span class="params">(<span class="string">"javax.servlet.error.request_uri"</span>)</span>;
+      PrintWriter out = response.getWriter();
+      // 分析 Servlet 异常       
+      Throwable throwable = (Throwable)request.getAttribute(&quot;javax.servlet.error.exception&quot;);
+      Integer statusCode = (Integer)request.getAttribute(&quot;javax.servlet.error.status_code&quot;);
+      String servletName = (String)request.getAttribute(&quot;javax.servlet.error.servlet_name&quot;);
+      String requestUri = (String)request.getAttribute(&quot;javax.servlet.error.request_uri&quot;);
 
-      <span class="keyword">if</span> <span class="params">(throwable != null)</span>{
-         out.println<span class="params">(<span class="string">"Exception Type : "</span> + throwable.getClass<span class="params">( )</span>.getName<span class="params">( )</span>)</span>;
-         out.println<span class="params">(<span class="string">"The exception message: "</span> + throwable.getMessage<span class="params">( )</span>)</span>;
+      if (throwable != null){
+         out.println(&quot;Exception Type : &quot; + throwable.getClass( ).getName( ));
+         out.println(&quot;The exception message: &quot; + throwable.getMessage( ));
       }
-      <span class="keyword">if</span> <span class="params">(statusCode != null)</span>{
-         out.println<span class="params">(<span class="string">"The status code : "</span> + statusCode)</span>;
+      if (statusCode != null){
+         out.println(&quot;The status code : &quot; + statusCode);
       }
-      out.println<span class="params">(<span class="string">"Servlet Name : "</span> + servletName)</span>;
-      out.println<span class="params">(<span class="string">"The request URI: "</span> + requestUri)</span>;
+      out.println(&quot;Servlet Name : &quot; + servletName);
+      out.println(&quot;The request URI: &quot; + requestUri);
 
   }
-  <span class="comment">// 处理 POST 方法请求的方法</span>
-  public void doPost<span class="params">(HttpServletRequest request, HttpServletResponse response)</span>
+  // 处理 POST 方法请求的方法
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-     doGet<span class="params">(request, response)</span>;
+     doGet(request, response);
   }
 }
-</code></pre><h3 id="3、编译">3、编译</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="comment">/*.java</span>
-</code></pre><h3 id="4、部署">4、部署</h3><p>在web.xml中</p>
-<pre><code><span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+</code></pre><h3 id="3、编译"><a href="#3、编译" class="headerlink" title="3、编译"></a>3、编译</h3><pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26/libexec/webapps/test/WEB-INF/classes/*.java
+</code></pre><h3 id="4、部署"><a href="#4、部署" class="headerlink" title="4、部署"></a>4、部署</h3><p>在web.xml中</p>
+<pre><code>&lt;servlet&gt;
+    &lt;servlet-name&gt;ErrorHandler&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;ErrorHandler&lt;/servlet-class&gt;
+&lt;/servlet&gt;
 
-<span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ErrorHandler<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;ErrorHandler&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/error&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
 
-<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+&lt;error-page&gt;
+    &lt;error-code&gt;404&lt;/error-code&gt;
+    &lt;location&gt;/error&lt;/location&gt;
+&lt;/error-page&gt;
 
-<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>403<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+&lt;error-page&gt;
+    &lt;error-code&gt;403&lt;/error-code&gt;
+    &lt;location&gt;/error&lt;/location&gt;
+&lt;/error-page&gt;
 
-<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>javax.servlet.ServletException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/error<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+&lt;error-page&gt;
+    &lt;exception-type&gt;javax.servlet.ServletException&lt;/exception-type &gt;
+    &lt;location&gt;/error&lt;/location&gt;
+&lt;/error-page&gt;
 
-<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">exception-type</span>&gt;</span>java.io.IOException<span class="tag">&lt;/<span class="title">exception-type</span> &gt;</span>
-    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/errorr<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
-</code></pre><h3 id="5、启动tomcat">5、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
+&lt;error-page&gt;
+    &lt;exception-type&gt;java.io.IOException&lt;/exception-type &gt;
+    &lt;location&gt;/errorr&lt;/location&gt;
+&lt;/error-page&gt;
+</code></pre><h3 id="5、启动tomcat"><a href="#5、启动tomcat" class="headerlink" title="5、启动tomcat"></a>5、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="6、运行及结果">6、运行及结果</h3><p>　　使用上面会产生异常的Servlet，或者输入一个错误的URL，会触发Web容器调用ErrorHandler的Servlet，并显示适当的信息。<br><br>　　如果使用上面会产生异常的ExceptionServlet(<a href="http://localhost:8080/test/exception)，那么它将显示：" target="_blank" rel="external">http://localhost:8080/test/exception)，那么它将显示：</a></p>
+</code></pre><h3 id="6、运行及结果"><a href="#6、运行及结果" class="headerlink" title="6、运行及结果"></a>6、运行及结果</h3><p>　　使用上面会产生异常的Servlet，或者输入一个错误的URL，会触发Web容器调用ErrorHandler的Servlet，并显示适当的信息。<br><br>　　如果使用上面会产生异常的ExceptionServlet(<a href="http://localhost:8080/test/exception)，那么它将显示：" target="_blank" rel="external">http://localhost:8080/test/exception)，那么它将显示：</a></p>
 <blockquote>
 <p>Exception Type : javax.servlet.ServletException<br><br>The exception message: hello<br><br>The status code : 500<br><br>Servlet Name : ExceptionServlet<br><br>The request URI: /test/exception</p>
 </blockquote>
 <p>　　如果输入了一个错误的URL(<a href="http://localhost:8080/test/ex)，那么它将显示`The" target="_blank" rel="external">http://localhost:8080/test/ex)，那么它将显示`The</a> status code : 404`
 　　</p>
-<h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
-    <span class="string">|---WEB-INF</span>
-        <span class="string">|---classes</span>
-            <span class="string">|---ServletException.java</span>
-            <span class="string">|---ErrorHandler.java</span>
-        <span class="string">|---lib</span>
-        <span class="string">|---web.xml</span>
+<h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
+    |---WEB-INF
+        |---classes
+            |---ServletException.java
+            |---ErrorHandler.java
+        |---lib
+        |---web.xml
 </code></pre></span>
         
       
@@ -432,84 +1029,84 @@ $ ./startup.sh
 <p>在客户端的请求访问后端资源之前，拦截这些请求。<br><br>在服务器的响应发送回客户端之前，处理这些响应。</p>
 </blockquote>
 <p>　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。</p>
-<h3 id="1、创建Filter">1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
-<pre><code><span class="keyword">import</span> java.io.*;
-<span class="keyword">import</span> javax.servlet.*;
-<span class="keyword">import</span> javax.servlet.http.*;
-<span class="keyword">import</span> java.util.*;
+<h3 id="1、创建Filter"><a href="#1、创建Filter" class="headerlink" title="1、创建Filter"></a>1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
+<pre><code>import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.*;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span>  </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">init</span><span class="params">(FilterConfig config)</span> 
-                         <span class="keyword">throws</span> ServletException</span>{
-        <span class="comment">// 获取初始化参数</span>
-        String testParam = config.getInitParameter(<span class="string">"test-param"</span>); 
+public class LogFilter implements Filter  {
+    public void  init(FilterConfig config) 
+                         throws ServletException{
+        // 获取初始化参数
+        String testParam = config.getInitParameter(&quot;test-param&quot;); 
 
-        <span class="comment">// 输出初始化参数</span>
-        System.out.println(<span class="string">"********Test Param: "</span> + testParam); 
+        // 输出初始化参数
+        System.out.println(&quot;********Test Param: &quot; + testParam); 
 
    }
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">doFilter</span><span class="params">(ServletRequest request, 
+    public void  doFilter(ServletRequest request, 
                  ServletResponse response,
-                 FilterChain chain)</span> 
-                 <span class="keyword">throws</span> java.io.IOException, ServletException </span>{
+                 FilterChain chain) 
+                 throws java.io.IOException, ServletException {
 
         PrintWriter out = response.getWriter();
-        out.println(<span class="string">"[ Time : "</span>+ <span class="keyword">new</span> Date().toString()+<span class="string">" ]"</span>);    
-        <span class="comment">// 把请求传回过滤链</span>
+        out.println(&quot;[ Time : &quot;+ new Date().toString()+&quot; ]&quot;);    
+        // 把请求传回过滤链
         chain.doFilter(request,response);
    }
-   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">( )</span></span>{
-      <span class="comment">/* 在 Filter 实例被 Web 容器从服务移除之前调用 */</span>
+   public void destroy( ){
+      /* 在 Filter 实例被 Web 容器从服务移除之前调用 */
    }
  }
 </code></pre><p>　　过滤器是一个实现了 javax.servlet.Filter 接口的Java类.javax.servlet.Filter 接口定义了三个方法:</p>
 <blockquote>
 <p>（1）public void doFilter (ServletRequest, ServletResponse, FilterChain)<br>该方法在每次一个请求/响应对因客户端在链的末端请求资源而通过链传递时由容器调用。<br><br>（2）public void init(FilterConfig filterConfig)<br>该方法由Web容器调用，指示一个过滤器被放入服务。<br><br>（3）public void destroy()<br>该方法由Web容器调用，指示一个过滤器被取出服务。</p>
 </blockquote>
-<h3 id="2、编译">2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
-<pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26、libexec/</span>webapps<span class="regexp">/test/</span>WEB-INF<span class="regexp">/classes/</span>LogFilter.java
-</code></pre><h3 id="3、部署">3、部署</h3><pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
+<h3 id="2、编译"><a href="#2、编译" class="headerlink" title="2、编译"></a>2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
+<pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26、libexec/webapps/test/WEB-INF/classes/LogFilter.java
+</code></pre><h3 id="3、部署"><a href="#3、部署" class="headerlink" title="3、部署"></a>3、部署</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app&gt;
 
-    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ServletExample&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
 
-    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/test<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/test&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
 
-    <span class="tag">&lt;<span class="title">filter</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">filter-class</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-class</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
-          <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>test-param<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
-          <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>Initialization Paramter<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
-       <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">filter</span>&gt;</span>
+    &lt;filter&gt;
+       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
+       &lt;filter-class&gt;LogFilter&lt;/filter-class&gt;
+       &lt;init-param&gt;
+          &lt;param-name&gt;test-param&lt;/param-name&gt;
+          &lt;param-value&gt;Initialization Paramter&lt;/param-value&gt;
+       &lt;/init-param&gt;
+    &lt;/filter&gt;
 
-    <span class="tag">&lt;<span class="title">filter-mapping</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">filter-mapping</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
+    &lt;filter-mapping&gt;
+       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
+       &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+&lt;/web-app&gt;
 </code></pre><p>　　过滤器被部署在部署web.xml中然后映射到部署的Servlet名称或 URL模式。有多个过滤器时，执行的顺序是按它们在声明的顺序。
 　　</p>
-<h3 id="4、启动tomcat">4、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
+<h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="5、运行">5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
+</code></pre><h3 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
 　　</p>
-<h3 id="6、结果">6、结果</h3><pre><code>[ Time : Thu Oct <span class="number">15</span> <span class="number">20</span>:<span class="number">56</span>:<span class="number">29</span> CST <span class="number">2015</span> ]
+<h3 id="6、结果"><a href="#6、结果" class="headerlink" title="6、结果"></a>6、结果</h3><pre><code>[ Time : Thu Oct 15 20:56:29 CST 2015 ]
 Hello World
-</code></pre><h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
-    <span class="string">|---WEB-INF</span>
-        <span class="string">|---classes</span>
-            <span class="string">|---ServletExample.java</span>
-            <span class="string">|---LogFilter.java</span>
-        <span class="string">|---lib</span>
-        <span class="string">|---web.xml</span>
+</code></pre><h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
+    |---WEB-INF
+        |---classes
+            |---ServletExample.java
+            |---LogFilter.java
+        |---lib
+        |---web.xml
 </code></pre></span>
         
       
@@ -593,150 +1190,150 @@ Hello World
 
       
         
-          <span itemprop="articleBody"><h3 id="1、准备数据库">1、准备数据库</h3><h4 id="(1)在本地mysql中create_一个数据库">(1)在本地mysql中create 一个数据库</h4><pre><code>$ mysql.server start
+          <span itemprop="articleBody"><h3 id="1、准备数据库"><a href="#1、准备数据库" class="headerlink" title="1、准备数据库"></a>1、准备数据库</h3><h4 id="1-在本地mysql中create-一个数据库"><a href="#1-在本地mysql中create-一个数据库" class="headerlink" title="(1)在本地mysql中create 一个数据库"></a>(1)在本地mysql中create 一个数据库</h4><pre><code>$ mysql.server start
 $ mysql -uroot -p
 mysql&gt; show databases;
 mysql&gt; create database test;
 mysql&gt; use test;
-mysql&gt; <span class="function">create table <span class="title">raw_report</span>(<span class="params">
-       name varchar(<span class="number">20</span></span>),
-       sex <span class="title">varchar</span>(<span class="params"><span class="number">10</span></span>),
-       age <span class="title">varchar</span>(<span class="params"><span class="number">10</span></span>),
-       birthday <span class="title">varchar</span>(<span class="params"><span class="number">20</span></span>)
-  )</span>;
-mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Alex'</span>,<span class="string">'M'</span>,<span class="string">'20'</span>,<span class="string">'08/07/1995'</span></span>)</span>;
-mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Alice'</span>,<span class="string">'F'</span>,<span class="string">'18'</span>,<span class="string">'08/07/1997'</span></span>)</span>;
-mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Bob'</span>,<span class="string">'M'</span>,<span class="string">'21'</span>,<span class="string">'08/07/1994'</span></span>)</span>;
-mysql&gt; <span class="function">INSERT <span class="title">raw_report</span>(<span class="params">name, sex, age, birthday</span>) <span class="title">VALUES</span>(<span class="params"><span class="string">'Mary'</span>,<span class="string">'F'</span>,<span class="string">'23'</span>,<span class="string">'08/07/1992'</span></span>)</span>;
-</code></pre><h3 id="2、创建servlet">2、创建servlet</h3><p>　　在test/WEB_INF/classes下新建一个DBServlet.java</p>
-<pre><code><span class="keyword">import</span> java.io.*;                                    <span class="comment">//导入java.io包</span>
-<span class="keyword">import</span> java.util.*;
-<span class="keyword">import</span> java.sql.*;
-<span class="keyword">import</span> javax.servlet.*;
-<span class="keyword">import</span> javax.servlet.http.*;
-<span class="keyword">public</span> class DBServlet extends HttpServlet{            <span class="comment">//定义一个继承HttpServlet的公有类</span>
-    ServletConfig config=<span class="keyword">null</span>;                        <span class="comment">//定义一个ServletConfig对象</span>
-    <span class="keyword">private</span> <span class="keyword">String</span> driverName=<span class="string">""</span>;                    <span class="comment">//定义私有字符串常量并初始化</span>
-    <span class="keyword">private</span> <span class="keyword">String</span> username=<span class="string">""</span>;                    <span class="comment">//定义的数据库用户名</span>
-    <span class="keyword">private</span> <span class="keyword">String</span> password=<span class="string">""</span>;                    <span class="comment">//定义的数据库连接密码</span>
-    <span class="keyword">private</span> <span class="keyword">String</span> dbName=<span class="string">""</span>;                        <span class="comment">//定义的数据库名</span>
-    <span class="keyword">private</span> Connection conn;                        <span class="comment">//初始化连接</span>
-    <span class="keyword">private</span> Statement stmt;                        <span class="comment">//初始化数据库操作</span>
-    ResultSet rs=<span class="keyword">null</span>;   
-                             <span class="comment">//初始化结果集</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> init(ServletConfig config)<span class="keyword">throws</span> ServletException{
-        <span class="keyword">super</span>.init(config);                            <span class="comment">//继承父类的init()方法</span>
-        <span class="keyword">this</span>.config=config;                            <span class="comment">//获取配置信息</span>
-        driverName=config.getInitParameter(<span class="string">"driverName"</span>);<span class="comment">//从配置文件中获取JDBC驱动名</span>
-        username=config.getInitParameter(<span class="string">"username"</span>);    <span class="comment">//获取数据库用户名</span>
-        password=config.getInitParameter(<span class="string">"password"</span>);    <span class="comment">//获取数据库连接密码</span>
-        dbName=config.getInitParameter(<span class="string">"dbName"</span>);    <span class="comment">//获取要连接的数据库</span>
+mysql&gt; create table raw_report(
+       name varchar(20),
+       sex varchar(10),
+       age varchar(10),
+       birthday varchar(20)
+  );
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Alex&apos;,&apos;M&apos;,&apos;20&apos;,&apos;08/07/1995&apos;);
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Alice&apos;,&apos;F&apos;,&apos;18&apos;,&apos;08/07/1997&apos;);
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Bob&apos;,&apos;M&apos;,&apos;21&apos;,&apos;08/07/1994&apos;);
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Mary&apos;,&apos;F&apos;,&apos;23&apos;,&apos;08/07/1992&apos;);
+</code></pre><h3 id="2、创建servlet"><a href="#2、创建servlet" class="headerlink" title="2、创建servlet"></a>2、创建servlet</h3><p>　　在test/WEB_INF/classes下新建一个DBServlet.java</p>
+<pre><code>import java.io.*;                                    //导入java.io包
+import java.util.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class DBServlet extends HttpServlet{            //定义一个继承HttpServlet的公有类
+    ServletConfig config=null;                        //定义一个ServletConfig对象
+    private String driverName=&quot;&quot;;                    //定义私有字符串常量并初始化
+    private String username=&quot;&quot;;                    //定义的数据库用户名
+    private String password=&quot;&quot;;                    //定义的数据库连接密码
+    private String dbName=&quot;&quot;;                        //定义的数据库名
+    private Connection conn;                        //初始化连接
+    private Statement stmt;                        //初始化数据库操作
+    ResultSet rs=null;   
+                             //初始化结果集
+    public void init(ServletConfig config)throws ServletException{
+        super.init(config);                            //继承父类的init()方法
+        this.config=config;                            //获取配置信息
+        driverName=config.getInitParameter(&quot;driverName&quot;);//从配置文件中获取JDBC驱动名
+        username=config.getInitParameter(&quot;username&quot;);    //获取数据库用户名
+        password=config.getInitParameter(&quot;password&quot;);    //获取数据库连接密码
+        dbName=config.getInitParameter(&quot;dbName&quot;);    //获取要连接的数据库
     }
 
-    <span class="keyword">public</span> <span class="keyword">void</span> doGet(HttpServletRequest req,HttpServletResponse resp)<span class="keyword">throws</span> IOException,ServletException{
-        resp.setContentType(<span class="string">"text/html;charset=GBK"</span>);    <span class="comment">//设置字符编码格式</span>
-        PrintWriter out=resp.getWriter();                <span class="comment">//实例化对象，用于页面输出</span>
-        out.<span class="built_in">println</span>(<span class="string">"&lt;html&gt;"</span>);                    <span class="comment">//实现生成静态Html</span>
-        out.<span class="built_in">println</span>(<span class="string">"&lt;head&gt;"</span>);
-        out.<span class="built_in">println</span>(<span class="string">"&lt;meta http-equiv=\"Content-Type\"content=\"text/html;charset=GBK\"&gt;"</span>);
-        out.<span class="built_in">println</span>(<span class="string">"&lt;title&gt;DataBase Connection&lt;/title&gt;"</span>);
-        out.<span class="built_in">println</span>(<span class="string">"&lt;/head&gt;"</span>);
-        out.<span class="built_in">println</span>(<span class="string">"&lt;body bgcolor=\"white\"&gt;"</span>);
-        out.<span class="built_in">println</span>(<span class="string">"&lt;center&gt;"</span>);
-        <span class="keyword">String</span> url=<span class="string">"jdbc:mysql://localhost:3306/test"</span>;
-        <span class="keyword">try</span>{
-                Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);
+    public void doGet(HttpServletRequest req,HttpServletResponse resp)throws IOException,ServletException{
+        resp.setContentType(&quot;text/html;charset=GBK&quot;);    //设置字符编码格式
+        PrintWriter out=resp.getWriter();                //实例化对象，用于页面输出
+        out.println(&quot;&lt;html&gt;&quot;);                    //实现生成静态Html
+        out.println(&quot;&lt;head&gt;&quot;);
+        out.println(&quot;&lt;meta http-equiv=\&quot;Content-Type\&quot;content=\&quot;text/html;charset=GBK\&quot;&gt;&quot;);
+        out.println(&quot;&lt;title&gt;DataBase Connection&lt;/title&gt;&quot;);
+        out.println(&quot;&lt;/head&gt;&quot;);
+        out.println(&quot;&lt;body bgcolor=\&quot;white\&quot;&gt;&quot;);
+        out.println(&quot;&lt;center&gt;&quot;);
+        String url=&quot;jdbc:mysql://localhost:3306/test&quot;;
+        try{
+                Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
                 conn=DriverManager.getConnection(url,username,password);
                 stmt=conn.createStatement();
-                <span class="keyword">String</span> sql=<span class="string">"select * from raw_report"</span>;
+                String sql=&quot;select * from raw_report&quot;;
                 rs=stmt.executeQuery(sql);
 
-                out.<span class="built_in">println</span>(<span class="string">"Servlet访问数据库成功"</span>);
-                out.<span class="built_in">println</span>(<span class="string">"&lt;table border=1 bordercolorlight=#000000&gt;"</span>);
-                out.<span class="built_in">println</span>(<span class="string">"&lt;tr&gt;&lt;td width=40&gt;name&lt;/td&gt;"</span>);
-                out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;sex&lt;/td&gt;"</span>);
-                out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;age&lt;/td&gt;"</span>);
-                out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;birthday&lt;/td&gt;"</span>);
-                <span class="keyword">while</span>(rs.next()){
-                     out.<span class="built_in">println</span>(<span class="string">"&lt;tr&gt;&lt;td&gt;"</span>+rs.getString(<span class="number">1</span>)+<span class="string">"&lt;/td&gt;"</span>);
-                     out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;"</span>+rs.getString(<span class="number">2</span>)+<span class="string">"&lt;/td&gt;"</span>);
-                     out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;"</span>+rs.getString(<span class="number">3</span>)+<span class="string">"&lt;/td&gt;"</span>);
-                     out.<span class="built_in">println</span>(<span class="string">"&lt;td&gt;"</span>+rs.getString(<span class="number">4</span>)+<span class="string">"&lt;/td&gt;"</span>);
-                     out.<span class="built_in">println</span>(<span class="string">"&lt;tr&gt;"</span>);
+                out.println(&quot;Servlet访问数据库成功&quot;);
+                out.println(&quot;&lt;table border=1 bordercolorlight=#000000&gt;&quot;);
+                out.println(&quot;&lt;tr&gt;&lt;td width=40&gt;name&lt;/td&gt;&quot;);
+                out.println(&quot;&lt;td&gt;sex&lt;/td&gt;&quot;);
+                out.println(&quot;&lt;td&gt;age&lt;/td&gt;&quot;);
+                out.println(&quot;&lt;td&gt;birthday&lt;/td&gt;&quot;);
+                while(rs.next()){
+                     out.println(&quot;&lt;tr&gt;&lt;td&gt;&quot;+rs.getString(1)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(2)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(3)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(4)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;tr&gt;&quot;);
                 }
-                out.<span class="built_in">println</span>(<span class="string">"&lt;/table&gt;"</span>);
+                out.println(&quot;&lt;/table&gt;&quot;);
 
                 rs.close();
                 stmt.close();
                 conn.close();    
 
-            }<span class="keyword">catch</span>(Exception e){
+            }catch(Exception e){
                 e.printStackTrace();
-                out.<span class="built_in">println</span>(e.toString());    
+                out.println(e.toString());    
             }
-            out.<span class="built_in">println</span>(<span class="string">"&lt;/center&gt;"</span>);
-            out.<span class="built_in">println</span>(<span class="string">"&lt;/body&gt;"</span>);
-            out.<span class="built_in">println</span>(<span class="string">"&lt;/html&gt;"</span>);
+            out.println(&quot;&lt;/center&gt;&quot;);
+            out.println(&quot;&lt;/body&gt;&quot;);
+            out.println(&quot;&lt;/html&gt;&quot;);
         }
 
-        <span class="keyword">public</span> <span class="keyword">void</span> doPost(HttpServletRequest req,HttpServletResponse resp)<span class="keyword">throws</span> IOException,ServletException{
-            <span class="keyword">this</span>.doGet(req,resp);
+        public void doPost(HttpServletRequest req,HttpServletResponse resp)throws IOException,ServletException{
+            this.doGet(req,resp);
         }
 
-        <span class="keyword">public</span> <span class="keyword">void</span> destory(){
-            config=<span class="keyword">null</span>;
-            driverName=<span class="keyword">null</span>;
-            username=<span class="keyword">null</span>;
-            password=<span class="keyword">null</span>;
-            dbName=<span class="keyword">null</span>;
-            conn=<span class="keyword">null</span>;
-            stmt=<span class="keyword">null</span>;
-            rs=<span class="keyword">null</span>;
+        public void destory(){
+            config=null;
+            driverName=null;
+            username=null;
+            password=null;
+            dbName=null;
+            conn=null;
+            stmt=null;
+            rs=null;
         }
 }
-</code></pre><h3 id="3、编译生成class文件">3、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/DBServlet.java</span>
-</code></pre><h3 id="4、部署">4、部署</h3><p>　　在web.xml中</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">description</span>&gt;</span>This is the description of my J2EE component<span class="tag">&lt;/<span class="title">description</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">display-name</span>&gt;</span>This is the display name of my J2EE component<span class="tag">&lt;/<span class="title">display-name</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>DBServlet<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>DBServlet<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>driverName<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>username<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>            
-            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>用户名<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>                
-        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>password<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>        
-            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>密码<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>                
-        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>dbName<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>    
-            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>test<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>    
-        <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
+</code></pre><h3 id="3、编译生成class文件"><a href="#3、编译生成class文件" class="headerlink" title="3、编译生成class文件"></a>3、编译生成class文件</h3><pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.24/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.24/libexec/webapps/test/WEB-INF/classes/DBServlet.java
+</code></pre><h3 id="4、部署"><a href="#4、部署" class="headerlink" title="4、部署"></a>4、部署</h3><p>　　在web.xml中</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app&gt;
+    &lt;servlet&gt;
+    &lt;description&gt;This is the description of my J2EE component&lt;/description&gt;
+    &lt;display-name&gt;This is the display name of my J2EE component&lt;/display-name&gt;
+    &lt;servlet-name&gt;DBServlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;DBServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+            &lt;param-name&gt;driverName&lt;/param-name&gt;
+            &lt;param-value&gt;com.mysql.jdbc.Driver&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+        &lt;param-name&gt;username&lt;/param-name&gt;            
+            &lt;param-value&gt;用户名&lt;/param-value&gt;                
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;password&lt;/param-name&gt;        
+            &lt;param-value&gt;密码&lt;/param-value&gt;                
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;dbName&lt;/param-name&gt;    
+            &lt;param-value&gt;test&lt;/param-value&gt;    
+        &lt;/init-param&gt;
 
-  <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+  &lt;/servlet&gt;
 
-  <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-     <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>DBServlet<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-     <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/DB<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-   <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+  &lt;servlet-mapping&gt;
+     &lt;servlet-name&gt;DBServlet&lt;/servlet-name&gt;
+     &lt;url-pattern&gt;/DB&lt;/url-pattern&gt;
+   &lt;/servlet-mapping&gt;
 
-<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
-</code></pre><h3 id="5、启动tomcat">5、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec/bin
+&lt;/web-app&gt;
+</code></pre><h3 id="5、启动tomcat"><a href="#5、启动tomcat" class="headerlink" title="5、启动tomcat"></a>5、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.24/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="6、运行">6、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/DB" target="_blank" rel="external">http://localhost:8080/test/DB</a></p>
-<h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
-    <span class="string">|---WEB-INF</span>
-        <span class="string">|---classes</span>
-            <span class="string">|---DBServlet.java</span>
-        <span class="string">|---lib</span>
-        <span class="string">|---web.xml</span>
+</code></pre><h3 id="6、运行"><a href="#6、运行" class="headerlink" title="6、运行"></a>6、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/DB" target="_blank" rel="external">http://localhost:8080/test/DB</a></p>
+<h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
+    |---WEB-INF
+        |---classes
+            |---DBServlet.java
+        |---lib
+        |---web.xml
 </code></pre></span>
         
       
@@ -821,75 +1418,75 @@ $ ./startup.sh
       
         
           <span itemprop="articleBody"><p>　　在上一篇的基础上，本节实现转发页面。</p>
-<h3 id="1、创建servlet">1、创建servlet</h3><h4 id="（1）在test目录下，新建一个index-html">（1）在test目录下，新建一个index.html</h4><pre><code><span class="pi">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;</span>
-<span class="doctype">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span>
-<span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>
-      <span class="attribute">xmlns</span>=<span class="value">"http://www.w3.org/1999/xhtml"</span>
-      <span class="attribute">xmlns:h</span>=<span class="value">"http://java.sun.com/jsf/html"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello index!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">body</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"hello"</span> <span class="attribute">method</span>=<span class="value">"GET"</span>&gt;</span>
-            First Name: <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"first_name"</span> /&gt;</span><span class="tag">&lt;<span class="title">br</span> /&gt;</span>
-            Last Name: <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"last_name"</span>   /&gt;</span><span class="tag">&lt;<span class="title">br</span> /&gt;</span>
-            <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"submit"</span> <span class="attribute">value</span>=<span class="value">"Submit"</span> /&gt;</span>
-        <span class="tag">&lt;/<span class="title">form</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
-</code></pre><h4 id="（2）在test/WEB_INF/classes下新建一个HEllo-java">（2）在test/WEB_INF/classes下新建一个HEllo.java</h4><pre><code><span class="keyword">import</span> java.io.*;
-<span class="keyword">import</span> javax.servlet.*;
-<span class="keyword">import</span> javax.servlet.http.*;
+<h3 id="1、创建servlet"><a href="#1、创建servlet" class="headerlink" title="1、创建servlet"></a>1、创建servlet</h3><h4 id="（1）在test目录下，新建一个index-html"><a href="#（1）在test目录下，新建一个index-html" class="headerlink" title="（1）在test目录下，新建一个index.html"></a>（1）在test目录下，新建一个index.html</h4><pre><code>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos; ?&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html lang=&quot;en&quot;
+      xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+      xmlns:h=&quot;http://java.sun.com/jsf/html&quot;&gt;
+    &lt;head&gt;
+        &lt;title&gt;Hello index!&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;form action=&quot;hello&quot; method=&quot;GET&quot;&gt;
+            First Name: &lt;input type=&quot;text&quot; name=&quot;first_name&quot; /&gt;&lt;br /&gt;
+            Last Name: &lt;input type=&quot;text&quot; name=&quot;last_name&quot;   /&gt;&lt;br /&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h4 id="（2）在test-WEB-INF-classes下新建一个HEllo-java"><a href="#（2）在test-WEB-INF-classes下新建一个HEllo-java" class="headerlink" title="（2）在test/WEB_INF/classes下新建一个HEllo.java"></a>（2）在test/WEB_INF/classes下新建一个HEllo.java</h4><pre><code>import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
-public <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">HttpServlet</span> {</span>
+public class Hello extends HttpServlet {
 
-    public void doGet(<span class="type">HttpServletRequest</span> request,<span class="type">HttpServletResponse</span> response)<span class="keyword">throws</span> <span class="type">ServletException</span>, <span class="type">IOException</span>{
-        response.setContentType(<span class="string">"text/html"</span>);
+    public void doGet(HttpServletRequest request,HttpServletResponse response)throws ServletException, IOException{
+        response.setContentType(&quot;text/html&quot;);
 
-        <span class="type">PrintWriter</span> out = response.getWriter();
-        <span class="type">String</span> title = <span class="string">"Using GET Method to Read Form Data"</span>;
-        <span class="type">String</span> docType =
-        <span class="string">"&lt;!doctype html public \"-//w3c//dtd html 4.0 "</span> +
-        <span class="string">"transitional//en\"&gt;\n"</span>;
+        PrintWriter out = response.getWriter();
+        String title = &quot;Using GET Method to Read Form Data&quot;;
+        String docType =
+        &quot;&lt;!doctype html public \&quot;-//w3c//dtd html 4.0 &quot; +
+        &quot;transitional//en\&quot;&gt;\n&quot;;
         out.println(docType +
-                  <span class="string">"&lt;html&gt;\n"</span> +
-                  <span class="string">"&lt;head&gt;&lt;title&gt;"</span> + title + <span class="string">"&lt;/title&gt;&lt;/head&gt;\n"</span> +
-                  <span class="string">"&lt;body&gt;\n"</span> +
-                  <span class="string">"&lt;h1 align=\"center\"&gt;"</span> + title + <span class="string">"&lt;/h1&gt;\n"</span> +
-                  <span class="string">"&lt;b&gt;First Name&lt;/b&gt;: "</span>
-                  + request.getParameter(<span class="string">"first_name"</span>) + <span class="string">"\n"</span> +
-                  <span class="string">"&lt;b&gt;Last Name&lt;/b&gt;: "</span>
-                  + request.getParameter(<span class="string">"last_name"</span>) + <span class="string">"\n"</span> +
-                  <span class="string">"&lt;/body&gt;"</span>+<span class="string">"&lt;/html&gt;"</span>);
+                  &quot;&lt;html&gt;\n&quot; +
+                  &quot;&lt;head&gt;&lt;title&gt;&quot; + title + &quot;&lt;/title&gt;&lt;/head&gt;\n&quot; +
+                  &quot;&lt;body&gt;\n&quot; +
+                  &quot;&lt;h1 align=\&quot;center\&quot;&gt;&quot; + title + &quot;&lt;/h1&gt;\n&quot; +
+                  &quot;&lt;b&gt;First Name&lt;/b&gt;: &quot;
+                  + request.getParameter(&quot;first_name&quot;) + &quot;\n&quot; +
+                  &quot;&lt;b&gt;Last Name&lt;/b&gt;: &quot;
+                  + request.getParameter(&quot;last_name&quot;) + &quot;\n&quot; +
+                  &quot;&lt;/body&gt;&quot;+&quot;&lt;/html&gt;&quot;);
   }
 }
-</code></pre><h3 id="2、编译生成class文件">2、编译生成class文件</h3><pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/Hello.java</span>
-</code></pre><h3 id="3、部署">3、部署</h3><p>　在web.xml中</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
-    <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
+</code></pre><h3 id="2、编译生成class文件"><a href="#2、编译生成class文件" class="headerlink" title="2、编译生成class文件"></a>2、编译生成class文件</h3><pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26/libexec/webapps/test/WEB-INF/classes/Hello.java
+</code></pre><h3 id="3、部署"><a href="#3、部署" class="headerlink" title="3、部署"></a>3、部署</h3><p>　在web.xml中</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app&gt;
+    &lt;!-- Define servlets that are included in the example application --&gt;
 
-    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>Hello<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>Hello<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Hello&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;Hello&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
 
-    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>Hello<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/hello<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
-</code></pre><h3 id="4、启动tomcat">4、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.24/</span>libexec/bin
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Hello&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre><h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.24/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="5、运行及结果">5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。" target="_blank" rel="external">http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。</a></p>
-<h3 id="6、目录结构">6、目录结构</h3><pre><code><span class="string">|---test</span>
-    <span class="string">|---index.html</span>
-    <span class="string">|---WEB-INF</span>
-        <span class="string">|---classes</span>
-            <span class="string">|---Hello.java</span>
-        <span class="string">|---lib</span>
-        <span class="string">|---web.xml</span>
+</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。" target="_blank" rel="external">http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。</a></p>
+<h3 id="6、目录结构"><a href="#6、目录结构" class="headerlink" title="6、目录结构"></a>6、目录结构</h3><pre><code>|---test
+    |---index.html
+    |---WEB-INF
+        |---classes
+            |---Hello.java
+        |---lib
+        |---web.xml
 </code></pre></span>
         
       
@@ -973,73 +1570,73 @@ $ ./startup.sh
 
       
         
-          <span itemprop="articleBody"><h3 id="1、创建servlet">1、创建servlet</h3><p>　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）<br>　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为<em>WEB-INF</em>的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件ServletExample.java</p>
-<pre><code><span class="keyword">import</span> javax.servlet.*;
-<span class="keyword">import</span> java.io.IOException;
-<span class="keyword">import</span> java.io.PrintWriter;
+          <span itemprop="articleBody"><h3 id="1、创建servlet"><a href="#1、创建servlet" class="headerlink" title="1、创建servlet"></a>1、创建servlet</h3><p>　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）<br>　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为<em>WEB-INF</em>的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件ServletExample.java</p>
+<pre><code>import javax.servlet.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletExample</span> <span class="keyword">implements</span> <span class="title">Servlet</span> </span>{
-    <span class="keyword">private</span> <span class="keyword">int</span> count;
+public class ServletExample implements Servlet {
+    private int count;
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException </span>{
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
 
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="keyword">null</span>;
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>{
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
         PrintWriter out = servletResponse.getWriter();
-        out.print(<span class="string">"Hello World"</span>);
+        out.print(&quot;Hello World&quot;);
 
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">getServletInfo</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="keyword">null</span>;
+    @Override
+    public String getServletInfo() {
+        return null;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>{
+    @Override
+    public void destroy() {
 
     }
 }
-</code></pre><h3 id="2、编译生成class文件">2、编译生成class文件</h3><p>　　进行编译，这时候要手动指明jar包的位置，不然的话会找不到。</p>
-<pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/webapps/</span>test<span class="regexp">/WEB-INF/</span>classes<span class="regexp">/ServletExample.java</span>
-</code></pre><h3 id="3、部署servlet">3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
-    <span class="comment">&lt;!-- Define servlets that are included in the example application --&gt;</span>
+</code></pre><h3 id="2、编译生成class文件"><a href="#2、编译生成class文件" class="headerlink" title="2、编译生成class文件"></a>2、编译生成class文件</h3><p>　　进行编译，这时候要手动指明jar包的位置，不然的话会找不到。</p>
+<pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26/libexec/webapps/test/WEB-INF/classes/ServletExample.java
+</code></pre><h3 id="3、部署servlet"><a href="#3、部署servlet" class="headerlink" title="3、部署servlet"></a>3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app&gt;
+    &lt;!-- Define servlets that are included in the example application --&gt;
 
-    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ServletExample&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
 
-    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/test<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>　　
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/test&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;　　
 </code></pre><p>　　其中，<servlet-name>对应创建的servlet的java文件名，<servlet-class>指明servlet所在的的路径包括包和类名，<url-pattern>可以任意取。每添加一个servlet时就必须在web.xml中进行部署。</url-pattern></servlet-class></servlet-name></p>
-<h3 id="4、启动tomcat">4、启动tomcat</h3><p>　　到tomcat的bin目录下，运行startup.sh文件。(保险起见，可以在运行startup.sh之前，先运行shutdown.sh)</p>
-<pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
+<h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><p>　　到tomcat的bin目录下，运行startup.sh文件。(保险起见，可以在运行startup.sh之前，先运行shutdown.sh)</p>
+<pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="5、运行及结果">5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/test，结果为显示`Hello" target="_blank" rel="external">http://localhost:8080/test/test，结果为显示`Hello</a> World`　</p>
-<h3 id="6、目录结构">6、目录结构</h3><pre><code><span class="string">|---test</span>
-    <span class="string">|---WEB-INF</span>
-        <span class="string">|---classes</span>
-            <span class="string">|---ServletExample.java</span>
-        <span class="string">|---lib</span>
-        <span class="string">|---web.xml</span>
+</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/test，结果为显示`Hello" target="_blank" rel="external">http://localhost:8080/test/test，结果为显示`Hello</a> World`　</p>
+<h3 id="6、目录结构"><a href="#6、目录结构" class="headerlink" title="6、目录结构"></a>6、目录结构</h3><pre><code>|---test
+    |---WEB-INF
+        |---classes
+            |---ServletExample.java
+        |---lib
+        |---web.xml
 </code></pre><p>　　</p>
 <blockquote>
 <p>此外，可以在tomcat下的conf里的tomcat-users.xml配置username和password进行manager webapp。</p>
-<pre><code><span class="tag">&lt;<span class="title">role</span> <span class="attribute">rolename</span>=<span class="value">"zhang'yu"</span>/&gt;</span>
-<span class="tag">&lt;<span class="title">user</span> <span class="attribute">username</span>=<span class="value">"用户名"</span> <span class="attribute">password</span>=<span class="value">"密码"</span> <span class="attribute">roles</span>=<span class="value">"manager-gui"</span>/&gt;</span>
+<pre><code>&lt;role rolename=&quot;zhang&apos;yu&quot;/&gt;
+&lt;user username=&quot;用户名&quot; password=&quot;密码&quot; roles=&quot;manager-gui&quot;/&gt;
 </code></pre></blockquote>
 </span>
         
@@ -1124,7 +1721,7 @@ $ ./startup.sh
 
       
         
-          <span itemprop="articleBody"><h3 id="一、bean">一、bean</h3><p>Customer.java</p>
+          <span itemprop="articleBody"><h3 id="一、bean"><a href="#一、bean" class="headerlink" title="一、bean"></a>一、bean</h3><p>Customer.java</p>
 <pre><code>package com.mkyong.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1132,7 +1729,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Customer 
 {
     @Autowired
-    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private Person person;
     private int type;
     private String action;
 
@@ -1140,91 +1737,91 @@ public class Customer
 
     @Override
     public String toString() {
-        return <span class="string">"Customer <span class="subst">[person=" + person + ", type=" + type + ", action="
-                + action + "]</span>"</span>;
+        return &quot;Customer [person=&quot; + person + &quot;, type=&quot; + type + &quot;, action=&quot;
+                + action + &quot;]&quot;;
 }
 }
 </code></pre><p>Person.java</p>
-<pre><code><span class="keyword">package</span> com.mkyong.common;
+<pre><code>package com.mkyong.common;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>{
-    <span class="keyword">private</span> String name;
+public class Person {
+    private String name;
 
-    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> name;
+    public String getName() {
+        return name;
     }
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>{
-        <span class="keyword">this</span>.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Person [name="</span> + name + <span class="string">"]"</span>;
+    @Override
+    public String toString() {
+        return &quot;Person [name=&quot; + name + &quot;]&quot;;
     }
 }
-</code></pre><h3 id="二、_AutowiredAnnotationBeanPostProcessor">二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
-<h4 id="1、context:annotation-config">1、context:annotation-config</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+</code></pre><h3 id="二、-AutowiredAnnotationBeanPostProcessor"><a href="#二、-AutowiredAnnotationBeanPostProcessor" class="headerlink" title="二、 AutowiredAnnotationBeanPostProcessor"></a>二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
+<h4 id="1、context-annotation-config"><a href="#1、context-annotation-config" class="headerlink" title="1、context:annotation-config"></a>1、context:annotation-config</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
 
     &lt;context:annotation-config /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;bean id=&quot;CustomerBean&quot; class=&quot;com.mkyong.common.Customer&quot;&gt;
+        &lt;property name=&quot;action&quot; value=&quot;buy&quot; /&gt;
+        &lt;property name=&quot;type&quot; value=&quot;1&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong"</span> /&gt;
+    &lt;bean id=&quot;PersonBean&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong&quot; /&gt;
     &lt;/bean&gt;
 
 &lt;/beans&gt;
-</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor">2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
+</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor"><a href="#2、直接包含AutowiredAnnotationBeanPostProcessor" class="headerlink" title="2、直接包含AutowiredAnnotationBeanPostProcessor"></a>2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
 class=&quot;org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor&quot;/&gt;</code></p>
-<h3 id="三、运行">三、运行</h3><p>在App.java中</p>
-<pre><code><span class="keyword">package</span> com.mkyong.common;
+<h3 id="三、运行"><a href="#三、运行" class="headerlink" title="三、运行"></a>三、运行</h3><p>在App.java中</p>
+<pre><code>package com.mkyong.common;
 
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
-        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
-                <span class="string">"SpringBeans.xml"</span>);
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext(
+                &quot;SpringBeans.xml&quot;);
 
-        Customer cust = (Customer) context.getBean(<span class="string">"customer"</span>);
+        Customer cust = (Customer) context.getBean(&quot;customer&quot;);
         System.out.println(cust);
     }
 }
-</code></pre><h3 id="四、运行结果">四、运行结果</h3><pre><code>Customer [person=Person [<span class="keyword">name</span>=mkyongA], <span class="keyword">type</span>=<span class="number">1</span>, <span class="keyword">action</span>=buy]
-</code></pre><h3 id="五、Dependency_checking">五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
-<h3 id="六、@Qualifier">六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
-<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+</code></pre><h3 id="四、运行结果"><a href="#四、运行结果" class="headerlink" title="四、运行结果"></a>四、运行结果</h3><pre><code>Customer [person=Person [name=mkyongA], type=1, action=buy]
+</code></pre><h3 id="五、Dependency-checking"><a href="#五、Dependency-checking" class="headerlink" title="五、Dependency checking"></a>五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
+<h3 id="六、-Qualifier"><a href="#六、-Qualifier" class="headerlink" title="六、@Qualifier"></a>六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
 
     &lt;context:annotation-config /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;bean id=&quot;CustomerBean&quot; class=&quot;com.mkyong.common.Customer&quot;&gt;
+        &lt;property name=&quot;action&quot; value=&quot;buy&quot; /&gt;
+        &lt;property name=&quot;type&quot; value=&quot;1&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean1"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong1"</span> /&gt;
+    &lt;bean id=&quot;PersonBean1&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong1&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean2"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong2"</span> /&gt;
+    &lt;bean id=&quot;PersonBean2&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong2&quot; /&gt;
     &lt;/bean&gt;
 
 &lt;/beans&gt;
@@ -1237,736 +1834,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class Customer 
 {
     @Autowired
-    @Qualifier(<span class="string">"PersonBean1"</span>)
-    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    @Qualifier(&quot;PersonBean1&quot;)
+    private Person person;
     private int type;
     private String action;
     //getter and setter methods
-}
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring/" itemprop="url">
-                Spring-Auto-Wiring
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T12:09:07+08:00" content="2015-08-30">
-            2015-08-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-Auto-Wiring/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-Wiring/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>Spring支持5种自动装配模式，如下：</p>
-<table>
-<thead>
-<tr>
-<th>自动装配模式</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>no</td>
-<td style="text-align:left">默认情况下，不自动装配，通过“ref”属性手动设定。</td>
-</tr>
-<tr>
-<td>byName</td>
-<td style="text-align:left">根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。</td>
-</tr>
-<tr>
-<td>byType</td>
-<td style="text-align:left">根据Property的数据类型（Type）自动装配，如果一个bean的数据类型，兼容另一个bean中Property的数据类型，则自动装配。</td>
-</tr>
-<tr>
-<td>constructor</td>
-<td style="text-align:left">根据构造函数参数的数据类型，进行byType模式的自动装配。</td>
-</tr>
-<tr>
-<td>autodetect</td>
-<td style="text-align:left">如果发现默认的构造函数，用constructor模式，否则，用byType模式。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="一、bean">一、bean</h3><p>CustomerDAO.java</p>
-<pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
-    }    
-}
-</code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
-<pre><code><span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    CustomerDAO customerDAO;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
-        <span class="keyword">this</span>.customerDAO = customerDAO;
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
-    }            
-}
-</code></pre><h3 id="二、装配">二、装配</h3><h4 id="1、Auto-Wiring_‘no’">1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
-<pre><code>&lt;bean id=<span class="string">"customerService"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
-        &lt;property name=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean id=<span class="string">"customerDAO"</span> class=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="2、Auto-Wiring_‘byName’">2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byName"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="3、Auto-Wiring_‘byType‘">3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byType"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
-<h4 id="4、Auto-Wiring_‘constructor’">4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
-<h4 id="5、Auto-Wiring_‘autodetect">5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
-<blockquote>
-<p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
-</blockquote>
-<pre><code>&lt;bean id=<span class="string">"customer"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span> 
-            autowire=<span class="string">"autodetect"</span> dependency-check=<span class="string">"objects /&gt;
-
-&lt;bean id="</span><span class="keyword">person</span><span class="string">" class="</span>com.mkyong.customer.dao.CustomerDAO<span class="string">" /</span>
-</code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/30/Spring-Auto-scanning/" itemprop="url">
-                Spring-Auto-scanning
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T11:38:10+08:00" content="2015-08-30">
-            2015-08-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-Auto-scanning/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-scanning/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、一般的bean">一、一般的bean</h3><h4 id="1、CustomerDAO-java">1、CustomerDAO.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
-    }    
-}
-</code></pre><h4 id="2、CustomerService-java">2、CustomerService.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
-
-<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    CustomerDAO customerDAO;
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
-        <span class="keyword">this</span>.customerDAO = customerDAO;
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
-    }
-
-}
-</code></pre><h4 id="3、Spring-Customer-xml">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-
-&lt;/beans&gt;
-</code></pre><h3 id="二、auto_Scanning">二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1">1、CustomerDAO.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
-
-<span class="at_rule">@<span class="keyword">Component</span>
-public class CustomerDAO 
-</span>{
-    <span class="at_rule">@<span class="keyword">Override</span>
-    public String <span class="function">toString</span>() </span>{
-        <span class="tag">return</span> "<span class="tag">Hello</span> , <span class="tag">This</span> <span class="tag">is</span> <span class="tag">CustomerDAO</span>";
-    }    
-}
-</code></pre><h4 id="2、CustomerService-java-1">2、CustomerService.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.services</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.beans</span><span class="class">.factory</span><span class="class">.annotation</span><span class="class">.Autowired</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
-
-<span class="tag">import</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span><span class="class">.CustomerDAO</span>;
-
-<span class="at_rule">@<span class="keyword">Component</span>
-public class CustomerService 
-</span>{
-    <span class="at_rule">@<span class="keyword">Autowired</span>
-    CustomerDAO customerDAO</span>;
-
-    <span class="at_rule">@<span class="keyword">Override</span>
-    public String <span class="function">toString</span>() </span>{
-        <span class="tag">return</span> "<span class="tag">CustomerService</span> <span class="attr_selector">[customerDAO=" + customerDAO + "]</span>";
-    }
-}
-</code></pre><h4 id="3、Spring-Customer-xml-1">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span>
-    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
-    http:<span class="comment">//www.springframework.org/schema/context</span>
-    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
-
-    &lt;context:component-scan base-package=<span class="string">"com.mkyong.customer"</span> /&gt;
-
-&lt;/beans&gt;
-</code></pre><h3 id="三、Antotation_Types——自动扫描组件的注释类型">三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
-<p>@Component      ——表示一个自动扫描component</p>
-<p>@Repository              ——表示持久化层的DAO component</p>
-<p>@Service             ——表示业务逻辑层的Service component</p>
-<p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
-<p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
-<h3 id="四、Spring_Filter_Components_——_在自动扫描中过滤组件">四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter_Component——include">1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
-<h5 id="（1）DAO层，在CustomerDAO-java中">（1）DAO层，在CustomerDAO.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
-    }    
-}
-</code></pre><h5 id="（2）Service层，在CustomerService-java中">（2）Service层，在CustomerService.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
-
-<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
-<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    <span class="annotation">@Autowired</span>
-    CustomerDAO customerDAO;
-
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
-    }
-
-}
-</code></pre><h5 id="（3）在Spring-Customer-xml中">（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation="http:<span class="comment">//www.springframework.org/schema/beans</span>
-    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
-    http:<span class="comment">//www.springframework.org/schema/context</span>
-    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
-
-    &lt;context:component-scan base-package=<span class="string">"com.mkyong"</span> &gt;
-
-        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-                       expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;
-
-        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-                       expression=<span class="string">"com.mkyong.customer.services.*Service.*"</span> /&gt;
-
-    &lt;/context:component-scan&gt;
-
-&lt;/beans&gt;
-</code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
-<h4 id="2、Filter_Component——exclude">2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
-<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei.customer"</span> &gt;
-        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"annotation"</span> 
-            expression=<span class="string">"org.springframework.stereotype.Service"</span> /&gt;        
-&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
-</code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
-<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei"</span> &gt;
-        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-            expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;        
-&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/30/Spring-JavaConfig/" itemprop="url">
-                Spring_JavaConfig
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T10:47:46+08:00" content="2015-08-30">
-            2015-08-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-JavaConfig/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-JavaConfig/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：</p>
-<pre><code><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.mkyong.core<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">properties</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">spring.version</span>&gt;</span>3.0.5.RELEASE<span class="tag">&lt;/<span class="title">spring.version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>4.8.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-        <span class="comment">&lt;!-- Spring 3 dependencies --&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-        <span class="comment">&lt;!-- JavaConfig need this library --&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-
-    <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
-</code></pre><h3 id="一、Spring_Bean">一、Spring Bean</h3><pre><code>package com.mkyong;
-
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span>{
-
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toString</span>(<span class="params">String msg</span>) </span>{
-
-        System.<span class="keyword">out</span>.println(<span class="string">"Hello : "</span> + msg);
-    }
-
-}
-</code></pre><h3 id="二、Spring配置">二、Spring配置</h3><p>1、回顾xml配置</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.HelloWorld"</span>&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><p>2、JavaConfig，在AppConfig.java中</p>
-<pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Bean</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
-
-<span class="at_rule">@<span class="keyword">Configuration</span>
-public class AppConfig </span>{
-
-    <span class="at_rule">@<span class="keyword">Bean(name="helloBean")</span>
-    public HelloWorld <span class="function">helloWorld</span>() </span>{
-        <span class="tag">return</span> <span class="tag">new</span> <span class="tag">HelloWorld</span>();
-    }
-
-}
-</code></pre><h3 id="三、运行，在App-java中">三、运行，在App.java中</h3><pre><code><span class="keyword">package</span> com.mkyong;
-
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> {</span>
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="typename">void</span> main(String[] args) {
-
-        <span class="comment">//ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");</span>
-        ApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(AppConfig.<span class="keyword">class</span>);
-        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
-
-        obj.toString(<span class="string">"Hello,Spring Java Config"</span>);
-
-    }
-}
-</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="rule"><span class="attribute">Hello </span>:<span class="value"> Hello,Spring Java Config</span></span>
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
-<h3 id="六、补充@Import">六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
-<h4 id="1、在xml中">1、在xml中</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/customer.xml"</span>/&gt;</span>
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/scheduler.xml"</span>/&gt;</span>
-
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="2、在JavaConfig中">2、在JavaConfig中</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.config</span>;
-
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Import</span>;
-
-<span class="at_rule">@<span class="keyword">Configuration</span>
-@<span class="function">Import</span>(</span>{ <span class="tag">CustomerConfig</span><span class="class">.class</span>, <span class="tag">SchedulerConfig</span><span class="class">.class</span> })
-<span class="tag">public</span> <span class="tag">class</span> <span class="tag">AppConfig</span> <span class="rules">{
-
-}</span>
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/29/Gradle-java-plugin/" itemprop="url">
-                Gradle-java-plugin
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-29T19:42:22+08:00" content="2015-08-29">
-            2015-08-29
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Gradle/" itemprop="url" rel="index">
-                  <span itemprop="name">Gradle</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/29/Gradle-java-plugin/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/29/Gradle-java-plugin/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　java plugin给项目添加了java编译，测试和捆绑的能力，是很多其他gradle plugin的基础。<br>在build.gradle中加入<code>apply plugin: &#39;java&#39;</code>，即可使用java plugin。</p>
-<h3 id="一、java_Plugin引入的主要Task">一、java Plugin引入的主要Task</h3><p>执行“gradle build”，我们已经可以看到java Plugin所引入的主要Task：</p>
-<blockquote>
-<p>:compileJava<br>:processResources<br>:classes<br>:jar<br>:assemble<br>:compileTestJava<br>:processTestResources<br>:testClasses<br>:test<br>:check<br>:build</p>
-</blockquote>
-<p>　　build也是java Plugin所引入的一个Task，它依赖于其他Task，其他Task又依赖于另外的Task，所以有了以上Task执行列表。以上Task执行列表基本上描述了java Plugin向项目中所引入的构建生命周期概念。<br>　　除了定义众多的Task外，java Plugin还向Project中加入了一些额外的Property。比如，sourceCompatibility用于指定在编译Java源文件时所使用的Java版本，archivesBaseName用于指定打包成Jar文件时的文件名称。
-　　</p>
-<h3 id="二、Source_sets">二、Source sets</h3><p>　　source set是一组编译和执行的源文件，和编译路径与执行路径有联系。Gradle的每个source set都包含有一个名字，并且包含有一个名为java的Property和一个名为resources的Property，他们分别用于表示该source set所包含的Java源文件集合和资源文件集合。</p>
-<pre><code><span class="title">sourceSets</span> {
-    <span class="title">main</span> {
-        <span class="title">java</span> {
-            <span class="title">srcDir</span> <span class="string">'src/java'</span>
-        }
-        resources {
-            <span class="title">srcDir</span> <span class="string">'src/resources'</span>
-        }
-    }
-}
-</code></pre><p>　　Gradle会自动地为每一个新创建的source set创建相应的Task。对于名为mySourceSet的source set，Gradle将为其创建compile<mysourceset>Java、process<mysourceset>Resources和<mysourceset>Classes这3个Task。对于这里api而言，Gradle会为其创建名为compileApiJava、processApiResource和apiClasses Task。我们可以在命令行中执行”gradle apiClasses”。<br></mysourceset></mysourceset></mysourceset></p>
-<blockquote>
-<p>注意，对于main而言，Gradle并没有相应的compileMainJava，原因在于：由于main是Gradle默认创建的source set，并且又是及其重要的source set，Gradle便省略掉了其中的“Main”，而是直接使用了compileJava作为main的编译Task。对于test来说，Gradle依然采用了compileTestJava。</p>
-</blockquote>
-<p>　　通常的情况是，我们自己创建的名为api的source set会被其他source set所依赖，比如main中的类需要实现api中的某个接口等。此时我们需要做两件事情。<br>　　<em> 第一，我们需要在编译main之前对api进行编译，即编译main中Java源文件的Task应该依赖于api中的Task：<code>classes.dependsOn apiClasses</code>
-　　</em> 第二，在编译main时，我们需要将api编译生成的class文件放在main的classpath下。此时，我们可以对main和test做以下配置：</p>
-<pre><code><span class="title">sourceSets</span> {
-  <span class="title">main</span> {
-     <span class="title">compileClasspath</span> = compileClasspath + files(api.output.classesDir)
-  }
-  test {
-     <span class="title">runtimeClasspath</span> = runtimeClasspath + files(api.output.classesDir)
-  }
-}
-</code></pre><h3 id="三、依赖管理">三、依赖管理</h3><h4 id="1、repositories">1、repositories</h4><p>　　在声明对第三方类库的依赖时，我们需要告诉Gradle在什么地方去获取这些依赖，即配置Gradle的Repository。在配置好依赖之后，Gradle会自动地下载这些依赖到本地。Gradle可以使用Maven和Ivy的Repository，同时它还可以使用本地文件系统作为Repository。<br>配置Maven的Repository如下：</p>
-<pre><code><span class="keyword">repositories</span> {
-  mavenCentral()
-}
-</code></pre><h4 id="2、configurations">2、configurations</h4><p>　　Gradle将对依赖进行分组，每一组依赖称为一个Configuration，在声明依赖时，我们实际上是在设置不同的Configuration。</p>
-<h5 id="(1）定义一个Configuration：">(1）定义一个Configuration：</h5><pre><code><span class="title">configurations</span> {
-  <span class="title">myDependency</span>
-}
-</code></pre><h5 id="(2)_加入实际的依赖项：">(2) 加入实际的依赖项：</h5><pre><code><span class="title">dependencies</span> {
-  <span class="title">myDependency</span> <span class="string">'org.apache.commons:commons-lang3:3.0'</span>
-}
-</code></pre><blockquote>
-<p>java Plugin定义了compile和testCompile这两个Configuration，分别用于编译Java源文件和编译Java测试源文件。也定义了runtime和testRuntime，分别用于在程序运行和测试运行时加入所配置的依赖。</p>
-</blockquote>
-<p>　　因此，下述声明依赖时，可以直接使用dependencies：</p>
-<pre><code>dependencies {
-    compile <span class="string">group:</span> <span class="string">'commons-collections'</span>, <span class="string">name:</span> <span class="string">'commons-collections'</span>, <span class="string">version:</span> <span class="string">'3.2'</span>
-    testCompile <span class="string">group:</span> <span class="string">'junit'</span>, <span class="string">name:</span> <span class="string">'junit'</span>, <span class="string">version:</span> <span class="string">'4.+'</span>
-}
-</code></pre><h5 id="(3）获取classpath">(3）获取classpath</h5><pre><code><span class="keyword">task</span> showMyDependency &lt;&lt; {
-  <span class="keyword">println</span> <span class="keyword">configurations</span>.myDependency.asPath
 }
 </code></pre></span>
         
@@ -1991,7 +1863,7 @@ public class AppConfig </span>{
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
   </nav>
 
  </div>
@@ -2025,21 +1897,21 @@ public class AppConfig </span>{
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

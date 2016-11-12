@@ -46,7 +46,7 @@
 在客户端的请求访问后端资源之前，拦截这些请求。在服务器的响应发送回客户端之前，处理这些响应。
 
 　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。
-1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.java">
+1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.jav">
 <meta property="og:type" content="article">
 <meta property="og:title" content="手动创建Servlet过滤器">
 <meta property="og:url" content="http://yoursite.com/2015/10/15/手动创建Servlet过滤器/index.html">
@@ -56,7 +56,7 @@
 在客户端的请求访问后端资源之前，拦截这些请求。在服务器的响应发送回客户端之前，处理这些响应。
 
 　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。
-1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.java">
+1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.jav">
 <meta property="og:updated_time" content="2015-10-21T14:33:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet过滤器">
@@ -65,7 +65,7 @@
 在客户端的请求访问后端资源之前，拦截这些请求。在服务器的响应发送回客户端之前，处理这些响应。
 
 　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。
-1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.java">
+1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.jav">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -245,84 +245,84 @@
 <p>在客户端的请求访问后端资源之前，拦截这些请求。<br><br>在服务器的响应发送回客户端之前，处理这些响应。</p>
 </blockquote>
 <p>　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。</p>
-<h3 id="1、创建Filter">1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
-<pre><code><span class="keyword">import</span> java.io.*;
-<span class="keyword">import</span> javax.servlet.*;
-<span class="keyword">import</span> javax.servlet.http.*;
-<span class="keyword">import</span> java.util.*;
+<h3 id="1、创建Filter"><a href="#1、创建Filter" class="headerlink" title="1、创建Filter"></a>1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
+<pre><code>import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.*;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span>  </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">init</span><span class="params">(FilterConfig config)</span> 
-                         <span class="keyword">throws</span> ServletException</span>{
-        <span class="comment">// 获取初始化参数</span>
-        String testParam = config.getInitParameter(<span class="string">"test-param"</span>); 
+public class LogFilter implements Filter  {
+    public void  init(FilterConfig config) 
+                         throws ServletException{
+        // 获取初始化参数
+        String testParam = config.getInitParameter(&quot;test-param&quot;); 
 
-        <span class="comment">// 输出初始化参数</span>
-        System.out.println(<span class="string">"********Test Param: "</span> + testParam); 
+        // 输出初始化参数
+        System.out.println(&quot;********Test Param: &quot; + testParam); 
 
    }
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">doFilter</span><span class="params">(ServletRequest request, 
+    public void  doFilter(ServletRequest request, 
                  ServletResponse response,
-                 FilterChain chain)</span> 
-                 <span class="keyword">throws</span> java.io.IOException, ServletException </span>{
+                 FilterChain chain) 
+                 throws java.io.IOException, ServletException {
 
         PrintWriter out = response.getWriter();
-        out.println(<span class="string">"[ Time : "</span>+ <span class="keyword">new</span> Date().toString()+<span class="string">" ]"</span>);    
-        <span class="comment">// 把请求传回过滤链</span>
+        out.println(&quot;[ Time : &quot;+ new Date().toString()+&quot; ]&quot;);    
+        // 把请求传回过滤链
         chain.doFilter(request,response);
    }
-   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">( )</span></span>{
-      <span class="comment">/* 在 Filter 实例被 Web 容器从服务移除之前调用 */</span>
+   public void destroy( ){
+      /* 在 Filter 实例被 Web 容器从服务移除之前调用 */
    }
  }
 </code></pre><p>　　过滤器是一个实现了 javax.servlet.Filter 接口的Java类.javax.servlet.Filter 接口定义了三个方法:</p>
 <blockquote>
 <p>（1）public void doFilter (ServletRequest, ServletResponse, FilterChain)<br>该方法在每次一个请求/响应对因客户端在链的末端请求资源而通过链传递时由容器调用。<br><br>（2）public void init(FilterConfig filterConfig)<br>该方法由Web容器调用，指示一个过滤器被放入服务。<br><br>（3）public void destroy()<br>该方法由Web容器调用，指示一个过滤器被取出服务。</p>
 </blockquote>
-<h3 id="2、编译">2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
-<pre><code>javac -cp <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec<span class="regexp">/lib/</span>servlet-api.jar <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26、libexec/</span>webapps<span class="regexp">/test/</span>WEB-INF<span class="regexp">/classes/</span>LogFilter.java
-</code></pre><h3 id="3、部署">3、部署</h3><pre><code><span class="pi">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span>
-<span class="tag">&lt;<span class="title">web-app</span>&gt;</span>
+<h3 id="2、编译"><a href="#2、编译" class="headerlink" title="2、编译"></a>2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
+<pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26、libexec/webapps/test/WEB-INF/classes/LogFilter.java
+</code></pre><h3 id="3、部署"><a href="#3、部署" class="headerlink" title="3、部署"></a>3、部署</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app&gt;
 
-    <span class="tag">&lt;<span class="title">servlet</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-class</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-class</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet</span>&gt;</span>
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ServletExample&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
 
-    <span class="tag">&lt;<span class="title">servlet-mapping</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">servlet-name</span>&gt;</span>ServletExample<span class="tag">&lt;/<span class="title">servlet-name</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/test<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">servlet-mapping</span>&gt;</span>
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/test&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
 
-    <span class="tag">&lt;<span class="title">filter</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">filter-class</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-class</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">init-param</span>&gt;</span>
-          <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>test-param<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
-          <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>Initialization Paramter<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
-       <span class="tag">&lt;/<span class="title">init-param</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">filter</span>&gt;</span>
+    &lt;filter&gt;
+       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
+       &lt;filter-class&gt;LogFilter&lt;/filter-class&gt;
+       &lt;init-param&gt;
+          &lt;param-name&gt;test-param&lt;/param-name&gt;
+          &lt;param-value&gt;Initialization Paramter&lt;/param-value&gt;
+       &lt;/init-param&gt;
+    &lt;/filter&gt;
 
-    <span class="tag">&lt;<span class="title">filter-mapping</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">filter-name</span>&gt;</span>LogFilter<span class="tag">&lt;/<span class="title">filter-name</span>&gt;</span>
-       <span class="tag">&lt;<span class="title">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="title">url-pattern</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">filter-mapping</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
+    &lt;filter-mapping&gt;
+       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
+       &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+&lt;/web-app&gt;
 </code></pre><p>　　过滤器被部署在部署web.xml中然后映射到部署的Servlet名称或 URL模式。有多个过滤器时，执行的顺序是按它们在声明的顺序。
 　　</p>
-<h3 id="4、启动tomcat">4、启动tomcat</h3><pre><code>$ cd <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>tomcat<span class="regexp">/8.0.26/</span>libexec/bin
+<h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="5、运行">5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
+</code></pre><h3 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
 　　</p>
-<h3 id="6、结果">6、结果</h3><pre><code>[ Time : Thu Oct <span class="number">15</span> <span class="number">20</span>:<span class="number">56</span>:<span class="number">29</span> CST <span class="number">2015</span> ]
+<h3 id="6、结果"><a href="#6、结果" class="headerlink" title="6、结果"></a>6、结果</h3><pre><code>[ Time : Thu Oct 15 20:56:29 CST 2015 ]
 Hello World
-</code></pre><h3 id="7、目录结构">7、目录结构</h3><pre><code><span class="string">|---test</span>
-    <span class="string">|---WEB-INF</span>
-        <span class="string">|---classes</span>
-            <span class="string">|---ServletExample.java</span>
-            <span class="string">|---LogFilter.java</span>
-        <span class="string">|---lib</span>
-        <span class="string">|---web.xml</span>
+</code></pre><h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
+    |---WEB-INF
+        |---classes
+            |---ServletExample.java
+            |---LogFilter.java
+        |---lib
+        |---web.xml
 </code></pre></span>
       
     </div>
@@ -412,21 +412,21 @@ Hello World
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

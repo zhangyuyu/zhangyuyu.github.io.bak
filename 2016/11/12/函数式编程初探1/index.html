@@ -1,0 +1,705 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="行是知之始，知是行之成" />
+
+
+
+  <meta name="keywords" content="函数式编程," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="一、前言作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入RxJava之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。
+二、定义函数式编程(Functional Programming)是一种编程范式（programming paradigm），也就是如何编写程序的方法论。主要思想是把运算过程尽量写成一系列嵌套的函数调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数式编程初探（一）">
+<meta property="og:url" content="http://yoursite.com/2016/11/12/函数式编程初探1/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="一、前言作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入RxJava之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。
+二、定义函数式编程(Functional Programming)是一种编程范式（programming paradigm），也就是如何编写程序的方法论。主要思想是把运算过程尽量写成一系列嵌套的函数调">
+<meta property="og:updated_time" content="2016-11-12T13:37:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数式编程初探（一）">
+<meta name="twitter:description" content="一、前言作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入RxJava之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。
+二、定义函数式编程(Functional Programming)是一种编程范式（programming paradigm），也就是如何编写程序的方法论。主要思想是把运算过程尽量写成一系列嵌套的函数调">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> 函数式编程初探（一） | 若见喻笺 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">若见喻笺</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              函数式编程初探（一）
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2016-11-12T17:35:13+08:00" content="2016-11-12">
+            2016-11-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                  <span itemprop="name">函数式编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/12/函数式编程初探1/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探1/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
+<h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
+<h3 id="三、背景"><a href="#三、背景" class="headerlink" title="三、背景"></a>三、背景</h3><p>函数式编程（Functional Programming）其实相对于计算机的历史而言是一个非常古老的概念，甚至早于第一台计算机的诞生。函数式编程的基础模型来源于 λ 演算，而 λ 演算并非设计于在计算机上执行，它是由 Alonzo Church 和 Stephen Cole Kleene 在 20 世纪三十年代引入的一套用于研究函数定义、函数应用和递归的形式系统。</p>
+<h3 id="四、为什么？"><a href="#四、为什么？" class="headerlink" title="四、为什么？"></a>四、为什么？</h3><p>在《函数式编程思维》这本书中，多处指出<code>函数式编程思维</code>的好处之一,是能够将低层次细节的控制权移交给运行时,从而消弭了一大批注定会发生的程序错误。这使得程序员得以在更高的抽象层次上工作，同时运行时也有了执行复杂优化的自由空间。</p>
+<p>在阮一峰的<a href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html" target="_blank" rel="external">《函数式编程初探》</a>一文中，<br>函数式编程的五大特点如下：</p>
+<ol>
+<li>函数是”第一等公民”</li>
+<li>只用”表达式”，不用”语句”</li>
+<li>没有”副作用”</li>
+<li>不修改状态</li>
+<li>引用透明<br>函数的运行不依赖于外部变量或”状态”，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。</li>
+</ol>
+<p>函数式编程的好处如下：</p>
+<ol>
+<li>代码简洁，开发快速</li>
+<li>接近自然语言，易于理解</li>
+<li>更方便的代码管理(每一个函数都可以被看做独立单元，很有利于进行单元测试以及模块化组合)</li>
+<li>易于”并发编程”</li>
+<li>代码的热升级（函数式编程没有副作用，只要保证接口不变，内部实现是外部无关的）</li>
+</ol>
+<h3 id="五、转变思维"><a href="#五、转变思维" class="headerlink" title="五、转变思维"></a>五、转变思维</h3><p>先大致说明一下函数式编程与命令式编程的区别吧！</p>
+<p>命令式编程：按照“程序是一系列改变状态的命令”来建模的一种编程风格。<br>函数式编程将程序描述为表达式和变换，以数学方程的形式建立模型，并且尽量避免可变的状态。</p>
+<p>《Working with Lagacy Code》的作者Michael Feathers的用以下一句话说明了函数式抽象和面向对象抽象的关键区别：</p>
+<blockquote>
+<p>面向对象编程通过封装不确定因素来使代码能被人理解；函数式编程通过尽量减少不确定因素来使代码能被人理解。——Michael Feathers</p>
+</blockquote>
+<p>在面向对象的命令式编程语言里面，重用的单元是类和类之间沟通用的消息。所以OOP的世界提倡开发人员针对具体问题<strong>建立专门的数据结构</strong>，相关的专门操作以“方法”的形式附加在数据结构上。<br>函数式编程语言重用的思路很不一样，它提倡在<strong>有限的几种关键数据结构</strong>（如list、set、map）上运用针对这些数据结构高度优化过的操作，以此构成基本运转结构。</p>
+<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>程序员往往都是讨厌看文档而偏爱看代码的，上述那么多文字，你不一定看的下去，还是首先来一个hello world吧。<br>对于计算表达式（1+2）* 3，</p>
+<p>传统的编程方式是：<br>int a = 1 + 2<br>int b = a * 3</p>
+<p>而对于函数式编程方式是：<br>int result = multiply(add(1,2), 3)<br>这里函数作为参数进行传递。</p>
+<h4 id="函数式编程的常见函数"><a href="#函数式编程的常见函数" class="headerlink" title="函数式编程的常见函数"></a>函数式编程的常见函数</h4><p>从一个例子说起，假设我们有一个名字列表，其中一些条目由单个字符构成。现在的任务是：</p>
+<ul>
+<li>除去单字符条目</li>
+<li>放在一个逗号分隔的字符串中进行返回</li>
+<li>每个名字的首字母都是大写<br>代码可参考《函数式编程思维》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/trans/TheCompanyProcess.java" target="_blank" rel="external">github</a><br>传统的java实现<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> cleanNames(List&lt;<span class="keyword">String</span>&gt; listOfNames) &#123;</div><div class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder();</div><div class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; listOfNames.<span class="built_in">size</span>(); i++) &#123;</div><div class="line">        <span class="keyword">if</span> (listOfNames.<span class="built_in">get</span>(i).length() &gt; <span class="number">1</span>) &#123;</div><div class="line">            result.<span class="built_in">append</span>(capitalizeString(listOfNames.<span class="built_in">get</span>(i))).<span class="built_in">append</span>(<span class="string">","</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>).toString();</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> capitalizeString(<span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + s.substring(<span class="number">1</span>, s.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>命令式编程鼓励程序员将操作安排在循环内部执行，本例中的三个操作filter、transform、convert都必须依赖于相同的低层次机制。</p>
+<p>Java8的实现：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="built_in">String</span> cleanNames(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names) &#123;</div><div class="line">    <span class="keyword">if</span> (names == <span class="built_in">null</span>) <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">    <span class="keyword">return</span> names</div><div class="line">            .stream()</div><div class="line">            .filter(name -&gt; name.length() &gt; <span class="number">1</span>)</div><div class="line">            .<span class="built_in">map</span>(name -&gt; capitalize(name))</div><div class="line">            .collect(Collectors.joining(<span class="string">","</span>));</div><div class="line">&#125;</div><div class="line"><span class="keyword">private</span> <span class="built_in">String</span> capitalize(<span class="built_in">String</span> e) &#123;</div><div class="line">    <span class="keyword">return</span> e.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + e.substring(<span class="number">1</span>, e.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>两者的对比，可以发现后者这种更高层次的抽象思考有一些好处：</p>
+<ul>
+<li>促使我们换一种角度去归类问题，看到问题的共性。</li>
+<li>让运行时有更大的余地去做只能的优化（有时候调整作业的先后顺序会更有效率）。</li>
+<li>让埋头实现细节的开发者看到原本视野之外的解决方案（比如，如果改用多线程，传统的方式可能需要自己手动穿插一些线程相关的代码）</li>
+</ul>
+<p>可以从上述例子中，看到三个函数filter、map、fold/reduce的影子。</p>
+<ol>
+<li><p>filter——筛选<br>根据用户定义的条件来筛选列表中的条目，并由此产生一个较小的新列表。</p>
+</li>
+<li><p>map——映射<br>对原集合的每一个元素执行给定的函数，从而变换成一个新的集合。</p>
+</li>
+<li><p>fold/reduce——折叠/化约<br>用一个累积量来“收集”集合元素。</p>
+</li>
+</ol>
+<p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
+<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探（二）" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/函数式编程/" rel="tag">#函数式编程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/12/函数式编程初探2/" rel="prev">函数式编程初探（二）</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/09/RabbitMQ初探/" rel="next">RabbitMQ初探</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/11/12/函数式编程初探1/"
+                   data-title="函数式编程初探（一）" data-url="http://yoursite.com/2016/11/12/函数式编程初探1/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/imgs/figure.jpg" alt="Zhang Yu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Zhang Yu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">分類</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">標籤</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、定义"><span class="nav-number">2.</span> <span class="nav-text">二、定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、背景"><span class="nav-number">3.</span> <span class="nav-text">三、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、为什么？"><span class="nav-number">4.</span> <span class="nav-text">四、为什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、转变思维"><span class="nav-number">5.</span> <span class="nav-text">五、转变思维</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、基本概念及使用介绍"><span class="nav-number">6.</span> <span class="nav-text">六、基本概念及使用介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hello-World"><span class="nav-number">6.1.</span> <span class="nav-text">Hello World</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数式编程的常见函数"><span class="nav-number">6.2.</span> <span class="nav-text">函数式编程的常见函数</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhangyuyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+<a href="https://github.com/zhangyuyu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-
+</body>
+</html>

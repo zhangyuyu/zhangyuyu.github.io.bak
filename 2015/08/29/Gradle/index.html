@@ -41,16 +41,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Prop">
+<meta name="description" content="每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Pr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gradle">
 <meta property="og:url" content="http://yoursite.com/2015/08/29/Gradle/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Prop">
+<meta property="og:description" content="每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Pr">
 <meta property="og:updated_time" content="2015-10-11T12:19:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gradle">
-<meta name="twitter:description" content="每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Prop">
+<meta name="twitter:description" content="每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Pr">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -226,144 +226,144 @@
 
       
         <span itemprop="articleBody"><p>　　每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。<br>　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Property以完成特定的操作。<br>　　gradle命令在当前路径下寻找一个叫build.gradle的文件夹，也叫做build script,严格来说build configuration script，它定义了project和其tasks.</p>
-<h3 id="一、HelloWorld">一、HelloWorld</h3><h4 id="1、调用Project的task()方法">1、调用Project的task()方法</h4><p>在build.gradle中</p>
-<pre><code><span class="keyword">task</span> hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+<h3 id="一、HelloWorld"><a href="#一、HelloWorld" class="headerlink" title="一、HelloWorld"></a>一、HelloWorld</h3><h4 id="1、调用Project的task-方法"><a href="#1、调用Project的task-方法" class="headerlink" title="1、调用Project的task()方法"></a>1、调用Project的task()方法</h4><p>在build.gradle中</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
 }
 </code></pre><p>　　其中<code>&lt;&lt;</code>表示向hello中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
-<h4 id="2、使用doLast加入执行过程">2、使用doLast加入执行过程</h4><pre><code><span class="keyword">task</span> hello {
-        <span class="keyword">doLast</span> {
-            <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+<h4 id="2、使用doLast加入执行过程"><a href="#2、使用doLast加入执行过程" class="headerlink" title="2、使用doLast加入执行过程"></a>2、使用doLast加入执行过程</h4><pre><code>task hello {
+        doLast {
+            println &apos;Hello world!&apos;
         }
     }    
-</code></pre><h4 id="3、create方式">3、create方式</h4><pre><code><span class="tag">tasks</span><span class="class">.create</span>(<span class="rule"><span class="attribute">name</span>:<span class="value"> <span class="string">'hello'</span>) &lt;&lt; {
-   println <span class="string">'Hello world!'</span>
-}</span></span>
-</code></pre><h4 id="4、运行，结果">4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
-<pre><code>$ gradle -<span class="tag">q</span> hello
+</code></pre><h4 id="3、create方式"><a href="#3、create方式" class="headerlink" title="3、create方式"></a>3、create方式</h4><pre><code>tasks.create(name: &apos;hello&apos;) &lt;&lt; {
+   println &apos;Hello world!&apos;
+}
+</code></pre><h4 id="4、运行，结果"><a href="#4、运行，结果" class="headerlink" title="4、运行，结果"></a>4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
+<pre><code>$ gradle -q hello
 Hello world!
 </code></pre><p>　　</p>
-<h3 id="二、使用Grovvy">二、使用Grovvy</h3><h4 id="eg1:">eg1:</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> upper &lt;&lt; {
-    String someString = <span class="string">'mY_nAmE'</span>
-    <span class="keyword">println</span> <span class="string">"Original: "</span> + someString 
-    <span class="keyword">println</span> <span class="string">"Upper case: "</span> + someString.toUpperCase()
+<h3 id="二、使用Grovvy"><a href="#二、使用Grovvy" class="headerlink" title="二、使用Grovvy"></a>二、使用Grovvy</h3><h4 id="eg1"><a href="#eg1" class="headerlink" title="eg1:"></a>eg1:</h4><p>build.gradle:</p>
+<pre><code>task upper &lt;&lt; {
+    String someString = &apos;mY_nAmE&apos;
+    println &quot;Original: &quot; + someString 
+    println &quot;Upper case: &quot; + someString.toUpperCase()
 }
 </code></pre><p>Terminal：</p>
 <pre><code>$ gradle -q upper
-<span class="string">Original:</span> mY_nAmE
-Upper <span class="string">case:</span> MY_NAME
-</code></pre><h4 id="eg2:">eg2:</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> <span class="keyword">count</span> &lt;&lt; {
-    <span class="number">4</span>.<span class="keyword">times</span> { <span class="keyword">print</span> <span class="string">"$it "</span> }
+Original: mY_nAmE
+Upper case: MY_NAME
+</code></pre><h4 id="eg2"><a href="#eg2" class="headerlink" title="eg2:"></a>eg2:</h4><p>build.gradle:</p>
+<pre><code>task count &lt;&lt; {
+    4.times { print &quot;$it &quot; }
 }
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q count
-<span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> 
-</code></pre><h3 id="三、task依赖">三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
-<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候：">1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> taskX &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskY!'</span>
+0 1 2 3 
+</code></pre><h3 id="三、task依赖"><a href="#三、task依赖" class="headerlink" title="三、task依赖"></a>三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
+<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候："><a href="#1、声明Task依赖关系的一种方式是在定义一个Task的时候：" class="headerlink" title="1、声明Task依赖关系的一种方式是在定义一个Task的时候："></a>1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
+<pre><code>task taskX &lt;&lt; {
+    println &apos;taskY!&apos;
 }
-<span class="keyword">task</span> taskY(dependsOn: taskX){
-    <span class="keyword">println</span> <span class="string">"taskX!"</span>
+task taskY(dependsOn: taskX){
+    println &quot;taskX!&quot;
 }
 </code></pre><p>Terminal:</p>
-<pre><code>&gt; gradle -<span class="tag">q</span> taskY
+<pre><code>&gt; gradle -q taskY
 taskX
 taskY
-</code></pre><h4 id="2、被依赖的Task还不存在的时候">2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
-<pre><code><span class="keyword">task</span> taskX(dependsOn: <span class="string">'taskY'</span>) &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskX'</span>
+</code></pre><h4 id="2、被依赖的Task还不存在的时候"><a href="#2、被依赖的Task还不存在的时候" class="headerlink" title="2、被依赖的Task还不存在的时候"></a>2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
+<pre><code>task taskX(dependsOn: &apos;taskY&apos;) &lt;&lt; {
+    println &apos;taskX&apos;
 }
-<span class="keyword">task</span> taskY &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'taskY'</span>    
+task taskY &lt;&lt; {
+    println &apos;taskY&apos;    
 }
 </code></pre><p>Terminal:</p>
-<pre><code>$ gradle -<span class="tag">q</span> taskX
+<pre><code>$ gradle -q taskX
 taskY
 taskX    
-</code></pre><h4 id="3、Example">3、Example</h4><p>gradle.build</p>
-<pre><code><span class="title">task</span> branch &lt;&lt; {
-    <span class="title">println</span> <span class="string">"use version=<span class="variable">$version</span>"</span>
+</code></pre><h4 id="3、Example"><a href="#3、Example" class="headerlink" title="3、Example"></a>3、Example</h4><p>gradle.build</p>
+<pre><code>task branch &lt;&lt; {
+    println &quot;use version=$version&quot;
 }
 
-task myTask(dependsOn: <span class="string">'mybranch'</span>) &lt;&lt; {
-    <span class="title">println</span> <span class="string">'this is my task!'</span>
+task myTask(dependsOn: &apos;mybranch&apos;) &lt;&lt; {
+    println &apos;this is my task!&apos;
 }
 
-gradle.taskGraph.whenReady {<span class="title">taskGraph</span> -&gt;
+gradle.taskGraph.whenReady {taskGraph -&gt;
     if (taskGraph.hasTask(myTask)) {
-        <span class="title">version</span> = <span class="string">'1.0'</span>
+        version = &apos;1.0&apos;
     } else {
-        <span class="title">version</span> = <span class="string">'2.0'</span>
+        version = &apos;2.0&apos;
     }
 }    
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q branch  
-<span class="operator"><span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">2.0</span>
+use version=2.0
 $ gradle -q myTask
-<span class="keyword">use</span> <span class="keyword">version</span>=<span class="number">1.0</span>
-this <span class="keyword">is</span> my task!</span>
-</code></pre><h3 id="四、动态task">四、动态task</h3><p>build.gradle:</p>
-<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
-    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
-        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
+use version=1.0
+this is my task!
+</code></pre><h3 id="四、动态task"><a href="#四、动态task" class="headerlink" title="四、动态task"></a>四、动态task</h3><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
     }
 }
 </code></pre><p>Ternimal:</p>
-<pre><code>$ gradle -<span class="tag">q</span> task1
-I<span class="string">'m task number 1</span>
+<pre><code>$ gradle -q task1
+I&apos;m task number 1
 </code></pre><p>　　注意，task是从0开始的，即此处存在task0、task1、task2、task3。可输入<code>gradle tasks</code>查看所有task。</p>
-<h3 id="五、操控现有task">五、操控现有task</h3><h4 id="1、添加依赖">1、添加依赖</h4><p>build.gradle:</p>
-<pre><code><span class="number">4</span>.<span class="keyword">times</span> { counter -&gt;
-    <span class="keyword">task</span> <span class="string">"task$counter"</span> &lt;&lt; {
-        <span class="keyword">println</span> <span class="string">"I'm task number $counter"</span>
+<h3 id="五、操控现有task"><a href="#五、操控现有task" class="headerlink" title="五、操控现有task"></a>五、操控现有task</h3><h4 id="1、添加依赖"><a href="#1、添加依赖" class="headerlink" title="1、添加依赖"></a>1、添加依赖</h4><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
     }
 }
 task0.dependsOn task2, task3
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q task0
-I'm task <span class="type">number</span> <span class="number">2</span>
-I'm task <span class="type">number</span> <span class="number">3</span>
-I'm task <span class="type">number</span> <span class="number">0</span>
-</code></pre><h4 id="2、添加行为">2、添加行为</h4><p>build.gradle:</p>
-<pre><code><span class="keyword">task</span> hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello world!'</span>
+I&apos;m task number 2
+I&apos;m task number 3
+I&apos;m task number 0
+</code></pre><h4 id="2、添加行为"><a href="#2、添加行为" class="headerlink" title="2、添加行为"></a>2、添加行为</h4><p>build.gradle:</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
 }
-hello.<span class="keyword">doFirst</span> {
-    <span class="keyword">println</span> <span class="string">'Hello first'</span>
+hello.doFirst {
+    println &apos;Hello first&apos;
 }
-hello.<span class="keyword">doLast</span> {
-    <span class="keyword">println</span> <span class="string">'Hello last'</span>
+hello.doLast {
+    println &apos;Hello last&apos;
 }
 hello &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Hello hello!'</span>
+    println &apos;Hello hello!&apos;
 }
 </code></pre><p>Treminal:</p>
 <pre><code>$ gradle -q hello
-Hello <span class="keyword">first</span>
+Hello first
 Hello world!
-Hello <span class="keyword">last</span>
+Hello last
 Hello hello!
-</code></pre><h3 id="六、默认task">六、默认task</h3><p>build.gradle:</p>
-<pre><code>defaultTasks <span class="string">'clean'</span>, <span class="string">'run'</span>
+</code></pre><h3 id="六、默认task"><a href="#六、默认task" class="headerlink" title="六、默认task"></a>六、默认task</h3><p>build.gradle:</p>
+<pre><code>defaultTasks &apos;clean&apos;, &apos;run&apos;
 
-<span class="keyword">task</span> clean &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Default Cleaning!'</span>
+task clean &lt;&lt; {
+    println &apos;Default Cleaning!&apos;
 }
 
-<span class="keyword">task</span> run &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">'Default Running!'</span>
+task run &lt;&lt; {
+    println &apos;Default Running!&apos;
 }
 
-<span class="keyword">task</span> other &lt;&lt; {
-    <span class="keyword">println</span> <span class="string">"I'm not a default task!"</span>
+task other &lt;&lt; {
+    println &quot;I&apos;m not a default task!&quot;
 }
 </code></pre><p>Terminal:</p>
 <pre><code>$ gradle -q
-<span class="keyword">Default</span> Cleaning!
-<span class="keyword">Default</span> Running!
+Default Cleaning!
+Default Running!
 </code></pre></span>
       
     </div>
@@ -453,21 +453,21 @@ Hello hello!
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -502,7 +502,7 @@ Hello hello!
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、HelloWorld"><span class="nav-number">1.</span> <span class="nav-text">一、HelloWorld</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、调用Project的task()方法"><span class="nav-number">1.1.</span> <span class="nav-text">1、调用Project的task()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、使用doLast加入执行过程"><span class="nav-number">1.2.</span> <span class="nav-text">2、使用doLast加入执行过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、create方式"><span class="nav-number">1.3.</span> <span class="nav-text">3、create方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、运行，结果"><span class="nav-number">1.4.</span> <span class="nav-text">4、运行，结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用Grovvy"><span class="nav-number">2.</span> <span class="nav-text">二、使用Grovvy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#eg1:"><span class="nav-number">2.1.</span> <span class="nav-text">eg1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eg2:"><span class="nav-number">2.2.</span> <span class="nav-text">eg2:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、task依赖"><span class="nav-number">3.</span> <span class="nav-text">三、task依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、声明Task依赖关系的一种方式是在定义一个Task的时候："><span class="nav-number">3.1.</span> <span class="nav-text">1、声明Task依赖关系的一种方式是在定义一个Task的时候：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、被依赖的Task还不存在的时候"><span class="nav-number">3.2.</span> <span class="nav-text">2、被依赖的Task还不存在的时候</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Example"><span class="nav-number">3.3.</span> <span class="nav-text">3、Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、动态task"><span class="nav-number">4.</span> <span class="nav-text">四、动态task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、操控现有task"><span class="nav-number">5.</span> <span class="nav-text">五、操控现有task</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、添加依赖"><span class="nav-number">5.1.</span> <span class="nav-text">1、添加依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、添加行为"><span class="nav-number">5.2.</span> <span class="nav-text">2、添加行为</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、默认task"><span class="nav-number">6.</span> <span class="nav-text">六、默认task</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、HelloWorld"><span class="nav-number">1.</span> <span class="nav-text">一、HelloWorld</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、调用Project的task-方法"><span class="nav-number">1.1.</span> <span class="nav-text">1、调用Project的task()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、使用doLast加入执行过程"><span class="nav-number">1.2.</span> <span class="nav-text">2、使用doLast加入执行过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、create方式"><span class="nav-number">1.3.</span> <span class="nav-text">3、create方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、运行，结果"><span class="nav-number">1.4.</span> <span class="nav-text">4、运行，结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用Grovvy"><span class="nav-number">2.</span> <span class="nav-text">二、使用Grovvy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#eg1"><span class="nav-number">2.1.</span> <span class="nav-text">eg1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eg2"><span class="nav-number">2.2.</span> <span class="nav-text">eg2:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、task依赖"><span class="nav-number">3.</span> <span class="nav-text">三、task依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、声明Task依赖关系的一种方式是在定义一个Task的时候："><span class="nav-number">3.1.</span> <span class="nav-text">1、声明Task依赖关系的一种方式是在定义一个Task的时候：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、被依赖的Task还不存在的时候"><span class="nav-number">3.2.</span> <span class="nav-text">2、被依赖的Task还不存在的时候</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Example"><span class="nav-number">3.3.</span> <span class="nav-text">3、Example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、动态task"><span class="nav-number">4.</span> <span class="nav-text">四、动态task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、操控现有task"><span class="nav-number">5.</span> <span class="nav-text">五、操控现有task</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、添加依赖"><span class="nav-number">5.1.</span> <span class="nav-text">1、添加依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、添加行为"><span class="nav-number">5.2.</span> <span class="nav-text">2、添加行为</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、默认task"><span class="nav-number">6.</span> <span class="nav-text">六、默认task</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

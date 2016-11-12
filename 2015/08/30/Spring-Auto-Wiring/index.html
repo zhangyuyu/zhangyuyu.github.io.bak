@@ -313,54 +313,54 @@ byType
 </tr>
 </tbody>
 </table>
-<h3 id="一、bean">一、bean</h3><p>CustomerDAO.java</p>
-<pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
+<h3 id="一、bean"><a href="#一、bean" class="headerlink" title="一、bean"></a>一、bean</h3><p>CustomerDAO.java</p>
+<pre><code>package com.mkyong.customer.dao;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
     }    
 }
 </code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
-<pre><code><span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
+<pre><code>import com.mkyong.customer.dao.CustomerDAO;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
+public class CustomerService 
+{
     CustomerDAO customerDAO;
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
-        <span class="keyword">this</span>.customerDAO = customerDAO;
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
     }            
 }
-</code></pre><h3 id="二、装配">二、装配</h3><h4 id="1、Auto-Wiring_‘no’">1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
-<pre><code>&lt;bean id=<span class="string">"customerService"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
-        &lt;property name=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
+</code></pre><h3 id="二、装配"><a href="#二、装配" class="headerlink" title="二、装配"></a>二、装配</h3><h4 id="1、Auto-Wiring-‘no’"><a href="#1、Auto-Wiring-‘no’" class="headerlink" title="1、Auto-Wiring ‘no’"></a>1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean id=<span class="string">"customerDAO"</span> class=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="2、Auto-Wiring_‘byName’">2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byName"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
-</code></pre><h4 id="3、Auto-Wiring_‘byType‘">3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
-<pre><code>&lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span> autowire=<span class="string">"byType"</span>&gt;
-&lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><h4 id="2、Auto-Wiring-‘byName’"><a href="#2、Auto-Wiring-‘byName’" class="headerlink" title="2、Auto-Wiring ‘byName’"></a>2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; autowire=&quot;byName&quot;&gt;
+&lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><h4 id="3、Auto-Wiring-‘byType‘"><a href="#3、Auto-Wiring-‘byType‘" class="headerlink" title="3、Auto-Wiring ‘byType‘"></a>3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; autowire=&quot;byType&quot;&gt;
+&lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
 </code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
-<h4 id="4、Auto-Wiring_‘constructor’">4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
-<h4 id="5、Auto-Wiring_‘autodetect">5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
+<h4 id="4、Auto-Wiring-‘constructor’"><a href="#4、Auto-Wiring-‘constructor’" class="headerlink" title="4、Auto-Wiring ‘constructor’"></a>4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
+<h4 id="5、Auto-Wiring-‘autodetect"><a href="#5、Auto-Wiring-‘autodetect" class="headerlink" title="5、Auto-Wiring ‘autodetect"></a>5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
 <blockquote>
 <p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
 </blockquote>
-<pre><code>&lt;bean id=<span class="string">"customer"</span> class=<span class="string">"com.mkyong.customer.services.CustomerService"</span> 
-            autowire=<span class="string">"autodetect"</span> dependency-check=<span class="string">"objects /&gt;
+<pre><code>&lt;bean id=&quot;customer&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; 
+            autowire=&quot;autodetect&quot; dependency-check=&quot;objects /&gt;
 
-&lt;bean id="</span><span class="keyword">person</span><span class="string">" class="</span>com.mkyong.customer.dao.CustomerDAO<span class="string">" /</span>
+&lt;bean id=&quot;person&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /
 </code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
 </span>
       
@@ -451,21 +451,21 @@ byType
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -500,7 +500,7 @@ byType
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、bean"><span class="nav-number">1.</span> <span class="nav-text">一、bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、装配"><span class="nav-number">2.</span> <span class="nav-text">二、装配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Auto-Wiring_‘no’"><span class="nav-number">2.1.</span> <span class="nav-text">1、Auto-Wiring ‘no’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Auto-Wiring_‘byName’"><span class="nav-number">2.2.</span> <span class="nav-text">2、Auto-Wiring ‘byName’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Auto-Wiring_‘byType‘"><span class="nav-number">2.3.</span> <span class="nav-text">3、Auto-Wiring ‘byType‘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Auto-Wiring_‘constructor’"><span class="nav-number">2.4.</span> <span class="nav-text">4、Auto-Wiring ‘constructor’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、Auto-Wiring_‘autodetect"><span class="nav-number">2.5.</span> <span class="nav-text">5、Auto-Wiring ‘autodetect</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、bean"><span class="nav-number">1.</span> <span class="nav-text">一、bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、装配"><span class="nav-number">2.</span> <span class="nav-text">二、装配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Auto-Wiring-‘no’"><span class="nav-number">2.1.</span> <span class="nav-text">1、Auto-Wiring ‘no’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Auto-Wiring-‘byName’"><span class="nav-number">2.2.</span> <span class="nav-text">2、Auto-Wiring ‘byName’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Auto-Wiring-‘byType‘"><span class="nav-number">2.3.</span> <span class="nav-text">3、Auto-Wiring ‘byType‘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Auto-Wiring-‘constructor’"><span class="nav-number">2.4.</span> <span class="nav-text">4、Auto-Wiring ‘constructor’</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、Auto-Wiring-‘autodetect"><span class="nav-number">2.5.</span> <span class="nav-text">5、Auto-Wiring ‘autodetect</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

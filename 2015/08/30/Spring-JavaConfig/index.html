@@ -42,22 +42,23 @@
 
 
 <meta name="description" content="使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：
-&amp;lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://maven.apache.">
+&amp;lt;project xmlns=&amp;quot;http://maven.apache.org/POM/4.0.0&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+    xsi:schemaLocation">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring_JavaConfig">
 <meta property="og:url" content="http://yoursite.com/2015/08/30/Spring-JavaConfig/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：
-&amp;lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://maven.apache.">
+&amp;lt;project xmlns=&amp;quot;http://maven.apache.org/POM/4.0.0&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+    xsi:schemaLocation">
 <meta property="og:image" content="http://yoursite.com/imgs/Spring-JavaConfig.png">
 <meta property="og:updated_time" content="2015-10-11T12:52:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring_JavaConfig">
 <meta name="twitter:description" content="使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：
-&amp;lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://maven.apache.">
+&amp;lt;project xmlns=&amp;quot;http://maven.apache.org/POM/4.0.0&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+    xsi:schemaLocation">
+<meta name="twitter:image" content="http://yoursite.com/imgs/Spring-JavaConfig.png">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -233,122 +234,122 @@
 
       
         <span itemprop="articleBody"><p>　　使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：</p>
-<pre><code><span class="tag">&lt;<span class="title">project</span> <span class="attribute">xmlns</span>=<span class="value">"http://maven.apache.org/POM/4.0.0"</span> <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="title">modelVersion</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.mkyong.core<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="title">packaging</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">name</span>&gt;</span>Spring3Example<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="title">url</span>&gt;</span>
+<pre><code>&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.mkyong.core&lt;/groupId&gt;
+    &lt;artifactId&gt;Spring3Example&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;Spring3Example&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
 
-    <span class="tag">&lt;<span class="title">properties</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">spring.version</span>&gt;</span>3.0.5.RELEASE<span class="tag">&lt;/<span class="title">spring.version</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">properties</span>&gt;</span>
+    &lt;properties&gt;
+        &lt;spring.version&gt;3.0.5.RELEASE&lt;/spring.version&gt;
+    &lt;/properties&gt;
 
-    <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>4.8.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;4.8.2&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
 
-        <span class="comment">&lt;!-- Spring 3 dependencies --&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+        &lt;!-- Spring 3 dependencies --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
 
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>${spring.version}<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+            &lt;version&gt;${spring.version}&lt;/version&gt;
+        &lt;/dependency&gt;
 
-        <span class="comment">&lt;!-- JavaConfig need this library --&gt;</span>
-        <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>cglib<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+        &lt;!-- JavaConfig need this library --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cglib&lt;/groupId&gt;
+            &lt;artifactId&gt;cglib&lt;/artifactId&gt;
+            &lt;version&gt;2.2.2&lt;/version&gt;
+        &lt;/dependency&gt;
 
-    <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">project</span>&gt;</span>
-</code></pre><h3 id="一、Spring_Bean">一、Spring Bean</h3><pre><code>package com.mkyong;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre><h3 id="一、Spring-Bean"><a href="#一、Spring-Bean" class="headerlink" title="一、Spring Bean"></a>一、Spring Bean</h3><pre><code>package com.mkyong;
 
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HelloWorld</span>{
+public class HelloWorld{
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toString</span>(<span class="params">String msg</span>) </span>{
+    public void toString(String msg) {
 
-        System.<span class="keyword">out</span>.println(<span class="string">"Hello : "</span> + msg);
+        System.out.println(&quot;Hello : &quot; + msg);
     }
 
 }
-</code></pre><h3 id="二、Spring配置">二、Spring配置</h3><p>1、回顾xml配置</p>
-<pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"</span>&gt;</span>
+</code></pre><h3 id="二、Spring配置"><a href="#二、Spring配置" class="headerlink" title="二、Spring配置"></a>二、Spring配置</h3><p>1、回顾xml配置</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;
 
-    <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"helloBean"</span> <span class="attribute">class</span>=<span class="value">"com.mkyong.HelloWorld"</span>&gt;</span>
+    &lt;bean id=&quot;helloBean&quot; class=&quot;com.mkyong.HelloWorld&quot;&gt;
 
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
+&lt;/beans&gt;
 </code></pre><p>2、JavaConfig，在AppConfig.java中</p>
-<pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span>;
+<pre><code>package com.mkyong;
 
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Bean</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-<span class="at_rule">@<span class="keyword">Configuration</span>
-public class AppConfig </span>{
+@Configuration
+public class AppConfig {
 
-    <span class="at_rule">@<span class="keyword">Bean(name="helloBean")</span>
-    public HelloWorld <span class="function">helloWorld</span>() </span>{
-        <span class="tag">return</span> <span class="tag">new</span> <span class="tag">HelloWorld</span>();
+    @Bean(name=&quot;helloBean&quot;)
+    public HelloWorld helloWorld() {
+        return new HelloWorld();
     }
 
 }
-</code></pre><h3 id="三、运行，在App-java中">三、运行，在App.java中</h3><pre><code><span class="keyword">package</span> com.mkyong;
+</code></pre><h3 id="三、运行，在App-java中"><a href="#三、运行，在App-java中" class="headerlink" title="三、运行，在App.java中"></a>三、运行，在App.java中</h3><pre><code>package com.mkyong;
 
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> {</span>
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="typename">void</span> main(String[] args) {
+public class App {
+    public static void main(String[] args) {
 
-        <span class="comment">//ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");</span>
-        ApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(AppConfig.<span class="keyword">class</span>);
-        HelloWorld obj = (HelloWorld) context.getBean(<span class="string">"helloBean"</span>);
+        //ApplicationContext context = new ClassPathXmlApplicationContext(&quot;SpringBeans.xml&quot;);
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        HelloWorld obj = (HelloWorld) context.getBean(&quot;helloBean&quot;);
 
-        obj.toString(<span class="string">"Hello,Spring Java Config"</span>);
+        obj.toString(&quot;Hello,Spring Java Config&quot;);
 
     }
 }
-</code></pre><h3 id="四、结果">四、结果</h3><pre><code><span class="rule"><span class="attribute">Hello </span>:<span class="value"> Hello,Spring Java Config</span></span>
-</code></pre><h3 id="五、目录结构">五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
-<h3 id="六、补充@Import">六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
-<h4 id="1、在xml中">1、在xml中</h4><pre><code><span class="tag">&lt;<span class="title">beans</span> <span class="attribute">xmlns</span>=<span class="value">"http://www.springframework.org/schema/beans"</span>
-    <span class="attribute">xmlns:xsi</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    <span class="attribute">xsi:schemaLocation</span>=<span class="value">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;</span>
+</code></pre><h3 id="四、结果"><a href="#四、结果" class="headerlink" title="四、结果"></a>四、结果</h3><pre><code>Hello : Hello,Spring Java Config
+</code></pre><h3 id="五、目录结构"><a href="#五、目录结构" class="headerlink" title="五、目录结构"></a>五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
+<h3 id="六、补充-Import"><a href="#六、补充-Import" class="headerlink" title="六、补充@Import"></a>六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
+<h4 id="1、在xml中"><a href="#1、在xml中" class="headerlink" title="1、在xml中"></a>1、在xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
 
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/customer.xml"</span>/&gt;</span>
-    <span class="tag">&lt;<span class="title">import</span> <span class="attribute">resource</span>=<span class="value">"config/scheduler.xml"</span>/&gt;</span>
+    &lt;import resource=&quot;config/customer.xml&quot;/&gt;
+    &lt;import resource=&quot;config/scheduler.xml&quot;/&gt;
 
-<span class="tag">&lt;/<span class="title">beans</span>&gt;</span>
-</code></pre><h4 id="2、在JavaConfig中">2、在JavaConfig中</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.config</span>;
+&lt;/beans&gt;
+</code></pre><h4 id="2、在JavaConfig中"><a href="#2、在JavaConfig中" class="headerlink" title="2、在JavaConfig中"></a>2、在JavaConfig中</h4><pre><code>package com.mkyong.config;
 
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Configuration</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.context</span><span class="class">.annotation</span><span class="class">.Import</span>;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
-<span class="at_rule">@<span class="keyword">Configuration</span>
-@<span class="function">Import</span>(</span>{ <span class="tag">CustomerConfig</span><span class="class">.class</span>, <span class="tag">SchedulerConfig</span><span class="class">.class</span> })
-<span class="tag">public</span> <span class="tag">class</span> <span class="tag">AppConfig</span> <span class="rules">{
+@Configuration
+@Import({ CustomerConfig.class, SchedulerConfig.class })
+public class AppConfig {
 
-}</span>
+}
 </code></pre></span>
       
     </div>
@@ -438,21 +439,21 @@ public class AppConfig </span>{
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -487,7 +488,7 @@ public class AppConfig </span>{
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Spring_Bean"><span class="nav-number">1.</span> <span class="nav-text">一、Spring Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Spring配置"><span class="nav-number">2.</span> <span class="nav-text">二、Spring配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行，在App-java中"><span class="nav-number">3.</span> <span class="nav-text">三、运行，在App.java中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、结果"><span class="nav-number">4.</span> <span class="nav-text">四、结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、目录结构"><span class="nav-number">5.</span> <span class="nav-text">五、目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、补充@Import"><span class="nav-number">6.</span> <span class="nav-text">六、补充@Import</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在xml中"><span class="nav-number">6.1.</span> <span class="nav-text">1、在xml中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、在JavaConfig中"><span class="nav-number">6.2.</span> <span class="nav-text">2、在JavaConfig中</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Spring-Bean"><span class="nav-number">1.</span> <span class="nav-text">一、Spring Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Spring配置"><span class="nav-number">2.</span> <span class="nav-text">二、Spring配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行，在App-java中"><span class="nav-number">3.</span> <span class="nav-text">三、运行，在App.java中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、结果"><span class="nav-number">4.</span> <span class="nav-text">四、结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、目录结构"><span class="nav-number">5.</span> <span class="nav-text">五、目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、补充-Import"><span class="nav-number">6.</span> <span class="nav-text">六、补充@Import</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在xml中"><span class="nav-number">6.1.</span> <span class="nav-text">1、在xml中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、在JavaConfig中"><span class="nav-number">6.2.</span> <span class="nav-text">2、在JavaConfig中</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

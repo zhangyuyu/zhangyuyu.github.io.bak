@@ -176,6 +176,475 @@
           
           
             
+              <a class="post-title-link" href="/2016/11/12/函数式编程初探2/" itemprop="url">
+                函数式编程初探（二）
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2016-11-12T19:35:10+08:00" content="2016-11-12">
+            2016-11-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                  <span itemprop="name">函数式编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/12/函数式编程初探2/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探2/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探（一）" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
+<h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
+<p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
+<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def <span class="keyword">volume</span><span class="bash"> = &#123;h, w, l -&gt; h * w * l&#125;</span></div><div class="line">def area = <span class="keyword">volume</span>.<span class="bash">curry(1)</span></div><div class="line">def lengthPA = <span class="keyword">volume</span>.<span class="bash">curry(1, 1)         // &lt;1&gt;</span></div><div class="line">def lengthC = <span class="keyword">volume</span>.<span class="bash">curry(1).curry(1)    // &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
+<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/currying.groovy" target="_blank" rel="external">github</a><br>柯里化常见的应用场景：函数工厂、模板方法模式、隐藏参数。</p>
+<h3 id="二、缓存"><a href="#二、缓存" class="headerlink" title="二、缓存"></a>二、缓存</h3><p>缓存是很常见的一种需求（同时也是制造隐晦错误的源头）。缓存有两种实现方式：一种是手工进行状态管理，另一种是采用记忆机制。</p>
+<h4 id="手工进行状态管理"><a href="#手工进行状态管理" class="headerlink" title="手工进行状态管理"></a>手工进行状态管理</h4><p>在代码里面增加一个filed，每次计算之前之前先去检查是否存在于缓存中。但是当我们将缓存的取值范围增大时，可能报出OutOfMemoryError的错误。</p>
+<p>缓存可以提高性能，但是缓存有代价：它提高了代码的非本质复杂性和维护负担。同时，编写缓存的代码还要兼顾执行的环境（比如缓存范围）。<br>代码示例参考下文<a href="#完美数的手工缓存实现">完美数的手工缓存实现</a></p>
+<h4 id="记忆机制"><a href="#记忆机制" class="headerlink" title="记忆机制"></a>记忆机制</h4><p>Groovy语言记忆函数的办法是，先将要记忆的函数定义成闭包，然后对该闭包执行memoize()方法来获得一个新函数，以后我们调用这个新函数的时候，其结果就会被缓存起来。<br>请保证所有被记忆的函数：</p>
+<ul>
+<li>没有副作用</li>
+<li>不依赖任何外部信息<br>代码示例参考下文<a href="#完美数的记忆实现">完美数的记忆实现</a></li>
+</ul>
+<h3 id="三、缓求值"><a href="#三、缓求值" class="headerlink" title="三、缓求值"></a>三、缓求值</h3><p>缓求值指尽可能地推迟求解表达式。缓求值的集合不会预先算好所有的元素，而是在用到的时才落实下来。这样做有几个好处：</p>
+<ul>
+<li>昂贵的运算只有到了绝对必要的时候才执行</li>
+<li>我们可以建立无限大的集合，只要一直接到请求，就一直送出元素</li>
+<li>按缓求值的方式来使用映射、筛选等函数式概念，可以产生更高效的代码。</li>
+</ul>
+<p>例如：<code>print length([2+1, 3*2, 1/0, 5-4])</code><br>对于严格求值的编程语言，执行（甚至编译）时，会发生<code>被零除</code>的异常；<br>对于非严格（也叫缓求值）的里，则会得出<code>4</code>的结果。</p>
+<p>缓求值在Groovy中的应用：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def prepend(val, closure) &#123; new LazyList(val, closure) &#125;</div><div class="line">def integers(n) &#123; prepend(n, &#123; integers(n + <span class="number">1</span>) &#125;) &#125;</div><div class="line"></div><div class="line">@Test</div><div class="line">public void lazy_list_acts_like_a_list() &#123;</div><div class="line">    def naturalNumbers = integers(<span class="number">1</span>)</div><div class="line">    assertEquals('<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>', naturalNumbers.getHead(<span class="number">10</span>).join(' '))</div><div class="line">    def evenNumbers = naturalNumbers.filter &#123; it % <span class="number">2</span> == <span class="number">0</span> &#125;</div><div class="line">    assertEquals('<span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span> <span class="number">20</span>', evenNumbers.getHead(<span class="number">10</span>).join(' '))</div></pre></td></tr></table></figure></p>
+<h3 id="四、函数式的数据结构"><a href="#四、函数式的数据结构" class="headerlink" title="四、函数式的数据结构"></a>四、函数式的数据结构</h3><p>函数式语言里经常遇到返回两种截然不同的值的需求，它们用来建模这种行为的常用数据结构是Either。<br>使用Either表示两种结果的返回值，使用Option来表示有为空返回值的类型。Option类可近似看作为Either的子类。</p>
+<p>用Java的泛型来自己实现Either类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Either</span>&lt;<span class="title">A</span>,<span class="title">B</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> A left = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">private</span> B right = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Either</span><span class="params">(A a,B b)</span> </span>&#123;</div><div class="line">        left = a;</div><div class="line">        right = b;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">left</span><span class="params">(A a)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(a,<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">left</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLeft</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> B <span class="title">right</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">right</span><span class="params">(B b)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(<span class="keyword">null</span>,b);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fold</span><span class="params">(F&lt;A&gt; leftOption, F&lt;B&gt; rightOption)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(right == <span class="keyword">null</span>)</div><div class="line">            leftOption.f(left);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            rightOption.f(right);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="external">github</a><br>使用：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="built_in">String</span> s) &#123;</div><div class="line">    <span class="keyword">if</span> (不满足)</div><div class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> Exception(<span class="string">"Invalid Number"</span>));</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        int <span class="built_in">number</span> = <span class="keyword">new</span> RomanNumeral(s).toInt();</div><div class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> RomanNumeral(<span class="built_in">number</span> &gt;= MAX ? MAX : <span class="built_in">number</span>).toInt());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="五、完美数的示例"><a href="#五、完美数的示例" class="headerlink" title="五、完美数的示例"></a>五、完美数的示例</h3><p>案例：</p>
+<blockquote>
+<p>自然数分类规则：<br>完美数： 真约数之和 = 数本身<br>过剩数： 真约数之和 &gt; 数本身<br>不足数： 真约数之和 &lt; 数本身<br>真约数和：除了数本身之外，其余正约数的和。</p>
+</blockquote>
+<p>代码比较长，可以直接查看《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/" target="_blank" rel="external">github</a>总结如下：<br>1.完美数的命令式解法<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java</a><br>2.稍向函数式靠拢的完美数分类实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java</a><br>3.完美数分类的Java8实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java</a><br><span id="完美数的手工缓存实现">4.完美数的手工缓存实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy</a><br><span id="完美数的记忆实现">5.完美数的记忆实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/11/12/函数式编程初探1/" itemprop="url">
+                函数式编程初探（一）
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2016-11-12T17:35:13+08:00" content="2016-11-12">
+            2016-11-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                  <span itemprop="name">函数式编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/12/函数式编程初探1/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探1/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
+<h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
+<h3 id="三、背景"><a href="#三、背景" class="headerlink" title="三、背景"></a>三、背景</h3><p>函数式编程（Functional Programming）其实相对于计算机的历史而言是一个非常古老的概念，甚至早于第一台计算机的诞生。函数式编程的基础模型来源于 λ 演算，而 λ 演算并非设计于在计算机上执行，它是由 Alonzo Church 和 Stephen Cole Kleene 在 20 世纪三十年代引入的一套用于研究函数定义、函数应用和递归的形式系统。</p>
+<h3 id="四、为什么？"><a href="#四、为什么？" class="headerlink" title="四、为什么？"></a>四、为什么？</h3><p>在《函数式编程思维》这本书中，多处指出<code>函数式编程思维</code>的好处之一,是能够将低层次细节的控制权移交给运行时,从而消弭了一大批注定会发生的程序错误。这使得程序员得以在更高的抽象层次上工作，同时运行时也有了执行复杂优化的自由空间。</p>
+<p>在阮一峰的<a href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html" target="_blank" rel="external">《函数式编程初探》</a>一文中，<br>函数式编程的五大特点如下：</p>
+<ol>
+<li>函数是”第一等公民”</li>
+<li>只用”表达式”，不用”语句”</li>
+<li>没有”副作用”</li>
+<li>不修改状态</li>
+<li>引用透明<br>函数的运行不依赖于外部变量或”状态”，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。</li>
+</ol>
+<p>函数式编程的好处如下：</p>
+<ol>
+<li>代码简洁，开发快速</li>
+<li>接近自然语言，易于理解</li>
+<li>更方便的代码管理(每一个函数都可以被看做独立单元，很有利于进行单元测试以及模块化组合)</li>
+<li>易于”并发编程”</li>
+<li>代码的热升级（函数式编程没有副作用，只要保证接口不变，内部实现是外部无关的）</li>
+</ol>
+<h3 id="五、转变思维"><a href="#五、转变思维" class="headerlink" title="五、转变思维"></a>五、转变思维</h3><p>先大致说明一下函数式编程与命令式编程的区别吧！</p>
+<p>命令式编程：按照“程序是一系列改变状态的命令”来建模的一种编程风格。<br>函数式编程将程序描述为表达式和变换，以数学方程的形式建立模型，并且尽量避免可变的状态。</p>
+<p>《Working with Lagacy Code》的作者Michael Feathers的用以下一句话说明了函数式抽象和面向对象抽象的关键区别：</p>
+<blockquote>
+<p>面向对象编程通过封装不确定因素来使代码能被人理解；函数式编程通过尽量减少不确定因素来使代码能被人理解。——Michael Feathers</p>
+</blockquote>
+<p>在面向对象的命令式编程语言里面，重用的单元是类和类之间沟通用的消息。所以OOP的世界提倡开发人员针对具体问题<strong>建立专门的数据结构</strong>，相关的专门操作以“方法”的形式附加在数据结构上。<br>函数式编程语言重用的思路很不一样，它提倡在<strong>有限的几种关键数据结构</strong>（如list、set、map）上运用针对这些数据结构高度优化过的操作，以此构成基本运转结构。</p>
+<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>程序员往往都是讨厌看文档而偏爱看代码的，上述那么多文字，你不一定看的下去，还是首先来一个hello world吧。<br>对于计算表达式（1+2）* 3，</p>
+<p>传统的编程方式是：<br>int a = 1 + 2<br>int b = a * 3</p>
+<p>而对于函数式编程方式是：<br>int result = multiply(add(1,2), 3)<br>这里函数作为参数进行传递。</p>
+<h4 id="函数式编程的常见函数"><a href="#函数式编程的常见函数" class="headerlink" title="函数式编程的常见函数"></a>函数式编程的常见函数</h4><p>从一个例子说起，假设我们有一个名字列表，其中一些条目由单个字符构成。现在的任务是：</p>
+<ul>
+<li>除去单字符条目</li>
+<li>放在一个逗号分隔的字符串中进行返回</li>
+<li>每个名字的首字母都是大写<br>代码可参考《函数式编程思维》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/trans/TheCompanyProcess.java" target="_blank" rel="external">github</a><br>传统的java实现<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> cleanNames(List&lt;<span class="keyword">String</span>&gt; listOfNames) &#123;</div><div class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder();</div><div class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; listOfNames.<span class="built_in">size</span>(); i++) &#123;</div><div class="line">        <span class="keyword">if</span> (listOfNames.<span class="built_in">get</span>(i).length() &gt; <span class="number">1</span>) &#123;</div><div class="line">            result.<span class="built_in">append</span>(capitalizeString(listOfNames.<span class="built_in">get</span>(i))).<span class="built_in">append</span>(<span class="string">","</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>).toString();</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> capitalizeString(<span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + s.substring(<span class="number">1</span>, s.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>命令式编程鼓励程序员将操作安排在循环内部执行，本例中的三个操作filter、transform、convert都必须依赖于相同的低层次机制。</p>
+<p>Java8的实现：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="built_in">String</span> cleanNames(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names) &#123;</div><div class="line">    <span class="keyword">if</span> (names == <span class="built_in">null</span>) <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">    <span class="keyword">return</span> names</div><div class="line">            .stream()</div><div class="line">            .filter(name -&gt; name.length() &gt; <span class="number">1</span>)</div><div class="line">            .<span class="built_in">map</span>(name -&gt; capitalize(name))</div><div class="line">            .collect(Collectors.joining(<span class="string">","</span>));</div><div class="line">&#125;</div><div class="line"><span class="keyword">private</span> <span class="built_in">String</span> capitalize(<span class="built_in">String</span> e) &#123;</div><div class="line">    <span class="keyword">return</span> e.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + e.substring(<span class="number">1</span>, e.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>两者的对比，可以发现后者这种更高层次的抽象思考有一些好处：</p>
+<ul>
+<li>促使我们换一种角度去归类问题，看到问题的共性。</li>
+<li>让运行时有更大的余地去做只能的优化（有时候调整作业的先后顺序会更有效率）。</li>
+<li>让埋头实现细节的开发者看到原本视野之外的解决方案（比如，如果改用多线程，传统的方式可能需要自己手动穿插一些线程相关的代码）</li>
+</ul>
+<p>可以从上述例子中，看到三个函数filter、map、fold/reduce的影子。</p>
+<ol>
+<li><p>filter——筛选<br>根据用户定义的条件来筛选列表中的条目，并由此产生一个较小的新列表。</p>
+</li>
+<li><p>map——映射<br>对原集合的每一个元素执行给定的函数，从而变换成一个新的集合。</p>
+</li>
+<li><p>fold/reduce——折叠/化约<br>用一个累积量来“收集”集合元素。</p>
+</li>
+</ol>
+<p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
+<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探（二）" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/11/09/RabbitMQ初探/" itemprop="url">
+                RabbitMQ初探
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2016-11-09T22:19:46+08:00" content="2016-11-09">
+            2016-11-09
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Message/" itemprop="url" rel="index">
+                  <span itemprop="name">Message</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/09/RabbitMQ初探/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/09/RabbitMQ初探/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在准备<code>基于RabbitMQ topic的消息发送与接收</code>的时候，顺便开始了这篇RabbitMQ初探。<br>安装过程这里就不再赘述，本博客主要记录一些初探过程，同时从what、why、how方面开始学习。</p>
+<h3 id="What"><a href="#What" class="headerlink" title="What"></a>What</h3><h3 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h3><h3 id="How"><a href="#How" class="headerlink" title="How"></a>How</h3></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2016/11/02/基于RabbitMQ topic的消息发送与接收/" itemprop="url">
+                基于RabbitMQ topic的消息发送与接收
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2016-11-02T22:19:46+08:00" content="2016-11-02">
+            2016-11-02
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Message/" itemprop="url" rel="index">
+                  <span itemprop="name">Message</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/02/基于RabbitMQ topic的消息发送与接收/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/02/基于RabbitMQ topic的消息发送与接收/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="项目结构："><a href="#项目结构：" class="headerlink" title="项目结构："></a>项目结构：</h4><img src="/imgs/rabbit-1.png" width="400" height="250">
+<p>A是消息的生产者，B、C则是消息的consumer。A会通过queue（不关心其产品类型）发送消息给B、C。</p>
+<h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>近期项目上，新增的D应用程序需要监听原有A应用程序的消息。按照以往的做法，我需要做如下两件事：</p>
+<ul>
+<li>向某个团队，给每该D应用的每个region（dev、intg、sys、prod等），申请新的queue A.D。（这中间可能需要两个星期时间）</li>
+<li>改变应用A的代码，让其每次发消息时候还需要再给D发消息。</li>
+<li>给应用A准备一次deploymen plan，并做相应的回归测试。</li>
+<li>改变应用D的代码，让其从新建的queue里面接收处理消息。</li>
+</ul>
+<h4 id="痛点"><a href="#痛点" class="headerlink" title="痛点"></a>痛点</h4><p>这一做法，主要有两大痛点：</p>
+<ul>
+<li>每增加一个新应用，都需要申请queue</li>
+<li>每增加一个新应用，都需要改动应用A的代码，还需要单独安排一次上线。生产者和消费者之间的耦合非常大。</li>
+</ul>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>因此，在兼容以前的基础上，我试图用下面的结构图解决上述痛点：<br><img src="/imgs/rabbit-2.png" width="400" height="250"><br>保持原有应用程序B和C的接收消息方式不变，新的应用程序开始改用topic的方法，这样可以兼容既有的应用程序，也可以将新应用程序的生产者和消费者解耦。但是还是存在一些问题：</p>
+<ul>
+<li>A的消息那么多，全部放在一个topic可能负载过大，那么应该采取分布式的方法？</li>
+<li>如果消费者之一中途down了一段时间，该消息的等待时间又如何处理？是一直停留在topic中进行等待吗？</li>
+</ul>
+<p>最后，考虑到上述因素以及实际项目的其他因素，我将结构变成了如下：<br><img src="/imgs/rabbit-3.png" width="400" height="250"><br>虽然把最开始的痛点1又引入了，但是解耦的好处还是非常有意义的。</p>
+<p>本文旨在spike上述想法，证明该想法的可能性。</p>
+<h3 id="搭建外部环境"><a href="#搭建外部环境" class="headerlink" title="搭建外部环境"></a>搭建外部环境</h3><h4 id="Vagrant-VirtualBox-Docker"><a href="#Vagrant-VirtualBox-Docker" class="headerlink" title="Vagrant + VirtualBox + Docker"></a>Vagrant + VirtualBox + Docker</h4><p>由于不想破坏自己本地的环境，选择用vagrant + VirtualBox搭建一个虚拟机，然后在虚拟机安装docker。利用docker快速构建一个有rabbitmq的环境。</p>
+<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><p>笔者的环境如下：</p>
+<ul>
+<li>vagrant box：yungsang/coreos</li>
+<li>安装docker-compose：<a href="http://www.ericluwj.com/2015/10/20/installing-docker-compose-in-coreos.html" target="_blank" rel="external">http://www.ericluwj.com/2015/10/20/installing-docker-compose-in-coreos.html</a></li>
+<li>rabbitmq容器：rabbitmq:management</li>
+</ul>
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><p>总体说来，所有的命令如下：<br>1.创建虚拟机</p>
+<pre><code>$ mkdir rabbit
+$ cd rabbit
+$ vagrant box list
+$ vagrant init yungsang/coreos
+</code></pre><p>然后注意取消注释<code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;</code></p>
+<p>2.登陆到虚拟机</p>
+<pre><code>vagrant ssh
+</code></pre><p>3.安装docker-compose过程</p>
+<pre><code>core@localhost ~ $ sudo su -
+localhost ~ # mkdir /opt/bin
+localhost ~ # curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` &gt; /opt/bin/docker-compose
+</code></pre><p>4.编写<code>docker-compose.yml</code>文件</p>
+<pre><code>rabbitmq:
+  image: rabbitmq:management
+  ports:
+    - &quot;5672:5672&quot;
+    - &quot;15672:15672&quot;
+</code></pre><ol>
+<li>创建rabbitmq容器<br>运行<code>docker-compose up</code></li>
+</ol>
+<p>6.外部访问rabbitmq的管理页面<br>URL：<code>http://192.168.33.10:15672/#/</code><br>用户名：<code>guest</code><br>密码：<code>guest</code></p>
+<p><a href="https://my.oschina.net/indestiny/blog/192313" target="_blank" rel="external">https://my.oschina.net/indestiny/blog/192313</a></p>
+<h4 id="利用spring-boot编写producer"><a href="#利用spring-boot编写producer" class="headerlink" title="利用spring boot编写producer"></a>利用spring boot编写producer</h4><h4 id="利用spring-boot编写consumer"><a href="#利用spring-boot编写consumer" class="headerlink" title="利用spring boot编写consumer"></a>利用spring boot编写consumer</h4><h4 id="整体联通调试"><a href="#整体联通调试" class="headerlink" title="整体联通调试"></a>整体联通调试</h4></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/11/01/RxJava/" itemprop="url">
                 RxJava
               </a>
@@ -229,105 +698,105 @@
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言">一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
-<h3 id="二、响应式编程">二、响应式编程</h3><p>响应式编程是一种面向数据流和变化传播的编程范式，数据更新是相关联的。<br>在交互式编程中，A = B + C这样的表达式意味着将B与C之和赋给A，而此后B与C的改变都与A无关。<br>而在响应式编程中，A会去“响应”B或C的变化，即一旦B或C改变之后，A的值也会随之变化。</p>
-<h3 id="三、What_is_RxJava?">三、What is RxJava?</h3><p>我的理解是，RxJava本质上是一个异步操作库，是一个能让你用极其简洁的逻辑去处理繁琐复杂任务的异步事件库。（其实初学者把握两点就好了：观察者模式和异步）</p>
-<h3 id="四、RxJava的来历">四、RxJava的来历</h3><p>Rx的全称是Reactive Extensions。直译过来就是响应式扩展。<br>Rx基于观察者模式，是一种编程模型。其目标是提供一致的编程接口，帮助开发者更方便的处理异步数据流。<br>Rx最初是LINQ的一个扩展，由微软的架构师Erik Meijer领导的团队开发，在2012年11月开源。<br>Rx的大部分语言库由ReactiveX这个组织负责维护，比较流行的有RxJava/RxJS/Rx.NET，社区网站是 reactivex.io。<br>RxJava是 ReactiveX 在JVM上的一个实现。</p>
-<h3 id="五、Why_RxJava?">五、Why RxJava?</h3><ul>
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
+<h3 id="二、响应式编程"><a href="#二、响应式编程" class="headerlink" title="二、响应式编程"></a>二、响应式编程</h3><p>响应式编程是一种面向数据流和变化传播的编程范式，数据更新是相关联的。<br>在交互式编程中，A = B + C这样的表达式意味着将B与C之和赋给A，而此后B与C的改变都与A无关。<br>而在响应式编程中，A会去“响应”B或C的变化，即一旦B或C改变之后，A的值也会随之变化。</p>
+<h3 id="三、定义"><a href="#三、定义" class="headerlink" title="三、定义"></a>三、定义</h3><p>我的理解是，RxJava本质上是一个异步操作库，是一个能让你用极其简洁的逻辑去处理繁琐复杂任务的异步事件库。（其实初学者把握两点就好了：观察者模式和异步）</p>
+<h3 id="四、背景"><a href="#四、背景" class="headerlink" title="四、背景"></a>四、背景</h3><p>Rx的全称是Reactive Extensions。直译过来就是响应式扩展。<br>Rx基于观察者模式，是一种编程模型。其目标是提供一致的编程接口，帮助开发者更方便的处理异步数据流。<br>Rx最初是LINQ的一个扩展，由微软的架构师Erik Meijer领导的团队开发，在2012年11月开源。<br>Rx的大部分语言库由ReactiveX这个组织负责维护，比较流行的有RxJava/RxJS/Rx.NET，社区网站是 reactivex.io。<br>RxJava是 ReactiveX 在JVM上的一个实现。</p>
+<h3 id="五、为什么"><a href="#五、为什么" class="headerlink" title="五、为什么?"></a>五、为什么?</h3><ul>
 <li>函数式风格</li>
 <li>简化代码</li>
 <li>异步错误处理</li>
 <li>轻松使用并发</li>
 </ul>
-<h3 id="六、基本概念及使用介绍">六、基本概念及使用介绍</h3><h4 id="Hello_World">Hello World</h4><p>说了很多，其实对RxJava是什么，其实还不是很明确，我们先来一个Hello world。</p>
+<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>说了很多，其实对RxJava是什么，其实还不是很明确，我们先来一个Hello world。</p>
 <pre><code>Observable
-    .create(<span class="keyword">new</span> OnSubscribe&lt;<span class="keyword">String</span>&gt;() {
+    .create(new OnSubscribe&lt;String&gt;() {
         @Override
-        <span class="keyword">public</span> <span class="keyword">void</span> call(Subscriber&lt;? <span class="keyword">super</span> <span class="keyword">String</span>&gt; subscriber) {
-            subscriber.onNext(<span class="string">"Hello World"</span>);
+        public void call(Subscriber&lt;? super String&gt; subscriber) {
+            subscriber.onNext(&quot;Hello World&quot;);
         }
     })
-    .subscribe(<span class="keyword">new</span> Subscriber&lt;<span class="keyword">String</span>&gt;() {
+    .subscribe(new Subscriber&lt;String&gt;() {
         @Override
-        <span class="keyword">public</span> <span class="keyword">void</span> onNext(<span class="keyword">String</span> s) {
-            System.out.<span class="built_in">println</span>(s);
+        public void onNext(String s) {
+            System.out.println(s);
         }
     });
 </code></pre><p>简化下来就是：</p>
-<pre><code>Observable.create<span class="params">(subscriber -&gt; {
-    subscriber.onNext<span class="params">(<span class="string">"Hello World!"</span>)</span>;
-})</span>.subscribe<span class="params">(System.out::println)</span>;
+<pre><code>Observable.create(subscriber -&gt; {
+    subscriber.onNext(&quot;Hello World!&quot;);
+}).subscribe(System.out::println);
 </code></pre><p>执行的过程就是创建、监听、订阅。</p>
-<h4 id="相关概念">相关概念</h4><ul>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
 <li>Observable：被观察者</li>
 <li>Observer: 观察者</li>
 <li>Subscriber：观察者，implements Observer。 </li>
 <li>OnSubscribe：一个接口类，是连接被观察者和观察者的桥梁，另外要说明的是onSubscribe是Observable的一个局部变量。</li>
 </ul>
-<h4 id="使用">使用</h4><h5 id="第1步：创建观察者Observer">第1步：创建观察者Observer</h5><pre><code>Observer&lt;Object&gt; observer = <span class="keyword">new</span> Observer&lt;Object&gt;() {
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><h5 id="第1步：创建观察者Observer"><a href="#第1步：创建观察者Observer" class="headerlink" title="第1步：创建观察者Observer"></a>第1步：创建观察者Observer</h5><pre><code>Observer&lt;Object&gt; observer = new Observer&lt;Object&gt;() {
 
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>{
-
-    }
-
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>{
+    @Override
+    public void onCompleted() {
 
     }
 
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onNext</span><span class="params">(Object s)</span> </span>{
+    @Override
+    public void onError(Throwable e) {
+
+    }
+
+    @Override
+    public void onNext(Object s) {
 
     }
 };
-</code></pre><h5 id="第2步：创建被观察者Observable">第2步：创建被观察者Observable</h5><p>Observable.create()方法可以创建一个Observable，<br>使用create()创建Observable需要一个OnSubscribe对象，这个对象继承Action1。<br>当观察者订阅我们的Observable时，它作为一个参数传入并执行call()函数。</p>
-<pre><code>Observable&lt;<span class="built_in">Object</span>&gt; observable = Observable.create(<span class="keyword">new</span> Observable.OnSubscribe&lt;<span class="built_in">Object</span>&gt;() {         
-    <span class="annotation">@Override</span>
-    public <span class="keyword">void</span> call(Subscriber&lt;? <span class="keyword">super</span> <span class="built_in">Object</span>&gt; subscriber) {
+</code></pre><h5 id="第2步：创建被观察者Observable"><a href="#第2步：创建被观察者Observable" class="headerlink" title="第2步：创建被观察者Observable"></a>第2步：创建被观察者Observable</h5><p>Observable.create()方法可以创建一个Observable，<br>使用create()创建Observable需要一个OnSubscribe对象，这个对象继承Action1。<br>当观察者订阅我们的Observable时，它作为一个参数传入并执行call()函数。</p>
+<pre><code>Observable&lt;Object&gt; observable = Observable.create(new Observable.OnSubscribe&lt;Object&gt;() {         
+    @Override
+    public void call(Subscriber&lt;? super Object&gt; subscriber) {
 
     }
 });
 </code></pre><p>除了create()，just()和from()同样可以创建Observable。看看下面两个例子：</p>
 <p>just(T…)将传入的参数依次发送</p>
-<pre><code>Observable observable = Observable.just(<span class="string">"One"</span>, <span class="string">"Two"</span>, <span class="string">"Three"</span>);
+<pre><code>Observable observable = Observable.just(&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;);
 //上面这行代码会依次调用
-//<span class="keyword">on</span>Next(<span class="string">"One"</span>);
-//<span class="keyword">on</span>Next(<span class="string">"Two"</span>);
-//<span class="keyword">on</span>Next(<span class="string">"Three"</span>);
-//<span class="keyword">on</span>Completed();
+//onNext(&quot;One&quot;);
+//onNext(&quot;Two&quot;);
+//onNext(&quot;Three&quot;);
+//onCompleted();
 </code></pre><p>from(T[])/from(Iterable&lt;? extends T&gt;)将传入的数组或者Iterable拆分成Java对象依次发送</p>
-<pre><code>String[] parameters = {<span class="string">"One"</span>, <span class="string">"Two"</span>, <span class="string">"Three"</span>};
-Observable observable = Observable.<span class="keyword">from</span>(parameters);
+<pre><code>String[] parameters = {&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;};
+Observable observable = Observable.from(parameters);
 //上面这行代码会依次调用
-//<span class="keyword">on</span>Next(<span class="string">"One"</span>);
-//<span class="keyword">on</span>Next(<span class="string">"Two"</span>);
-//<span class="keyword">on</span>Next(<span class="string">"Three"</span>);
-//<span class="keyword">on</span>Completed();
-</code></pre><h5 id="第3步：被观察者Observable订阅观察者Observer">第3步：被观察者Observable订阅观察者Observer</h5><p>你没看错，不同于普通的观察者模式，这里是被观察者订阅观察者：</p>
-<pre><code><span class="tag">observable</span><span class="class">.subscribe</span>(<span class="tag">observer</span>);
+//onNext(&quot;One&quot;);
+//onNext(&quot;Two&quot;);
+//onNext(&quot;Three&quot;);
+//onCompleted();
+</code></pre><h5 id="第3步：被观察者Observable订阅观察者Observer"><a href="#第3步：被观察者Observable订阅观察者Observer" class="headerlink" title="第3步：被观察者Observable订阅观察者Observer"></a>第3步：被观察者Observable订阅观察者Observer</h5><p>你没看错，不同于普通的观察者模式，这里是被观察者订阅观察者：</p>
+<pre><code>observable.subscribe(observer);
 </code></pre><p>连起来就是：</p>
-<pre><code>Observable.create(<span class="keyword">new</span> OnSubscribe&lt;String&gt;() {
-        <span class="annotation">@Override</span>
-        <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">call</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> String&gt; subscriber)</span> </span>{
-            subscriber.onNext(<span class="string">"Hello World!"</span>);
+<pre><code>Observable.create(new OnSubscribe&lt;String&gt;() {
+        @Override
+        public void call(Subscriber&lt;? super String&gt; subscriber) {
+            subscriber.onNext(&quot;Hello World!&quot;);
             subscriber.onCompleted();
         }
 
-    }).subscribe(<span class="keyword">new</span> Subscriber&lt;String&gt;() {
+    }).subscribe(new Subscriber&lt;String&gt;() {
 
-        <span class="annotation">@Override</span>
-        <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>{
-            System.out.println(<span class="string">"Done"</span>);
+        @Override
+        public void onCompleted() {
+            System.out.println(&quot;Done&quot;);
         }
 
-        <span class="annotation">@Override</span>
-        <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>{
+        @Override
+        public void onError(Throwable e) {
             e.printStackTrace();
         }
 
-        <span class="annotation">@Override</span>
-        <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onNext</span><span class="params">(String t)</span> </span>{
+        @Override
+        public void onNext(String t) {
             System.out.println(t);
         }
 
@@ -341,7 +810,7 @@ Observable observable = Observable.<span class="keyword">from</span>(parameters)
 <li>然后就调用上述代码中的<code>subscriber.onNext(&quot;Hello World!&quot;);</code></li>
 <li>也就是真实上述代码中<code>Override</code>的<code>onNext()</code>方法了。<br>所以本质上来讲，还是被观察者执行订阅操作的。</li>
 </ul>
-<h3 id="七、操作符">七、操作符</h3><p>有了对上一步调用的理解，再去看源代码中操作符的实质，就很简单了。</p>
+<h3 id="七、操作符"><a href="#七、操作符" class="headerlink" title="七、操作符"></a>七、操作符</h3><p>有了对上一步调用的理解，再去看源代码中操作符的实质，就很简单了。</p>
 <p>RxJava的操作符分为如下几类：</p>
 <ul>
 <li>转换类操作符<br>map、flatMap、concatMap等等</li>
@@ -434,7 +903,7 @@ Observable observable = Observable.<span class="keyword">from</span>(parameters)
 
       
         
-          <span itemprop="articleBody"><h3 id="术语">术语</h3><ul>
+          <span itemprop="articleBody"><h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
 <li><a href="#agent">Agent</a></li>
 <li><a href="#client">Client</a></li>
 <li><a href="#server">Server</a></li>
@@ -443,15 +912,15 @@ Observable observable = Observable.<span class="keyword">from</span>(parameters)
 <li><a href="#consensus">Consensus</a></li>
 <li><a href="#rpc">RPC</a></li>
 </ul>
-<h4 id="Agent"><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
-<h4 id="Client"><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
-<h4 id="Server"><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
-<h4 id="DataCenter"><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
-<h4 id="Gossip"><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
-<h4 id="Consensus"><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a></p>
-<h4 id="RPC"><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="external">Remote Procedure Call</a></p>
+<h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
+<h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
+<h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
+<h4 id="DataCenter"><a href="#DataCenter" class="headerlink" title="DataCenter"></a><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
+<h4 id="Gossip"><a href="#Gossip" class="headerlink" title="Gossip"></a><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
+<h4 id="Consensus"><a href="#Consensus" class="headerlink" title="Consensus"></a><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a></p>
+<h4 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="external">Remote Procedure Call</a></p>
 <p>　　下图为Consul的架构图：<br><img src="/imgs/consul-arch.jpg" width="400" height="250"></p>
-<h3 id="使用Consul发现服务的三个组件">使用Consul发现服务的三个组件</h3><ol>
+<h3 id="使用Consul发现服务的三个组件"><a href="#使用Consul发现服务的三个组件" class="headerlink" title="使用Consul发现服务的三个组件"></a>使用Consul发现服务的三个组件</h3><ol>
 <li><p>Consul 存储服务信息<br>　　tool to store information about services</p>
 </li>
 <li><p>Registrator 注册Docker服务<br>　　tool to register Docker servicecs</p>
@@ -553,22 +1022,22 @@ Observable observable = Observable.<span class="keyword">from</span>(parameters)
 <li>服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。</li>
 </ul>
 <p>　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？所有这些问题都与注册和发现阶段紧密关联。现在，我们限定只在服务发现的范围里（常见的名字，围绕上述步骤）以及用于服务发现任务的工具，它们中的大多数采用了高可用的分布式键/值存储。</p>
-<h3 id="服务发现工具">服务发现工具</h3><p>　　服务发现工具的主要目标是用来服务查找和相互对话，为此该工具需要知道每个服务，这不是一个新概念，在Docker之前就已经存在很多类似的工具了，然而，容器带给了这些工具一个全新水平的需求。<br>　　服务发现背后的基本思想是对于服务的每一个新实例（或应用程序），能够识别当前环境和存储相关信息。存储的注册表信息本身通常采用键/值对的格式，由于服务发现经常用于分布式系统，所以要求这些信息可伸缩、支持容错和分布式集群中的所有节点。这种存储的主要用途是给所有感兴趣的各方提供最起码诸如服务IP地址和端口这样的信息，用于它们之间的相互通讯，这些数据还经常扩展到其它类型的信息服务发现工具倾向于提供某种形式的API，用于服务自身的注册以及服务信息的查找。<br>　　比方说我们有两个服务，一个是提供方，另一个是第一个服务的消费者，一旦部署了服务提供方，就需要在服务发现注册表中存储其信息。接着，当消费者试图访问服务提供者时，它首先查询服务注册表，使用获取到的IP地址和端口来调用服务提供者。为了与注册表中的服务提供方的具体实现解耦，我们常常采用某种代理服务。这样消费者总是向固定IP地址的代理请求信息，代理再依次使用服务发现来查找服务提供方信息并重定向请求，在本文中我们稍后通过反向代理来实现。现在重要的是要理解基于三种角色（服务消费者、提供者和代理）的服务发现流程。<br>　　服务发现工具要查找的是数据，至少我们应该能够找出服务在哪里？服务是否健康和可用？配置是什么样的？既然我们正在多台服务器上构建一个分布式系统，那么该工具需要足够健壮，保证其中一个节点的宕机不会危及数据，同时，每个节点应该有完全相同的数据副本，进一步地，我们希望能够以任何顺序启动服务、杀死服务或者替换服务的新版本，我们还应该能够重新配置服务并且查看到数据相应的变化。</p>
+<h3 id="服务发现工具"><a href="#服务发现工具" class="headerlink" title="服务发现工具"></a>服务发现工具</h3><p>　　服务发现工具的主要目标是用来服务查找和相互对话，为此该工具需要知道每个服务，这不是一个新概念，在Docker之前就已经存在很多类似的工具了，然而，容器带给了这些工具一个全新水平的需求。<br>　　服务发现背后的基本思想是对于服务的每一个新实例（或应用程序），能够识别当前环境和存储相关信息。存储的注册表信息本身通常采用键/值对的格式，由于服务发现经常用于分布式系统，所以要求这些信息可伸缩、支持容错和分布式集群中的所有节点。这种存储的主要用途是给所有感兴趣的各方提供最起码诸如服务IP地址和端口这样的信息，用于它们之间的相互通讯，这些数据还经常扩展到其它类型的信息服务发现工具倾向于提供某种形式的API，用于服务自身的注册以及服务信息的查找。<br>　　比方说我们有两个服务，一个是提供方，另一个是第一个服务的消费者，一旦部署了服务提供方，就需要在服务发现注册表中存储其信息。接着，当消费者试图访问服务提供者时，它首先查询服务注册表，使用获取到的IP地址和端口来调用服务提供者。为了与注册表中的服务提供方的具体实现解耦，我们常常采用某种代理服务。这样消费者总是向固定IP地址的代理请求信息，代理再依次使用服务发现来查找服务提供方信息并重定向请求，在本文中我们稍后通过反向代理来实现。现在重要的是要理解基于三种角色（服务消费者、提供者和代理）的服务发现流程。<br>　　服务发现工具要查找的是数据，至少我们应该能够找出服务在哪里？服务是否健康和可用？配置是什么样的？既然我们正在多台服务器上构建一个分布式系统，那么该工具需要足够健壮，保证其中一个节点的宕机不会危及数据，同时，每个节点应该有完全相同的数据副本，进一步地，我们希望能够以任何顺序启动服务、杀死服务或者替换服务的新版本，我们还应该能够重新配置服务并且查看到数据相应的变化。</p>
 <p>　　让我们看一下一些常用的选项来完成我们上面设定的目标。
 　　</p>
-<h3 id="手动配置">手动配置</h3><p>　　大多数服务仍然是需要手动管理的，我们预先决定在何处部署服务、如何配置和希望不管什么原因，服务都将继续正常工作，直到天荒地老。这样的目标不是可以轻易达到的。部署第二个服务实例意味着我们需要启动全程的手动处理，我们需要引入一台新的服务器，或者找出哪一台服务器资源利用率较低，然后创建一个新的配置集并启动服务。情况或许会变得越来越复杂，比方说，硬件故障导致的手动管理下的反应时间变得很慢。可见性是另外一个痛点，我们知道什么是静态配置，毕竟是我们预先准备好的，然而，大多数的服务有很多动态生成的信息，这些信息不是轻易可见的，也没有一个单独的地方供我们在需要时参考这些数据。<br>　　反应时间会不可避免的变慢，鉴于存在许多需要手动处理的移动组件，故障恢复和监控也会变得非常难以管理。<br>　　尽管在过去或者当服务/服务器数量很少的时候有借口不做这项工作，随着服务发现工具的出现，这个借口已经不存在了。</p>
-<h3 id="1-_ZooKeeper">1. ZooKeeper</h3><p>　　ZooKeeper是这种类型的项目中历史最悠久的之一，它起源于Hadoop，帮助在Hadoop集群中维护各种组件。它非常成熟、可靠，被许多大公司（YouTube、eBay、雅虎等）使用。其数据存储的格式类似于文件系统，如果运行在一个服务器集群中，Zookeper将跨所有节点共享配置状态，每个集群选举一个领袖，客户端可以连接到任何一台服务器获取数据。<br>　　ZooKeeper的主要优势是其成熟、健壮以及丰富的特性，然而，它也有自己的缺点，其中采用Java开发以及复杂性是罪魁祸首。尽管Java在许多方面非常伟大，然后对于这种类型的工作还是太沉重了，ZooKeeper使用Java以及相当数量的依赖使其对于资源竞争非常饥渴。因为上述的这些问题，ZooKeeper变得非常复杂，维护它需要比我们期望从这种类型的应用程序中获得的收益更多的知识。这部分地是由于丰富的特性反而将其从优势转变为累赘。应用程序的特性功能越多，就会有越大的可能性不需要这些特性，因此，我们最终将会为这些不需要的特性付出复杂度方面的代价。<br>　　ZooKeeper为其他项目相当大的改进铺平了道路，“大数据玩家“在使用它，因为没有更好的选择。今天，ZooKeeper已经老态龙钟了，我们有了更好的选择。</p>
-<h3 id="2-_etcd">2. etcd</h3><p>　　etcd是一个采用HTTP协议的健/值对存储系统，它是一个分布式和功能层次配置系统，可用于构建服务发现系统。其很容易部署、安装和使用，提供了可靠的数据持久化特性。它是安全的并且文档也十分齐全。<br>　　etcd比ZooKeeper是比更好的选择，因为它很简单，然而，它需要搭配一些第三方工具才可以提供服务发现功能。<br><img src="/imgs/etcd.png" width="600" height="300"><br>　　现在，我们有一个地方来存储服务相关信息，我们还需要一个工具可以自动发送信息给etcd。但在这之后，为什么我们还需要手动把数据发送给etcd呢？即使我们希望手动将信息发送给etcd，我们通常情况下也不会知道是什么信息。记住这一点，服务可能会被部署到一台运行最少数量容器的服务器上，并且随机分配一个端口。理想情况下，这个工具应该监视所有节点上的Docker容器，并且每当有新容器运行或者现有的一个容器停止的时候更新etcd，其中的一个可以帮助我们达成目标的工具就是Registrator。</p>
-<h4 id="2-1_Registrator">2.1 Registrator</h4><p>　　Registrator通过检查容器在线或者停止运行状态自动注册和去注册服务，它目前支持etcd、Consul和SkyDNS 2。<br>　　Registrator与etcd是一个简单但是功能强大的组合，可以运行很多先进的技术。每当我们打开一个容器，所有数据将被存储在etcd并传播到集群中的所有节点。我们将决定什么信息是我们的。<br><img src="/imgs/etcd-registrator.png" width="600" height="300"><br>上述的拼图游戏还缺少一块，我们需要一种方法来创建配置文件，与数据都存储在etcd，通过运行一些命令来创建这些配置文件。</p>
-<h4 id="2-2_Confd">2.2 Confd</h4><p>　　Confd是一个轻量级的配置管理工具，常见的用法是通过使用存储在etcd、consul和其他一些数据登记处的数据保持配置文件的最新状态，它也可以用来在配置文件改变时重新600 300加载应用程序。换句话说，我们可以用存储在etcd（或者其他注册中心）的信息来重新配置所有服务。<br><img src="/imgs/etcd-confud.png" width="600" height="300"></p>
-<h4 id="2-3_对于etcd、Registrator和Confd组合的最后的思考">2.3 对于etcd、Registrator和Confd组合的最后的思考</h4><p>　　当etcd、Registrator和Confd结合时，可以获得一个简单而强大的方法来自动化操作我们所有的服务发现和需要的配置。这个组合还展示了“小”工具正确组合的有效性，这三个小东西可以如我们所愿正好完成我们需要达到的目标，若范围稍微小一些，我们将无法完成我们面前的目标，而另一方面如果他们设计时考虑到更大的范围，我们将引入不必要的复杂性和服务器资源开销。<br>　　在我们做出最后的判决之前，让我们看看另一个有相同目标的工具组合，毕竟，我们不应该满足于一些没有可替代方案的选择。</p>
-<h3 id="3-_Consul">3. Consul</h3><p>　　Consul是强一致性的数据存储，使用gossip形成动态集群。它提供分级键/值存储方式，不仅可以存储数据，而且可以用于注册器件事各种任务，从发送数据改变通知到运行健康检查和自定义命令，具体如何取决于它们的输出。<br>　　与ZooKeeper和etcd不一样，Consul内嵌实现了服务发现系统，所以这样就不需要构建自己的系统或使用第三方系统。这一发现系统除了上述提到的特性之外，还包括节点健康检查和运行在其上的服务。<br>　　ZooKeeper和etcd只提供原始的键/值队存储，要求应用程序开发人员构建他们自己的系统提供服务发现功能。而Consul提供了一个内置的服务发现的框架。客户只需要注册服务并通过DNS或HTTP接口执行服务发现。其他两个工具需要一个亲手制作的解决方案或借助于第三方工具。<br>　　Consul为多种数据中心提供了开箱即用的原生支持，其中的gossip系统不仅可以工作在同一集群内部的各个节点，而且还可以跨数据中心工作。<br><img src="/imgs/consul.png" width="600" height="300"><br>　　Consul还有另一个不错的区别于其他工具的功能，它不仅可以用来发现已部署的服务以及其驻留的节点信息，还通过HTTP请求、TTLs（time-to-live）和自定义命令提供了易于扩展的健康检查特性。</p>
-<h4 id="3-1_Registrator">3.1 Registrator</h4><p>　　Registrator有两个Consul协议，其中consulkv协议产生类似于etcd协议的结果。<br>　　除了通常的IP和端口存储在etcd或consulkv协议中之外，Registrator consul协议存储了更多的信息，我们可以得到服务运行节点的信息，以及服务ID和名称。我们也可以借助于一些额外的环境变量按照一定的标记存储额外的信息。<br><img src="/imgs/consul-registrator.png" width="600" height="300"></p>
-<h4 id="3-2_Consul-template">3.2 Consul-template</h4><p>　　confd可以像和etce搭配一样用于Consul，不过Consul有自己的模板服务，其更适配Consul。<br>　　通过从Consul获得的信息，Consul-template是一个非常方便的创建文件的途径，还有一个额外的好处就是在文件更新后可以运行任意命令，正如confd，Consul-template也可以使用Go模板格式。<br><img src="/imgs/consul-template.png" width="600" height="300">
+<h3 id="手动配置"><a href="#手动配置" class="headerlink" title="手动配置"></a>手动配置</h3><p>　　大多数服务仍然是需要手动管理的，我们预先决定在何处部署服务、如何配置和希望不管什么原因，服务都将继续正常工作，直到天荒地老。这样的目标不是可以轻易达到的。部署第二个服务实例意味着我们需要启动全程的手动处理，我们需要引入一台新的服务器，或者找出哪一台服务器资源利用率较低，然后创建一个新的配置集并启动服务。情况或许会变得越来越复杂，比方说，硬件故障导致的手动管理下的反应时间变得很慢。可见性是另外一个痛点，我们知道什么是静态配置，毕竟是我们预先准备好的，然而，大多数的服务有很多动态生成的信息，这些信息不是轻易可见的，也没有一个单独的地方供我们在需要时参考这些数据。<br>　　反应时间会不可避免的变慢，鉴于存在许多需要手动处理的移动组件，故障恢复和监控也会变得非常难以管理。<br>　　尽管在过去或者当服务/服务器数量很少的时候有借口不做这项工作，随着服务发现工具的出现，这个借口已经不存在了。</p>
+<h3 id="1-ZooKeeper"><a href="#1-ZooKeeper" class="headerlink" title="1. ZooKeeper"></a>1. ZooKeeper</h3><p>　　ZooKeeper是这种类型的项目中历史最悠久的之一，它起源于Hadoop，帮助在Hadoop集群中维护各种组件。它非常成熟、可靠，被许多大公司（YouTube、eBay、雅虎等）使用。其数据存储的格式类似于文件系统，如果运行在一个服务器集群中，Zookeper将跨所有节点共享配置状态，每个集群选举一个领袖，客户端可以连接到任何一台服务器获取数据。<br>　　ZooKeeper的主要优势是其成熟、健壮以及丰富的特性，然而，它也有自己的缺点，其中采用Java开发以及复杂性是罪魁祸首。尽管Java在许多方面非常伟大，然后对于这种类型的工作还是太沉重了，ZooKeeper使用Java以及相当数量的依赖使其对于资源竞争非常饥渴。因为上述的这些问题，ZooKeeper变得非常复杂，维护它需要比我们期望从这种类型的应用程序中获得的收益更多的知识。这部分地是由于丰富的特性反而将其从优势转变为累赘。应用程序的特性功能越多，就会有越大的可能性不需要这些特性，因此，我们最终将会为这些不需要的特性付出复杂度方面的代价。<br>　　ZooKeeper为其他项目相当大的改进铺平了道路，“大数据玩家“在使用它，因为没有更好的选择。今天，ZooKeeper已经老态龙钟了，我们有了更好的选择。</p>
+<h3 id="2-etcd"><a href="#2-etcd" class="headerlink" title="2. etcd"></a>2. etcd</h3><p>　　etcd是一个采用HTTP协议的健/值对存储系统，它是一个分布式和功能层次配置系统，可用于构建服务发现系统。其很容易部署、安装和使用，提供了可靠的数据持久化特性。它是安全的并且文档也十分齐全。<br>　　etcd比ZooKeeper是比更好的选择，因为它很简单，然而，它需要搭配一些第三方工具才可以提供服务发现功能。<br><img src="/imgs/etcd.png" width="600" height="300"><br>　　现在，我们有一个地方来存储服务相关信息，我们还需要一个工具可以自动发送信息给etcd。但在这之后，为什么我们还需要手动把数据发送给etcd呢？即使我们希望手动将信息发送给etcd，我们通常情况下也不会知道是什么信息。记住这一点，服务可能会被部署到一台运行最少数量容器的服务器上，并且随机分配一个端口。理想情况下，这个工具应该监视所有节点上的Docker容器，并且每当有新容器运行或者现有的一个容器停止的时候更新etcd，其中的一个可以帮助我们达成目标的工具就是Registrator。</p>
+<h4 id="2-1-Registrator"><a href="#2-1-Registrator" class="headerlink" title="2.1 Registrator"></a>2.1 Registrator</h4><p>　　Registrator通过检查容器在线或者停止运行状态自动注册和去注册服务，它目前支持etcd、Consul和SkyDNS 2。<br>　　Registrator与etcd是一个简单但是功能强大的组合，可以运行很多先进的技术。每当我们打开一个容器，所有数据将被存储在etcd并传播到集群中的所有节点。我们将决定什么信息是我们的。<br><img src="/imgs/etcd-registrator.png" width="600" height="300"><br>上述的拼图游戏还缺少一块，我们需要一种方法来创建配置文件，与数据都存储在etcd，通过运行一些命令来创建这些配置文件。</p>
+<h4 id="2-2-Confd"><a href="#2-2-Confd" class="headerlink" title="2.2 Confd"></a>2.2 Confd</h4><p>　　Confd是一个轻量级的配置管理工具，常见的用法是通过使用存储在etcd、consul和其他一些数据登记处的数据保持配置文件的最新状态，它也可以用来在配置文件改变时重新600 300加载应用程序。换句话说，我们可以用存储在etcd（或者其他注册中心）的信息来重新配置所有服务。<br><img src="/imgs/etcd-confud.png" width="600" height="300"></p>
+<h4 id="2-3-对于etcd、Registrator和Confd组合的最后的思考"><a href="#2-3-对于etcd、Registrator和Confd组合的最后的思考" class="headerlink" title="2.3 对于etcd、Registrator和Confd组合的最后的思考"></a>2.3 对于etcd、Registrator和Confd组合的最后的思考</h4><p>　　当etcd、Registrator和Confd结合时，可以获得一个简单而强大的方法来自动化操作我们所有的服务发现和需要的配置。这个组合还展示了“小”工具正确组合的有效性，这三个小东西可以如我们所愿正好完成我们需要达到的目标，若范围稍微小一些，我们将无法完成我们面前的目标，而另一方面如果他们设计时考虑到更大的范围，我们将引入不必要的复杂性和服务器资源开销。<br>　　在我们做出最后的判决之前，让我们看看另一个有相同目标的工具组合，毕竟，我们不应该满足于一些没有可替代方案的选择。</p>
+<h3 id="3-Consul"><a href="#3-Consul" class="headerlink" title="3. Consul"></a>3. Consul</h3><p>　　Consul是强一致性的数据存储，使用gossip形成动态集群。它提供分级键/值存储方式，不仅可以存储数据，而且可以用于注册器件事各种任务，从发送数据改变通知到运行健康检查和自定义命令，具体如何取决于它们的输出。<br>　　与ZooKeeper和etcd不一样，Consul内嵌实现了服务发现系统，所以这样就不需要构建自己的系统或使用第三方系统。这一发现系统除了上述提到的特性之外，还包括节点健康检查和运行在其上的服务。<br>　　ZooKeeper和etcd只提供原始的键/值队存储，要求应用程序开发人员构建他们自己的系统提供服务发现功能。而Consul提供了一个内置的服务发现的框架。客户只需要注册服务并通过DNS或HTTP接口执行服务发现。其他两个工具需要一个亲手制作的解决方案或借助于第三方工具。<br>　　Consul为多种数据中心提供了开箱即用的原生支持，其中的gossip系统不仅可以工作在同一集群内部的各个节点，而且还可以跨数据中心工作。<br><img src="/imgs/consul.png" width="600" height="300"><br>　　Consul还有另一个不错的区别于其他工具的功能，它不仅可以用来发现已部署的服务以及其驻留的节点信息，还通过HTTP请求、TTLs（time-to-live）和自定义命令提供了易于扩展的健康检查特性。</p>
+<h4 id="3-1-Registrator"><a href="#3-1-Registrator" class="headerlink" title="3.1 Registrator"></a>3.1 Registrator</h4><p>　　Registrator有两个Consul协议，其中consulkv协议产生类似于etcd协议的结果。<br>　　除了通常的IP和端口存储在etcd或consulkv协议中之外，Registrator consul协议存储了更多的信息，我们可以得到服务运行节点的信息，以及服务ID和名称。我们也可以借助于一些额外的环境变量按照一定的标记存储额外的信息。<br><img src="/imgs/consul-registrator.png" width="600" height="300"></p>
+<h4 id="3-2-Consul-template"><a href="#3-2-Consul-template" class="headerlink" title="3.2 Consul-template"></a>3.2 Consul-template</h4><p>　　confd可以像和etce搭配一样用于Consul，不过Consul有自己的模板服务，其更适配Consul。<br>　　通过从Consul获得的信息，Consul-template是一个非常方便的创建文件的途径，还有一个额外的好处就是在文件更新后可以运行任意命令，正如confd，Consul-template也可以使用Go模板格式。<br><img src="/imgs/consul-template.png" width="600" height="300">
 　　</p>
-<h4 id="3-3_Consul健康检查、Web界面和数据中心">3.3 Consul健康检查、Web界面和数据中心</h4><p>　　监控集群节点和服务的健康状态与测试和部署它们一样的重要。虽然我们应该向着拥有从来没有故障的稳定的环境努力，但我们也应该承认，随时会有意想不到的故障发生，时刻准备着采取相应的措施。例如我们可以监控内存使用情况，如果达到一定的阈值，那么迁移一些服务到集群中的另外一个节点，这将是在发生“灾难”前执行的一个预防措施。另一方面，并不是所有潜在的故障都可以被及时检测到并采取措施。单个服务可能会齿白，一个完整的节点也可能由于硬件故障而停止工作。在这种情况下我们应该准备尽快行动，例如一个节点替换为一个新的并迁移失败的服务。Consul有一个简单的、优雅的但功能强大的方式进行健康检查，当健康阀值达到一定数目时，帮助用户定义应该执行的操作。<br>　　如果用户Google搜索“etcd ui”或者“etec dashboard”时，用户可能看到只有几个可用的解决方案，可能会问为什么我们还没有介绍给用户，这个原因很简单，etcd只是键/值对存储，仅此而已。通过一个UI呈现数据没有太多的用处，因为我们可以很容易地通过etcdctl获得这些数据。这并不意味着etcd UI是无用的，但鉴于其有限的使用范围，它不会产生多大影响。<br>　　Consu不仅仅是一个简单的键/值对存储，正如我们已经看到的，除了存储简单的键/值对，它还有一个服务的概念以及所属的数据。它还可以执行健康检查，因此成为一个好的候选dashboard，在上面可以看到我们的节点的状态和运行的服务。最后，它支持了多数据中心的概念。所有这些特性的结合让我们从不同的角度看到引入dashboard的必要性。<br>通过Consul Web界面，用户可以查看所有的服务和节点、监控健康检查状态以及通过切换数据中心读取设置键/值对数据。<br><img src="/imgs/consul-web-ui.png" width="600" height="300"></p>
-<h4 id="3-4_对于Consul、Registrator、Template、健康检查和Web_UI的最终思考">3.4 对于Consul、Registrator、Template、健康检查和Web UI的最终思考</h4><p>　　Consul以及上述我们一起探讨的工具在很多情况下提供了比etcd更好的解决方案。这是从内心深处为了服务架构和发现而设计的方案，简单而强大。它提供了一个完整的同时不失简洁的解决方案，在许多情况下，这是最佳的服务发现以及满足健康检查需求的工具。</p>
-<h3 id="结论">结论</h3><p>　　所有这些工具都是基于相似的原则和架构，它们在节点上运行，需要仲裁来运行，并且都是强一致性的，都提供某种形式的键/值对存储。<br>　　ZooKeeper是其中最老态龙钟的一个，使用年限显示出了其复杂性、资源利用和尽力达成的目标，它是为了与我们评估的其他工具所处的不同时代而设计的（即使它不是老得太多）。<br>　　etcd、Registrator和Confd是一个非常简单但非常强大的组合，可以解决大部分问题，如果不是全部满足服务发现需要的话。它还展示了我们可以通过组合非常简单和特定的工具来获得强大的服务发现能力，它们中的每一个都执行一个非常具体的任务，通过精心设计的API进行通讯，具备相对自治工作的能力，从架构和功能途径方面都是微服务方式。<br>　　Consul的不同之处在于无需第三方工具就可以原生支持多数据中心和健康检查，这并不意味着使用第三方工具不好。实际上，在这篇博客里我们通过选择那些表现更佳同时不会引入不必要的功能的的工具，尽力组合不同的工具。使用正确的工具可以获得最好的结果。如果工具引入了工作不需要的特性，那么工作效率反而会下降，另一方面，如果工具没有提供工作所需要的特性也是没有用的。Consul很好地权衡了权重，用尽量少的东西很好的达成了目标。<br>　　Consul使用gossip来传播集群信息的方式，使其比etcd更易于搭建，特别是对于大的数据中心。将存储数据作为服务的能力使其比etcd仅仅只有健/值对存储的特性更加完整、更有用（即使Consul也有该选项）。虽然我们可以在etcd中通过插入多个键来达成相同的目标，Consul的服务实现了一个更紧凑的结果，通常只需要一次查询就可以获得与服务相关的所有数据。除此之外，Registrator很好地实现了Consul的两个协议，使其合二为一，特别是添加Consul-template到了拼图中。Consul的Web UI更是锦上添花般地提供了服务和健康检查的可视化途径。<br>　　我不能说Consul是一个明确的赢家，而是与etcd相比其有一个轻微的优势。服务发现作为一个概念，以及作为工具都很新，我们可以期待在这一领域会有许多的变化。秉承开放的心态，大家可以对本文的建议持保留态度，尝试不同的工具然后做出自己的结论。
+<h4 id="3-3-Consul健康检查、Web界面和数据中心"><a href="#3-3-Consul健康检查、Web界面和数据中心" class="headerlink" title="3.3 Consul健康检查、Web界面和数据中心"></a>3.3 Consul健康检查、Web界面和数据中心</h4><p>　　监控集群节点和服务的健康状态与测试和部署它们一样的重要。虽然我们应该向着拥有从来没有故障的稳定的环境努力，但我们也应该承认，随时会有意想不到的故障发生，时刻准备着采取相应的措施。例如我们可以监控内存使用情况，如果达到一定的阈值，那么迁移一些服务到集群中的另外一个节点，这将是在发生“灾难”前执行的一个预防措施。另一方面，并不是所有潜在的故障都可以被及时检测到并采取措施。单个服务可能会齿白，一个完整的节点也可能由于硬件故障而停止工作。在这种情况下我们应该准备尽快行动，例如一个节点替换为一个新的并迁移失败的服务。Consul有一个简单的、优雅的但功能强大的方式进行健康检查，当健康阀值达到一定数目时，帮助用户定义应该执行的操作。<br>　　如果用户Google搜索“etcd ui”或者“etec dashboard”时，用户可能看到只有几个可用的解决方案，可能会问为什么我们还没有介绍给用户，这个原因很简单，etcd只是键/值对存储，仅此而已。通过一个UI呈现数据没有太多的用处，因为我们可以很容易地通过etcdctl获得这些数据。这并不意味着etcd UI是无用的，但鉴于其有限的使用范围，它不会产生多大影响。<br>　　Consu不仅仅是一个简单的键/值对存储，正如我们已经看到的，除了存储简单的键/值对，它还有一个服务的概念以及所属的数据。它还可以执行健康检查，因此成为一个好的候选dashboard，在上面可以看到我们的节点的状态和运行的服务。最后，它支持了多数据中心的概念。所有这些特性的结合让我们从不同的角度看到引入dashboard的必要性。<br>通过Consul Web界面，用户可以查看所有的服务和节点、监控健康检查状态以及通过切换数据中心读取设置键/值对数据。<br><img src="/imgs/consul-web-ui.png" width="600" height="300"></p>
+<h4 id="3-4-对于Consul、Registrator、Template、健康检查和Web-UI的最终思考"><a href="#3-4-对于Consul、Registrator、Template、健康检查和Web-UI的最终思考" class="headerlink" title="3.4 对于Consul、Registrator、Template、健康检查和Web UI的最终思考"></a>3.4 对于Consul、Registrator、Template、健康检查和Web UI的最终思考</h4><p>　　Consul以及上述我们一起探讨的工具在很多情况下提供了比etcd更好的解决方案。这是从内心深处为了服务架构和发现而设计的方案，简单而强大。它提供了一个完整的同时不失简洁的解决方案，在许多情况下，这是最佳的服务发现以及满足健康检查需求的工具。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>　　所有这些工具都是基于相似的原则和架构，它们在节点上运行，需要仲裁来运行，并且都是强一致性的，都提供某种形式的键/值对存储。<br>　　ZooKeeper是其中最老态龙钟的一个，使用年限显示出了其复杂性、资源利用和尽力达成的目标，它是为了与我们评估的其他工具所处的不同时代而设计的（即使它不是老得太多）。<br>　　etcd、Registrator和Confd是一个非常简单但非常强大的组合，可以解决大部分问题，如果不是全部满足服务发现需要的话。它还展示了我们可以通过组合非常简单和特定的工具来获得强大的服务发现能力，它们中的每一个都执行一个非常具体的任务，通过精心设计的API进行通讯，具备相对自治工作的能力，从架构和功能途径方面都是微服务方式。<br>　　Consul的不同之处在于无需第三方工具就可以原生支持多数据中心和健康检查，这并不意味着使用第三方工具不好。实际上，在这篇博客里我们通过选择那些表现更佳同时不会引入不必要的功能的的工具，尽力组合不同的工具。使用正确的工具可以获得最好的结果。如果工具引入了工作不需要的特性，那么工作效率反而会下降，另一方面，如果工具没有提供工作所需要的特性也是没有用的。Consul很好地权衡了权重，用尽量少的东西很好的达成了目标。<br>　　Consul使用gossip来传播集群信息的方式，使其比etcd更易于搭建，特别是对于大的数据中心。将存储数据作为服务的能力使其比etcd仅仅只有健/值对存储的特性更加完整、更有用（即使Consul也有该选项）。虽然我们可以在etcd中通过插入多个键来达成相同的目标，Consul的服务实现了一个更紧凑的结果，通常只需要一次查询就可以获得与服务相关的所有数据。除此之外，Registrator很好地实现了Consul的两个协议，使其合二为一，特别是添加Consul-template到了拼图中。Consul的Web UI更是锦上添花般地提供了服务和健康检查的可视化途径。<br>　　我不能说Consul是一个明确的赢家，而是与etcd相比其有一个轻微的优势。服务发现作为一个概念，以及作为工具都很新，我们可以期待在这一领域会有许多的变化。秉承开放的心态，大家可以对本文的建议持保留态度，尝试不同的工具然后做出自己的结论。
 　　</p>
 <blockquote>
 <p>完整中文版地址:<a href="http://dockone.io/article/667" target="_blank" rel="external">服务发现：ZooKeeper vs etcd vs Consul</a></p>
@@ -657,13 +1126,13 @@ Observable observable = Observable.<span class="keyword">from</span>(parameters)
 
       
         
-          <span itemprop="articleBody"><h3 id="为什么要使用服务发现？">为什么要使用服务发现？</h3><p>　　我们可以想象一下，当我们需要远程的访问REST API或者Thrift API时，我们必须得知道服务的网络地址（IP Address和port）。传统的应用程序都是运行在固定的物理机器上，IP Address和端口号都是相对固定的。可以通过配置文件方式来实现不定期更新的Ip Address和端口号。但是，在基于云的微服务应用中，这是一个非常难以解决的问题。如下图所示：<br><img src="/imgs/theproblemofdiscovery.png" width="400" height="250"><br>　　在基于云的微服务应用中，服务实例的网络地址（IP Address和Port）是动态分配的，并且由于系统的auto-scaling, failures 和 upgrades等因数，一些服务运行的实例数量也是动态变化的。因此，客户端代码需要使用一个非常精细和准确的服务发现机制。<br>有两种主要的服务发现方式：客户端发现（<a href="http://microservices.io/patterns/client-side-discovery.html" target="_blank" rel="external">client-side discovery</a>）和服务器端发现（<a href="http://microservices.io/patterns/server-side-discovery.html" target="_blank" rel="external">server-side discovery</a>）。</p>
-<h3 id="客户端发现方式">客户端发现方式</h3><p>　　在使用客户端发现方式时，客户端通过查询服务注册中心，获取可用的服务的实际网络地址（IP Adress 和 端口号）。然后通过负载均衡算法来选择一个可用的服务实例，并将请求发送至该服务。下图显示了客户端发现方式的结构图：<br><img src="/imgs/pattern_clientside.png" width="400" height="250"><br>　　在服务启动的时候，向服务注册中心注册服务；在服务停止的时候，向服务注册中心注销服务。服务注册的一个典型的实现方式就是通过heartbeat机制定时刷新。Netflix OSS 就是使用客户端发现方式的一个很好的例子。  Netflix Eureka是一个服务注册中心。它提供了一个管理和查询可用服务的 REST API。 负载均衡功能是通过Netflix Ribbon（是一个IPC客户端）和Eureka一起共同实现的。在文章的后面将深入的介绍Eureka。<br>　　客户端发现方式的优缺点。由于客户端知道所有可用的服务的实际网络地址，所以可以非常方便的实现负载均衡功能（比如：一致性哈希）。但是这种方式有一个非常明显的缺点就是具有非常强的耦合性。针对不同的语言，每个服务的客户端都得实现一套服务发现的功能。</p>
-<h3 id="服务端发现方式">服务端发现方式</h3><p>　　另外一种服务发现的方式就是Server-Side Discovery Pattern，下图展示了这种方式的架构示例图：<br><img src="/imgs/pattern_serverside.png" width="400" height="250"><br>　　客户端向load balancer 发送请求。load balancer 查询服务注册中心找到可用的服务，然后转发请求到该服务上。和客户端发现一样，服务都要到注册中心进行服务注册和注销。AWS的弹性负载均衡（Elastic Load Balancer–ELB）就是服务端发现的一个例子。ELB通常是用于为外网服务提供负载平衡的。当然你也可以使用ELB为内部虚拟私有云（VPC）提供负载均衡服务。客户端通过使用DNS名称，发送HTTP或TCP请求到ELB。ELB为EC2或ECS集群提供负载均衡服务。AWS并没有提供单独的服务注册中心。而是通过ELB实现EC2实例和ECS容器的注册的。<br>　　NGINX不仅可以作为HTTP反向代理服务器和负载均衡器，也可以用来作为一个服务发现的负载均衡器。例如，这篇博客（<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx" target="_blank" rel="external">Scalable Architecture DR CoN: Docker, Registrator, Consul, Consul Template and Nginx</a>）介绍如何使用Consul Template 动态的配置NGINX功能。<br><a href="https://github.com/kubernetes/kubernetes/blob/master/docs/design/architecture.md" target="_blank" rel="external">Kubernetes</a> 和 <a href="https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html" target="_blank" rel="external">Marathon</a>是在通过集群中每个节点都运行一个代理来实现服务发现的功能的，代理的角色就是server-side discovery,客户端通过使用主机的IP Address和Port向Proxy发送请求，Proxy再将请求转发到集群中任何一个可用的服务上。<br>　　服务器端发现方式的优点是，服务的发现逻辑对客户端是透明的。客户只需简单的向load balancer发送请求就可以了。这就避免了为每种不同语言的客户端实现一套发现的逻辑。此外，许多软件都内置实现了这种功能。这种方式的一个最大的缺点是，你必须得关心该组件的高可用性。</p>
-<h3 id="服务注册中心">服务注册中心</h3><p>　　服务注册中心是服务发现的核心。它保存了各个可用服务实例的网络地址（IP Address和Port）。服务注册中心必须要有高可用性和实时更新功能。<br>　　上面提到的 Netflix Eureka 就是一个服务注册中心。它提供了服务注册和查询服务信息的REST API。服务通过使用POST请求注册自己的IP Address和Port。每30秒发送一个PUT请求刷新注册信息。通过DELETE请求注销服务。客户端通过GET请求获取可用的服务实例信息。<br>Netflix的高可用（Netflix achieves high availability ）是通过在Amazon EC2运行多个实例来实现的,每一个Eureka服务都有一个弹性IP Address。当Eureka服务启动时，有DNS服务器动态的分配。Eureka客户端通过查询 DNS来获取Eureka的网络地址（IP Address和Port）。一般情况下，都是返回和客户端在同一个可用区Eureka服务器地址。<br>　　其他能够作为服务注册中心的有：<br>－　etcd —– 高可用，分布式，强一致性的，key-value，Kubernetes和Cloud Foundry都是使用了etcd。<br>－　consul —–一个用于discovering和 configuring的工具。它提供了允许客户端注册和发现服务的API。Consul可以进行服务健康检查，以确定服务的可用性。<br>－　zookeeper —— 在分布式应用中被广泛使用，高性能的协调服务。 Apache Zookeeper 最初为Hadoop的一个子项目，但现在是一个顶级项目。<br>　　我们已经了解了服务注册中心的概念，接下来我们看看服务是如果注册到注册中心的。有两种不同的方式来处理服务的注册和注销。一种是服务自己主动注册-自己注册（self-registration）。另一种是通过其他组件来管理服务的注册-第三方注册（third-party registration）。</p>
-<h3 id="Self-Registration">Self-Registration</h3><p>　　使用Self-Registration的方式注册，服务实例必须自己主动的到注册中心注册和注销。比如可以使用heartbeat机制了实现。下图为这种方式的示意图：<br><img src="/imgs/pattern_selfregistration.png" width="400" height="250"><br>　　Netflix OSS Eureka client就是使用这种方式进行服务注册的。Eureka的客户端处理了服务注册和注销的所有工作。<br>　　Self-Registration方式的优缺点：一个明显的优点就是，非常简单，不需要任何其它辅助组件。而缺点也是比较明显的，使得各个服务和注册中心的耦合度比较高。服务的不同语言的客户端都得实现注册和注销的逻辑。另一种服务注册方式，可以达到解耦的功能，就是third-party registration方式。</p>
-<h3 id="Third-Party_Registration">Third-Party Registration</h3><p>　　使用Third-Party方式进行服务注册时，服务本身不必关心注册和注销功能。而是通过其他组件（service registrarhandles）来实现服务注册功能。可以通过如事件订阅等方式来监控服务的状态，如果发现一个新的服务实例运行，就向注册中心注册该服务，如果监控到某一服务停止了，就向注册中心注销该服务。下图显示了这种方式的结构图示意图：<br><img src="/imgs/pattern_thirdparties.png" width="400" height="250"><br>　　third-party Registration方式的优点是使服务和注册中心解耦，不用为每种语言实现服务注册的逻辑。这种方式的缺点就是必须得考虑该组件的高可用性。</p>
-<h3 id="总结">总结</h3><p>　　在微服务的应用系统中，服务实例的数量是动态变化。各服务实例动态分配网络地址（IP Address 和Port）。因此，为了为客户端能够访问到服务，就必须要有一种服务的发现机制。<br>服务发现的核心是服务注册中心。服务注册中心保存了各个服务可用的实例的相关信息。服务注册中心提供了管理API和查询API。使用管理API进行服务注册、注销。系统的其他组件可以通过查询API来获得当前可用的服务实例信息。<br>　　有两种主要的服务发现方式：客户端发现（client-side service discovery）和服务端发现（ server-side discovery）。在使用客户端服务发现的方式中，客户通过查询服务注册中心，选择一个可用的服务实例。在使用服务器端发现系统中，客户访问Router/load balancer，通过Router/load balancer查询服务注册中心，并将请求转发到一个可用服务实例上。<br>　　服务注册和注销的方式也有两种。一种是服务自己主动的将自己注册到服务注册中心，称为self-registration。另一种是通过其他组件来处理服务的注册和注销，称为third-party registration。<br>在有些环境中，服务发现功能需要自己通过服务注册中心（比如：Netflix Eureka, etcd, Apache Zookeeper）实现，而有些环境中，服务发现功能是内置的。例如，Kubernetes和Marathon。<br>Nginx可以作为HTTP反向代理和负载平衡器，也可以用来作为一个服务发现的负载均衡器。通过向nginx推送routing information来修改nginx的配置，比如使用：Consul Template动态修改NGINX的配置. NGINX Plus 也支持动态修改配置功能。<br>　　在今后的文章中，我们将继续深入分析微服务的其他方面的内容。</p>
+          <span itemprop="articleBody"><h3 id="为什么要使用服务发现？"><a href="#为什么要使用服务发现？" class="headerlink" title="为什么要使用服务发现？"></a>为什么要使用服务发现？</h3><p>　　我们可以想象一下，当我们需要远程的访问REST API或者Thrift API时，我们必须得知道服务的网络地址（IP Address和port）。传统的应用程序都是运行在固定的物理机器上，IP Address和端口号都是相对固定的。可以通过配置文件方式来实现不定期更新的Ip Address和端口号。但是，在基于云的微服务应用中，这是一个非常难以解决的问题。如下图所示：<br><img src="/imgs/theproblemofdiscovery.png" width="400" height="250"><br>　　在基于云的微服务应用中，服务实例的网络地址（IP Address和Port）是动态分配的，并且由于系统的auto-scaling, failures 和 upgrades等因数，一些服务运行的实例数量也是动态变化的。因此，客户端代码需要使用一个非常精细和准确的服务发现机制。<br>有两种主要的服务发现方式：客户端发现（<a href="http://microservices.io/patterns/client-side-discovery.html" target="_blank" rel="external">client-side discovery</a>）和服务器端发现（<a href="http://microservices.io/patterns/server-side-discovery.html" target="_blank" rel="external">server-side discovery</a>）。</p>
+<h3 id="客户端发现方式"><a href="#客户端发现方式" class="headerlink" title="客户端发现方式"></a>客户端发现方式</h3><p>　　在使用客户端发现方式时，客户端通过查询服务注册中心，获取可用的服务的实际网络地址（IP Adress 和 端口号）。然后通过负载均衡算法来选择一个可用的服务实例，并将请求发送至该服务。下图显示了客户端发现方式的结构图：<br><img src="/imgs/pattern_clientside.png" width="400" height="250"><br>　　在服务启动的时候，向服务注册中心注册服务；在服务停止的时候，向服务注册中心注销服务。服务注册的一个典型的实现方式就是通过heartbeat机制定时刷新。Netflix OSS 就是使用客户端发现方式的一个很好的例子。  Netflix Eureka是一个服务注册中心。它提供了一个管理和查询可用服务的 REST API。 负载均衡功能是通过Netflix Ribbon（是一个IPC客户端）和Eureka一起共同实现的。在文章的后面将深入的介绍Eureka。<br>　　客户端发现方式的优缺点。由于客户端知道所有可用的服务的实际网络地址，所以可以非常方便的实现负载均衡功能（比如：一致性哈希）。但是这种方式有一个非常明显的缺点就是具有非常强的耦合性。针对不同的语言，每个服务的客户端都得实现一套服务发现的功能。</p>
+<h3 id="服务端发现方式"><a href="#服务端发现方式" class="headerlink" title="服务端发现方式"></a>服务端发现方式</h3><p>　　另外一种服务发现的方式就是Server-Side Discovery Pattern，下图展示了这种方式的架构示例图：<br><img src="/imgs/pattern_serverside.png" width="400" height="250"><br>　　客户端向load balancer 发送请求。load balancer 查询服务注册中心找到可用的服务，然后转发请求到该服务上。和客户端发现一样，服务都要到注册中心进行服务注册和注销。AWS的弹性负载均衡（Elastic Load Balancer–ELB）就是服务端发现的一个例子。ELB通常是用于为外网服务提供负载平衡的。当然你也可以使用ELB为内部虚拟私有云（VPC）提供负载均衡服务。客户端通过使用DNS名称，发送HTTP或TCP请求到ELB。ELB为EC2或ECS集群提供负载均衡服务。AWS并没有提供单独的服务注册中心。而是通过ELB实现EC2实例和ECS容器的注册的。<br>　　NGINX不仅可以作为HTTP反向代理服务器和负载均衡器，也可以用来作为一个服务发现的负载均衡器。例如，这篇博客（<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx" target="_blank" rel="external">Scalable Architecture DR CoN: Docker, Registrator, Consul, Consul Template and Nginx</a>）介绍如何使用Consul Template 动态的配置NGINX功能。<br><a href="https://github.com/kubernetes/kubernetes/blob/master/docs/design/architecture.md" target="_blank" rel="external">Kubernetes</a> 和 <a href="https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html" target="_blank" rel="external">Marathon</a>是在通过集群中每个节点都运行一个代理来实现服务发现的功能的，代理的角色就是server-side discovery,客户端通过使用主机的IP Address和Port向Proxy发送请求，Proxy再将请求转发到集群中任何一个可用的服务上。<br>　　服务器端发现方式的优点是，服务的发现逻辑对客户端是透明的。客户只需简单的向load balancer发送请求就可以了。这就避免了为每种不同语言的客户端实现一套发现的逻辑。此外，许多软件都内置实现了这种功能。这种方式的一个最大的缺点是，你必须得关心该组件的高可用性。</p>
+<h3 id="服务注册中心"><a href="#服务注册中心" class="headerlink" title="服务注册中心"></a>服务注册中心</h3><p>　　服务注册中心是服务发现的核心。它保存了各个可用服务实例的网络地址（IP Address和Port）。服务注册中心必须要有高可用性和实时更新功能。<br>　　上面提到的 Netflix Eureka 就是一个服务注册中心。它提供了服务注册和查询服务信息的REST API。服务通过使用POST请求注册自己的IP Address和Port。每30秒发送一个PUT请求刷新注册信息。通过DELETE请求注销服务。客户端通过GET请求获取可用的服务实例信息。<br>Netflix的高可用（Netflix achieves high availability ）是通过在Amazon EC2运行多个实例来实现的,每一个Eureka服务都有一个弹性IP Address。当Eureka服务启动时，有DNS服务器动态的分配。Eureka客户端通过查询 DNS来获取Eureka的网络地址（IP Address和Port）。一般情况下，都是返回和客户端在同一个可用区Eureka服务器地址。<br>　　其他能够作为服务注册中心的有：<br>－　etcd —– 高可用，分布式，强一致性的，key-value，Kubernetes和Cloud Foundry都是使用了etcd。<br>－　consul —–一个用于discovering和 configuring的工具。它提供了允许客户端注册和发现服务的API。Consul可以进行服务健康检查，以确定服务的可用性。<br>－　zookeeper —— 在分布式应用中被广泛使用，高性能的协调服务。 Apache Zookeeper 最初为Hadoop的一个子项目，但现在是一个顶级项目。<br>　　我们已经了解了服务注册中心的概念，接下来我们看看服务是如果注册到注册中心的。有两种不同的方式来处理服务的注册和注销。一种是服务自己主动注册-自己注册（self-registration）。另一种是通过其他组件来管理服务的注册-第三方注册（third-party registration）。</p>
+<h3 id="Self-Registration"><a href="#Self-Registration" class="headerlink" title="Self-Registration"></a>Self-Registration</h3><p>　　使用Self-Registration的方式注册，服务实例必须自己主动的到注册中心注册和注销。比如可以使用heartbeat机制了实现。下图为这种方式的示意图：<br><img src="/imgs/pattern_selfregistration.png" width="400" height="250"><br>　　Netflix OSS Eureka client就是使用这种方式进行服务注册的。Eureka的客户端处理了服务注册和注销的所有工作。<br>　　Self-Registration方式的优缺点：一个明显的优点就是，非常简单，不需要任何其它辅助组件。而缺点也是比较明显的，使得各个服务和注册中心的耦合度比较高。服务的不同语言的客户端都得实现注册和注销的逻辑。另一种服务注册方式，可以达到解耦的功能，就是third-party registration方式。</p>
+<h3 id="Third-Party-Registration"><a href="#Third-Party-Registration" class="headerlink" title="Third-Party Registration"></a>Third-Party Registration</h3><p>　　使用Third-Party方式进行服务注册时，服务本身不必关心注册和注销功能。而是通过其他组件（service registrarhandles）来实现服务注册功能。可以通过如事件订阅等方式来监控服务的状态，如果发现一个新的服务实例运行，就向注册中心注册该服务，如果监控到某一服务停止了，就向注册中心注销该服务。下图显示了这种方式的结构图示意图：<br><img src="/imgs/pattern_thirdparties.png" width="400" height="250"><br>　　third-party Registration方式的优点是使服务和注册中心解耦，不用为每种语言实现服务注册的逻辑。这种方式的缺点就是必须得考虑该组件的高可用性。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　在微服务的应用系统中，服务实例的数量是动态变化。各服务实例动态分配网络地址（IP Address 和Port）。因此，为了为客户端能够访问到服务，就必须要有一种服务的发现机制。<br>服务发现的核心是服务注册中心。服务注册中心保存了各个服务可用的实例的相关信息。服务注册中心提供了管理API和查询API。使用管理API进行服务注册、注销。系统的其他组件可以通过查询API来获得当前可用的服务实例信息。<br>　　有两种主要的服务发现方式：客户端发现（client-side service discovery）和服务端发现（ server-side discovery）。在使用客户端服务发现的方式中，客户通过查询服务注册中心，选择一个可用的服务实例。在使用服务器端发现系统中，客户访问Router/load balancer，通过Router/load balancer查询服务注册中心，并将请求转发到一个可用服务实例上。<br>　　服务注册和注销的方式也有两种。一种是服务自己主动的将自己注册到服务注册中心，称为self-registration。另一种是通过其他组件来处理服务的注册和注销，称为third-party registration。<br>在有些环境中，服务发现功能需要自己通过服务注册中心（比如：Netflix Eureka, etcd, Apache Zookeeper）实现，而有些环境中，服务发现功能是内置的。例如，Kubernetes和Marathon。<br>Nginx可以作为HTTP反向代理和负载平衡器，也可以用来作为一个服务发现的负载均衡器。通过向nginx推送routing information来修改nginx的配置，比如使用：Consul Template动态修改NGINX的配置. NGINX Plus 也支持动态修改配置功能。<br>　　在今后的文章中，我们将继续深入分析微服务的其他方面的内容。</p>
 <blockquote>
 <p>MaxLeap翻译的中文版地址：<a href="https://blog.maxleap.cn/archives/524" target="_blank" rel="external">微服务系统中的服务发现机制</a></p>
 <p>原文作者发布的关于微服务系列文章的地址：</p>
@@ -766,245 +1235,245 @@ Observable observable = Observable.<span class="keyword">from</span>(parameters)
 <p>　　WSGI允许开发者自由选择web server和web框架。现在你可以混合搭配不同的web server和web框架，并选择一个满足你需求的组合。比如，你可以用Gunicorn，Nginx/uWSGI或者Waitress运行Django，Flask或者Pyramid。真正的混合搭配，多亏了服务器和框架对WSGI的支持。<br><img src="/imgs/WS_part2_wsgi_interop.png" width="400" height="250"></p>
 <p>　　因此，WSGI是我在第一部分提出，并在本文开头重复的问题的答案。你的web server必须实现WSGI接口的服务器端部分，所有的Python web框架已经实现了WSGI接口的框架端部分。这样不用修改服务器的代码去适应指定的web框架，你就能使用你的web server。<br>　　现在你已经知道web server和web框架都支持WSGI，它允许你选择适合的组合，同时也有利与服务器和框架的开发者专注于他们擅长的领域，不会因为越界而踩到对方的脚趾。其他语言也有类似的接口：比如Java有Servlet API，Ruby有Rack。</p>
 <p>　　一切都很好，但是我猜你会说：“把代码展示给我看！”好吧，一起看看这个简单的WSGI服务器的实现吧：</p>
-<pre><code><span class="comment"># Tested with Python 2.7.9, Linux &amp; Mac OS X</span>
-<span class="keyword">import</span> socket
-<span class="keyword">import</span> StringIO
-<span class="keyword">import</span> sys
+<pre><code># Tested with Python 2.7.9, Linux &amp; Mac OS X
+import socket
+import StringIO
+import sys
 
 
-<span class="class"><span class="keyword">class</span> <span class="title">WSGIServer</span><span class="params">(object)</span>:</span>
+class WSGIServer(object):
 
     address_family = socket.AF_INET
     socket_type = socket.SOCK_STREAM
-    request_queue_size = <span class="number">1</span>
+    request_queue_size = 1
 
-    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, server_address)</span>:</span>
-        <span class="comment"># Create a listening socket</span>
+    def __init__(self, server_address):
+        # Create a listening socket
         self.listen_socket = listen_socket = socket.socket(
             self.address_family,
             self.socket_type
         )
-        <span class="comment"># Allow to reuse the same address</span>
-        listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)
-        <span class="comment"># Bind</span>
+        # Allow to reuse the same address
+        listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        # Bind
         listen_socket.bind(server_address)
-        <span class="comment"># Activate</span>
+        # Activate
         listen_socket.listen(self.request_queue_size)
-        <span class="comment"># Get server host name and port</span>
-        host, port = self.listen_socket.getsockname()[:<span class="number">2</span>]
+        # Get server host name and port
+        host, port = self.listen_socket.getsockname()[:2]
         self.server_name = socket.getfqdn(host)
         self.server_port = port
-        <span class="comment"># Return headers set by Web framework/Web application</span>
+        # Return headers set by Web framework/Web application
         self.headers_set = []
 
-    <span class="function"><span class="keyword">def</span> <span class="title">set_app</span><span class="params">(self, application)</span>:</span>
+    def set_app(self, application):
         self.application = application
 
-    <span class="function"><span class="keyword">def</span> <span class="title">serve_forever</span><span class="params">(self)</span>:</span>
+    def serve_forever(self):
         listen_socket = self.listen_socket
-        <span class="keyword">while</span> <span class="keyword">True</span>:
-            <span class="comment"># New client connection</span>
+        while True:
+            # New client connection
             self.client_connection, client_address = listen_socket.accept()
-            <span class="comment"># Handle one request and close the client connection. Then</span>
-            <span class="comment"># loop over to wait for another client connection</span>
+            # Handle one request and close the client connection. Then
+            # loop over to wait for another client connection
             self.handle_one_request()
 
-    <span class="function"><span class="keyword">def</span> <span class="title">handle_one_request</span><span class="params">(self)</span>:</span>
-        self.request_data = request_data = self.client_connection.recv(<span class="number">1024</span>)
-        <span class="comment"># Print formatted request data a la 'curl -v'</span>
-        print(<span class="string">''</span>.join(
-            <span class="string">'&lt; {line}\n'</span>.format(line=line)
-            <span class="keyword">for</span> line <span class="keyword">in</span> request_data.splitlines()
+    def handle_one_request(self):
+        self.request_data = request_data = self.client_connection.recv(1024)
+        # Print formatted request data a la &apos;curl -v&apos;
+        print(&apos;&apos;.join(
+            &apos;&lt; {line}\n&apos;.format(line=line)
+            for line in request_data.splitlines()
         ))
 
         self.parse_request(request_data)
 
-        <span class="comment"># Construct environment dictionary using request data</span>
+        # Construct environment dictionary using request data
         env = self.get_environ()
 
-        <span class="comment"># It's time to call our application callable and get</span>
-        <span class="comment"># back a result that will become HTTP response body</span>
+        # It&apos;s time to call our application callable and get
+        # back a result that will become HTTP response body
         result = self.application(env, self.start_response)
 
-        <span class="comment"># Construct a response and send it back to the client</span>
+        # Construct a response and send it back to the client
         self.finish_response(result)
 
-    <span class="function"><span class="keyword">def</span> <span class="title">parse_request</span><span class="params">(self, text)</span>:</span>
-        request_line = text.splitlines()[<span class="number">0</span>]
-        request_line = request_line.rstrip(<span class="string">'\r\n'</span>)
-        <span class="comment"># Break down the request line into components</span>
-        (self.request_method,  <span class="comment"># GET</span>
-         self.path,            <span class="comment"># /hello</span>
-         self.request_version  <span class="comment"># HTTP/1.1</span>
+    def parse_request(self, text):
+        request_line = text.splitlines()[0]
+        request_line = request_line.rstrip(&apos;\r\n&apos;)
+        # Break down the request line into components
+        (self.request_method,  # GET
+         self.path,            # /hello
+         self.request_version  # HTTP/1.1
          ) = request_line.split()
 
-    <span class="function"><span class="keyword">def</span> <span class="title">get_environ</span><span class="params">(self)</span>:</span>
+    def get_environ(self):
         env = {}
-        <span class="comment"># The following code snippet does not follow PEP8 conventions</span>
-        <span class="comment"># but it's formatted the way it is for demonstration purposes</span>
-        <span class="comment"># to emphasize the required variables and their values</span>
-        <span class="comment">#</span>
-        <span class="comment"># Required WSGI variables</span>
-        env[<span class="string">'wsgi.version'</span>]      = (<span class="number">1</span>, <span class="number">0</span>)
-        env[<span class="string">'wsgi.url_scheme'</span>]   = <span class="string">'http'</span>
-        env[<span class="string">'wsgi.input'</span>]        = StringIO.StringIO(self.request_data)
-        env[<span class="string">'wsgi.errors'</span>]       = sys.stderr
-        env[<span class="string">'wsgi.multithread'</span>]  = <span class="keyword">False</span>
-        env[<span class="string">'wsgi.multiprocess'</span>] = <span class="keyword">False</span>
-        env[<span class="string">'wsgi.run_once'</span>]     = <span class="keyword">False</span>
-        <span class="comment"># Required CGI variables</span>
-        env[<span class="string">'REQUEST_METHOD'</span>]    = self.request_method    <span class="comment"># GET</span>
-        env[<span class="string">'PATH_INFO'</span>]         = self.path              <span class="comment"># /hello</span>
-        env[<span class="string">'SERVER_NAME'</span>]       = self.server_name       <span class="comment"># localhost</span>
-        env[<span class="string">'SERVER_PORT'</span>]       = str(self.server_port)  <span class="comment"># 8888</span>
-        <span class="keyword">return</span> env
+        # The following code snippet does not follow PEP8 conventions
+        # but it&apos;s formatted the way it is for demonstration purposes
+        # to emphasize the required variables and their values
+        #
+        # Required WSGI variables
+        env[&apos;wsgi.version&apos;]      = (1, 0)
+        env[&apos;wsgi.url_scheme&apos;]   = &apos;http&apos;
+        env[&apos;wsgi.input&apos;]        = StringIO.StringIO(self.request_data)
+        env[&apos;wsgi.errors&apos;]       = sys.stderr
+        env[&apos;wsgi.multithread&apos;]  = False
+        env[&apos;wsgi.multiprocess&apos;] = False
+        env[&apos;wsgi.run_once&apos;]     = False
+        # Required CGI variables
+        env[&apos;REQUEST_METHOD&apos;]    = self.request_method    # GET
+        env[&apos;PATH_INFO&apos;]         = self.path              # /hello
+        env[&apos;SERVER_NAME&apos;]       = self.server_name       # localhost
+        env[&apos;SERVER_PORT&apos;]       = str(self.server_port)  # 8888
+        return env
 
-    <span class="function"><span class="keyword">def</span> <span class="title">start_response</span><span class="params">(self, status, response_headers, exc_info=None)</span>:</span>
-        <span class="comment"># Add necessary server headers</span>
+    def start_response(self, status, response_headers, exc_info=None):
+        # Add necessary server headers
         server_headers = [
-            (<span class="string">'Date'</span>, <span class="string">'Tue, 31 Mar 2015 12:54:48 GMT'</span>),
-            (<span class="string">'Server'</span>, <span class="string">'WSGIServer 0.2'</span>),
+            (&apos;Date&apos;, &apos;Tue, 31 Mar 2015 12:54:48 GMT&apos;),
+            (&apos;Server&apos;, &apos;WSGIServer 0.2&apos;),
         ]
         self.headers_set = [status, response_headers + server_headers]
-        <span class="comment"># To adhere to WSGI specification the start_response must return</span>
-        <span class="comment"># a 'write' callable. We simplicity's sake we'll ignore that detail</span>
-        <span class="comment"># for now.</span>
-        <span class="comment"># return self.finish_response</span>
+        # To adhere to WSGI specification the start_response must return
+        # a &apos;write&apos; callable. We simplicity&apos;s sake we&apos;ll ignore that detail
+        # for now.
+        # return self.finish_response
 
-    <span class="function"><span class="keyword">def</span> <span class="title">finish_response</span><span class="params">(self, result)</span>:</span>
-        <span class="keyword">try</span>:
+    def finish_response(self, result):
+        try:
             status, response_headers = self.headers_set
-            response = <span class="string">'HTTP/1.1 {status}\r\n'</span>.format(status=status)
-            <span class="keyword">for</span> header <span class="keyword">in</span> response_headers:
-                response += <span class="string">'{0}: {1}\r\n'</span>.format(*header)
-            response += <span class="string">'\r\n'</span>
-            <span class="keyword">for</span> data <span class="keyword">in</span> result:
+            response = &apos;HTTP/1.1 {status}\r\n&apos;.format(status=status)
+            for header in response_headers:
+                response += &apos;{0}: {1}\r\n&apos;.format(*header)
+            response += &apos;\r\n&apos;
+            for data in result:
                 response += data
-            <span class="comment"># Print formatted response data a la 'curl -v'</span>
-            print(<span class="string">''</span>.join(
-                <span class="string">'&gt; {line}\n'</span>.format(line=line)
-                <span class="keyword">for</span> line <span class="keyword">in</span> response.splitlines()
+            # Print formatted response data a la &apos;curl -v&apos;
+            print(&apos;&apos;.join(
+                &apos;&gt; {line}\n&apos;.format(line=line)
+                for line in response.splitlines()
             ))
             self.client_connection.sendall(response)
-        <span class="keyword">finally</span>:
+        finally:
             self.client_connection.close()
 
 
-SERVER_ADDRESS = (HOST, PORT) = <span class="string">''</span>, <span class="number">8888</span>
+SERVER_ADDRESS = (HOST, PORT) = &apos;&apos;, 8888
 
 
-<span class="function"><span class="keyword">def</span> <span class="title">make_server</span><span class="params">(server_address, application)</span>:</span>
+def make_server(server_address, application):
     server = WSGIServer(server_address)
     server.set_app(application)
-    <span class="keyword">return</span> server
+    return server
 
 
-<span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
-    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">2</span>:
-        sys.exit(<span class="string">'Provide a WSGI application object as module:callable'</span>)
-    app_path = sys.argv[<span class="number">1</span>]
-    module, application = app_path.split(<span class="string">':'</span>)
+if __name__ == &apos;__main__&apos;:
+    if len(sys.argv) &lt; 2:
+        sys.exit(&apos;Provide a WSGI application object as module:callable&apos;)
+    app_path = sys.argv[1]
+    module, application = app_path.split(&apos;:&apos;)
     module = __import__(module)
     application = getattr(module, application)
     httpd = make_server(SERVER_ADDRESS, application)
-    print(<span class="string">'WSGIServer: Serving HTTP on port {port} ...\n'</span>.format(port=PORT))
+    print(&apos;WSGIServer: Serving HTTP on port {port} ...\n&apos;.format(port=PORT))
     httpd.serve_forever()
 </code></pre><p>　　上面的代码确实比第一部分服务器的代码长，但是为了让你能够理解而不至于陷入细节的泥潭中，它已经足够短了（不到150行）。上面的服务器也能做更多——它能运行用你喜欢的框架（Pyramid, flask, Django或者其他Python WSGI框架）编写的基本web应用程序。<br>　　不信？动手试一下吧。保存上面的代码到<code>webserver2.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/webserver2.py" target="_blank" rel="external">GitHub</a>上下载。如果你试图运行时不带任何参数，它会提示并退出。</p>
-<pre><code>$ python webserver2<span class="class">.py</span>
-Provide <span class="tag">a</span> WSGI application <span class="tag">object</span> as module:callable
+<pre><code>$ python webserver2.py
+Provide a WSGI application object as module:callable
 </code></pre><p>　　它真的想服务你的web应用程序，这就是有趣的开始。运行这个服务器你唯一要做的就是安装Python。但是要运行用Pyramid, flask或Django开发的应用，你需要先安装这些框架。让我们来安装这三个框架吧，我更喜欢使用virtualenv，只需要按照下面的步骤去创建和激活一个虚拟环境，就可以安装这三个框架了。</p>
-<pre><code><span class="char">$ </span>[sudo] pip install virtualenv
-<span class="char">$ </span>mkdir ~/envs
-<span class="char">$ </span>virtualenv ~/envs/lsbaws/
-<span class="char">$ </span>cd ~/envs/lsbaws/
-<span class="char">$ </span>ls
+<pre><code>$ [sudo] pip install virtualenv
+$ mkdir ~/envs
+$ virtualenv ~/envs/lsbaws/
+$ cd ~/envs/lsbaws/
+$ ls
 bin  include  lib
-<span class="char">$ </span>source bin/activate
-(lsbaws) <span class="char">$ </span>pip install pyramid
-(lsbaws) <span class="char">$ </span>pip install flask
-(lsbaws) <span class="char">$ </span>pip install django
-</code></pre><h3 id="Pyramid框架">Pyramid框架</h3><p>　　这时，你需创建一个Web应用程序。我们首先从Pyramid开始吧，保存下面的代码到<code>pyramidapp.py</code>并放到与<code>webserver2.py</code>的相同路径下，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/pyramidapp.py" target="_blank" rel="external">GitHub</a>上下载。</p>
-<pre><code>from pyramid<span class="class">.config</span> import Configurator
-from pyramid<span class="class">.response</span> import Response
+$ source bin/activate
+(lsbaws) $ pip install pyramid
+(lsbaws) $ pip install flask
+(lsbaws) $ pip install django
+</code></pre><h3 id="Pyramid框架"><a href="#Pyramid框架" class="headerlink" title="Pyramid框架"></a>Pyramid框架</h3><p>　　这时，你需创建一个Web应用程序。我们首先从Pyramid开始吧，保存下面的代码到<code>pyramidapp.py</code>并放到与<code>webserver2.py</code>的相同路径下，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/pyramidapp.py" target="_blank" rel="external">GitHub</a>上下载。</p>
+<pre><code>from pyramid.config import Configurator
+from pyramid.response import Response
 
 
-def <span class="function"><span class="title">hello_world</span><span class="params">(request)</span></span>:
+def hello_world(request):
     return Response(
-        <span class="string">'Hello world from Pyramid!\n'</span>,
-        content_type=<span class="string">'text/plain'</span>,
+        &apos;Hello world from Pyramid!\n&apos;,
+        content_type=&apos;text/plain&apos;,
     )
 
-config = <span class="function"><span class="title">Configurator</span><span class="params">()</span></span>
-config.<span class="function"><span class="title">add_route</span><span class="params">(<span class="string">'hello'</span>, <span class="string">'/hello'</span>)</span></span>
-config.<span class="function"><span class="title">add_view</span><span class="params">(hello_world, route_name=<span class="string">'hello'</span>)</span></span>
-app = config.<span class="function"><span class="title">make_wsgi_app</span><span class="params">()</span></span>
+config = Configurator()
+config.add_route(&apos;hello&apos;, &apos;/hello&apos;)
+config.add_view(hello_world, route_name=&apos;hello&apos;)
+app = config.make_wsgi_app()
 </code></pre><p>　　现在，你可以准备用你自己的web server服务你的Pyramid应用了：</p>
 <pre><code>(lsbaws) $ python webserver2.py pyramidapp:app
-WSGIServer: Serving HTTP <span class="function_start"><span class="keyword">on</span></span> port <span class="number">8888</span> …
+WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　刚才你告诉你的服务器去从python模块<code>pyramidapp</code>中加载一个可调用的app对象。现在你的服务已经准备好接收请求，转发请求至你的Pyramid应用程序。当前应用程序只处理一个路由：<code>\hello路由</code>。在浏览器地址栏输入<code>http://localhost:8888/hello</code>，回车观察结果：<br><img src="/imgs/WS_part2_browser_pyramid.png" width="400" height="250"></p>
 <p>　　你也可以在命令行用<code>curl</code> 指令来测试服务器：</p>
-<pre><code><span class="variable">$ </span>curl -v <span class="symbol">http:</span>/<span class="regexp">/localhost:8888/hello</span>
+<pre><code>$ curl -v http://localhost:8888/hello
 …
 </code></pre><p>　　检查服务器和<code>curl</code>打印出的标准输出。</p>
-<h3 id="Flask框架">Flask框架</h3><p>　　现在轮到Flask了，让我们按照相同步骤来操作。</p>
-<pre><code><span class="keyword">from</span> flask <span class="keyword">import</span> Flask
-<span class="keyword">from</span> flask <span class="keyword">import</span> Response
-flask_app = Flask(<span class="string">'flaskapp'</span>)
+<h3 id="Flask框架"><a href="#Flask框架" class="headerlink" title="Flask框架"></a>Flask框架</h3><p>　　现在轮到Flask了，让我们按照相同步骤来操作。</p>
+<pre><code>from flask import Flask
+from flask import Response
+flask_app = Flask(&apos;flaskapp&apos;)
 
 
-<span class="decorator">@flask_app.route('/hello')</span>
-<span class="function"><span class="keyword">def</span> <span class="title">hello_world</span><span class="params">()</span>:</span>
-    <span class="keyword">return</span> Response(
-        <span class="string">'Hello world from Flask!\n'</span>,
-        mimetype=<span class="string">'text/plain'</span>
+@flask_app.route(&apos;/hello&apos;)
+def hello_world():
+    return Response(
+        &apos;Hello world from Flask!\n&apos;,
+        mimetype=&apos;text/plain&apos;
     )
 
 app = flask_app.wsgi_app
 </code></pre><p>　　保存上面的代码到<code>flaskapp.py</code>，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/flaskapp.py" target="_blank" rel="external">GitHub</a>上下载，运行服务器：</p>
 <pre><code>(lsbaws) $ python webserver2.py flaskapp:app
-WSGIServer: Serving HTTP <span class="function_start"><span class="keyword">on</span></span> port <span class="number">8888</span> …
+WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　在浏览器输入<code>http://localhost:8888/hello</code>，回车：<br><img src="/imgs/WS_part2_browser_flask.png" width="400" height="250"></p>
 <p>　　再次用<code>curl</code>命令，看一下服务器返回Flask应用程序生成的信息：</p>
-<pre><code><span class="variable">$ </span>curl -v <span class="symbol">http:</span>/<span class="regexp">/localhost:8888/hello</span>
+<pre><code>$ curl -v http://localhost:8888/hello
 …
-</code></pre><h3 id="Django框架">Django框架</h3><p>　　服务器也能处理Django应用吗？试一试！这一次涉及的内容有点复杂，我建议你克隆这个仓库，然后使用GitHUb仓库中的<code>djangoapp.py</code>文件。下面的源码主要是添加Django<code>Helloworld</code>工程（预先使用Django的<code>diango-admin.py</code>startproject命令）到当前Python路径，然后倒入项目中的WSGI应用。</p>
-<pre><code><span class="keyword">import</span> sys
-sys.path.insert(<span class="number">0</span>, <span class="string">'./helloworld'</span>)
-<span class="keyword">from</span> helloworld <span class="keyword">import</span> wsgi
+</code></pre><h3 id="Django框架"><a href="#Django框架" class="headerlink" title="Django框架"></a>Django框架</h3><p>　　服务器也能处理Django应用吗？试一试！这一次涉及的内容有点复杂，我建议你克隆这个仓库，然后使用GitHUb仓库中的<code>djangoapp.py</code>文件。下面的源码主要是添加Django<code>Helloworld</code>工程（预先使用Django的<code>diango-admin.py</code>startproject命令）到当前Python路径，然后倒入项目中的WSGI应用。</p>
+<pre><code>import sys
+sys.path.insert(0, &apos;./helloworld&apos;)
+from helloworld import wsgi
 
 app = wsgi.application
 </code></pre><p>　　保存上面的代码到<code>djangoapp.py</code>，用你的web server运行Django应用程序：</p>
 <pre><code>(lsbaws) $ python webserver2.py djangoapp:app
-WSGIServer: Serving HTTP <span class="function_start"><span class="keyword">on</span></span> port <span class="number">8888</span> …
+WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　输入下面的地址，回车：<br><img src="/imgs/WS_part2_browser_django.png" width="400" height="250"></p>
 <p>　　正如你之前做过的那几次一样，你也可以在命令行中进行测试，确认Django应用处理了你这次的请求：</p>
-<pre><code><span class="variable">$ </span>curl -v <span class="symbol">http:</span>/<span class="regexp">/localhost:8888/hello</span>
+<pre><code>$ curl -v http://localhost:8888/hello
 …
 </code></pre><p>　　你试过了吗？你确认了服务器可以和上面三个框架一起工作吗？如果没有的话，一定要试一下。阅读很重要，但是这个系列是关于重新构建，也就意味着你必须自己动手尝试。去尝试一下吧，不用担心，我会等你的。我是认真的，你必须尝试，最好能够自己重新敲下这些代码，来确保它能达到预期的效果。
 　　</p>
-<h3 id="构建自己微型的WSGI_Web框架">构建自己微型的WSGI Web框架</h3><p>　　好了，你已经体验了WSGI的威力了：它允许你混合搭配你的web server和web框架。WSGI提供了Python web server和Python web框架之间的最小接口。它非常简单，不管在服务器端还是在框架端实现它都是很容易的。下面的代码片段展示了服务器端和框架段的接口：</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">run_application</span><span class="params">(application)</span>:</span>
-    <span class="string">"""Server code."""</span>
-    <span class="comment"># This is where an application/framework stores</span>
-    <span class="comment"># an HTTP status and HTTP response headers for the server</span>
-    <span class="comment"># to transmit to the client</span>
+<h3 id="构建自己微型的WSGI-Web框架"><a href="#构建自己微型的WSGI-Web框架" class="headerlink" title="构建自己微型的WSGI Web框架"></a>构建自己微型的WSGI Web框架</h3><p>　　好了，你已经体验了WSGI的威力了：它允许你混合搭配你的web server和web框架。WSGI提供了Python web server和Python web框架之间的最小接口。它非常简单，不管在服务器端还是在框架端实现它都是很容易的。下面的代码片段展示了服务器端和框架段的接口：</p>
+<pre><code>def run_application(application):
+    &quot;&quot;&quot;Server code.&quot;&quot;&quot;
+    # This is where an application/framework stores
+    # an HTTP status and HTTP response headers for the server
+    # to transmit to the client
     headers_set = []
-    <span class="comment"># Environment dictionary with WSGI/CGI variables</span>
+    # Environment dictionary with WSGI/CGI variables
     environ = {}
 
-    <span class="function"><span class="keyword">def</span> <span class="title">start_response</span><span class="params">(status, response_headers, exc_info=None)</span>:</span>
+    def start_response(status, response_headers, exc_info=None):
         headers_set[:] = [status, response_headers]
 
-    <span class="comment"># Server invokes the ‘application' callable and gets back the</span>
-    <span class="comment"># response body</span>
+    # Server invokes the ‘application&apos; callable and gets back the
+    # response body
     result = application(environ, start_response)
-    <span class="comment"># Server builds an HTTP response and transmits it to the client</span>
+    # Server builds an HTTP response and transmits it to the client
     …
 
-<span class="function"><span class="keyword">def</span> <span class="title">app</span><span class="params">(environ, start_response)</span>:</span>
-    <span class="string">"""A barebones WSGI app."""</span>
-    start_response(<span class="string">'200 OK'</span>, [(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>)])
-    <span class="keyword">return</span> [<span class="string">'Hello world!'</span>]
+def app(environ, start_response):
+    &quot;&quot;&quot;A barebones WSGI app.&quot;&quot;&quot;
+    start_response(&apos;200 OK&apos;, [(&apos;Content-Type&apos;, &apos;text/plain&apos;)])
+    return [&apos;Hello world!&apos;]
 
 run_application(app)
 </code></pre><p>下面是它的工作原理：</p>
@@ -1016,25 +1485,25 @@ run_application(app)
 </li>
 </ol>
 <p>　　到现在为止，你已经见到了Pyramid, Flask和Django Web应用程序，你也见到了实现WSGI规范的服务器端代码。你见到了不用任何框架实现的精简代码片段。<br>　　当你用上述其中之一的框架开发web应用程序时候，你是在一个高层面工作，并没有直接与WSGI打交道，但是我知道你一定对WSGI接口的框架端非常好奇，因为你在阅读这篇文章。那么，让我们来创建一个不使用Pyramid, Flask或者Django的微型WSGI Web应用/Web框架，并用你的服务器运行它：</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">app</span><span class="params">(environ, start_response)</span>:</span>
-    <span class="string">"""A barebones WSGI application.
+<pre><code>def app(environ, start_response):
+    &quot;&quot;&quot;A barebones WSGI application.
 
     This is a starting point for your own Web framework :)
-    """</span>
-    status = <span class="string">'200 OK'</span>
-    response_headers = [(<span class="string">'Content-Type'</span>, <span class="string">'text/plain'</span>)]
+    &quot;&quot;&quot;
+    status = &apos;200 OK&apos;
+    response_headers = [(&apos;Content-Type&apos;, &apos;text/plain&apos;)]
     start_response(status, response_headers)
-    <span class="keyword">return</span> [<span class="string">'Hello world from a simple WSGI application!\n’]</span>
+    return [&apos;Hello world from a simple WSGI application!\n’]
 </code></pre><p>　　同样的，把上面的代码保存为<code>wsgiapp.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/wsgiapp.py" target="_blank" rel="external">GitHub</a>上下载，然后用你的web server运行：</p>
 <pre><code>(lsbaws) $ python webserver2.py wsgiapp:app
-WSGIServer: Serving HTTP <span class="function_start"><span class="keyword">on</span></span> port <span class="number">8888</span> …
+WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　输入下面的地址，回车，你会看到下面的结果：<br><img src="/imgs/WS_part2_browser_simple_wsgi_app.png" width="400" height="250"></p>
-<h3 id="HTTP响应">HTTP响应</h3><p>　　在学习如何创建一个web server的同时，你刚刚写出了自己的微型WSGI Web框架。真是意外之喜。<br>　　现在让我们回到服务器给客户端传输什么。下面是当你用HTTP客户端调用你的Pyramid应用程序时，服务器生成的HTTP响应。<br><img src="/imgs/WS_part2_http_response.png" width="400" height="250"></p>
+<h3 id="HTTP响应"><a href="#HTTP响应" class="headerlink" title="HTTP响应"></a>HTTP响应</h3><p>　　在学习如何创建一个web server的同时，你刚刚写出了自己的微型WSGI Web框架。真是意外之喜。<br>　　现在让我们回到服务器给客户端传输什么。下面是当你用HTTP客户端调用你的Pyramid应用程序时，服务器生成的HTTP响应。<br><img src="/imgs/WS_part2_http_response.png" width="400" height="250"></p>
 <p>　　上述响应和你在<a href="http://zhangyuyu.github.io/2016/03/05/WebServer1/" target="_blank" rel="external">第一部分</a>看到的有些类似，但是也有一些新的内容。比如，有四个之前没见过的HTTP headers: <code>Content-Type</code>，<code>Content-Length</code>，<code>Date</code>，<code>Server</code>。这些都是web server生成的响应头信息中应该含有的。虽然它们都不是被严格要求的，但是这些头信息的目的是传输有关HTTP请求/响应的附加信息。<br>　　现在你更多的了解了关于WSGI的接口，下面是同一个HTTP响应关于哪些部分生成它的详细信息：<br><img src="/imgs/WS_part2_http_response_explanation.png" width="400" height="250"></p>
 <p>　　到现在我还没有说任何有关<code>environ</code>字典的信息，但是，它基本上就是一个Pyhon字典，这个字典必须包含某些有WSGI规定所规定的WSGI和CGI变量。解析完请求之后，服务器从HTTP请求中拿到了字典所需要的值。字典的内容如下：<br><img src="/imgs/WS_part2_environ.png" width="400" height="250"></p>
 <p>　　Web 框架用这个字典的信息，来决定使用哪个view（基于指定路由和请求方法等）；决定从哪里读取请求的正文；以及把错误信息写在哪里，如果有的话。
 　　</p>
-<h3 id="总结">总结</h3><p>　　目前为止，现在你已经创建了你自己的WSGI Web server，并且你已经用不同的Web框架写了Web应用程序。这一路你也创建了精简的web应用/Web框架。这真是一件了不起的旅程。让我们重述为了服务一个针对WSGI应用的请求，你的WSGI Web server要做的事情：</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　目前为止，现在你已经创建了你自己的WSGI Web server，并且你已经用不同的Web框架写了Web应用程序。这一路你也创建了精简的web应用/Web框架。这真是一件了不起的旅程。让我们重述为了服务一个针对WSGI应用的请求，你的WSGI Web server要做的事情：</p>
 <ol>
 <li>首先，服务器启动并且加载由Web框架/应用提供的<code>application</code>可调用对象。</li>
 <li>其次，服务器读取一个请求</li>
@@ -1140,655 +1609,58 @@ WSGIServer: Serving HTTP <span class="function_start"><span class="keyword">on</
 <blockquote>
 <p>孔夫子云：<br>“吾听吾忘”<br><img src="/imgs/WS_confucius_hear.png" width="400" height="250"><br>“吾见吾记”<br><img src="/imgs/WS_confucius_see.png" width="400" height="250"><br>“吾做吾悟”<br><img src="/imgs/WS_confucius_do.png" width="400" height="250"><br>　　我希望在这一点上你们可以确信，从头开始构建不同的软件系统来学习它们如何运行是一个不错的方法。<br>　　在接下来的三部分的系列中，我会展示如何构建你自己基本的web服务器。让我们开始吧！</p>
 </blockquote>
-<h3 id="首先，什么是web_server呢？">首先，什么是web server呢？</h3><img src="/imgs/WS_HTTP_request_response.png" width="400" height="250">
+<h3 id="首先，什么是web-server呢？"><a href="#首先，什么是web-server呢？" class="headerlink" title="首先，什么是web server呢？"></a>首先，什么是web server呢？</h3><img src="/imgs/WS_HTTP_request_response.png" width="400" height="250">
 <p>　　简而言之，web server是一个坐落在物理服务器上的网络服务器（啊，在服务器上的服务器），并且等待客户端发送请求。当它收到请求时，它就生成一个响应，并将其发送回客户端。客户端和服务器之间的通信使用HTTP协议。一个客户端可以是你的浏览器或者任何其他支持HTTP的软件。<br>　　那么web server非常简单的实现会是什么样子？下面是我的理解。示例是用Python，即使你不会Python（它是一种非常简单的语言，试一试！），你应该能够通过代码和下面的解释理解内容。</p>
-<pre><code>import <span class="keyword">socket</span>
+<pre><code>import socket
 
-HOST, PORT = <span class="string">''</span>, <span class="number">8888</span>
+HOST, PORT = &apos;&apos;, 8888
 
-listen_socket = <span class="keyword">socket</span>.<span class="keyword">socket</span>(<span class="keyword">socket</span>.AF_INET, <span class="keyword">socket</span>.SOCK_STREAM)
-listen_socket.<span class="keyword">setsockopt</span>(<span class="keyword">socket</span>.SOL_SOCKET, <span class="keyword">socket</span>.SO_REUSEADDR, <span class="number">1</span>)
-listen_socket.<span class="keyword">bind</span>((HOST, PORT))
-listen_socket.<span class="keyword">listen</span>(<span class="number">1</span>)
-<span class="keyword">print</span> <span class="string">'Serving HTTP on port %s ...'</span> % PORT
-<span class="keyword">while</span> True:
-    client_connection, client_address = listen_socket.<span class="keyword">accept</span>()
-    request = client_connection.<span class="keyword">recv</span>(<span class="number">1024</span>)
-    <span class="keyword">print</span> request
+listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+listen_socket.bind((HOST, PORT))
+listen_socket.listen(1)
+print &apos;Serving HTTP on port %s ...&apos; % PORT
+while True:
+    client_connection, client_address = listen_socket.accept()
+    request = client_connection.recv(1024)
+    print request
 
-    http_response = <span class="string">""</span><span class="string">"\
+    http_response = &quot;&quot;&quot;\
 HTTP/1.1 200 OK
 
 Hello, World!
-"</span><span class="string">""</span>
+&quot;&quot;&quot;
     client_connection.sendall(http_response)
-    client_connection.<span class="keyword">close</span>()
+    client_connection.close()
 </code></pre><p>　　保存上面的代码到<code>webserver.1py</code>文件或者在<a href="https://github.com/rspivak/lsbaws/blob/master/part1/webserver1.py" target="_blank" rel="external">GitHub</a>上直接下载，然后用下面的命令运行：</p>
-<pre><code>$ <span class="keyword">python</span> webserver1.<span class="keyword">py</span>
-Serving HTTP <span class="keyword">on</span> port <span class="number">8888</span> …
+<pre><code>$ python webserver1.py
+Serving HTTP on port 8888 …
 </code></pre><p>　　然后在浏览器地址栏输入<code>http://localhost:8888/hello</code>，然后回车，见证奇迹的时刻到来了。你应该可以看到<code>Hello World!</code>显示在浏览器中，如下所示：<br><img src="/imgs/WS_browser_hello_world.png" width="400" height="250"></p>
 <p>　　试着做一下吧，你在测试时候我会等你的。做完了吗？好极了。现在我们一起讨论它是如何生效的吧。首先让我们从你输入的网址开始，它叫做<a href="http://baike.baidu.com/link?url=cigkFmQSCQHgSk9SfSVZH7palffbNp6nHiV0WjRy4LkAFH02SIDw-htgvq-wBlMDAORPltXx1i-xcqNpLeGxla" target="_blank" rel="external">URL</a>,下面是它的基本结构：<br><img src="/imgs/WS_URL_Web_address.png" width="400" height="250"></p>
 <p>　　这就是你如何告诉浏览器，它需要找到并且连接的web server地址，同时获取服务器页面的方式。在你的浏览器发送一个HTTP请求，它首先需要和Web server建立一个TCP连接。然后它基于TCP连接给服务器发送一个HTTP请求等待服务器发送一个HTTP的响应回来。当收到响应之后，它会显示响应信息<code>Hello World!</code>。
 　　</p>
-<h3 id="TCP连接">TCP连接</h3><p>　　让我们更详细的探讨如何在发送HTTP请求和响应之前，建立客户端和服务器TCP连接。要做到这一点，它们都使用所谓的sockets。如果不直接使用浏览器，可以通过手动在命令行使用telnet来模拟浏览器。在运行web server的同一台计算机上，通过命令行激活一个telnet会话指定连接主机为localhost，连接端口为8888，然后回车：</p>
-<pre><code>$ telnet localhost <span class="number">8888</span>
-Trying <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> …
+<h3 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h3><p>　　让我们更详细的探讨如何在发送HTTP请求和响应之前，建立客户端和服务器TCP连接。要做到这一点，它们都使用所谓的sockets。如果不直接使用浏览器，可以通过手动在命令行使用telnet来模拟浏览器。在运行web server的同一台计算机上，通过命令行激活一个telnet会话指定连接主机为localhost，连接端口为8888，然后回车：</p>
+<pre><code>$ telnet localhost 8888
+Trying 127.0.0.1 …
 Connected to localhost.
 </code></pre><p>　　这样，你就和服务器建立了一个TCP连接，这个服务器运行在本机，并且准备发送和接收HTTP消息。通过下面的图片，你可以看到一个服务器要经过的能够接收TCP连接的标准步骤。<br><img src="/imgs/WS_socket.png" width="400" height="250"></p>
 <p>　　在同一个telnet会话里，输入命令<code>GET /Hello HTTP/1.1</code>然后回车：</p>
-<pre><code>$ telnet localhost <span class="number">8888</span>
-Trying <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> …
+<pre><code>$ telnet localhost 8888
+Trying 127.0.0.1 …
 Connected to localhost.
-GET /hello HTTP/<span class="number">1.1</span>
+GET /hello HTTP/1.1
 
-HTTP/<span class="number">1.1</span> <span class="number">200</span> OK
+HTTP/1.1 200 OK
 Hello, World!
-</code></pre><h3 id="HTTP请求">HTTP请求</h3><p>　　刚才，你手动的模拟了浏览器，发送了一个HTTP请求并且收到了HTTP响应，下面是一个HTTP请求的基本结构：<br><img src="/imgs/WS_HTTP_request_anatomy.png" width="400" height="250"></p>
+</code></pre><h3 id="HTTP请求"><a href="#HTTP请求" class="headerlink" title="HTTP请求"></a>HTTP请求</h3><p>　　刚才，你手动的模拟了浏览器，发送了一个HTTP请求并且收到了HTTP响应，下面是一个HTTP请求的基本结构：<br><img src="/imgs/WS_HTTP_request_anatomy.png" width="400" height="250"></p>
 <p>　　Http请求包含：请求行，以表明HTTP方法（GET，因为我们请求服务器返回给我们一些信息）；路径/hello，以表明我们想要的服务器页面；以及协议版本。<br>　　为了简单起见，我们的web server在这一点上完全无视上述请求行，你一样可以输入其他任何东西代替<code>GET /Hello HTTP/1.1</code>,也会得到”Hello, World!“的响应。一旦你输入了请求行并按下回车，客户端会发送请求给服务器，服务器解析请求行，并打印，然后返回适当的HTTP响应。
 　　</p>
-<h3 id="HTTP响应">HTTP响应</h3><p>　　下面是服务器返回给客户端的HTTP响应（以telnet为例）：<br><img src="/imgs/WS_HTTP_response_anatomy.png" width="400" height="250"></p>
+<h3 id="HTTP响应"><a href="#HTTP响应" class="headerlink" title="HTTP响应"></a>HTTP响应</h3><p>　　下面是服务器返回给客户端的HTTP响应（以telnet为例）：<br><img src="/imgs/WS_HTTP_response_anatomy.png" width="400" height="250"></p>
 <p>　　让我们深入剖析它，响应包含：状态行<code>HTTP/1.1 200 OK</code>，紧接着是需要的空行，然后就是HTTP的响应正文。响应状态行<code>HTTP/1.1 200 OK</code>包含HTTP的版本，HTTP的状态码（status code），以及对状态码的简短描述<code>OK</code>(reason-phrase)。当浏览器得到响应，会把响应正文展示出来，这就是你为什么在浏览器看到<code>Hello World!</code>的原因。</p>
-<h3 id="总结">总结　　</h3><p>　　上述是web server如何运行的基本模型。总而言之，web server创建一个监听socket并且开始循环的接收新的连接。客户端初始化一个TCP连接，当连接成功建立之后，客户端发送HTTP请求给服务器，服务器返回用于展示给用户的HTTP响应。要建立一个TCP响应，客户端和服务器都要使用sockets。<br>　　现在你有了一个非常基本的web server了， 你可以用浏览器和一些其他的HTTP客户端测试它。正如你所看到和你所希望的一样，你也可以通过telnet手动输入HTTP请求成为人工HTTP客户端。<br>　　下面提一个问题：你如何用你刚写出来的web server去运行一个Django应用，Flask应用和Pyramid应用，同时不对这个服务器做出单一改变来容纳所有这些不同的Web框架呢？在接下来的第二部分我会展示如何实现，敬请关注。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结　　"></a>总结　　</h3><p>　　上述是web server如何运行的基本模型。总而言之，web server创建一个监听socket并且开始循环的接收新的连接。客户端初始化一个TCP连接，当连接成功建立之后，客户端发送HTTP请求给服务器，服务器返回用于展示给用户的HTTP响应。要建立一个TCP响应，客户端和服务器都要使用sockets。<br>　　现在你有了一个非常基本的web server了， 你可以用浏览器和一些其他的HTTP客户端测试它。正如你所看到和你所希望的一样，你也可以通过telnet手动输入HTTP请求成为人工HTTP客户端。<br>　　下面提一个问题：你如何用你刚写出来的web server去运行一个Django应用，Flask应用和Pyramid应用，同时不对这个服务器做出单一改变来容纳所有这些不同的Web框架呢？在接下来的第二部分我会展示如何实现，敬请关注。</p>
 <blockquote>
 <p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part1/" target="_blank" rel="external">Let’s Build A Web Server. Part 1.</a></p>
 </blockquote>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/21/Vagrant/" itemprop="url">
-                Vagrant
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-11-21T15:11:35+08:00" content="2015-11-21">
-            2015-11-21
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/21/Vagrant/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Vagrant/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、Vagrant的认识">一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
-<blockquote>
-<p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
-</blockquote>
-<h3 id="二、安装">二、安装</h3><h4 id="1、安装_VirtualBox">1、安装 VirtualBox</h4><h4 id="2、安装_Vagrant">2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
-<blockquote>
-<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
-</blockquote>
-<h4 id="3、安装系统镜像">3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
-<ul>
-<li>新建一个文件夹，如AgentBox,然后进入目录</li>
-<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
-</ul>
-<p>3.2 通过添加box方式</p>
-<ul>
-<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
-<li><code>$ vagrant box add {title} {url}</code><ul>
-<li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
-<li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
-</ul>
-</li>
-<li>初始化开发环境<br>　　先进入box里面，然后<code>$ vagrant init AgentBox</code></li>
-<li>启动环境<code>vagrant up</code></li>
-</ul>
-<h3 id="三、常用指令">三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
-<blockquote>
-<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
-</blockquote>
-<p>2、vagrant init，初始化</p>
-<blockquote>
-<p>如果你添加的box名称不是base，那么需要在初始化的时候指定名称，例如vagrant init AgentBox</p>
-</blockquote>
-<p>3、vagrant up，启动虚拟机<br>4、vagrant ssh，ssh到虚拟机<br>5、vagrant reload，重启虚拟机（重新载入配置文件）<br>6、vagrant package –base precise64_default_1447845103364_6382 –output precise64.box打包分发<br>7、vagrant box list<br>8、vagrant status</p>
-<h3 id="四、主要配置">四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
-<p>1、box设置</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.box</span> = <span class="string">"AgentBox"</span>
-</code></pre><p>2、hostname设置</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.hostname</span> = <span class="string">"for_work"</span>
-</code></pre><p>3、虚拟机网络设置</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"private_network"</span>, ip: <span class="string">"192.168.33.10"</span>
-config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"public_network"</span>
-</code></pre><p>4、同步目录</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.synced_folder</span> <span class="string">"../data"</span>, <span class="string">"/vagrant_data"</span>
-</code></pre><p>5、端口转发</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"forwarded_port"</span>, guest: <span class="number">80</span>, host: <span class="number">8080</span>
-</code></pre><p>6、内存和cpu核心</p>
-<pre><code>config.vm.provider <span class="string">"virtualbox"</span> do |vb|
-  <span class="comment">#Display the VirtualBox GUI when booting the machine</span>
-  vb.gui = <span class="constant">true</span>
-  <span class="comment">#Customize the amount of memory on the VM:</span>
-  vb.memory = <span class="string">"1024"</span>
-  vb.cpus = <span class="number">2</span>
-  vb.<span class="property">name</span> = <span class="string">"my_vm"</span>
-<span class="keyword">end</span>
-</code></pre><blockquote>
-<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
-</blockquote>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/21/Anguar跨域请求/" itemprop="url">
-                AnguarJS跨域请求
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-11-21T13:18:41+08:00" content="2015-11-21">
-            2015-11-21
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/21/Anguar跨域请求/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Anguar跨域请求/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
-<h3 id="一、视图">一、视图</h3><h4 id="1-在main-html中">1.在<code>main.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"jumbotron"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"row marketing"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/createCustomer"</span>&gt;</span>Create<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-href</span>=<span class="value">"#/getCustomer"</span>&gt;</span>GetByName<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-</code></pre><h4 id="2-在getView-html中">2.在<code>getView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the get customer by name view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
-<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
-<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
-<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"getCustomer()"</span> &gt;</span>Get<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
-<span class="comment"></span>
-</code></pre><h4 id="3-在createView-html中">3.在<code>createView.html</code>中</h4><pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is the create customer view.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
-<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Name<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
-<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"name"</span>/&gt;</span>
-<span class="tag">&lt;<span class="title">h4</span>&gt;</span>Age<span class="tag">&lt;/<span class="title">h4</span>&gt;</span>
-<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"age"</span>/&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
-<span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"btn btn-lg btn-success"</span> <span class="attribute">ng-click</span>=<span class="value">"createCustomer()"</span> &gt;</span>Create<span class="tag">&lt;/<span class="title">button</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span><span class="tag">&lt;<span class="title">br</span>&gt;</span>
-<span class="comment"></span>
-</code></pre><h3 id="二、controller">二、controller</h3><h4 id="1-在getCustomer-js中">1.在<code>getCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
-
-angular.module(<span class="string">'customerUiApp'</span>)
-  .controller(<span class="string">'GetCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
-
-     <span class="variable">$scope</span>.getCustomer = function(){
-       var url = <span class="string">'http://localhost:8080/customers?name='</span> + <span class="variable">$scope</span>.name;
-       <span class="variable">$http</span>({
-          url : url,
-          method : <span class="string">'GET'</span>
-       }).then(function(response) {
-          <span class="variable">$scope</span>.info = response.data;
-          alert(<span class="string">'Get '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
-        },function(response) {
-          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
-          alert(<span class="variable">$scope</span>.info);
-       });
-     };
-  }]);      
-</code></pre><h4 id="2-在createCustomer-js中">2.在<code>createCustomer.js</code>中</h4><pre><code><span class="string">'use strict'</span>;
-
-angular.module(<span class="string">'customerUiApp'</span>)
-  .controller(<span class="string">'CreateCtrl'</span>, [<span class="string">'$scope'</span>, <span class="string">'$http'</span>, <span class="keyword">function</span> (<span class="variable">$scope</span>, <span class="variable">$http</span>) {
-    <span class="variable">$scope</span>.createCustomer = function(){
-       <span class="variable">$http</span>({
-          url : <span class="string">'http://localhost:8080/customers'</span>,
-          method : <span class="string">'POST'</span>,
-          data: {
-              name : <span class="variable">$scope</span>.name,
-              age : <span class="variable">$scope</span>.age
-          }
-       }).then(function(response) {
-          <span class="variable">$scope</span>.info = response.data;
-          alert(<span class="string">'Create '</span>+<span class="variable">$scope</span>.name+<span class="string">' successfully!'</span>);
-        },function(response) {
-          <span class="variable">$scope</span>.info = response.data || <span class="string">"Request failed"</span>;
-          alert(<span class="variable">$scope</span>.info);
-       });
-    };
-
-  }]);
-</code></pre><h3 id="三、配置路由">三、配置路由</h3><p>在<code>app.js</code>中</p>
-<pre><code><span class="string">'use strict'</span>;
-
-angular.module(<span class="string">'customerUiApp'</span>, [<span class="string">'ngRoute'</span>])
-  .config(<span class="keyword">function</span> (<span class="variable">$routeProvider</span>) {
-    <span class="variable">$routeProvider</span>
-      .when(<span class="string">'/'</span>, {
-        templateUrl: <span class="string">'views/main.html'</span>
-      })
-      .when(<span class="string">'/createCustomer'</span>, {
-        templateUrl: <span class="string">'views/createView.html'</span>,
-        controller: <span class="string">'CreateCtrl'</span>
-      })
-      .when(<span class="string">'/getCustomer'</span>, {
-        templateUrl: <span class="string">'views/getView.html'</span>,
-        controller: <span class="string">'GetCtrl'</span>
-      })
-      .otherwise({
-        redirectTo: <span class="string">'/'</span>
-      });
-  });
-</code></pre><h3 id="四、基准HTML文件">四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
-<pre><code><span class="doctype">&lt;!doctype html&gt;</span>
-<span class="tag">&lt;<span class="title">html</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"utf-8"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">title</span>&gt;</span>AngularTest<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"bower_components/bootstrap/dist/css/bootstrap.css"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"styles/main.css"</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-
-  <span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-app</span>=<span class="value">"customerUiApp"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"container"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-view</span>=<span class="value">""</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/jquery/dist/jquery.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular/angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/bootstrap/dist/js/bootstrap.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bower_components/angular-route/angular-route.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/app.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/createCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"scripts/controllers/getCustomer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
-</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
-<h3 id="五、测试">五、测试</h3><h4 id="1、在test/spec/controllers/getCustomer-js中">1、在test/spec/controllers/getCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
-
-describe(<span class="string">'Controller: GetCtrl'</span>, <span class="keyword">function</span> () {
-  beforeEach(module(<span class="string">'customerUiApp'</span>));
-
-  var GetCtrl,scope,<span class="variable">$httpBackend</span>;
-
-  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
-    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
-    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
-    GetCtrl = <span class="variable">$controller</span>(<span class="string">'GetCtrl'</span>, {
-      <span class="variable">$scope</span>: scope
-    });
-  }));
-
-  it(<span class="string">'should send get request'</span>, function () {
-    <span class="variable">$httpBackend</span>
-      .expect(<span class="string">'GET'</span>, <span class="string">'http://localhost:8080/customers?name=Alex'</span>)
-      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
-    scope.name = <span class="string">'Alex'</span>;
-
-    scope.getCustomer();
-    <span class="variable">$httpBackend</span>.flush();
-
-    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
-    expect(scope.info.age).toBe(<span class="string">'20'</span>);
-  });
-});
-</code></pre><h4 id="2、在test/spec/controllers/createCustomer-js中">2、在test/spec/controllers/createCustomer.js中</h4><pre><code><span class="string">'use strict'</span>;
-
-describe(<span class="string">'Controller: CreateCtrl'</span>, <span class="keyword">function</span> () {
-  beforeEach(module(<span class="string">'customerUiApp'</span>));
-
-  var CreateCtrl,scope,<span class="variable">$httpBackend</span>;
-
-  beforeEach(inject(function (<span class="variable">$controller</span>, <span class="variable">$rootScope</span>, <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>) {
-    scope = <span class="variable">$rootScope</span>.<span class="variable">$new</span>();
-    <span class="variable">$httpBackend</span> = <span class="number">_</span><span class="variable">$httpBackend</span><span class="number">_</span>;
-    CreateCtrl = <span class="variable">$controller</span>(<span class="string">'CreateCtrl'</span>, {
-      <span class="variable">$scope</span>: scope
-    });
-  }));
-
-  it(<span class="string">'should send post request'</span>, function () {
-    <span class="variable">$httpBackend</span>
-      .expect(<span class="string">'POST'</span>, <span class="string">'http://localhost:8080/customers'</span>)
-      .respond( {name :<span class="string">'Alex'</span>, age:<span class="string">'20'</span>});
-    scope.name = <span class="string">'Alex'</span>;
-
-    scope.createCustomer();
-    <span class="variable">$httpBackend</span>.flush();
-
-    expect(scope.info.name).toBe(<span class="string">'Alex'</span>);
-    expect(scope.info.age).toBe(<span class="string">'20'</span>);
-  });
-});
-</code></pre><h3 id="六、运行及结果">六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口">1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt_serve启动CustomerUI">2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求">3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code><span class="keyword">open</span> /Applications/Google\ Chrome.<span class="keyword">app</span> --<span class="keyword">args</span> --allow-<span class="keyword">file</span>-access-from-files --disable-web-security
-</code></pre><h4 id="4、输入url">4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
-<h4 id="5、点击GetByName">5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
-　　</p>
-<blockquote>
-<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
-</blockquote>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/21/Yeoman/" itemprop="url">
-                Yeoman
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-11-21T09:15:32+08:00" content="2015-11-21">
-            2015-11-21
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/21/Yeoman/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Yeoman/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、认识Yeoman">一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
-<blockquote>
-<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
-</blockquote>
-<h3 id="二、安装">二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置：">1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
-<li>Node.js 版本在0.10以上</li>
-<li>npm 版本在1.3.7以上</li>
-</ul>
-<h4 id="2、安装">2、安装</h4><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> yo grunt-cli bower</span>
-</code></pre><h3 id="三、使用">三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入">1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器">2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
-<pre><code>yo
-</code></pre><img src="/imgs/yo.png" width="400" height="300">
-<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
-<p>2.2 如果你知道要安装的生成器的名字：</p>
-<pre><code><span class="title">yo</span> angular
-</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
-<h4 id="3、选择">3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
-<h4 id="4、目录">4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
-<ul>
-<li>app/：Web应用的父级目录。<ul>
-<li>index.html： Angular应用的基准HTML文件（base html file）</li>
-<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
-<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
-<li>scripts：我们的JS文件<ul>
-<li>app.js：主程序</li>
-<li>controllers：Angular控制器</li>
-</ul>
-</li>
-<li>styles：我们的CSS文件</li>
-<li>views：Angular模板</li>
-</ul>
-</li>
-<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
-<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
-</ul>
-<h4 id="5、运行">5、运行</h4><pre><code><span class="title">grunt</span> serve
-</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/25/servlet-life/" itemprop="url">
-                Servlet life
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-10-25T22:19:46+08:00" content="2015-10-25">
-            2015-10-25
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Servlet/" itemprop="url" rel="index">
-                  <span itemprop="name">Servlet</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/25/servlet-life/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/25/servlet-life/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、整体工作流程">一、整体工作流程</h3><blockquote>
-<p>1、Client对Web Server发出请求<br><br>2、Web Server接收到请求后，将其发送给Servlet容器<br><br>3、Servlet容器产生Servlet实例对象并调用ServletAPI中相应的方法来对Client的请求进行处理，然后将处理的相应结果返回给WEB Server。<br><br>4、Web server将从Servlet实例中收到响应并发送回客户端。<br></p>
-</blockquote>
-<img src="/imgs/client-server.png" width="600" height="200">
-<h3 id="二、阶段流程">二、阶段流程</h3><p>　　为了细化上述过程，可分为application的deploy过程和request的发送过程来讲：</p>
-<h4 id="1、deploy阶段：">1、deploy阶段：</h4><p>　　以Tomcat的容器为例，真正管理Servlet的容器是Context容器。一个Context对应一个Web工程。Context容器直接管理Servlet在容器中的包装类Wrapper。<br>　　deploy过程中，首先会生成context对象，config对象。（listener、filter的初始化过程也是在此阶段先后完成的）。<br>　　<img src="/imgs/servlet-container.png" width="300" height="500"></p>
-<h4 id="2、发送request阶段">2、发送request阶段</h4><p>(1）在默认情况下，Servlet实例是在第一个请求到来的时候创建，以后复用。如果有的Servlet需要复杂的操作需要载初始化时完成，比如打开文件、初始化网络连接等，可以通知服务器在启动的时候创建该Servlet的实例，配置<code>&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</code>。<br>(2）init()<br>　　一旦Servlet实例被创建，Web服务器会自动调用init(ServletConfig config)方法来初始化该Servlet。其中方法参数config中包含了Servlet的配置信息，比如初始化参数，该对象在deploy阶段创建。<br>　　init()方法只执行一次。<br>(3)service()<br>　　 service()方法为Servlet的核心方法，Client的业务逻辑应该在该方法内执行，解析Client请求-〉执行业务逻辑-〉输出响应页面到Client。<br>(4）destroy()<br>　　当Web Server认为Servlet实例没有存在的必要了，比如应用重新装载，或服务器关闭，以及Servlet很长时间都没有被访问过。Web Server可以从内存中销毁该实例。Web Server必须保证在销毁Servlet实例之前调用该实例的destroy()方法，以便回收Servlet申请的资源或进行其它的重要的处理。</p>
-<blockquote>
-<p>当先后发送多个request时候，init()只执行一次。servlet容器处理多个请求通过产生多个线程，每个线程执行servlet的单实例的service()方法。</p>
-</blockquote>
-<img src="/imgs/servletLife.png" width="600" height="280">
-<h3 id="三、Filter">三、Filter</h3><p>　　Filter不是一个servlet,它不能产生一个response,但是它能够在一个request到达servlet之前预处理request,也可以在离开servlet时处理response。</p>
-<blockquote>
-<p>Filter常用来：<br></p>
-<ul>
-<li>日志文件记录request参数<br></li>
-<li>身份验证或认证request的resource<br></li>
-<li>在request发送给Servlet之前格式化request的header或者body<br></li>
-<li>压缩发回给Client的reponse数据</li>
-</ul>
-</blockquote>
-<p>　　一个filter有三个阶段init()、doFilter()、destroy()。</p>
-<h4 id="1、init()">1、init()</h4><p>　　filter的init()是在上述的deploy阶段完成的。</p>
-<h4 id="2、doFilter()">2、doFilter()　</h4><p>　　一个Servlet初始化之后，每次request到达该Servlet的service()方法之前，都会先做doFilter()。能够配置一个filter到一个或多个servlet；单个servlet或servlet组能够被多个filter使用。</p>
-<h4 id="3、destroy()">3、destroy()</h4><p>　　　当Servlet进行destroy之后，对应的Filter也会destroy。</p>
-<blockquote>
-<p>当有多个Filter时，按照web.xml中声明的顺序执行filter。</p>
-</blockquote>
-<h3 id="四、Listener">四、Listener</h3><p>　　Listener是Servlet的监听器，它可以监听客户端的请求、服务端的操作等。如监听context、session、application的create,destroy,可以监听到context、session、application<br>属性绑定的变化。通过监听器，可以自动激发一些操作，比如监听在线的用户的数量。<br>　　以实现ServletContextListener接口监听context的create和destroy为例：<br>　　contextInitialized()是在上述deploy阶段Filter的init()之前执行的。<br>　　contextDestroyed()是在Servlet的destroy()及Filter的destroy()之后执行的。
-　　</p>
-<h3 id="五、执行顺序">五、执行顺序</h3><p>　　在<a href="https://github.com/zhangyuyu/ServletLife" target="_blank" rel="external">ServletLife</a>的工程下，执行命令<code>gradle tomcatRunWar</code>。根据下面控制台打印信息，可以看出listen-&gt;filter-&gt;servlet的顺序：</p>
-<pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>Context created on<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>This is the filter init<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-Started Tomcat Server
-The Server is running at http://localhost:8080/ServletLife
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>This is the servlet init<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>do filter<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>This is the servlet service<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>This is the servlet destroy<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>This is the filter destroy<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>Context destroy<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-</code></pre><h3 id="六、对应一个故事">六、对应一个故事</h3><blockquote>
-<p></p><h5 align="center">T公司CX项目开发经历</h5><br>1、T公司接到一个CX项目<br><br>　　根据项目计划书划分职能（BA、开发A功能人员、开发B功能人员……）<br><br>　　确定BA具体人员<br><br>2、需求R1<br><br>　　准备安排具体人员A、B<br><br>　　BA分析问题<br><br>　　A、B开始认真干活<br><br>3、需求R2<br><br>　　BA分析问题<br><br>　　A、B继续干活<br><br>　　……<br><br>4、项目完成了，开发人员解散<br><br>　　BA也role off<br><p></p>
-</blockquote>
-<p>　　故事中，T对应一个Web container, CX对应一个context, BA对应Filter，A\B分别对应一个Servlet，需求R1\R2分别对应两次request。<br>　　第一个阶段对应deploy阶段：划分职能可以代表生成context、config对象；确定BA的具体人员则代表着Filter的初始化。<br>　　第二个阶段对应发送request阶段：安排A、B的巨头人员代表Servlet的初始化；BA分析问题代表着Filter的doFilter(）操作；认真干活则代表Servlet的service()操作。<br>　　第三个阶段是发送另一个request，此过程中没有安排具体的人员（Servlet的初始化），对应的是servlet的多线程操作。<br>　　第四个阶段对应destroy过程，开发人员解散代表Servlet的destroy，BA的role off则代表着Filter的destroy。</p>
 </span>
         
       
@@ -1812,7 +1684,7 @@ The Server is running at http://localhost:8080/ServletLife
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
   </nav>
 
  </div>
@@ -1846,21 +1718,21 @@ The Server is running at http://localhost:8080/ServletLife
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

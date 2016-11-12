@@ -80,6 +80,7 @@ Consensus
 RPC
 
 Agent　　Consul agent有两种运行模式：Server 和 Client。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只">
+<meta name="twitter:image" content="http://yoursite.com/imgs/consul-arch.jpg">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -254,7 +255,7 @@ Agent　　Consul agent有两种运行模式：Server 和 Client。这里的Serv
       
 
       
-        <span itemprop="articleBody"><h3 id="术语">术语</h3><ul>
+        <span itemprop="articleBody"><h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
 <li><a href="#agent">Agent</a></li>
 <li><a href="#client">Client</a></li>
 <li><a href="#server">Server</a></li>
@@ -263,15 +264,15 @@ Agent　　Consul agent有两种运行模式：Server 和 Client。这里的Serv
 <li><a href="#consensus">Consensus</a></li>
 <li><a href="#rpc">RPC</a></li>
 </ul>
-<h4 id="Agent"><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
-<h4 id="Client"><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
-<h4 id="Server"><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
-<h4 id="DataCenter"><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
-<h4 id="Gossip"><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
-<h4 id="Consensus"><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a></p>
-<h4 id="RPC"><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="external">Remote Procedure Call</a></p>
+<h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
+<h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
+<h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
+<h4 id="DataCenter"><a href="#DataCenter" class="headerlink" title="DataCenter"></a><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
+<h4 id="Gossip"><a href="#Gossip" class="headerlink" title="Gossip"></a><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
+<h4 id="Consensus"><a href="#Consensus" class="headerlink" title="Consensus"></a><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a></p>
+<h4 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="external">Remote Procedure Call</a></p>
 <p>　　下图为Consul的架构图：<br><img src="/imgs/consul-arch.jpg" width="400" height="250"></p>
-<h3 id="使用Consul发现服务的三个组件">使用Consul发现服务的三个组件</h3><ol>
+<h3 id="使用Consul发现服务的三个组件"><a href="#使用Consul发现服务的三个组件" class="headerlink" title="使用Consul发现服务的三个组件"></a>使用Consul发现服务的三个组件</h3><ol>
 <li><p>Consul 存储服务信息<br>　　tool to store information about services</p>
 </li>
 <li><p>Registrator 注册Docker服务<br>　　tool to register Docker servicecs</p>
@@ -373,21 +374,21 @@ Agent　　Consul agent有两种运行模式：Server 和 Client。这里的Serv
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

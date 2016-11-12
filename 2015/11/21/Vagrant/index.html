@@ -216,15 +216,15 @@ Vagrant的作用：1、统一开发环境。一次配置打包，统一分发给
       
 
       
-        <span itemprop="articleBody"><h3 id="一、Vagrant的认识">一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
+        <span itemprop="articleBody"><h3 id="一、Vagrant的认识"><a href="#一、Vagrant的认识" class="headerlink" title="一、Vagrant的认识"></a>一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
 <blockquote>
 <p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
 </blockquote>
-<h3 id="二、安装">二、安装</h3><h4 id="1、安装_VirtualBox">1、安装 VirtualBox</h4><h4 id="2、安装_Vagrant">2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
 <blockquote>
 <p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
 </blockquote>
-<h4 id="3、安装系统镜像">3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
+<h4 id="3、安装系统镜像"><a href="#3、安装系统镜像" class="headerlink" title="3、安装系统镜像"></a>3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
 <ul>
 <li>新建一个文件夹，如AgentBox,然后进入目录</li>
 <li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
@@ -240,7 +240,7 @@ Vagrant的作用：1、统一开发环境。一次配置打包，统一分发给
 <li>初始化开发环境<br>　　先进入box里面，然后<code>$ vagrant init AgentBox</code></li>
 <li>启动环境<code>vagrant up</code></li>
 </ul>
-<h3 id="三、常用指令">三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
+<h3 id="三、常用指令"><a href="#三、常用指令" class="headerlink" title="三、常用指令"></a>三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
 <blockquote>
 <p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
 </blockquote>
@@ -249,27 +249,27 @@ Vagrant的作用：1、统一开发环境。一次配置打包，统一分发给
 <p>如果你添加的box名称不是base，那么需要在初始化的时候指定名称，例如vagrant init AgentBox</p>
 </blockquote>
 <p>3、vagrant up，启动虚拟机<br>4、vagrant ssh，ssh到虚拟机<br>5、vagrant reload，重启虚拟机（重新载入配置文件）<br>6、vagrant package –base precise64_default_1447845103364_6382 –output precise64.box打包分发<br>7、vagrant box list<br>8、vagrant status</p>
-<h3 id="四、主要配置">四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
+<h3 id="四、主要配置"><a href="#四、主要配置" class="headerlink" title="四、主要配置"></a>四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
 <p>1、box设置</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.box</span> = <span class="string">"AgentBox"</span>
+<pre><code>config.vm.box = &quot;AgentBox&quot;
 </code></pre><p>2、hostname设置</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.hostname</span> = <span class="string">"for_work"</span>
+<pre><code>config.vm.hostname = &quot;for_work&quot;
 </code></pre><p>3、虚拟机网络设置</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"private_network"</span>, ip: <span class="string">"192.168.33.10"</span>
-config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"public_network"</span>
+<pre><code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;
+config.vm.network &quot;public_network&quot;
 </code></pre><p>4、同步目录</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.synced_folder</span> <span class="string">"../data"</span>, <span class="string">"/vagrant_data"</span>
+<pre><code>config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;
 </code></pre><p>5、端口转发</p>
-<pre><code>config<span class="class">.vm</span><span class="class">.network</span> <span class="string">"forwarded_port"</span>, guest: <span class="number">80</span>, host: <span class="number">8080</span>
+<pre><code>config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080
 </code></pre><p>6、内存和cpu核心</p>
-<pre><code>config.vm.provider <span class="string">"virtualbox"</span> do |vb|
-  <span class="comment">#Display the VirtualBox GUI when booting the machine</span>
-  vb.gui = <span class="constant">true</span>
-  <span class="comment">#Customize the amount of memory on the VM:</span>
-  vb.memory = <span class="string">"1024"</span>
-  vb.cpus = <span class="number">2</span>
-  vb.<span class="property">name</span> = <span class="string">"my_vm"</span>
-<span class="keyword">end</span>
+<pre><code>config.vm.provider &quot;virtualbox&quot; do |vb|
+  #Display the VirtualBox GUI when booting the machine
+  vb.gui = true
+  #Customize the amount of memory on the VM:
+  vb.memory = &quot;1024&quot;
+  vb.cpus = 2
+  vb.name = &quot;my_vm&quot;
+end
 </code></pre><blockquote>
 <p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
 </blockquote>
@@ -362,21 +362,21 @@ config<span class="class">.vm</span><span class="class">.network</span> <span cl
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -411,7 +411,7 @@ config<span class="class">.vm</span><span class="class">.network</span> <span cl
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Vagrant的认识"><span class="nav-number">1.</span> <span class="nav-text">一、Vagrant的认识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、安装"><span class="nav-number">2.</span> <span class="nav-text">二、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、安装_VirtualBox"><span class="nav-number">2.1.</span> <span class="nav-text">1、安装 VirtualBox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、安装_Vagrant"><span class="nav-number">2.2.</span> <span class="nav-text">2、安装 Vagrant</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、安装系统镜像"><span class="nav-number">2.3.</span> <span class="nav-text">3、安装系统镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、常用指令"><span class="nav-number">3.</span> <span class="nav-text">三、常用指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、主要配置"><span class="nav-number">4.</span> <span class="nav-text">四、主要配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Vagrant的认识"><span class="nav-number">1.</span> <span class="nav-text">一、Vagrant的认识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、安装"><span class="nav-number">2.</span> <span class="nav-text">二、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、安装-VirtualBox"><span class="nav-number">2.1.</span> <span class="nav-text">1、安装 VirtualBox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、安装-Vagrant"><span class="nav-number">2.2.</span> <span class="nav-text">2、安装 Vagrant</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、安装系统镜像"><span class="nav-number">2.3.</span> <span class="nav-text">3、安装系统镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、常用指令"><span class="nav-number">3.</span> <span class="nav-text">三、常用指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、主要配置"><span class="nav-number">4.</span> <span class="nav-text">四、主要配置</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

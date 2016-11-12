@@ -43,21 +43,22 @@
 
 <meta name="description" content="Spring AOP即Aspect-oriented programming，面向切面编程，专门用于处理系统中分布于各个模块（不同方法）中的交叉关注点的问题。简单地说，就是一个拦截器（interceptor）拦截一些处理过程。例如，当一个method被执行，Spring AOP能够劫持正在运行的method，在method执行前或者后加入一些额外的功能。
 
-在Spring AOP中，支持4中类型的">
+在Spring AOP中，支持4中类">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringAOP_Advice">
 <meta property="og:url" content="http://yoursite.com/2015/08/27/SpringAOP-Advice/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="Spring AOP即Aspect-oriented programming，面向切面编程，专门用于处理系统中分布于各个模块（不同方法）中的交叉关注点的问题。简单地说，就是一个拦截器（interceptor）拦截一些处理过程。例如，当一个method被执行，Spring AOP能够劫持正在运行的method，在method执行前或者后加入一些额外的功能。
 
-在Spring AOP中，支持4中类型的">
+在Spring AOP中，支持4中类">
 <meta property="og:image" content="http://yoursite.com/imgs/SpringAOP_Advice.png">
 <meta property="og:updated_time" content="2015-10-11T12:04:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringAOP_Advice">
 <meta name="twitter:description" content="Spring AOP即Aspect-oriented programming，面向切面编程，专门用于处理系统中分布于各个模块（不同方法）中的交叉关注点的问题。简单地说，就是一个拦截器（interceptor）拦截一些处理过程。例如，当一个method被执行，Spring AOP能够劫持正在运行的method，在method执行前或者后加入一些额外的功能。
 
-在Spring AOP中，支持4中类型的">
+在Spring AOP中，支持4中类">
+<meta name="twitter:image" content="http://yoursite.com/imgs/SpringAOP_Advice.png">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -242,196 +243,196 @@
 <li>Around advice – 环绕通知，结合了以上三种</li>
 </ul>
 </blockquote>
-<h3 id="一、不使用AOP的简单例子">一、不使用AOP的简单例子</h3><h4 id="1、在CustomerService-java中">1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
+<h3 id="一、不使用AOP的简单例子"><a href="#一、不使用AOP的简单例子" class="headerlink" title="一、不使用AOP的简单例子"></a>一、不使用AOP的简单例子</h3><h4 id="1、在CustomerService-java中"><a href="#1、在CustomerService-java中" class="headerlink" title="1、在CustomerService.java中"></a>1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
 
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomerService</span> {
-    <span class="keyword">private</span> String name;
-    <span class="keyword">private</span> String occupation;
+public class CustomerService {
+    private String name;
+    private String occupation;
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span>(<span class="params">String name</span>) </span>{<span class="keyword">this</span>.name = name;}
+    public void setName(String name) {this.name = name;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span>(<span class="params"></span>) </span>{System.<span class="keyword">out</span>.println(<span class="string">"Customer name : "</span> + <span class="keyword">this</span>.name);}
+    public void printName() {System.out.println(&quot;Customer name : &quot; + this.name);}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printOccupation</span>(<span class="params"></span>) </span>{System.<span class="keyword">out</span>.println(<span class="string">"Customer occupation : "</span> + <span class="keyword">this</span>.occupation);}
+    public void printOccupation() {System.out.println(&quot;Customer occupation : &quot; + this.occupation);}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOccupation</span>(<span class="params">String occupation</span>) </span>{<span class="keyword">this</span>.occupation = occupation;}
+    public void setOccupation(String occupation) {this.occupation = occupation;}
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printThrowException</span>(<span class="params"></span>) </span>{
-        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();
+    public void printThrowException() {
+        throw new IllegalArgumentException();
     }    
 }
-</code></pre><h4 id="2、在Spring-Customer-xml中">2、在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
+</code></pre><h4 id="2、在Spring-Customer-xml中"><a href="#2、在Spring-Customer-xml中" class="headerlink" title="2、在Spring-Customer.xml中"></a>2、在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"Zhang Yu"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"occupation"</span> value=<span class="string">"developer"</span> /&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
     &lt;/bean&gt;
 &lt;/beans&gt;
-</code></pre><h4 id="3、运行，在App-java中">3、运行，在App.java中</h4><pre><code><span class="keyword">package</span> com.zhangyu.common;
+</code></pre><h4 id="3、运行，在App-java中"><a href="#3、运行，在App-java中" class="headerlink" title="3、运行，在App.java中"></a>3、运行，在App.java中</h4><pre><code>package com.zhangyu.common;
 
-<span class="keyword">import</span> com.zhangyu.customer.services.CustomerService;
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.zhangyu.customer.services.CustomerService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-<span class="keyword">public</span> class App {
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) {
-        ApplicationContext appContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(
-                <span class="keyword">new</span> <span class="keyword">String</span>[] { <span class="string">"Spring-Customer.xml"</span> });
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext(
+                new String[] { &quot;Spring-Customer.xml&quot; });
 
         CustomerService cust = (CustomerService) appContext
-                .getBean(<span class="string">"customerService"</span>);
+                .getBean(&quot;customerService&quot;);
 
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
+        System.out.println(&quot;*************************&quot;);
         cust.printName();
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
+        System.out.println(&quot;*************************&quot;);
         cust.printOccupation();
-        System.out.<span class="built_in">println</span>(<span class="string">"*************************"</span>);
-        <span class="keyword">try</span> {
+        System.out.println(&quot;*************************&quot;);
+        try {
             cust.printThrowException();
-        } <span class="keyword">catch</span> (Exception e) {
+        } catch (Exception e) {
 
         }
     }
 }
-</code></pre><h4 id="4、结果">4、结果</h4><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+</code></pre><h4 id="4、结果"><a href="#4、结果" class="headerlink" title="4、结果"></a>4、结果</h4><pre><code>*************************
 Customer name : Zhang Yu
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Customer occupation : developer
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
-</code></pre><h3 id="二、使用AOP">二、使用AOP</h3><h4 id="1、Before_Advice">1、Before Advice</h4><h5 id="（1）HelloBeforeMethod-java中">（1）HelloBeforeMethod.java中</h5><p>　　创建一个实现了接口MethodBeforeAdvice的class，method运行前，将运行HelloBeforeMethod.java　　</p>
-<pre><code><span class="keyword">package</span> com.zhangyu.aop;
+*************************
+</code></pre><h3 id="二、使用AOP"><a href="#二、使用AOP" class="headerlink" title="二、使用AOP"></a>二、使用AOP</h3><h4 id="1、Before-Advice"><a href="#1、Before-Advice" class="headerlink" title="1、Before Advice"></a>1、Before Advice</h4><h5 id="（1）HelloBeforeMethod-java中"><a href="#（1）HelloBeforeMethod-java中" class="headerlink" title="（1）HelloBeforeMethod.java中"></a>（1）HelloBeforeMethod.java中</h5><p>　　创建一个实现了接口MethodBeforeAdvice的class，method运行前，将运行HelloBeforeMethod.java　　</p>
+<pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> java.lang.reflect.Method;
-<span class="keyword">import</span> org.springframework.aop.MethodBeforeAdvice;
+import java.lang.reflect.Method;
+import org.springframework.aop.MethodBeforeAdvice;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloBeforeMethod</span> <span class="keyword">implements</span> <span class="title">MethodBeforeAdvice</span> </span>{
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">before</span><span class="params">(Method method, Object[] args, Object <span class="keyword">target</span>)</span>
-            <span class="keyword">throws</span> Throwable </span>{
-        System.out.println(<span class="string">"HelloBeforeMethod : Before method ,hello"</span>);
+public class HelloBeforeMethod implements MethodBeforeAdvice {
+    @Override
+    public void before(Method method, Object[] args, Object target)
+            throws Throwable {
+        System.out.println(&quot;HelloBeforeMethod : Before method ,hello&quot;);
     }
 }
-</code></pre><h5 id="(2)_Spring-Customer-xml中">(2) Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloBeforeMethodBean</code>，然后创建一个新的代理（proxy），命名为<code>customerServiceProxy</code>。其中,<code>target</code>定义你想劫持哪个bean，<code>interceptorNames</code>定义你想用哪个class(advice)劫持target。</p>
-<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"Zhang Yu"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"occupation"</span> value=<span class="string">"developer"</span> /&gt;
+</code></pre><h5 id="2-Spring-Customer-xml中"><a href="#2-Spring-Customer-xml中" class="headerlink" title="(2) Spring-Customer.xml中"></a>(2) Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloBeforeMethodBean</code>，然后创建一个新的代理（proxy），命名为<code>customerServiceProxy</code>。其中,<code>target</code>定义你想劫持哪个bean，<code>interceptorNames</code>定义你想用哪个class(advice)劫持target。</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"helloAroundMethodBean"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.aop.HelloAroundMethod"</span> /&gt;
-    &lt;bean <span class="property">id</span>=<span class="string">"helloBeforeMethodBean"</span> <span class="type">class</span>=<span class="string">"com.zhangyu.aop.HelloBeforeMethod"</span> /&gt;
+    &lt;bean id=&quot;helloAroundMethodBean&quot; class=&quot;com.zhangyu.aop.HelloAroundMethod&quot; /&gt;
+    &lt;bean id=&quot;helloBeforeMethodBean&quot; class=&quot;com.zhangyu.aop.HelloBeforeMethod&quot; /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerServiceProxy"</span> <span class="type">class</span>=<span class="string">"org.springframework.aop.framework.ProxyFactoryBean"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"target"</span> <span class="keyword">ref</span>=<span class="string">"customerService"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"interceptorNames"</span>&gt;
-            &lt;<span class="type">list</span>&gt;
+    &lt;bean id=&quot;customerServiceProxy&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
+        &lt;property name=&quot;target&quot; ref=&quot;customerService&quot; /&gt;
+        &lt;property name=&quot;interceptorNames&quot;&gt;
+            &lt;list&gt;
                 &lt;value&gt;helloBeforeMethodBean&lt;/value&gt;
-            &lt;/<span class="type">list</span>&gt;
-        &lt;/<span class="keyword">property</span>&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
     &lt;/bean&gt;
 &lt;/beans&gt;
-</code></pre><h5 id="(3)_运行，在App-java中">(3) 运行，在App.java中　　</h5><p>　　将CustomerService cust改为从<code>customerServiceProxy</code>中getBean:</p>
-<pre><code>CustomerService cust = <span class="params">(CustomerService)</span>appContext.getBean<span class="params">(<span class="string">"customerServiceProxy"</span>)</span>;
+</code></pre><h5 id="3-运行，在App-java中"><a href="#3-运行，在App-java中" class="headerlink" title="(3) 运行，在App.java中　　"></a>(3) 运行，在App.java中　　</h5><p>　　将CustomerService cust改为从<code>customerServiceProxy</code>中getBean:</p>
+<pre><code>CustomerService cust = (CustomerService)appContext.getBean(&quot;customerServiceProxy&quot;);
 </code></pre><p>#####（4）结果</p>
-<pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<pre><code>*************************
 HelloBeforeMethod : Before method ,hello
 Customer name : Zhang Yu
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 HelloBeforeMethod : Before method ,hello
 Customer occupation : developer
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 HelloBeforeMethod : Before method ,hello
-</code></pre><h4 id="2、After_Advice">2、After Advice</h4><h5 id="(1)_在HelloAfterMethod-java中">(1) 在HelloAfterMethod.java中</h5><pre><code><span class="keyword">package</span> com.zhangyu.aop;
+</code></pre><h4 id="2、After-Advice"><a href="#2、After-Advice" class="headerlink" title="2、After Advice"></a>2、After Advice</h4><h5 id="1-在HelloAfterMethod-java中"><a href="#1-在HelloAfterMethod-java中" class="headerlink" title="(1) 在HelloAfterMethod.java中"></a>(1) 在HelloAfterMethod.java中</h5><pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> java.lang.reflect.Method;
-<span class="keyword">import</span> org.springframework.aop.AfterReturningAdvice;
+import java.lang.reflect.Method;
+import org.springframework.aop.AfterReturningAdvice;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloAfterMethod</span> <span class="keyword">implements</span> <span class="title">AfterReturningAdvice</span> </span>{
-    <span class="annotation">@Override</span>
-    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">(Object returnValue, Method method,
-            Object[] args, Object <span class="keyword">target</span>)</span> <span class="keyword">throws</span> Throwable </span>{
-        System.out.println(<span class="string">"HelloAfterMethod : After method ,hello!"</span>);
+public class HelloAfterMethod implements AfterReturningAdvice {
+    @Override
+    public void afterReturning(Object returnValue, Method method,
+            Object[] args, Object target) throws Throwable {
+        System.out.println(&quot;HelloAfterMethod : After method ,hello!&quot;);
     }
 }
-</code></pre><h5 id="(2)_在Spring-Customer-xml中">(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAfterMethodBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAfterMethodBean</code>。
+</code></pre><h5 id="2-在Spring-Customer-xml中"><a href="#2-在Spring-Customer-xml中" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAfterMethodBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAfterMethodBean</code>。
 　　</p>
-<h5 id="（3）运行结果">（3）运行结果</h5><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<h5 id="（3）运行结果"><a href="#（3）运行结果" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
 Customer name : Zhang Yu
 HelloAfterMethod : After method ,hello
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Customer occupation : developer
 HelloAfterMethod : After method ,hello
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 </code></pre><p>　　执行到cust.printThrowException()后，直接抛出异常，方法没有正常执行完毕（或者说没有返回结果），所以不运行切入的afterReturning方法。</p>
-<h4 id="3、After_throwing_advice">3、After throwing advice</h4><p>　　创建一个实现了ThrowsAdvice接口的class，劫持IllegalArgumentException异常，目标method运行时，抛出IllegalArgumentException异常后，运行切入的方法。</p>
-<h5 id="(1)_在HelloThrowException-java中">(1) 在HelloThrowException.java中</h5><pre><code><span class="keyword">package</span> com.zhangyu.aop;
+<h4 id="3、After-throwing-advice"><a href="#3、After-throwing-advice" class="headerlink" title="3、After throwing advice"></a>3、After throwing advice</h4><p>　　创建一个实现了ThrowsAdvice接口的class，劫持IllegalArgumentException异常，目标method运行时，抛出IllegalArgumentException异常后，运行切入的方法。</p>
+<h5 id="1-在HelloThrowException-java中"><a href="#1-在HelloThrowException-java中" class="headerlink" title="(1) 在HelloThrowException.java中"></a>(1) 在HelloThrowException.java中</h5><pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> org.springframework.aop.ThrowsAdvice;
+import org.springframework.aop.ThrowsAdvice;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloThrowException</span> <span class="keyword">implements</span> <span class="title">ThrowsAdvice</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterThrowing</span><span class="params">(IllegalArgumentException e)</span> <span class="keyword">throws</span> Throwable </span>{
-        System.out.println(<span class="string">"HelloThrowException : Throw exception ,hello"</span>);
+public class HelloThrowException implements ThrowsAdvice {
+    public void afterThrowing(IllegalArgumentException e) throws Throwable {
+        System.out.println(&quot;HelloThrowException : Throw exception ,hello&quot;);
     }
 }
-</code></pre><h5 id="(2)_在Spring-Customer-xml中-1">(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloThrowExceptionBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloThrowExceptionBean</code>。
+</code></pre><h5 id="2-在Spring-Customer-xml中-1"><a href="#2-在Spring-Customer-xml中-1" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloThrowExceptionBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloThrowExceptionBean</code>。
 　　</p>
-<h5 id="（3）运行结果-1">（3）运行结果　　</h5><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<h5 id="（3）运行结果-1"><a href="#（3）运行结果-1" class="headerlink" title="（3）运行结果　　"></a>（3）运行结果　　</h5><pre><code>*************************
 Customer name : Zhang Yu
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Customer occupation : developer
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 HelloThrowException : Throw exception ,hello
 </code></pre><p>者说没有返回结果），所以不运行切入的afterReturning方法。</p>
-<h4 id="4、Around_advice">4、Around advice</h4><h5 id="(1)_在HelloAroundMethod-java中">(1) 在HelloAroundMethod.java中</h5><pre><code>package com.zhangyu.aop;
+<h4 id="4、Around-advice"><a href="#4、Around-advice" class="headerlink" title="4、Around advice"></a>4、Around advice</h4><h5 id="1-在HelloAroundMethod-java中"><a href="#1-在HelloAroundMethod-java中" class="headerlink" title="(1) 在HelloAroundMethod.java中"></a>(1) 在HelloAroundMethod.java中</h5><pre><code>package com.zhangyu.aop;
 
-<span class="keyword">import</span> org.aopalliance.intercept.<span class="type">MethodInterceptor</span>;
-<span class="keyword">import</span> org.aopalliance.intercept.<span class="type">MethodInvocation</span>;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
-public class <span class="type">HelloAroundMethod</span> implements <span class="type">MethodInterceptor</span> {
-    @<span class="type">Override</span>
-    public <span class="type">Object</span> invoke(<span class="type">MethodInvocation</span> methodInvocation) throws <span class="type">Throwable</span> {
+public class HelloAroundMethod implements MethodInterceptor {
+    @Override
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 
-        <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"Method name : "</span> + methodInvocation.getMethod().getName());
+        System.out.println(&quot;Method name : &quot; + methodInvocation.getMethod().getName());
 
-        // same <span class="keyword">with</span> <span class="type">MethodBeforeAdvice</span>
-        <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Before method ,hello"</span>);
+        // same with MethodBeforeAdvice
+        System.out.println(&quot;HelloAroundMethod : Before method ,hello&quot;);
 
-        <span class="keyword">try</span> {
-            <span class="type">Object</span> <span class="literal">result</span> = methodInvocation.proceed();
+        try {
+            Object result = methodInvocation.proceed();
 
-            // same <span class="keyword">with</span> <span class="type">AfterReturningAdvice</span>
-            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : After method ,hello!"</span>);
-            <span class="keyword">return</span> <span class="literal">result</span>;
-        } catch (<span class="type">IllegalArgumentException</span> e) {
-            // same <span class="keyword">with</span> <span class="type">ThrowsAdvice</span>
-            <span class="type">System</span>.<span class="keyword">out</span>.println(<span class="string">"HelloAroundMethod : Throw exception ,hello!"</span>);
+            // same with AfterReturningAdvice
+            System.out.println(&quot;HelloAroundMethod : After method ,hello!&quot;);
+            return result;
+        } catch (IllegalArgumentException e) {
+            // same with ThrowsAdvice
+            System.out.println(&quot;HelloAroundMethod : Throw exception ,hello!&quot;);
             throw e;
         }
     }
 }
-</code></pre><h5 id="(2)_在Spring-Customer-xml中-2">(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAroundMethod</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAroundMethodBean</code>。
+</code></pre><h5 id="2-在Spring-Customer-xml中-2"><a href="#2-在Spring-Customer-xml中-2" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAroundMethod</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAroundMethodBean</code>。
 　　</p>
-<h5 id="（3）运行结果-2">（3）运行结果</h5><pre><code><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+<h5 id="（3）运行结果-2"><a href="#（3）运行结果-2" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
 Method name : printName
 HelloAroundMethod : Before method ,hello!
 Customer name : Zhang Yu
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Method name : printOccupation
 HelloAroundMethod : Before method ,hello!
 Customer occupation : developer
 HelloAroundMethod : After method ,hello!
-<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+*************************
 Method name : printThrowException
 HelloAroundMethod : Before method ,hello!
 HelloAroundMethod : Throw exception ,hello!
-</code></pre><h3 id="三、目录结构">三、目录结构</h3><img src="/imgs/SpringAOP_Advice.png" width="300" height="500">
+</code></pre><h3 id="三、目录结构"><a href="#三、目录结构" class="headerlink" title="三、目录结构"></a>三、目录结构</h3><img src="/imgs/SpringAOP_Advice.png" width="300" height="500">
 </span>
       
     </div>
@@ -521,21 +522,21 @@ HelloAroundMethod : Throw exception ,hello!
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -570,7 +571,7 @@ HelloAroundMethod : Throw exception ,hello!
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、不使用AOP的简单例子"><span class="nav-number">1.</span> <span class="nav-text">一、不使用AOP的简单例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在CustomerService-java中"><span class="nav-number">1.1.</span> <span class="nav-text">1、在CustomerService.java中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、在Spring-Customer-xml中"><span class="nav-number">1.2.</span> <span class="nav-text">2、在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、运行，在App-java中"><span class="nav-number">1.3.</span> <span class="nav-text">3、运行，在App.java中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、结果"><span class="nav-number">1.4.</span> <span class="nav-text">4、结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用AOP"><span class="nav-number">2.</span> <span class="nav-text">二、使用AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Before_Advice"><span class="nav-number">2.1.</span> <span class="nav-text">1、Before Advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）HelloBeforeMethod-java中"><span class="nav-number">2.1.1.</span> <span class="nav-text">（1）HelloBeforeMethod.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#(2)_Spring-Customer-xml中"><span class="nav-number">2.1.2.</span> <span class="nav-text">(2) Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#(3)_运行，在App-java中"><span class="nav-number">2.1.3.</span> <span class="nav-text">(3) 运行，在App.java中　　</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、After_Advice"><span class="nav-number">2.2.</span> <span class="nav-text">2、After Advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#(1)_在HelloAfterMethod-java中"><span class="nav-number">2.2.1.</span> <span class="nav-text">(1) 在HelloAfterMethod.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#(2)_在Spring-Customer-xml中"><span class="nav-number">2.2.2.</span> <span class="nav-text">(2) 在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）运行结果"><span class="nav-number">2.2.3.</span> <span class="nav-text">（3）运行结果</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、After_throwing_advice"><span class="nav-number">2.3.</span> <span class="nav-text">3、After throwing advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#(1)_在HelloThrowException-java中"><span class="nav-number">2.3.1.</span> <span class="nav-text">(1) 在HelloThrowException.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#(2)_在Spring-Customer-xml中-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">(2) 在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）运行结果-1"><span class="nav-number">2.3.3.</span> <span class="nav-text">（3）运行结果　　</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Around_advice"><span class="nav-number">2.4.</span> <span class="nav-text">4、Around advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#(1)_在HelloAroundMethod-java中"><span class="nav-number">2.4.1.</span> <span class="nav-text">(1) 在HelloAroundMethod.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#(2)_在Spring-Customer-xml中-2"><span class="nav-number">2.4.2.</span> <span class="nav-text">(2) 在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）运行结果-2"><span class="nav-number">2.4.3.</span> <span class="nav-text">（3）运行结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、目录结构"><span class="nav-number">3.</span> <span class="nav-text">三、目录结构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、不使用AOP的简单例子"><span class="nav-number">1.</span> <span class="nav-text">一、不使用AOP的简单例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在CustomerService-java中"><span class="nav-number">1.1.</span> <span class="nav-text">1、在CustomerService.java中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、在Spring-Customer-xml中"><span class="nav-number">1.2.</span> <span class="nav-text">2、在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、运行，在App-java中"><span class="nav-number">1.3.</span> <span class="nav-text">3、运行，在App.java中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、结果"><span class="nav-number">1.4.</span> <span class="nav-text">4、结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用AOP"><span class="nav-number">2.</span> <span class="nav-text">二、使用AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Before-Advice"><span class="nav-number">2.1.</span> <span class="nav-text">1、Before Advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）HelloBeforeMethod-java中"><span class="nav-number">2.1.1.</span> <span class="nav-text">（1）HelloBeforeMethod.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Spring-Customer-xml中"><span class="nav-number">2.1.2.</span> <span class="nav-text">(2) Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-运行，在App-java中"><span class="nav-number">2.1.3.</span> <span class="nav-text">(3) 运行，在App.java中　　</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、After-Advice"><span class="nav-number">2.2.</span> <span class="nav-text">2、After Advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在HelloAfterMethod-java中"><span class="nav-number">2.2.1.</span> <span class="nav-text">(1) 在HelloAfterMethod.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-在Spring-Customer-xml中"><span class="nav-number">2.2.2.</span> <span class="nav-text">(2) 在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）运行结果"><span class="nav-number">2.2.3.</span> <span class="nav-text">（3）运行结果</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、After-throwing-advice"><span class="nav-number">2.3.</span> <span class="nav-text">3、After throwing advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在HelloThrowException-java中"><span class="nav-number">2.3.1.</span> <span class="nav-text">(1) 在HelloThrowException.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-在Spring-Customer-xml中-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">(2) 在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）运行结果-1"><span class="nav-number">2.3.3.</span> <span class="nav-text">（3）运行结果　　</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、Around-advice"><span class="nav-number">2.4.</span> <span class="nav-text">4、Around advice</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在HelloAroundMethod-java中"><span class="nav-number">2.4.1.</span> <span class="nav-text">(1) 在HelloAroundMethod.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-在Spring-Customer-xml中-2"><span class="nav-number">2.4.2.</span> <span class="nav-text">(2) 在Spring-Customer.xml中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）运行结果-2"><span class="nav-number">2.4.3.</span> <span class="nav-text">（3）运行结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、目录结构"><span class="nav-number">3.</span> <span class="nav-text">三、目录结构</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

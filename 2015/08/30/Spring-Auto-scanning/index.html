@@ -47,10 +47,8 @@ public class CustomerDAO
 {
     @Override
     public String toString() {
-        return &quot;Hello , This is CustomerDAO&quot;;
-    }    
-}
-2、Custom">
+        return &amp;quot;Hello , This is CustomerDAO&amp;quot;;
+    }">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring-Auto-scanning">
 <meta property="og:url" content="http://yoursite.com/2015/08/30/Spring-Auto-scanning/index.html">
@@ -61,10 +59,8 @@ public class CustomerDAO
 {
     @Override
     public String toString() {
-        return &quot;Hello , This is CustomerDAO&quot;;
-    }    
-}
-2、Custom">
+        return &amp;quot;Hello , This is CustomerDAO&amp;quot;;
+    }">
 <meta property="og:updated_time" content="2015-10-11T12:38:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring-Auto-scanning">
@@ -74,10 +70,8 @@ public class CustomerDAO
 {
     @Override
     public String toString() {
-        return &quot;Hello , This is CustomerDAO&quot;;
-    }    
-}
-2、Custom">
+        return &amp;quot;Hello , This is CustomerDAO&amp;quot;;
+    }">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -252,148 +246,148 @@ public class CustomerDAO
       
 
       
-        <span itemprop="articleBody"><h3 id="一、一般的bean">一、一般的bean</h3><h4 id="1、CustomerDAO-java">1、CustomerDAO.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
+        <span itemprop="articleBody"><h3 id="一、一般的bean"><a href="#一、一般的bean" class="headerlink" title="一、一般的bean"></a>一、一般的bean</h3><h4 id="1、CustomerDAO-java"><a href="#1、CustomerDAO-java" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
     }    
 }
-</code></pre><h4 id="2、CustomerService-java">2、CustomerService.java</h4><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
+</code></pre><h4 id="2、CustomerService-java"><a href="#2、CustomerService-java" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
 
-<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
+import com.mkyong.customer.dao.CustomerDAO;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
+public class CustomerService 
+{
     CustomerDAO customerDAO;
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCustomerDAO</span><span class="params">(CustomerDAO customerDAO)</span> </span>{
-        <span class="keyword">this</span>.customerDAO = customerDAO;
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
     }
 
 }
-</code></pre><h4 id="3、Spring-Customer-xml">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"</span>&gt;
+</code></pre><h4 id="3、Spring-Customer-xml"><a href="#3、Spring-Customer-xml" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerService"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.services.CustomerService"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"customerDAO"</span> <span class="keyword">ref</span>=<span class="string">"customerDAO"</span> /&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"customerDAO"</span> <span class="type">class</span>=<span class="string">"com.mkyong.customer.dao.CustomerDAO"</span> /&gt;
+    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
 
 &lt;/beans&gt;
-</code></pre><h3 id="二、auto_Scanning">二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1">1、CustomerDAO.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span>;
+</code></pre><h3 id="二、auto-Scanning"><a href="#二、auto-Scanning" class="headerlink" title="二、auto Scanning"></a>二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1"><a href="#1、CustomerDAO-java-1" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
 
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
+import org.springframework.stereotype.Component;
 
-<span class="at_rule">@<span class="keyword">Component</span>
+@Component
 public class CustomerDAO 
-</span>{
-    <span class="at_rule">@<span class="keyword">Override</span>
-    public String <span class="function">toString</span>() </span>{
-        <span class="tag">return</span> "<span class="tag">Hello</span> , <span class="tag">This</span> <span class="tag">is</span> <span class="tag">CustomerDAO</span>";
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
     }    
 }
-</code></pre><h4 id="2、CustomerService-java-1">2、CustomerService.java</h4><pre><code><span class="tag">package</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.services</span>;
+</code></pre><h4 id="2、CustomerService-java-1"><a href="#2、CustomerService-java-1" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
 
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.beans</span><span class="class">.factory</span><span class="class">.annotation</span><span class="class">.Autowired</span>;
-<span class="tag">import</span> <span class="tag">org</span><span class="class">.springframework</span><span class="class">.stereotype</span><span class="class">.Component</span>;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-<span class="tag">import</span> <span class="tag">com</span><span class="class">.mkyong</span><span class="class">.customer</span><span class="class">.dao</span><span class="class">.CustomerDAO</span>;
+import com.mkyong.customer.dao.CustomerDAO;
 
-<span class="at_rule">@<span class="keyword">Component</span>
+@Component
 public class CustomerService 
-</span>{
-    <span class="at_rule">@<span class="keyword">Autowired</span>
-    CustomerDAO customerDAO</span>;
+{
+    @Autowired
+    CustomerDAO customerDAO;
 
-    <span class="at_rule">@<span class="keyword">Override</span>
-    public String <span class="function">toString</span>() </span>{
-        <span class="tag">return</span> "<span class="tag">CustomerService</span> <span class="attr_selector">[customerDAO=" + customerDAO + "]</span>";
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
     }
 }
-</code></pre><h4 id="3、Spring-Customer-xml-1">3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span>
-    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
-    http:<span class="comment">//www.springframework.org/schema/context</span>
-    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
+</code></pre><h4 id="3、Spring-Customer-xml-1"><a href="#3、Spring-Customer-xml-1" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
 
-    &lt;context:component-scan base-package=<span class="string">"com.mkyong.customer"</span> /&gt;
+    &lt;context:component-scan base-package=&quot;com.mkyong.customer&quot; /&gt;
 
 &lt;/beans&gt;
-</code></pre><h3 id="三、Antotation_Types——自动扫描组件的注释类型">三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
+</code></pre><h3 id="三、Antotation-Types——自动扫描组件的注释类型"><a href="#三、Antotation-Types——自动扫描组件的注释类型" class="headerlink" title="三、Antotation Types——自动扫描组件的注释类型"></a>三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
 <p>@Component      ——表示一个自动扫描component</p>
 <p>@Repository              ——表示持久化层的DAO component</p>
 <p>@Service             ——表示业务逻辑层的Service component</p>
 <p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
 <p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
-<h3 id="四、Spring_Filter_Components_——_在自动扫描中过滤组件">四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter_Component——include">1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
-<h5 id="（1）DAO层，在CustomerDAO-java中">（1）DAO层，在CustomerDAO.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.dao;
+<h3 id="四、Spring-Filter-Components-——-在自动扫描中过滤组件"><a href="#四、Spring-Filter-Components-——-在自动扫描中过滤组件" class="headerlink" title="四、Spring Filter Components —— 在自动扫描中过滤组件"></a>四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter-Component——include"><a href="#1、Filter-Component——include" class="headerlink" title="1、Filter Component——include"></a>1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
+<h5 id="（1）DAO层，在CustomerDAO-java中"><a href="#（1）DAO层，在CustomerDAO-java中" class="headerlink" title="（1）DAO层，在CustomerDAO.java中"></a>（1）DAO层，在CustomerDAO.java中</h5><pre><code>package com.mkyong.customer.dao;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDAO</span> 
-</span>{
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Hello , This is CustomerDAO"</span>;
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
     }    
 }
-</code></pre><h5 id="（2）Service层，在CustomerService-java中">（2）Service层，在CustomerService.java中</h5><pre><code><span class="keyword">package</span> com.mkyong.customer.services;
+</code></pre><h5 id="（2）Service层，在CustomerService-java中"><a href="#（2）Service层，在CustomerService-java中" class="headerlink" title="（2）Service层，在CustomerService.java中"></a>（2）Service层，在CustomerService.java中</h5><pre><code>package com.mkyong.customer.services;
 
-<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
-<span class="keyword">import</span> com.mkyong.customer.dao.CustomerDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.mkyong.customer.dao.CustomerDAO;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerService</span> 
-</span>{
-    <span class="annotation">@Autowired</span>
+public class CustomerService 
+{
+    @Autowired
     CustomerDAO customerDAO;
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"CustomerService [customerDAO="</span> + customerDAO + <span class="string">"]"</span>;
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
     }
 
 }
-</code></pre><h5 id="（3）在Spring-Customer-xml中">（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation="http:<span class="comment">//www.springframework.org/schema/beans</span>
-    http:<span class="comment">//www.springframework.org/schema/beans/spring-beans-2.5.xsd</span>
-    http:<span class="comment">//www.springframework.org/schema/context</span>
-    http:<span class="comment">//www.springframework.org/schema/context/spring-context-2.5.xsd"&gt;</span>
+</code></pre><h5 id="（3）在Spring-Customer-xml中"><a href="#（3）在Spring-Customer-xml中" class="headerlink" title="（3）在Spring-Customer.xml中"></a>（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
 
-    &lt;context:component-scan base-package=<span class="string">"com.mkyong"</span> &gt;
+    &lt;context:component-scan base-package=&quot;com.mkyong&quot; &gt;
 
-        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-                       expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;
 
-        &lt;context:<span class="keyword">include</span>-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-                       expression=<span class="string">"com.mkyong.customer.services.*Service.*"</span> /&gt;
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.services.*Service.*&quot; /&gt;
 
     &lt;/context:component-scan&gt;
 
 &lt;/beans&gt;
 </code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
-<h4 id="2、Filter_Component——exclude">2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
-<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei.customer"</span> &gt;
-        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"annotation"</span> 
-            expression=<span class="string">"org.springframework.stereotype.Service"</span> /&gt;        
-&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
+<h4 id="2、Filter-Component——exclude"><a href="#2、Filter-Component——exclude" class="headerlink" title="2、Filter Component——exclude"></a>2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei.customer&quot; &gt;
+        &lt;context:exclude-filter type=&quot;annotation&quot; 
+            expression=&quot;org.springframework.stereotype.Service&quot; /&gt;        
+&lt;/context:component-scan&gt;
 </code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
-<pre><code>&lt;<span class="keyword">context</span>:<span class="keyword">component</span>-scan base-<span class="keyword">package</span>=<span class="string">"com.lei"</span> &gt;
-        &lt;<span class="keyword">context</span>:exclude-filter <span class="keyword">type</span>=<span class="string">"regex"</span> 
-            expression=<span class="string">"com.mkyong.customer.dao.*DAO.*"</span> /&gt;        
-&lt;/<span class="keyword">context</span>:<span class="keyword">component</span>-scan&gt;
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei&quot; &gt;
+        &lt;context:exclude-filter type=&quot;regex&quot; 
+            expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;        
+&lt;/context:component-scan&gt;
 </code></pre></span>
       
     </div>
@@ -483,21 +477,21 @@ public class CustomerService
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -532,7 +526,7 @@ public class CustomerService
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、一般的bean"><span class="nav-number">1.</span> <span class="nav-text">一、一般的bean</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、CustomerDAO-java"><span class="nav-number">1.1.</span> <span class="nav-text">1、CustomerDAO.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、CustomerService-java"><span class="nav-number">1.2.</span> <span class="nav-text">2、CustomerService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Spring-Customer-xml"><span class="nav-number">1.3.</span> <span class="nav-text">3、Spring-Customer.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、auto_Scanning"><span class="nav-number">2.</span> <span class="nav-text">二、auto Scanning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、CustomerDAO-java-1"><span class="nav-number">2.1.</span> <span class="nav-text">1、CustomerDAO.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、CustomerService-java-1"><span class="nav-number">2.2.</span> <span class="nav-text">2、CustomerService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Spring-Customer-xml-1"><span class="nav-number">2.3.</span> <span class="nav-text">3、Spring-Customer.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Antotation_Types——自动扫描组件的注释类型"><span class="nav-number">3.</span> <span class="nav-text">三、Antotation Types——自动扫描组件的注释类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Spring_Filter_Components_——_在自动扫描中过滤组件"><span class="nav-number">4.</span> <span class="nav-text">四、Spring Filter Components —— 在自动扫描中过滤组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Filter_Component——include"><span class="nav-number">4.1.</span> <span class="nav-text">1、Filter Component——include</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）DAO层，在CustomerDAO-java中"><span class="nav-number">4.1.1.</span> <span class="nav-text">（1）DAO层，在CustomerDAO.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）Service层，在CustomerService-java中"><span class="nav-number">4.1.2.</span> <span class="nav-text">（2）Service层，在CustomerService.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）在Spring-Customer-xml中"><span class="nav-number">4.1.3.</span> <span class="nav-text">（3）在Spring-Customer.xml中</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Filter_Component——exclude"><span class="nav-number">4.2.</span> <span class="nav-text">2、Filter Component——exclude</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、一般的bean"><span class="nav-number">1.</span> <span class="nav-text">一、一般的bean</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、CustomerDAO-java"><span class="nav-number">1.1.</span> <span class="nav-text">1、CustomerDAO.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、CustomerService-java"><span class="nav-number">1.2.</span> <span class="nav-text">2、CustomerService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Spring-Customer-xml"><span class="nav-number">1.3.</span> <span class="nav-text">3、Spring-Customer.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、auto-Scanning"><span class="nav-number">2.</span> <span class="nav-text">二、auto Scanning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、CustomerDAO-java-1"><span class="nav-number">2.1.</span> <span class="nav-text">1、CustomerDAO.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、CustomerService-java-1"><span class="nav-number">2.2.</span> <span class="nav-text">2、CustomerService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、Spring-Customer-xml-1"><span class="nav-number">2.3.</span> <span class="nav-text">3、Spring-Customer.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Antotation-Types——自动扫描组件的注释类型"><span class="nav-number">3.</span> <span class="nav-text">三、Antotation Types——自动扫描组件的注释类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Spring-Filter-Components-——-在自动扫描中过滤组件"><span class="nav-number">4.</span> <span class="nav-text">四、Spring Filter Components —— 在自动扫描中过滤组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Filter-Component——include"><span class="nav-number">4.1.</span> <span class="nav-text">1、Filter Component——include</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）DAO层，在CustomerDAO-java中"><span class="nav-number">4.1.1.</span> <span class="nav-text">（1）DAO层，在CustomerDAO.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）Service层，在CustomerService-java中"><span class="nav-number">4.1.2.</span> <span class="nav-text">（2）Service层，在CustomerService.java中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）在Spring-Customer-xml中"><span class="nav-number">4.1.3.</span> <span class="nav-text">（3）在Spring-Customer.xml中</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Filter-Component——exclude"><span class="nav-number">4.2.</span> <span class="nav-text">2、Filter Component——exclude</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -252,7 +252,7 @@ public class Customer
       
 
       
-        <span itemprop="articleBody"><h3 id="一、bean">一、bean</h3><p>Customer.java</p>
+        <span itemprop="articleBody"><h3 id="一、bean"><a href="#一、bean" class="headerlink" title="一、bean"></a>一、bean</h3><p>Customer.java</p>
 <pre><code>package com.mkyong.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -260,7 +260,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Customer 
 {
     @Autowired
-    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    private Person person;
     private int type;
     private String action;
 
@@ -268,91 +268,91 @@ public class Customer
 
     @Override
     public String toString() {
-        return <span class="string">"Customer <span class="subst">[person=" + person + ", type=" + type + ", action="
-                + action + "]</span>"</span>;
+        return &quot;Customer [person=&quot; + person + &quot;, type=&quot; + type + &quot;, action=&quot;
+                + action + &quot;]&quot;;
 }
 }
 </code></pre><p>Person.java</p>
-<pre><code><span class="keyword">package</span> com.mkyong.common;
+<pre><code>package com.mkyong.common;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>{
-    <span class="keyword">private</span> String name;
+public class Person {
+    private String name;
 
-    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> name;
+    public String getName() {
+        return name;
     }
 
-    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>{
-        <span class="keyword">this</span>.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    <span class="annotation">@Override</span>
-    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{
-        <span class="keyword">return</span> <span class="string">"Person [name="</span> + name + <span class="string">"]"</span>;
+    @Override
+    public String toString() {
+        return &quot;Person [name=&quot; + name + &quot;]&quot;;
     }
 }
-</code></pre><h3 id="二、_AutowiredAnnotationBeanPostProcessor">二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
-<h4 id="1、context:annotation-config">1、context:annotation-config</h4><pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+</code></pre><h3 id="二、-AutowiredAnnotationBeanPostProcessor"><a href="#二、-AutowiredAnnotationBeanPostProcessor" class="headerlink" title="二、 AutowiredAnnotationBeanPostProcessor"></a>二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
+<h4 id="1、context-annotation-config"><a href="#1、context-annotation-config" class="headerlink" title="1、context:annotation-config"></a>1、context:annotation-config</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
 
     &lt;context:annotation-config /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;bean id=&quot;CustomerBean&quot; class=&quot;com.mkyong.common.Customer&quot;&gt;
+        &lt;property name=&quot;action&quot; value=&quot;buy&quot; /&gt;
+        &lt;property name=&quot;type&quot; value=&quot;1&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong"</span> /&gt;
+    &lt;bean id=&quot;PersonBean&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong&quot; /&gt;
     &lt;/bean&gt;
 
 &lt;/beans&gt;
-</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor">2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
+</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor"><a href="#2、直接包含AutowiredAnnotationBeanPostProcessor" class="headerlink" title="2、直接包含AutowiredAnnotationBeanPostProcessor"></a>2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
 class=&quot;org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor&quot;/&gt;</code></p>
-<h3 id="三、运行">三、运行</h3><p>在App.java中</p>
-<pre><code><span class="keyword">package</span> com.mkyong.common;
+<h3 id="三、运行"><a href="#三、运行" class="headerlink" title="三、运行"></a>三、运行</h3><p>在App.java中</p>
+<pre><code>package com.mkyong.common;
 
-<span class="keyword">import</span> org.springframework.context.ApplicationContext;
-<span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>{
-    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
-        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(
-                <span class="string">"SpringBeans.xml"</span>);
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext(
+                &quot;SpringBeans.xml&quot;);
 
-        Customer cust = (Customer) context.getBean(<span class="string">"customer"</span>);
+        Customer cust = (Customer) context.getBean(&quot;customer&quot;);
         System.out.println(cust);
     }
 }
-</code></pre><h3 id="四、运行结果">四、运行结果</h3><pre><code>Customer [person=Person [<span class="keyword">name</span>=mkyongA], <span class="keyword">type</span>=<span class="number">1</span>, <span class="keyword">action</span>=buy]
-</code></pre><h3 id="五、Dependency_checking">五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
-<h3 id="六、@Qualifier">六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
-<pre><code>&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span>
-    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>
-    xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span>
-    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans
+</code></pre><h3 id="四、运行结果"><a href="#四、运行结果" class="headerlink" title="四、运行结果"></a>四、运行结果</h3><pre><code>Customer [person=Person [name=mkyongA], type=1, action=buy]
+</code></pre><h3 id="五、Dependency-checking"><a href="#五、Dependency-checking" class="headerlink" title="五、Dependency checking"></a>五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
+<h3 id="六、-Qualifier"><a href="#六、-Qualifier" class="headerlink" title="六、@Qualifier"></a>六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd"</span>&gt;
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
 
     &lt;context:annotation-config /&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"CustomerBean"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Customer"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"action"</span> value=<span class="string">"buy"</span> /&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"type"</span> value=<span class="string">"1"</span> /&gt;
+    &lt;bean id=&quot;CustomerBean&quot; class=&quot;com.mkyong.common.Customer&quot;&gt;
+        &lt;property name=&quot;action&quot; value=&quot;buy&quot; /&gt;
+        &lt;property name=&quot;type&quot; value=&quot;1&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean1"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong1"</span> /&gt;
+    &lt;bean id=&quot;PersonBean1&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong1&quot; /&gt;
     &lt;/bean&gt;
 
-    &lt;bean <span class="property">id</span>=<span class="string">"PersonBean2"</span> <span class="type">class</span>=<span class="string">"com.mkyong.common.Person"</span>&gt;
-        &lt;<span class="keyword">property</span> <span class="property">name</span>=<span class="string">"name"</span> value=<span class="string">"mkyong2"</span> /&gt;
+    &lt;bean id=&quot;PersonBean2&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong2&quot; /&gt;
     &lt;/bean&gt;
 
 &lt;/beans&gt;
@@ -365,8 +365,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class Customer 
 {
     @Autowired
-    @Qualifier(<span class="string">"PersonBean1"</span>)
-    private <span class="keyword">Person</span> <span class="keyword">person</span>;
+    @Qualifier(&quot;PersonBean1&quot;)
+    private Person person;
     private int type;
     private String action;
     //getter and setter methods
@@ -460,21 +460,21 @@ public class Customer
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
@@ -509,7 +509,7 @@ public class Customer
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、bean"><span class="nav-number">1.</span> <span class="nav-text">一、bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、_AutowiredAnnotationBeanPostProcessor"><span class="nav-number">2.</span> <span class="nav-text">二、 AutowiredAnnotationBeanPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、context:annotation-config"><span class="nav-number">2.1.</span> <span class="nav-text">1、context:annotation-config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、直接包含AutowiredAnnotationBeanPostProcessor"><span class="nav-number">2.2.</span> <span class="nav-text">2、直接包含AutowiredAnnotationBeanPostProcessor</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行"><span class="nav-number">3.</span> <span class="nav-text">三、运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、运行结果"><span class="nav-number">4.</span> <span class="nav-text">四、运行结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Dependency_checking"><span class="nav-number">5.</span> <span class="nav-text">五、Dependency checking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、@Qualifier"><span class="nav-number">6.</span> <span class="nav-text">六、@Qualifier</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、bean"><span class="nav-number">1.</span> <span class="nav-text">一、bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、-AutowiredAnnotationBeanPostProcessor"><span class="nav-number">2.</span> <span class="nav-text">二、 AutowiredAnnotationBeanPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、context-annotation-config"><span class="nav-number">2.1.</span> <span class="nav-text">1、context:annotation-config</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、直接包含AutowiredAnnotationBeanPostProcessor"><span class="nav-number">2.2.</span> <span class="nav-text">2、直接包含AutowiredAnnotationBeanPostProcessor</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、运行"><span class="nav-number">3.</span> <span class="nav-text">三、运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、运行结果"><span class="nav-number">4.</span> <span class="nav-text">四、运行结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Dependency-checking"><span class="nav-number">5.</span> <span class="nav-text">五、Dependency checking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、-Qualifier"><span class="nav-number">6.</span> <span class="nav-text">六、@Qualifier</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
