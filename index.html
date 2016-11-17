@@ -229,7 +229,7 @@
 
       
         
-          <span itemprop="articleBody"><p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探（一）" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
+          <span itemprop="articleBody"><p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
 <h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
 <p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
 <p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def <span class="keyword">volume</span><span class="bash"> = &#123;h, w, l -&gt; h * w * l&#125;</span></div><div class="line">def area = <span class="keyword">volume</span>.<span class="bash">curry(1)</span></div><div class="line">def lengthPA = <span class="keyword">volume</span>.<span class="bash">curry(1, 1)         // &lt;1&gt;</span></div><div class="line">def lengthC = <span class="keyword">volume</span>.<span class="bash">curry(1).curry(1)    // &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
@@ -396,226 +396,8 @@
 </li>
 </ol>
 <p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
-<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探（二）" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
+<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
 </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/09/RabbitMQ初探/" itemprop="url">
-                RabbitMQ初探
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-09T22:19:46+08:00" content="2016-11-09">
-            2016-11-09
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Message/" itemprop="url" rel="index">
-                  <span itemprop="name">Message</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/09/RabbitMQ初探/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/09/RabbitMQ初探/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在准备<code>基于RabbitMQ topic的消息发送与接收</code>的时候，顺便开始了这篇RabbitMQ初探。<br>安装过程这里就不再赘述，本博客主要记录一些初探过程，同时从what、why、how方面开始学习。</p>
-<h3 id="What"><a href="#What" class="headerlink" title="What"></a>What</h3><h3 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h3><h3 id="How"><a href="#How" class="headerlink" title="How"></a>How</h3></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/02/基于RabbitMQ topic的消息发送与接收/" itemprop="url">
-                基于RabbitMQ topic的消息发送与接收
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-02T22:19:46+08:00" content="2016-11-02">
-            2016-11-02
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Message/" itemprop="url" rel="index">
-                  <span itemprop="name">Message</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/02/基于RabbitMQ topic的消息发送与接收/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/02/基于RabbitMQ topic的消息发送与接收/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="项目结构："><a href="#项目结构：" class="headerlink" title="项目结构："></a>项目结构：</h4><img src="/imgs/rabbit-1.png" width="400" height="250">
-<p>A是消息的生产者，B、C则是消息的consumer。A会通过queue（不关心其产品类型）发送消息给B、C。</p>
-<h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>近期项目上，新增的D应用程序需要监听原有A应用程序的消息。按照以往的做法，我需要做如下两件事：</p>
-<ul>
-<li>向某个团队，给每该D应用的每个region（dev、intg、sys、prod等），申请新的queue A.D。（这中间可能需要两个星期时间）</li>
-<li>改变应用A的代码，让其每次发消息时候还需要再给D发消息。</li>
-<li>给应用A准备一次deploymen plan，并做相应的回归测试。</li>
-<li>改变应用D的代码，让其从新建的queue里面接收处理消息。</li>
-</ul>
-<h4 id="痛点"><a href="#痛点" class="headerlink" title="痛点"></a>痛点</h4><p>这一做法，主要有两大痛点：</p>
-<ul>
-<li>每增加一个新应用，都需要申请queue</li>
-<li>每增加一个新应用，都需要改动应用A的代码，还需要单独安排一次上线。生产者和消费者之间的耦合非常大。</li>
-</ul>
-<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>因此，在兼容以前的基础上，我试图用下面的结构图解决上述痛点：<br><img src="/imgs/rabbit-2.png" width="400" height="250"><br>保持原有应用程序B和C的接收消息方式不变，新的应用程序开始改用topic的方法，这样可以兼容既有的应用程序，也可以将新应用程序的生产者和消费者解耦。但是还是存在一些问题：</p>
-<ul>
-<li>A的消息那么多，全部放在一个topic可能负载过大，那么应该采取分布式的方法？</li>
-<li>如果消费者之一中途down了一段时间，该消息的等待时间又如何处理？是一直停留在topic中进行等待吗？</li>
-</ul>
-<p>最后，考虑到上述因素以及实际项目的其他因素，我将结构变成了如下：<br><img src="/imgs/rabbit-3.png" width="400" height="250"><br>虽然把最开始的痛点1又引入了，但是解耦的好处还是非常有意义的。</p>
-<p>本文旨在spike上述想法，证明该想法的可能性。</p>
-<h3 id="搭建外部环境"><a href="#搭建外部环境" class="headerlink" title="搭建外部环境"></a>搭建外部环境</h3><h4 id="Vagrant-VirtualBox-Docker"><a href="#Vagrant-VirtualBox-Docker" class="headerlink" title="Vagrant + VirtualBox + Docker"></a>Vagrant + VirtualBox + Docker</h4><p>由于不想破坏自己本地的环境，选择用vagrant + VirtualBox搭建一个虚拟机，然后在虚拟机安装docker。利用docker快速构建一个有rabbitmq的环境。</p>
-<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><p>笔者的环境如下：</p>
-<ul>
-<li>vagrant box：yungsang/coreos</li>
-<li>安装docker-compose：<a href="http://www.ericluwj.com/2015/10/20/installing-docker-compose-in-coreos.html" target="_blank" rel="external">http://www.ericluwj.com/2015/10/20/installing-docker-compose-in-coreos.html</a></li>
-<li>rabbitmq容器：rabbitmq:management</li>
-</ul>
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><p>总体说来，所有的命令如下：<br>1.创建虚拟机</p>
-<pre><code>$ mkdir rabbit
-$ cd rabbit
-$ vagrant box list
-$ vagrant init yungsang/coreos
-</code></pre><p>然后注意取消注释<code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;</code></p>
-<p>2.登陆到虚拟机</p>
-<pre><code>vagrant ssh
-</code></pre><p>3.安装docker-compose过程</p>
-<pre><code>core@localhost ~ $ sudo su -
-localhost ~ # mkdir /opt/bin
-localhost ~ # curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` &gt; /opt/bin/docker-compose
-</code></pre><p>4.编写<code>docker-compose.yml</code>文件</p>
-<pre><code>rabbitmq:
-  image: rabbitmq:management
-  ports:
-    - &quot;5672:5672&quot;
-    - &quot;15672:15672&quot;
-</code></pre><ol>
-<li>创建rabbitmq容器<br>运行<code>docker-compose up</code></li>
-</ol>
-<p>6.外部访问rabbitmq的管理页面<br>URL：<code>http://192.168.33.10:15672/#/</code><br>用户名：<code>guest</code><br>密码：<code>guest</code></p>
-<p><a href="https://my.oschina.net/indestiny/blog/192313" target="_blank" rel="external">https://my.oschina.net/indestiny/blog/192313</a></p>
-<h4 id="利用spring-boot编写producer"><a href="#利用spring-boot编写producer" class="headerlink" title="利用spring boot编写producer"></a>利用spring boot编写producer</h4><h4 id="利用spring-boot编写consumer"><a href="#利用spring-boot编写consumer" class="headerlink" title="利用spring boot编写consumer"></a>利用spring boot编写consumer</h4><h4 id="整体联通调试"><a href="#整体联通调试" class="headerlink" title="整体联通调试"></a>整体联通调试</h4></span>
         
       
     </div>
@@ -1680,6 +1462,370 @@ Hello, World!
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/21/Vagrant/" itemprop="url">
+                Vagrant
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T15:11:35+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Vagrant/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Vagrant/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、Vagrant的认识"><a href="#一、Vagrant的认识" class="headerlink" title="一、Vagrant的认识"></a>一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
+<blockquote>
+<p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
+</blockquote>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
+<blockquote>
+<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
+</blockquote>
+<h4 id="3、安装系统镜像"><a href="#3、安装系统镜像" class="headerlink" title="3、安装系统镜像"></a>3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
+<ul>
+<li>新建一个文件夹，如AgentBox,然后进入目录</li>
+<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
+</ul>
+<p>3.2 通过添加box方式</p>
+<ul>
+<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
+<li><code>$ vagrant box add {title} {url}</code><ul>
+<li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
+<li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
+</ul>
+</li>
+<li>初始化开发环境<br>　　先进入box里面，然后<code>$ vagrant init AgentBox</code></li>
+<li>启动环境<code>vagrant up</code></li>
+</ul>
+<h3 id="三、常用指令"><a href="#三、常用指令" class="headerlink" title="三、常用指令"></a>三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
+<blockquote>
+<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
+</blockquote>
+<p>2、vagrant init，初始化</p>
+<blockquote>
+<p>如果你添加的box名称不是base，那么需要在初始化的时候指定名称，例如vagrant init AgentBox</p>
+</blockquote>
+<p>3、vagrant up，启动虚拟机<br>4、vagrant ssh，ssh到虚拟机<br>5、vagrant reload，重启虚拟机（重新载入配置文件）<br>6、vagrant package –base precise64_default_1447845103364_6382 –output precise64.box打包分发<br>7、vagrant box list<br>8、vagrant status</p>
+<h3 id="四、主要配置"><a href="#四、主要配置" class="headerlink" title="四、主要配置"></a>四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
+<p>1、box设置</p>
+<pre><code>config.vm.box = &quot;AgentBox&quot;
+</code></pre><p>2、hostname设置</p>
+<pre><code>config.vm.hostname = &quot;for_work&quot;
+</code></pre><p>3、虚拟机网络设置</p>
+<pre><code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;
+config.vm.network &quot;public_network&quot;
+</code></pre><p>4、同步目录</p>
+<pre><code>config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;
+</code></pre><p>5、端口转发</p>
+<pre><code>config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080
+</code></pre><p>6、内存和cpu核心</p>
+<pre><code>config.vm.provider &quot;virtualbox&quot; do |vb|
+  #Display the VirtualBox GUI when booting the machine
+  vb.gui = true
+  #Customize the amount of memory on the VM:
+  vb.memory = &quot;1024&quot;
+  vb.cpus = 2
+  vb.name = &quot;my_vm&quot;
+end
+</code></pre><blockquote>
+<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/11/21/Anguar跨域请求/" itemprop="url">
+                AnguarJS跨域请求
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T13:18:41+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Anguar跨域请求/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Anguar跨域请求/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
+<h3 id="一、视图"><a href="#一、视图" class="headerlink" title="一、视图"></a>一、视图</h3><h4 id="1-在main-html中"><a href="#1-在main-html中" class="headerlink" title="1.在main.html中"></a>1.在<code>main.html</code>中</h4><pre><code>&lt;div class=&quot;jumbotron&quot;&gt;
+  &lt;h1&gt;Hello!&lt;/h1&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;row marketing&quot;&gt;
+  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/createCustomer&quot;&gt;Create&lt;/a&gt;
+  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/getCustomer&quot;&gt;GetByName&lt;/a&gt;
+&lt;/div&gt;
+</code></pre><h4 id="2-在getView-html中"><a href="#2-在getView-html中" class="headerlink" title="2.在getView.html中"></a>2.在<code>getView.html</code>中</h4><pre><code>&lt;p&gt;This is the get customer by name view.&lt;/p&gt;
+&lt;h4&gt;Name&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
+&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;getCustomer()&quot; &gt;Get&lt;/button&gt;&lt;br&gt;&lt;br&gt;
+{{info}}
+</code></pre><h4 id="3-在createView-html中"><a href="#3-在createView-html中" class="headerlink" title="3.在createView.html中"></a>3.在<code>createView.html</code>中</h4><pre><code>&lt;p&gt;This is the create customer view.&lt;/p&gt;
+&lt;h4&gt;Name&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
+&lt;h4&gt;Age&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;age&quot;/&gt;&lt;br&gt;&lt;br&gt;
+&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;createCustomer()&quot; &gt;Create&lt;/button&gt;&lt;br&gt;&lt;br&gt;
+{{info}}
+</code></pre><h3 id="二、controller"><a href="#二、controller" class="headerlink" title="二、controller"></a>二、controller</h3><h4 id="1-在getCustomer-js中"><a href="#1-在getCustomer-js中" class="headerlink" title="1.在getCustomer.js中"></a>1.在<code>getCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;)
+  .controller(&apos;GetCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
+
+     $scope.getCustomer = function(){
+       var url = &apos;http://localhost:8080/customers?name=&apos; + $scope.name;
+       $http({
+          url : url,
+          method : &apos;GET&apos;
+       }).then(function(response) {
+          $scope.info = response.data;
+          alert(&apos;Get &apos;+$scope.name+&apos; successfully!&apos;);
+        },function(response) {
+          $scope.info = response.data || &quot;Request failed&quot;;
+          alert($scope.info);
+       });
+     };
+  }]);      
+</code></pre><h4 id="2-在createCustomer-js中"><a href="#2-在createCustomer-js中" class="headerlink" title="2.在createCustomer.js中"></a>2.在<code>createCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;)
+  .controller(&apos;CreateCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
+    $scope.createCustomer = function(){
+       $http({
+          url : &apos;http://localhost:8080/customers&apos;,
+          method : &apos;POST&apos;,
+          data: {
+              name : $scope.name,
+              age : $scope.age
+          }
+       }).then(function(response) {
+          $scope.info = response.data;
+          alert(&apos;Create &apos;+$scope.name+&apos; successfully!&apos;);
+        },function(response) {
+          $scope.info = response.data || &quot;Request failed&quot;;
+          alert($scope.info);
+       });
+    };
+
+  }]);
+</code></pre><h3 id="三、配置路由"><a href="#三、配置路由" class="headerlink" title="三、配置路由"></a>三、配置路由</h3><p>在<code>app.js</code>中</p>
+<pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;, [&apos;ngRoute&apos;])
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when(&apos;/&apos;, {
+        templateUrl: &apos;views/main.html&apos;
+      })
+      .when(&apos;/createCustomer&apos;, {
+        templateUrl: &apos;views/createView.html&apos;,
+        controller: &apos;CreateCtrl&apos;
+      })
+      .when(&apos;/getCustomer&apos;, {
+        templateUrl: &apos;views/getView.html&apos;,
+        controller: &apos;GetCtrl&apos;
+      })
+      .otherwise({
+        redirectTo: &apos;/&apos;
+      });
+  });
+</code></pre><h3 id="四、基准HTML文件"><a href="#四、基准HTML文件" class="headerlink" title="四、基准HTML文件"></a>四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;AngularTest&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bower_components/bootstrap/dist/css/bootstrap.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
+  &lt;/head&gt;
+
+  &lt;body ng-app=&quot;customerUiApp&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    &lt;div ng-view=&quot;&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;bower_components/jquery/dist/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/angular/angular.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/bootstrap/dist/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/angular-route/angular-route.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/app.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/controllers/createCustomer.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/controllers/getCustomer.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
+<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><h4 id="1、在test-spec-controllers-getCustomer-js中"><a href="#1、在test-spec-controllers-getCustomer-js中" class="headerlink" title="1、在test/spec/controllers/getCustomer.js中"></a>1、在test/spec/controllers/getCustomer.js中</h4><pre><code>&apos;use strict&apos;;
+
+describe(&apos;Controller: GetCtrl&apos;, function () {
+  beforeEach(module(&apos;customerUiApp&apos;));
+
+  var GetCtrl,scope,$httpBackend;
+
+  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
+    scope = $rootScope.$new();
+    $httpBackend = _$httpBackend_;
+    GetCtrl = $controller(&apos;GetCtrl&apos;, {
+      $scope: scope
+    });
+  }));
+
+  it(&apos;should send get request&apos;, function () {
+    $httpBackend
+      .expect(&apos;GET&apos;, &apos;http://localhost:8080/customers?name=Alex&apos;)
+      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
+    scope.name = &apos;Alex&apos;;
+
+    scope.getCustomer();
+    $httpBackend.flush();
+
+    expect(scope.info.name).toBe(&apos;Alex&apos;);
+    expect(scope.info.age).toBe(&apos;20&apos;);
+  });
+});
+</code></pre><h4 id="2、在test-spec-controllers-createCustomer-js中"><a href="#2、在test-spec-controllers-createCustomer-js中" class="headerlink" title="2、在test/spec/controllers/createCustomer.js中"></a>2、在test/spec/controllers/createCustomer.js中</h4><pre><code>&apos;use strict&apos;;
+
+describe(&apos;Controller: CreateCtrl&apos;, function () {
+  beforeEach(module(&apos;customerUiApp&apos;));
+
+  var CreateCtrl,scope,$httpBackend;
+
+  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
+    scope = $rootScope.$new();
+    $httpBackend = _$httpBackend_;
+    CreateCtrl = $controller(&apos;CreateCtrl&apos;, {
+      $scope: scope
+    });
+  }));
+
+  it(&apos;should send post request&apos;, function () {
+    $httpBackend
+      .expect(&apos;POST&apos;, &apos;http://localhost:8080/customers&apos;)
+      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
+    scope.name = &apos;Alex&apos;;
+
+    scope.createCustomer();
+    $httpBackend.flush();
+
+    expect(scope.info.name).toBe(&apos;Alex&apos;);
+    expect(scope.info.age).toBe(&apos;20&apos;);
+  });
+});
+</code></pre><h3 id="六、运行及结果"><a href="#六、运行及结果" class="headerlink" title="六、运行及结果"></a>六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口"><a href="#1、本地启动CustomerApi运行在8080端口" class="headerlink" title="1、本地启动CustomerApi运行在8080端口"></a>1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt-serve启动CustomerUI"><a href="#2、grunt-serve启动CustomerUI" class="headerlink" title="2、grunt serve启动CustomerUI"></a>2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求"><a href="#3、在terminal中输入下述命令，使其允许跨域请求" class="headerlink" title="3、在terminal中输入下述命令，使其允许跨域请求"></a>3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code>open /Applications/Google\ Chrome.app --args --allow-file-access-from-files --disable-web-security
+</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+<h4 id="5、点击GetByName"><a href="#5、点击GetByName" class="headerlink" title="5、点击GetByName"></a>5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
+　　</p>
+<blockquote>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -1718,21 +1864,21 @@ Hello, World!
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

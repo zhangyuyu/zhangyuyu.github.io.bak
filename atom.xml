@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-12T13:40:18.000Z</updated>
+  <updated>2016-11-13T13:13:35.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2016/11/12/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%88%9D%E6%8E%A22/"/>
     <id>http://yoursite.com/2016/11/12/函数式编程初探2/</id>
     <published>2016-11-12T11:35:10.000Z</published>
-    <updated>2016-11-12T13:40:18.000Z</updated>
+    <updated>2016-11-13T13:13:35.000Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探（一）" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
+    <content type="html"><![CDATA[<p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
 <h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
 <p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
 <p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def <span class="keyword">volume</span><span class="bash"> = &#123;h, w, l -&gt; h * w * l&#125;</span></div><div class="line">def area = <span class="keyword">volume</span>.<span class="bash">curry(1)</span></div><div class="line">def lengthPA = <span class="keyword">volume</span>.<span class="bash">curry(1, 1)         // &lt;1&gt;</span></div><div class="line">def lengthC = <span class="keyword">volume</span>.<span class="bash">curry(1).curry(1)    // &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
@@ -55,7 +55,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2016/11/12/函数式编程初探（一）&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上一篇&lt;/a&gt;文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述
+      &lt;p&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2016/11/12/函数式编程初探1&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上一篇&lt;/a&gt;文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些
     
     </summary>
     
@@ -71,7 +71,7 @@
     <link href="http://yoursite.com/2016/11/12/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%88%9D%E6%8E%A21/"/>
     <id>http://yoursite.com/2016/11/12/函数式编程初探1/</id>
     <published>2016-11-12T09:35:13.000Z</published>
-    <updated>2016-11-12T13:37:40.000Z</updated>
+    <updated>2016-11-12T13:42:35.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
 <h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
@@ -128,7 +128,7 @@
 </li>
 </ol>
 <p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
-<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探（二）" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
+<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
 ]]></content>
     
     <summary type="html">
@@ -141,102 +141,6 @@
     
     
       <category term="函数式编程" scheme="http://yoursite.com/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>RabbitMQ初探</title>
-    <link href="http://yoursite.com/2016/11/09/RabbitMQ%E5%88%9D%E6%8E%A2/"/>
-    <id>http://yoursite.com/2016/11/09/RabbitMQ初探/</id>
-    <published>2016-11-09T14:19:46.000Z</published>
-    <updated>2016-11-09T05:34:12.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在准备<code>基于RabbitMQ topic的消息发送与接收</code>的时候，顺便开始了这篇RabbitMQ初探。<br>安装过程这里就不再赘述，本博客主要记录一些初探过程，同时从what、why、how方面开始学习。</p>
-<h3 id="What"><a href="#What" class="headerlink" title="What"></a>What</h3><h3 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h3><h3 id="How"><a href="#How" class="headerlink" title="How"></a>How</h3>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;在准备&lt;code&gt;基于RabbitMQ topic的消息发送与接收&lt;/code&gt;的时候，顺便开始了这篇RabbitMQ初探。&lt;br&gt;安装过程
-    
-    </summary>
-    
-      <category term="Message" scheme="http://yoursite.com/categories/Message/"/>
-    
-    
-      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>基于RabbitMQ topic的消息发送与接收</title>
-    <link href="http://yoursite.com/2016/11/02/%E5%9F%BA%E4%BA%8ERabbitMQ%20topic%E7%9A%84%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E4%B8%8E%E6%8E%A5%E6%94%B6/"/>
-    <id>http://yoursite.com/2016/11/02/基于RabbitMQ topic的消息发送与接收/</id>
-    <published>2016-11-02T14:19:46.000Z</published>
-    <updated>2016-11-06T11:37:02.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="项目结构："><a href="#项目结构：" class="headerlink" title="项目结构："></a>项目结构：</h4><img src="/imgs/rabbit-1.png" width="400" height="250">
-<p>A是消息的生产者，B、C则是消息的consumer。A会通过queue（不关心其产品类型）发送消息给B、C。</p>
-<h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>近期项目上，新增的D应用程序需要监听原有A应用程序的消息。按照以往的做法，我需要做如下两件事：</p>
-<ul>
-<li>向某个团队，给每该D应用的每个region（dev、intg、sys、prod等），申请新的queue A.D。（这中间可能需要两个星期时间）</li>
-<li>改变应用A的代码，让其每次发消息时候还需要再给D发消息。</li>
-<li>给应用A准备一次deploymen plan，并做相应的回归测试。</li>
-<li>改变应用D的代码，让其从新建的queue里面接收处理消息。</li>
-</ul>
-<h4 id="痛点"><a href="#痛点" class="headerlink" title="痛点"></a>痛点</h4><p>这一做法，主要有两大痛点：</p>
-<ul>
-<li>每增加一个新应用，都需要申请queue</li>
-<li>每增加一个新应用，都需要改动应用A的代码，还需要单独安排一次上线。生产者和消费者之间的耦合非常大。</li>
-</ul>
-<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>因此，在兼容以前的基础上，我试图用下面的结构图解决上述痛点：<br><img src="/imgs/rabbit-2.png" width="400" height="250"><br>保持原有应用程序B和C的接收消息方式不变，新的应用程序开始改用topic的方法，这样可以兼容既有的应用程序，也可以将新应用程序的生产者和消费者解耦。但是还是存在一些问题：</p>
-<ul>
-<li>A的消息那么多，全部放在一个topic可能负载过大，那么应该采取分布式的方法？</li>
-<li>如果消费者之一中途down了一段时间，该消息的等待时间又如何处理？是一直停留在topic中进行等待吗？</li>
-</ul>
-<p>最后，考虑到上述因素以及实际项目的其他因素，我将结构变成了如下：<br><img src="/imgs/rabbit-3.png" width="400" height="250"><br>虽然把最开始的痛点1又引入了，但是解耦的好处还是非常有意义的。</p>
-<p>本文旨在spike上述想法，证明该想法的可能性。</p>
-<h3 id="搭建外部环境"><a href="#搭建外部环境" class="headerlink" title="搭建外部环境"></a>搭建外部环境</h3><h4 id="Vagrant-VirtualBox-Docker"><a href="#Vagrant-VirtualBox-Docker" class="headerlink" title="Vagrant + VirtualBox + Docker"></a>Vagrant + VirtualBox + Docker</h4><p>由于不想破坏自己本地的环境，选择用vagrant + VirtualBox搭建一个虚拟机，然后在虚拟机安装docker。利用docker快速构建一个有rabbitmq的环境。</p>
-<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><p>笔者的环境如下：</p>
-<ul>
-<li>vagrant box：yungsang/coreos</li>
-<li>安装docker-compose：<a href="http://www.ericluwj.com/2015/10/20/installing-docker-compose-in-coreos.html" target="_blank" rel="external">http://www.ericluwj.com/2015/10/20/installing-docker-compose-in-coreos.html</a></li>
-<li>rabbitmq容器：rabbitmq:management</li>
-</ul>
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><p>总体说来，所有的命令如下：<br>1.创建虚拟机</p>
-<pre><code>$ mkdir rabbit
-$ cd rabbit
-$ vagrant box list
-$ vagrant init yungsang/coreos
-</code></pre><p>然后注意取消注释<code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;</code></p>
-<p>2.登陆到虚拟机</p>
-<pre><code>vagrant ssh
-</code></pre><p>3.安装docker-compose过程</p>
-<pre><code>core@localhost ~ $ sudo su -
-localhost ~ # mkdir /opt/bin
-localhost ~ # curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` &gt; /opt/bin/docker-compose
-</code></pre><p>4.编写<code>docker-compose.yml</code>文件</p>
-<pre><code>rabbitmq:
-  image: rabbitmq:management
-  ports:
-    - &quot;5672:5672&quot;
-    - &quot;15672:15672&quot;
-</code></pre><ol>
-<li>创建rabbitmq容器<br>运行<code>docker-compose up</code></li>
-</ol>
-<p>6.外部访问rabbitmq的管理页面<br>URL：<code>http://192.168.33.10:15672/#/</code><br>用户名：<code>guest</code><br>密码：<code>guest</code></p>
-<p><a href="https://my.oschina.net/indestiny/blog/192313" target="_blank" rel="external">https://my.oschina.net/indestiny/blog/192313</a></p>
-<h4 id="利用spring-boot编写producer"><a href="#利用spring-boot编写producer" class="headerlink" title="利用spring boot编写producer"></a>利用spring boot编写producer</h4><h4 id="利用spring-boot编写consumer"><a href="#利用spring-boot编写consumer" class="headerlink" title="利用spring boot编写consumer"></a>利用spring boot编写consumer</h4><h4 id="整体联通调试"><a href="#整体联通调试" class="headerlink" title="整体联通调试"></a>整体联通调试</h4>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;h4 id=&quot;项目结构：&quot;&gt;&lt;a href=&quot;#项目结构：&quot; class=&quot;headerlink&quot; title=&quot;项目结构：&quot;&gt;&lt;/a&gt;项目结构
-    
-    </summary>
-    
-      <category term="Message" scheme="http://yoursite.com/categories/Message/"/>
-    
-    
-      <category term="RabbitMQ" scheme="http://yoursite.com/tags/RabbitMQ/"/>
     
   </entry>
   
@@ -2048,6 +1952,282 @@ public class Customer
     
       &lt;h3 id=&quot;一、bean&quot;&gt;&lt;a href=&quot;#一、bean&quot; class=&quot;headerlink&quot; title=&quot;一、bean&quot;&gt;&lt;/a&gt;一、bean&lt;/h3&gt;&lt;p&gt;Customer.java&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;package com.mkyong.common
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-Auto-Wiring</title>
+    <link href="http://yoursite.com/2015/08/30/Spring-Auto-Wiring/"/>
+    <id>http://yoursite.com/2015/08/30/Spring-Auto-Wiring/</id>
+    <published>2015-08-30T04:09:07.000Z</published>
+    <updated>2015-10-11T12:43:41.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Spring支持5种自动装配模式，如下：</p>
+<table>
+<thead>
+<tr>
+<th>自动装配模式</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no</td>
+<td style="text-align:left">默认情况下，不自动装配，通过“ref”属性手动设定。</td>
+</tr>
+<tr>
+<td>byName</td>
+<td style="text-align:left">根据Property的Name自动装配，如果一个bean的name，和另一个bean中的Property的name相同，则自动装配这个bean到Property中。</td>
+</tr>
+<tr>
+<td>byType</td>
+<td style="text-align:left">根据Property的数据类型（Type）自动装配，如果一个bean的数据类型，兼容另一个bean中Property的数据类型，则自动装配。</td>
+</tr>
+<tr>
+<td>constructor</td>
+<td style="text-align:left">根据构造函数参数的数据类型，进行byType模式的自动装配。</td>
+</tr>
+<tr>
+<td>autodetect</td>
+<td style="text-align:left">如果发现默认的构造函数，用constructor模式，否则，用byType模式。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="一、bean"><a href="#一、bean" class="headerlink" title="一、bean"></a>一、bean</h3><p>CustomerDAO.java</p>
+<pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><p>CustomerService.java<br>    package com.mkyong.customer.services;</p>
+<pre><code>import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    CustomerDAO customerDAO;
+
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }            
+}
+</code></pre><h3 id="二、装配"><a href="#二、装配" class="headerlink" title="二、装配"></a>二、装配</h3><h4 id="1、Auto-Wiring-‘no’"><a href="#1、Auto-Wiring-‘no’" class="headerlink" title="1、Auto-Wiring ‘no’"></a>1、Auto-Wiring ‘no’</h4><p>　　默认情况下，需要通过’ref’来装配bean，如下：</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><h4 id="2、Auto-Wiring-‘byName’"><a href="#2、Auto-Wiring-‘byName’" class="headerlink" title="2、Auto-Wiring ‘byName’"></a>2、Auto-Wiring ‘byName’</h4><p>　　根据属性Property的名字装配bean，这种情况，CustomerService设置了autowire=”byName”，Spring会自动寻找与属性名字“customerDAO”相同的bean，找到后，通过调用setCustomerDAO(CustomerDAO customerDAO)将其注入属性。</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; autowire=&quot;byName&quot;&gt;
+&lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><h4 id="3、Auto-Wiring-‘byType‘"><a href="#3、Auto-Wiring-‘byType‘" class="headerlink" title="3、Auto-Wiring ‘byType‘"></a>3、Auto-Wiring ‘byType‘</h4><p>　　根据属性Property的数据类型自动装配，这种情况，Customer设置了autowire=”byType”，Spring会总动寻找与属性类型相同的bean。</p>
+<pre><code>&lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; autowire=&quot;byType&quot;&gt;
+&lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+</code></pre><p>　　如果配置文件中有两个类型相同的bean，将抛出UnsatisfiedDependencyException异常，所以，一旦选择了’byType’类型的自动装配，请确认你的配置文件中每个数据类型定义一个唯一的bean。</p>
+<h4 id="4、Auto-Wiring-‘constructor’"><a href="#4、Auto-Wiring-‘constructor’" class="headerlink" title="4、Auto-Wiring ‘constructor’"></a>4、Auto-Wiring ‘constructor’</h4><p>　　Spring会寻找与参数数据类型相同的bean，通过构造函数public Customer(Person person)将其注入。</p>
+<h4 id="5、Auto-Wiring-‘autodetect"><a href="#5、Auto-Wiring-‘autodetect" class="headerlink" title="5、Auto-Wiring ‘autodetect"></a>5、Auto-Wiring ‘autodetect</h4><p>　　这种情况下，Spring会先寻找Customer中是否有默认的构造函数，如果有相当于上边的’constructor’这种情况，用构造函数注入，否则，用’byType’这种方式注入，</p>
+<blockquote>
+<p>项目中autowire结合dependency-check一起使用是一种很好的方法，这样能够确保属性总是可以成功注入。</p>
+</blockquote>
+<pre><code>&lt;bean id=&quot;customer&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot; 
+            autowire=&quot;autodetect&quot; dependency-check=&quot;objects /&gt;
+
+&lt;bean id=&quot;person&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /
+</code></pre><p>　　<strong>最后，Auto-Wiring虽然使开发变得更加快速，但是增加了配置文件的复杂性，因此可以选择用手工装配、或者用<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-Wiring-Autowired/" target="_blank" rel="external">@Autowired</a>、或者结合<a href="http://zhangyuyu.github.io/2015/08/30/Spring-Auto-scanning/" target="_blank" rel="external">@Component</a>。</strong></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Spring支持5种自动装配模式，如下：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;自动装配模式&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;no&lt;/td&gt;
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://yoursite.com/categories/Spring/"/>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-Auto-scanning</title>
+    <link href="http://yoursite.com/2015/08/30/Spring-Auto-scanning/"/>
+    <id>http://yoursite.com/2015/08/30/Spring-Auto-scanning/</id>
+    <published>2015-08-30T03:38:10.000Z</published>
+    <updated>2015-10-11T12:38:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="一、一般的bean"><a href="#一、一般的bean" class="headerlink" title="一、一般的bean"></a>一、一般的bean</h3><h4 id="1、CustomerDAO-java"><a href="#1、CustomerDAO-java" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java"><a href="#2、CustomerService-java" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
+
+import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    CustomerDAO customerDAO;
+
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+
+}
+</code></pre><h4 id="3、Spring-Customer-xml"><a href="#3、Spring-Customer-xml" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="二、auto-Scanning"><a href="#二、auto-Scanning" class="headerlink" title="二、auto Scanning"></a>二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1"><a href="#1、CustomerDAO-java-1" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java-1"><a href="#2、CustomerService-java-1" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.mkyong.customer.dao.CustomerDAO;
+
+@Component
+public class CustomerService 
+{
+    @Autowired
+    CustomerDAO customerDAO;
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+}
+</code></pre><h4 id="3、Spring-Customer-xml-1"><a href="#3、Spring-Customer-xml-1" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;com.mkyong.customer&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="三、Antotation-Types——自动扫描组件的注释类型"><a href="#三、Antotation-Types——自动扫描组件的注释类型" class="headerlink" title="三、Antotation Types——自动扫描组件的注释类型"></a>三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
+<p>@Component      ——表示一个自动扫描component</p>
+<p>@Repository              ——表示持久化层的DAO component</p>
+<p>@Service             ——表示业务逻辑层的Service component</p>
+<p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
+<p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
+<h3 id="四、Spring-Filter-Components-——-在自动扫描中过滤组件"><a href="#四、Spring-Filter-Components-——-在自动扫描中过滤组件" class="headerlink" title="四、Spring Filter Components —— 在自动扫描中过滤组件"></a>四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter-Component——include"><a href="#1、Filter-Component——include" class="headerlink" title="1、Filter Component——include"></a>1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
+<h5 id="（1）DAO层，在CustomerDAO-java中"><a href="#（1）DAO层，在CustomerDAO-java中" class="headerlink" title="（1）DAO层，在CustomerDAO.java中"></a>（1）DAO层，在CustomerDAO.java中</h5><pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h5 id="（2）Service层，在CustomerService-java中"><a href="#（2）Service层，在CustomerService-java中" class="headerlink" title="（2）Service层，在CustomerService.java中"></a>（2）Service层，在CustomerService.java中</h5><pre><code>package com.mkyong.customer.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    @Autowired
+    CustomerDAO customerDAO;
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+
+}
+</code></pre><h5 id="（3）在Spring-Customer-xml中"><a href="#（3）在Spring-Customer-xml中" class="headerlink" title="（3）在Spring-Customer.xml中"></a>（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;com.mkyong&quot; &gt;
+
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;
+
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.services.*Service.*&quot; /&gt;
+
+    &lt;/context:component-scan&gt;
+
+&lt;/beans&gt;
+</code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
+<h4 id="2、Filter-Component——exclude"><a href="#2、Filter-Component——exclude" class="headerlink" title="2、Filter Component——exclude"></a>2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei.customer&quot; &gt;
+        &lt;context:exclude-filter type=&quot;annotation&quot; 
+            expression=&quot;org.springframework.stereotype.Service&quot; /&gt;        
+&lt;/context:component-scan&gt;
+</code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei&quot; &gt;
+        &lt;context:exclude-filter type=&quot;regex&quot; 
+            expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;        
+&lt;/context:component-scan&gt;
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;一、一般的bean&quot;&gt;&lt;a href=&quot;#一、一般的bean&quot; class=&quot;headerlink&quot; title=&quot;一、一般的bean&quot;&gt;&lt;/a&gt;一、一般的bean&lt;/h3&gt;&lt;h4 id=&quot;1、CustomerDAO-java&quot;&gt;&lt;a href=&quot;#1、Custo
     
     </summary>
     
