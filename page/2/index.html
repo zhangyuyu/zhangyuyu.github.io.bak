@@ -176,6 +176,245 @@
           
           
             
+              <a class="post-title-link" href="/2015/11/21/Anguar跨域请求/" itemprop="url">
+                AnguarJS跨域请求
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-11-21T13:18:41+08:00" content="2015-11-21">
+            2015-11-21
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/21/Anguar跨域请求/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Anguar跨域请求/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
+<h3 id="一、视图"><a href="#一、视图" class="headerlink" title="一、视图"></a>一、视图</h3><h4 id="1-在main-html中"><a href="#1-在main-html中" class="headerlink" title="1.在main.html中"></a>1.在<code>main.html</code>中</h4><pre><code>&lt;div class=&quot;jumbotron&quot;&gt;
+  &lt;h1&gt;Hello!&lt;/h1&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;row marketing&quot;&gt;
+  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/createCustomer&quot;&gt;Create&lt;/a&gt;
+  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/getCustomer&quot;&gt;GetByName&lt;/a&gt;
+&lt;/div&gt;
+</code></pre><h4 id="2-在getView-html中"><a href="#2-在getView-html中" class="headerlink" title="2.在getView.html中"></a>2.在<code>getView.html</code>中</h4><pre><code>&lt;p&gt;This is the get customer by name view.&lt;/p&gt;
+&lt;h4&gt;Name&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
+&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;getCustomer()&quot; &gt;Get&lt;/button&gt;&lt;br&gt;&lt;br&gt;
+{{info}}
+</code></pre><h4 id="3-在createView-html中"><a href="#3-在createView-html中" class="headerlink" title="3.在createView.html中"></a>3.在<code>createView.html</code>中</h4><pre><code>&lt;p&gt;This is the create customer view.&lt;/p&gt;
+&lt;h4&gt;Name&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
+&lt;h4&gt;Age&lt;/h4&gt;
+&lt;input type=&quot;text&quot; ng-model=&quot;age&quot;/&gt;&lt;br&gt;&lt;br&gt;
+&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;createCustomer()&quot; &gt;Create&lt;/button&gt;&lt;br&gt;&lt;br&gt;
+{{info}}
+</code></pre><h3 id="二、controller"><a href="#二、controller" class="headerlink" title="二、controller"></a>二、controller</h3><h4 id="1-在getCustomer-js中"><a href="#1-在getCustomer-js中" class="headerlink" title="1.在getCustomer.js中"></a>1.在<code>getCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;)
+  .controller(&apos;GetCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
+
+     $scope.getCustomer = function(){
+       var url = &apos;http://localhost:8080/customers?name=&apos; + $scope.name;
+       $http({
+          url : url,
+          method : &apos;GET&apos;
+       }).then(function(response) {
+          $scope.info = response.data;
+          alert(&apos;Get &apos;+$scope.name+&apos; successfully!&apos;);
+        },function(response) {
+          $scope.info = response.data || &quot;Request failed&quot;;
+          alert($scope.info);
+       });
+     };
+  }]);      
+</code></pre><h4 id="2-在createCustomer-js中"><a href="#2-在createCustomer-js中" class="headerlink" title="2.在createCustomer.js中"></a>2.在<code>createCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;)
+  .controller(&apos;CreateCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
+    $scope.createCustomer = function(){
+       $http({
+          url : &apos;http://localhost:8080/customers&apos;,
+          method : &apos;POST&apos;,
+          data: {
+              name : $scope.name,
+              age : $scope.age
+          }
+       }).then(function(response) {
+          $scope.info = response.data;
+          alert(&apos;Create &apos;+$scope.name+&apos; successfully!&apos;);
+        },function(response) {
+          $scope.info = response.data || &quot;Request failed&quot;;
+          alert($scope.info);
+       });
+    };
+
+  }]);
+</code></pre><h3 id="三、配置路由"><a href="#三、配置路由" class="headerlink" title="三、配置路由"></a>三、配置路由</h3><p>在<code>app.js</code>中</p>
+<pre><code>&apos;use strict&apos;;
+
+angular.module(&apos;customerUiApp&apos;, [&apos;ngRoute&apos;])
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when(&apos;/&apos;, {
+        templateUrl: &apos;views/main.html&apos;
+      })
+      .when(&apos;/createCustomer&apos;, {
+        templateUrl: &apos;views/createView.html&apos;,
+        controller: &apos;CreateCtrl&apos;
+      })
+      .when(&apos;/getCustomer&apos;, {
+        templateUrl: &apos;views/getView.html&apos;,
+        controller: &apos;GetCtrl&apos;
+      })
+      .otherwise({
+        redirectTo: &apos;/&apos;
+      });
+  });
+</code></pre><h3 id="四、基准HTML文件"><a href="#四、基准HTML文件" class="headerlink" title="四、基准HTML文件"></a>四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;AngularTest&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bower_components/bootstrap/dist/css/bootstrap.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
+  &lt;/head&gt;
+
+  &lt;body ng-app=&quot;customerUiApp&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    &lt;div ng-view=&quot;&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src=&quot;bower_components/jquery/dist/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/angular/angular.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/bootstrap/dist/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;bower_components/angular-route/angular-route.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/app.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/controllers/createCustomer.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;scripts/controllers/getCustomer.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
+<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><h4 id="1、在test-spec-controllers-getCustomer-js中"><a href="#1、在test-spec-controllers-getCustomer-js中" class="headerlink" title="1、在test/spec/controllers/getCustomer.js中"></a>1、在test/spec/controllers/getCustomer.js中</h4><pre><code>&apos;use strict&apos;;
+
+describe(&apos;Controller: GetCtrl&apos;, function () {
+  beforeEach(module(&apos;customerUiApp&apos;));
+
+  var GetCtrl,scope,$httpBackend;
+
+  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
+    scope = $rootScope.$new();
+    $httpBackend = _$httpBackend_;
+    GetCtrl = $controller(&apos;GetCtrl&apos;, {
+      $scope: scope
+    });
+  }));
+
+  it(&apos;should send get request&apos;, function () {
+    $httpBackend
+      .expect(&apos;GET&apos;, &apos;http://localhost:8080/customers?name=Alex&apos;)
+      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
+    scope.name = &apos;Alex&apos;;
+
+    scope.getCustomer();
+    $httpBackend.flush();
+
+    expect(scope.info.name).toBe(&apos;Alex&apos;);
+    expect(scope.info.age).toBe(&apos;20&apos;);
+  });
+});
+</code></pre><h4 id="2、在test-spec-controllers-createCustomer-js中"><a href="#2、在test-spec-controllers-createCustomer-js中" class="headerlink" title="2、在test/spec/controllers/createCustomer.js中"></a>2、在test/spec/controllers/createCustomer.js中</h4><pre><code>&apos;use strict&apos;;
+
+describe(&apos;Controller: CreateCtrl&apos;, function () {
+  beforeEach(module(&apos;customerUiApp&apos;));
+
+  var CreateCtrl,scope,$httpBackend;
+
+  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
+    scope = $rootScope.$new();
+    $httpBackend = _$httpBackend_;
+    CreateCtrl = $controller(&apos;CreateCtrl&apos;, {
+      $scope: scope
+    });
+  }));
+
+  it(&apos;should send post request&apos;, function () {
+    $httpBackend
+      .expect(&apos;POST&apos;, &apos;http://localhost:8080/customers&apos;)
+      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
+    scope.name = &apos;Alex&apos;;
+
+    scope.createCustomer();
+    $httpBackend.flush();
+
+    expect(scope.info.name).toBe(&apos;Alex&apos;);
+    expect(scope.info.age).toBe(&apos;20&apos;);
+  });
+});
+</code></pre><h3 id="六、运行及结果"><a href="#六、运行及结果" class="headerlink" title="六、运行及结果"></a>六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口"><a href="#1、本地启动CustomerApi运行在8080端口" class="headerlink" title="1、本地启动CustomerApi运行在8080端口"></a>1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt-serve启动CustomerUI"><a href="#2、grunt-serve启动CustomerUI" class="headerlink" title="2、grunt serve启动CustomerUI"></a>2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求"><a href="#3、在terminal中输入下述命令，使其允许跨域请求" class="headerlink" title="3、在terminal中输入下述命令，使其允许跨域请求"></a>3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code>open /Applications/Google\ Chrome.app --args --allow-file-access-from-files --disable-web-security
+</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+<h4 id="5、点击GetByName"><a href="#5、点击GetByName" class="headerlink" title="5、点击GetByName"></a>5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
+　　</p>
+<blockquote>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/11/21/Yeoman/" itemprop="url">
                 Yeoman
               </a>
@@ -1658,231 +1897,6 @@ public class CustomerService
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/30/Spring-Auto-scanning/" itemprop="url">
-                Spring-Auto-scanning
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-30T11:38:10+08:00" content="2015-08-30">
-            2015-08-30
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/30/Spring-Auto-scanning/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-scanning/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、一般的bean"><a href="#一、一般的bean" class="headerlink" title="一、一般的bean"></a>一、一般的bean</h3><h4 id="1、CustomerDAO-java"><a href="#1、CustomerDAO-java" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
-
-public class CustomerDAO 
-{
-    @Override
-    public String toString() {
-        return &quot;Hello , This is CustomerDAO&quot;;
-    }    
-}
-</code></pre><h4 id="2、CustomerService-java"><a href="#2、CustomerService-java" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
-
-import com.mkyong.customer.dao.CustomerDAO;
-
-public class CustomerService 
-{
-    CustomerDAO customerDAO;
-
-    public void setCustomerDAO(CustomerDAO customerDAO) {
-        this.customerDAO = customerDAO;
-    }
-
-    @Override
-    public String toString() {
-        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
-    }
-
-}
-</code></pre><h4 id="3、Spring-Customer-xml"><a href="#3、Spring-Customer-xml" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
-
-    &lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
-        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
-
-&lt;/beans&gt;
-</code></pre><h3 id="二、auto-Scanning"><a href="#二、auto-Scanning" class="headerlink" title="二、auto Scanning"></a>二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1"><a href="#1、CustomerDAO-java-1" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
-
-import org.springframework.stereotype.Component;
-
-@Component
-public class CustomerDAO 
-{
-    @Override
-    public String toString() {
-        return &quot;Hello , This is CustomerDAO&quot;;
-    }    
-}
-</code></pre><h4 id="2、CustomerService-java-1"><a href="#2、CustomerService-java-1" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.mkyong.customer.dao.CustomerDAO;
-
-@Component
-public class CustomerService 
-{
-    @Autowired
-    CustomerDAO customerDAO;
-
-    @Override
-    public String toString() {
-        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
-    }
-}
-</code></pre><h4 id="3、Spring-Customer-xml-1"><a href="#3、Spring-Customer-xml-1" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
-
-    &lt;context:component-scan base-package=&quot;com.mkyong.customer&quot; /&gt;
-
-&lt;/beans&gt;
-</code></pre><h3 id="三、Antotation-Types——自动扫描组件的注释类型"><a href="#三、Antotation-Types——自动扫描组件的注释类型" class="headerlink" title="三、Antotation Types——自动扫描组件的注释类型"></a>三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
-<p>@Component      ——表示一个自动扫描component</p>
-<p>@Repository              ——表示持久化层的DAO component</p>
-<p>@Service             ——表示业务逻辑层的Service component</p>
-<p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
-<p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
-<h3 id="四、Spring-Filter-Components-——-在自动扫描中过滤组件"><a href="#四、Spring-Filter-Components-——-在自动扫描中过滤组件" class="headerlink" title="四、Spring Filter Components —— 在自动扫描中过滤组件"></a>四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter-Component——include"><a href="#1、Filter-Component——include" class="headerlink" title="1、Filter Component——include"></a>1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
-<h5 id="（1）DAO层，在CustomerDAO-java中"><a href="#（1）DAO层，在CustomerDAO-java中" class="headerlink" title="（1）DAO层，在CustomerDAO.java中"></a>（1）DAO层，在CustomerDAO.java中</h5><pre><code>package com.mkyong.customer.dao;
-
-public class CustomerDAO 
-{
-    @Override
-    public String toString() {
-        return &quot;Hello , This is CustomerDAO&quot;;
-    }    
-}
-</code></pre><h5 id="（2）Service层，在CustomerService-java中"><a href="#（2）Service层，在CustomerService-java中" class="headerlink" title="（2）Service层，在CustomerService.java中"></a>（2）Service层，在CustomerService.java中</h5><pre><code>package com.mkyong.customer.services;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import com.mkyong.customer.dao.CustomerDAO;
-
-public class CustomerService 
-{
-    @Autowired
-    CustomerDAO customerDAO;
-
-    @Override
-    public String toString() {
-        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
-    }
-
-}
-</code></pre><h5 id="（3）在Spring-Customer-xml中"><a href="#（3）在Spring-Customer-xml中" class="headerlink" title="（3）在Spring-Customer.xml中"></a>（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
-
-    &lt;context:component-scan base-package=&quot;com.mkyong&quot; &gt;
-
-        &lt;context:include-filter type=&quot;regex&quot; 
-                       expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;
-
-        &lt;context:include-filter type=&quot;regex&quot; 
-                       expression=&quot;com.mkyong.customer.services.*Service.*&quot; /&gt;
-
-    &lt;/context:component-scan&gt;
-
-&lt;/beans&gt;
-</code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
-<h4 id="2、Filter-Component——exclude"><a href="#2、Filter-Component——exclude" class="headerlink" title="2、Filter Component——exclude"></a>2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
-<pre><code>&lt;context:component-scan base-package=&quot;com.lei.customer&quot; &gt;
-        &lt;context:exclude-filter type=&quot;annotation&quot; 
-            expression=&quot;org.springframework.stereotype.Service&quot; /&gt;        
-&lt;/context:component-scan&gt;
-</code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
-<pre><code>&lt;context:component-scan base-package=&quot;com.lei&quot; &gt;
-        &lt;context:exclude-filter type=&quot;regex&quot; 
-            expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;        
-&lt;/context:component-scan&gt;
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1921,21 +1935,21 @@ public class CustomerService
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

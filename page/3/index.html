@@ -176,6 +176,231 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-scanning/" itemprop="url">
+                Spring-Auto-scanning
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T11:38:10+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/30/Spring-Auto-scanning/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-scanning/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、一般的bean"><a href="#一、一般的bean" class="headerlink" title="一、一般的bean"></a>一、一般的bean</h3><h4 id="1、CustomerDAO-java"><a href="#1、CustomerDAO-java" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java"><a href="#2、CustomerService-java" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
+
+import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    CustomerDAO customerDAO;
+
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+
+}
+</code></pre><h4 id="3、Spring-Customer-xml"><a href="#3、Spring-Customer-xml" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.mkyong.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;customerDAO&quot; ref=&quot;customerDAO&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;customerDAO&quot; class=&quot;com.mkyong.customer.dao.CustomerDAO&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="二、auto-Scanning"><a href="#二、auto-Scanning" class="headerlink" title="二、auto Scanning"></a>二、auto Scanning</h3><h4 id="1、CustomerDAO-java-1"><a href="#1、CustomerDAO-java-1" class="headerlink" title="1、CustomerDAO.java"></a>1、CustomerDAO.java</h4><pre><code>package com.mkyong.customer.dao;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h4 id="2、CustomerService-java-1"><a href="#2、CustomerService-java-1" class="headerlink" title="2、CustomerService.java"></a>2、CustomerService.java</h4><pre><code>package com.mkyong.customer.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.mkyong.customer.dao.CustomerDAO;
+
+@Component
+public class CustomerService 
+{
+    @Autowired
+    CustomerDAO customerDAO;
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+}
+</code></pre><h4 id="3、Spring-Customer-xml-1"><a href="#3、Spring-Customer-xml-1" class="headerlink" title="3、Spring-Customer.xml"></a>3、Spring-Customer.xml</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;com.mkyong.customer&quot; /&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="三、Antotation-Types——自动扫描组件的注释类型"><a href="#三、Antotation-Types——自动扫描组件的注释类型" class="headerlink" title="三、Antotation Types——自动扫描组件的注释类型"></a>三、Antotation Types——自动扫描组件的注释类型</h3><p>有4种注释类型，分别是：</p>
+<p>@Component      ——表示一个自动扫描component</p>
+<p>@Repository              ——表示持久化层的DAO component</p>
+<p>@Service             ——表示业务逻辑层的Service component</p>
+<p>@Controller        ——表示表示层的Controller component<br>Spring将会扫描所有用@Component注释过得组件。</p>
+<p>　　实际上，@Repository、@Service、@Controller三种注释它们都用@Component注释过。所以，在项目中，我们可以将所有自动扫描组件都用@Component注释，Spring将会扫描所有用@Component注释过得组件。<br>　　但是，为了更好的可读性，应该在不同的应用层中，用不同的注释。</p>
+<h3 id="四、Spring-Filter-Components-——-在自动扫描中过滤组件"><a href="#四、Spring-Filter-Components-——-在自动扫描中过滤组件" class="headerlink" title="四、Spring Filter Components —— 在自动扫描中过滤组件"></a>四、Spring Filter Components —— 在自动扫描中过滤组件</h3><h4 id="1、Filter-Component——include"><a href="#1、Filter-Component——include" class="headerlink" title="1、Filter Component——include"></a>1、Filter Component——include</h4><p>　　用“filter”自动扫描注册组件，这些组件只要匹配定义的“regex”的命名规则，Clasee前就不需要用@Component进行注释。</p>
+<h5 id="（1）DAO层，在CustomerDAO-java中"><a href="#（1）DAO层，在CustomerDAO-java中" class="headerlink" title="（1）DAO层，在CustomerDAO.java中"></a>（1）DAO层，在CustomerDAO.java中</h5><pre><code>package com.mkyong.customer.dao;
+
+public class CustomerDAO 
+{
+    @Override
+    public String toString() {
+        return &quot;Hello , This is CustomerDAO&quot;;
+    }    
+}
+</code></pre><h5 id="（2）Service层，在CustomerService-java中"><a href="#（2）Service层，在CustomerService-java中" class="headerlink" title="（2）Service层，在CustomerService.java中"></a>（2）Service层，在CustomerService.java中</h5><pre><code>package com.mkyong.customer.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import com.mkyong.customer.dao.CustomerDAO;
+
+public class CustomerService 
+{
+    @Autowired
+    CustomerDAO customerDAO;
+
+    @Override
+    public String toString() {
+        return &quot;CustomerService [customerDAO=&quot; + customerDAO + &quot;]&quot;;
+    }
+
+}
+</code></pre><h5 id="（3）在Spring-Customer-xml中"><a href="#（3）在Spring-Customer-xml中" class="headerlink" title="（3）在Spring-Customer.xml中"></a>（3）在Spring-Customer.xml中</h5><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:component-scan base-package=&quot;com.mkyong&quot; &gt;
+
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;
+
+        &lt;context:include-filter type=&quot;regex&quot; 
+                       expression=&quot;com.mkyong.customer.services.*Service.*&quot; /&gt;
+
+    &lt;/context:component-scan&gt;
+
+&lt;/beans&gt;
+</code></pre><p>　　以上xml文件中，所有文件名字，只要包含DAO和Service<code>（*DAO.*，*Service.*）</code>关键字的，都将被检查注册到Spring容器中。</p>
+<h4 id="2、Filter-Component——exclude"><a href="#2、Filter-Component——exclude" class="headerlink" title="2、Filter Component——exclude"></a>2、Filter Component——exclude</h4><p>　　用exclude，制定组件避免被Spring发现并被注册到容器中。<br>以下配置排除用@Service注释过的组件，注意type=”annotation”</p>
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei.customer&quot; &gt;
+        &lt;context:exclude-filter type=&quot;annotation&quot; 
+            expression=&quot;org.springframework.stereotype.Service&quot; /&gt;        
+&lt;/context:component-scan&gt;
+</code></pre><p>以下配置排除包含“DAO”关键字的组件</p>
+<pre><code>&lt;context:component-scan base-package=&quot;com.lei&quot; &gt;
+        &lt;context:exclude-filter type=&quot;regex&quot; 
+            expression=&quot;com.mkyong.customer.dao.*DAO.*&quot; /&gt;        
+&lt;/context:component-scan&gt;
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/30/Spring-JavaConfig/" itemprop="url">
                 Spring_JavaConfig
               </a>
@@ -2247,134 +2472,6 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/25/Spring/" itemprop="url">
-                Spring初识
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-25T20:46:40+08:00" content="2015-08-25">
-            2015-08-25
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/25/Spring/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/25/Spring/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
-<h3 id="一、创建一个Spring-Bean"><a href="#一、创建一个Spring-Bean" class="headerlink" title="一、创建一个Spring Bean"></a>一、创建一个Spring Bean</h3><p>在HelloWorld.java文件中</p>
-<pre><code>package com.zhangyu.common;
-
-public class HelloWorld 
-{
-    private String name;
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void printHello() {
-        System.out.println(&quot;Hello ! &quot; + name);
-    }
-}
-</code></pre><h3 id="二、创建Spring-Bean的配置文件"><a href="#二、创建Spring-Bean的配置文件" class="headerlink" title="二、创建Spring Bean的配置文件"></a>二、创建Spring Bean的配置文件</h3><p>在Spring-Module.xml文件中</p>
-<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
-
-    &lt;bean id=&quot;helloBean&quot; class=&quot;com.zhangyu.common.HelloWorld&quot;&gt;
-        &lt;property name=&quot;name&quot; value=&quot;zhangyu&quot; /&gt;
-    &lt;/bean&gt;
-
-&lt;/beans&gt;
-</code></pre><h3 id="三、创建测试App"><a href="#三、创建测试App" class="headerlink" title="三、创建测试App"></a>三、创建测试App</h3><p>在App.java文件中</p>
-<pre><code>package com.zhangyu.common;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class App 
-{
-    public static void main( String[] args )
-    {
-        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;Spring-Module.xml&quot;);     
-        HelloWorld obj = (HelloWorld) context.getBean(&quot;helloBean&quot;);
-        obj.printHello();           
-    }
-}
-</code></pre><h3 id="四、结果"><a href="#四、结果" class="headerlink" title="四、结果"></a>四、结果</h3><pre><code>Hello ! zhangyu
-</code></pre><h3 id="五、目录结构"><a href="#五、目录结构" class="headerlink" title="五、目录结构"></a>五、目录结构</h3><img src="/imgs/SpringHelloWorld.png" width="300" height="500">
-<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取所需的实现。<br><br>　　2、通过xml文件，注册了一个bean（helloWorld），动态设置其name属性，无需知道实现类(App)的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类（com.zhangyu.common.HelloWorld）。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2413,21 +2510,21 @@ public class App
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

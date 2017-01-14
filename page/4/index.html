@@ -176,6 +176,134 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/25/Spring/" itemprop="url">
+                Spring初识
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-25T20:46:40+08:00" content="2015-08-25">
+            2015-08-25
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/25/Spring/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/25/Spring/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　Spring是一个轻量级的Java 开发框架，其核心是控制反转（IoC）和面向切面（AOP）。第一次看到这些概念，并不知其所云，还是从一个简单的HelloWorld来认识Spring吧。</p>
+<h3 id="一、创建一个Spring-Bean"><a href="#一、创建一个Spring-Bean" class="headerlink" title="一、创建一个Spring Bean"></a>一、创建一个Spring Bean</h3><p>在HelloWorld.java文件中</p>
+<pre><code>package com.zhangyu.common;
+
+public class HelloWorld 
+{
+    private String name;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void printHello() {
+        System.out.println(&quot;Hello ! &quot; + name);
+    }
+}
+</code></pre><h3 id="二、创建Spring-Bean的配置文件"><a href="#二、创建Spring-Bean的配置文件" class="headerlink" title="二、创建Spring Bean的配置文件"></a>二、创建Spring Bean的配置文件</h3><p>在Spring-Module.xml文件中</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+
+    &lt;bean id=&quot;helloBean&quot; class=&quot;com.zhangyu.common.HelloWorld&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;zhangyu&quot; /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><h3 id="三、创建测试App"><a href="#三、创建测试App" class="headerlink" title="三、创建测试App"></a>三、创建测试App</h3><p>在App.java文件中</p>
+<pre><code>package com.zhangyu.common;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;Spring-Module.xml&quot;);     
+        HelloWorld obj = (HelloWorld) context.getBean(&quot;helloBean&quot;);
+        obj.printHello();           
+    }
+}
+</code></pre><h3 id="四、结果"><a href="#四、结果" class="headerlink" title="四、结果"></a>四、结果</h3><pre><code>Hello ! zhangyu
+</code></pre><h3 id="五、目录结构"><a href="#五、目录结构" class="headerlink" title="五、目录结构"></a>五、目录结构</h3><img src="/imgs/SpringHelloWorld.png" width="300" height="500">
+<p>　　1、我们根据Spring-Module.xml创建了一个ApplicationContext实例，并从实例中获取所需的实现。<br><br>　　2、通过xml文件，注册了一个bean（helloWorld），动态设置其name属性，无需知道实现类(App)的具体名称。同时，我们可以通过修改配置文件来切换具体的底层实现类（com.zhangyu.common.HelloWorld）。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/15/我在TW的第一周/" itemprop="url">
                 我在TW的第一周
               </a>
@@ -375,21 +503,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
