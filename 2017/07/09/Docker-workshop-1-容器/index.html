@@ -41,22 +41,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一、前言“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景该系列《Docker in Prodcution》内容包含如下部分：  容器的介绍 Dock">
+<meta name="description" content="一、前言“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docke">
 <meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker Workshop（一）容器">
+<meta property="og:title" content="Docker Workshop（一）容器简介">
 <meta property="og:url" content="http://yoursite.com/2017/07/09/Docker-workshop-1-容器/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、前言“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景该系列《Docker in Prodcution》内容包含如下部分：  容器的介绍 Dock">
+<meta property="og:description" content="一、前言“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docke">
 <meta property="og:image" content="http://yoursite.com/imgs/container-structure.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-in-transportation1.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-in-transportation2.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-in-application.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-vs-vms.png">
-<meta property="og:updated_time" content="2017-07-09T13:44:39.000Z">
+<meta property="og:updated_time" content="2017-07-09T13:48:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Docker Workshop（一）容器">
-<meta name="twitter:description" content="一、前言“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景该系列《Docker in Prodcution》内容包含如下部分：  容器的介绍 Dock">
+<meta name="twitter:title" content="Docker Workshop（一）容器简介">
+<meta name="twitter:description" content="一、前言“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docke">
 <meta name="twitter:image" content="http://yoursite.com/imgs/container-structure.png">
 
 
@@ -67,7 +67,7 @@
   };
 </script>
 
-  <title> Docker Workshop（一）容器 | 若见喻笺 </title>
+  <title> Docker Workshop（一）容器简介 | 若见喻笺 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -182,7 +182,7 @@
           
           
             
-              Docker Workshop（一）容器
+              Docker Workshop（一）容器简介
             
           
         </h1>
@@ -232,10 +232,10 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
+        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。<br>后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li>容器的介绍</li>
+<li>容器简介</li>
 <li>Docker的介绍</li>
 <li>Docker的基本操作</li>
 <li>Docker数据存储</li>
@@ -399,7 +399,7 @@
           <div class="comments" id="comments">
             
               <div class="ds-thread" data-thread-key="2017/07/09/Docker-workshop-1-容器/"
-                   data-title="Docker Workshop（一）容器" data-url="http://yoursite.com/2017/07/09/Docker-workshop-1-容器/">
+                   data-title="Docker Workshop（一）容器简介" data-url="http://yoursite.com/2017/07/09/Docker-workshop-1-容器/">
               </div>
             
           </div>

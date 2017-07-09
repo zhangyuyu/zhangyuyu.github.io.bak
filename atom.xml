@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-07-09T13:44:39.000Z</updated>
+  <updated>2017-07-09T13:48:43.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,16 +16,16 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Docker Workshop（一）容器</title>
+    <title>Docker Workshop（一）容器简介</title>
     <link href="http://yoursite.com/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8/"/>
     <id>http://yoursite.com/2017/07/09/Docker-workshop-1-容器/</id>
     <published>2017-07-09T10:25:04.000Z</published>
-    <updated>2017-07-09T13:44:39.000Z</updated>
+    <updated>2017-07-09T13:48:43.000Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
+    <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。<br>后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li>容器的介绍</li>
+<li>容器简介</li>
 <li>Docker的介绍</li>
 <li>Docker的基本操作</li>
 <li>Docker数据存储</li>
