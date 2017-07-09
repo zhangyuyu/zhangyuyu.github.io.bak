@@ -41,22 +41,13 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="为了能够定位服务，我们需要至少接下来的两个有用的步骤。
-
-服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息
-服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。
-
-　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？">
+<meta name="description" content="为了能够定位服务，我们需要至少接下来的两个有用的步骤。  服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息 服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。  　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？">
+<meta name="keywords" content="微服务">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微服务-服务发现工具：ZooKeeper vs etcd vs Consul">
 <meta property="og:url" content="http://yoursite.com/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="为了能够定位服务，我们需要至少接下来的两个有用的步骤。
-
-服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息
-服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。
-
-　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？">
+<meta property="og:description" content="为了能够定位服务，我们需要至少接下来的两个有用的步骤。  服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息 服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。  　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？">
 <meta property="og:image" content="http://yoursite.com/imgs/etcd.png">
 <meta property="og:image" content="http://yoursite.com/imgs/etcd-registrator.png">
 <meta property="og:image" content="http://yoursite.com/imgs/etcd-confud.png">
@@ -67,12 +58,7 @@
 <meta property="og:updated_time" content="2016-04-24T10:46:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务-服务发现工具：ZooKeeper vs etcd vs Consul">
-<meta name="twitter:description" content="为了能够定位服务，我们需要至少接下来的两个有用的步骤。
-
-服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息
-服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。
-
-　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？">
+<meta name="twitter:description" content="为了能够定位服务，我们需要至少接下来的两个有用的步骤。  服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息 服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。  　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？">
 <meta name="twitter:image" content="http://yoursite.com/imgs/etcd.png">
 
 
@@ -364,21 +350,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">35</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">17</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

@@ -176,6 +176,209 @@
           
           
             
+              <a class="post-title-link" href="/2017/07/09/Docker-workshop-1-容器/" itemprop="url">
+                Docker Workshop（一）容器
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2017-07-09T18:25:04+08:00" content="2017-07-09">
+            2017-07-09
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Docker/" itemprop="url" rel="index">
+                  <span itemprop="name">Docker</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/07/09/Docker-workshop-1-容器/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/09/Docker-workshop-1-容器/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li>容器的介绍</li>
+<li>Docker的介绍</li>
+<li>Docker的基本操作</li>
+<li>Docker数据存储</li>
+<li>Docker网络</li>
+<li>Docker安全</li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<p>本篇主要讲述容器相关的知识，比较容器和虚拟机，练习LXC容器的相关指令，最后引出Docker。</p>
+<h3 id="三、容器的定义"><a href="#三、容器的定义" class="headerlink" title="三、容器的定义"></a>三、容器的定义</h3><p>容器是一种轻量级、可移植、自包含的软件打包技术，使应用程序可以在几乎任何地方以相同的方式运行。开发人员在自己笔记本上创建并测试好的容器，无需任何修改就能够在生产系统的虚拟机、物理服务器或公有云主机上运行。</p>
+<img src="/imgs/container-structure.png" width="400" height="250">
+<p>容器是轻量级的操作系统级虚拟化，可以让我们在一个资源隔离的进程中运行应用及其依赖项。运行应用程序所必需的组件都将打包成一个镜像并可以复用。执行镜像时，它运行在一个隔离环境中，并且不会共享宿主机的内存、CPU 以及磁盘，这就保证了容器内进程不能监控容器外的任何进程。</p>
+<h3 id="四、容器解决的问题"><a href="#四、容器解决的问题" class="headerlink" title="四、容器解决的问题"></a>四、容器解决的问题</h3><p>为什么需要容器？容器到底解决的是什么问题？一句话回答是：容器使软件具备了超强的可移植能力。</p>
+<h4 id="1-从运输行业的集装箱说起"><a href="#1-从运输行业的集装箱说起" class="headerlink" title="1. 从运输行业的集装箱说起"></a>1. 从运输行业的集装箱说起</h4><p>20世纪60年代以前，运输行业几乎所有的货物都是以<em>散件</em>方式运输。</p>
+<p>每一次运输，一方面货主与承运方会担心因货物类型的不同而导致损失，如几个铁桶压在了一堆香蕉上。<br>另外一方面，运输过程中需要使用不同的交通工具严重浪费了大量的时间和精力，如货物先搬上车，到了码头由码头工人卸货，然后装上船，到岸之后卸下船，再装上火车，到达目的地，最后卸货……中间可能还有更多种类的交通工具，涉及到更多次的装、卸货、转移过程。</p>
+<img src="/imgs/container-in-transportation1.png" width="400" height="250">
+<p>幸运的是，集装箱的发现解决了这个难题。</p>
+<img src="/imgs/container-in-transportation2.png" width="400" height="250">
+<p>无论货物的体积、形状差异有多大，最终都被装载进集装箱里。由于要实现标准尺寸集装箱的运输，堆场、码头、起吊、船舶、汽车乃至公路桥梁、隧道等，都必须适应它在全球范围内的应用而逐渐加以标准化，形成影响国际贸易的全球物流系统。由此带来的是系统效率大幅度提升，运输费大幅度下降，地球上任何一个地方生产的产品都可以快速而低廉地运送到有需求的地方。</p>
+<table>
+<thead>
+<tr>
+<th>比较</th>
+<th style="text-align:right">散货运输</th>
+<th style="text-align:center">集装箱运输</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>货物装卸时间</td>
+<td style="text-align:right">几天到一个星期，分拣、合并、装卸过程繁琐</td>
+<td style="text-align:center">几个小时</td>
+</tr>
+<tr>
+<td>货物装卸时间占整个运输过程的比例</td>
+<td style="text-align:right">&gt;50%</td>
+<td style="text-align:center">&lt;10%</td>
+</tr>
+<tr>
+<td>所需劳动力</td>
+<td style="text-align:right">大量的码头工人</td>
+<td style="text-align:center">少数的码头工人和起重机操作员</td>
+</tr>
+<tr>
+<td>自动化程度</td>
+<td style="text-align:right">低</td>
+<td style="text-align:center">高</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td style="text-align:right">低，装卸时常有物品损毁和盗窃</td>
+<td style="text-align:center">高，货物被隔离在封闭的集装箱内</td>
+</tr>
+<tr>
+<td>成本</td>
+<td style="text-align:right">货物越多，成本越高，耗时越长</td>
+<td style="text-align:center">前期固定成本投入较高，随着集装箱规模、运货量的增加，分摊到运送每个集装箱的成本极低，总成本几乎不变</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-应用程序中的容器"><a href="#2-应用程序中的容器" class="headerlink" title="2. 应用程序中的容器"></a>2. 应用程序中的容器</h4><p>同样，我们看看今天的软件开发面临的挑战。</p>
+<p>以前几乎所有的应用都采用三层架构（Presentation/Appliation/Data），系统部署到有限的几台物理服务器上。如今，开发人员通常使用多种服务（如MQ、cache、DB）构建和组装应用，此外应用很可能部署到不同的环境（如虚拟服务器、私有云和公有云）。一方面应用包含多种服务，这些服务有自己所依赖的库和软件包；另一方面存在多种部署环境，服务在运行时可能需要动态迁移到不同的环境中。如何让每种服务能够在所有的部署环境中顺利运行？<br>“服务”和“应用环境”对应到前面运输行业的“货物类型”和“运输工具”，容器则对应“集装箱”。<br><img src="/imgs/container-in-application.png" width="400" height="250"></p>
+<h3 id="五、为什么容器技术如此诱人？"><a href="#五、为什么容器技术如此诱人？" class="headerlink" title="五、为什么容器技术如此诱人？"></a>五、为什么容器技术如此诱人？</h3><h4 id="1-封装、隔离"><a href="#1-封装、隔离" class="headerlink" title="1. 封装、隔离"></a>1. 封装、隔离</h4><p>各个容器之间，资源独立、隔离，不同的应用以container为单位进行部署，环境互不影响。</p>
+<h4 id="2-轻量、可移植"><a href="#2-轻量、可移植" class="headerlink" title="2. 轻量、可移植"></a>2. 轻量、可移植</h4><p>相比于传统的虚拟化技术，容器在cpu、memory、network IO上的性能损耗都有同样水平甚至更优，容器的创建、启动、销毁都很快。</p>
+<h4 id="3-标准化、run-on-any-hardware"><a href="#3-标准化、run-on-any-hardware" class="headerlink" title="3. 标准化、run on any hardware"></a>3. 标准化、run on any hardware</h4><p>开发人员只需为按照一定的标准为应用创建一次运行环境，然后打包成容器便可在其他机器上运行。</p>
+<h4 id="4-一致性、可重复性"><a href="#4-一致性、可重复性" class="headerlink" title="4. 一致性、可重复性"></a>4. 一致性、可重复性</h4><p>标准化的容器消除了开发、测试、生产环境的不一致性。</p>
+<h3 id="六、容器与虚拟机"><a href="#六、容器与虚拟机" class="headerlink" title="六、容器与虚拟机"></a>六、容器与虚拟机</h3><p>谈到容器，就不得不将它与虚拟机进行对比，因为两者都是为应用提供封装和隔离。<br>一句话解释区别：容器能做的事少得多并且使用起来相当廉价。而虚拟机提供整个虚拟化硬件层，可以做更多的事情但是使用成本显著。</p>
+<img src="/imgs/container-vs-vms.png" width="400" height="250">
+<p>主要区别如下：</p>
+<ol>
+<li>容器实例与主机共享操作系统内核，通过内核提供的运行时隔离能力为服务提供独立的用户域、文件系统、网络以及进程运行空间。<br>虚拟机的每个实例自带操作系统，因而是一种硬件级的虚拟化隔离。</li>
+<li>容器通常是专用于运行特定服务的，它的镜像通常只包含运行该服务所需的上下文内容，许多广泛使用的镜像都只有几十MB，甚至几MB大小。<br>虚拟机则需要提供包括内核在内的通用进程运行环境，它的镜像偏向于大而完整的全功能集合，即使一个最小的精简镜像的体积也有几百MB。</li>
+<li>容器的使用方式倾向于开箱即用，镜像提供的是一个『不可变的基础设施环境』。<br>虚拟机则倾向于让用户根据所用的系统，自定义初始化操作，使用Ansible、Puppet这样的配置工具来进行基础设施的管理</li>
+<li>容器在启动速度和运行性能上更有优势，虚拟机在安全性上更有优势。</li>
+</ol>
+<h3 id="七、容器的分类"><a href="#七、容器的分类" class="headerlink" title="七、容器的分类"></a>七、容器的分类</h3><h4 id="1-操作系统容器"><a href="#1-操作系统容器" class="headerlink" title="1. 操作系统容器"></a>1. 操作系统容器</h4><p>操作系统层虚拟化是一种计算机虚拟化技术，这种技术将操作系统内核虚拟化，可以允许多个独立用户空间的存在，而不是只有一个。这些实例有时会被称为容器、虚拟引擎、虚拟专用服务器或是 jails（FreeBSD jail 或者 chroot jail）。从运行在容器中的程序角度来看，这些实例就如同真正的计算机。</p>
+<p>容器技术如 LXC，OpenVZ，Linux VServer，BSD Jails 和 Solaris 区域就是操作系统容器。</p>
+<h4 id="2-应用容器"><a href="#2-应用容器" class="headerlink" title="2. 应用容器"></a>2. 应用容器</h4><p>应用程序虚拟化是从其所执行的底层操作系统封装计算机程序的软件技术。一个完全虚拟化的应用，尽管仍像原来一样执行，但是并不会进行传统意义上的安装。应用在运行时的行为就像它直接与原始操作系统以及操作系统所管理的所有资源进行交互一样，但可以实现不同程度的隔离或者沙盒化。</p>
+<p>容器技术如 Docker 和 Rocket 就是应用程序容器的示例。</p>
+<h3 id="八、LXC的练习"><a href="#八、LXC的练习" class="headerlink" title="八、LXC的练习"></a>八、LXC的练习</h3><p>LXC是Linux containers的简称，是一种基于容器的操作系统层级的虚拟化技术。</p>
+<h4 id="【练习1】创建LXC容器"><a href="#【练习1】创建LXC容器" class="headerlink" title="【练习1】创建LXC容器"></a>【练习1】创建LXC容器</h4><ol>
+<li>Ubuntu系统上安装好lxc</li>
+<li><p>宿主机上操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 启动一个后台运行的容器demo-container:</span></div><div class="line">sudo lxc-start --name demo-container --daemon</div><div class="line"><span class="meta">#</span><span class="bash"> 查看运行的容器的相关信息:</span></div><div class="line">sudo lxc-info --name demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 进入到容器:</span></div><div class="line">sudo lxc-console -n demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></div><div class="line">Username: ubuntu</div><div class="line">Password: ubuntu</div></pre></td></tr></table></figure>
+</li>
+<li><p>LXC容器中操作</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># 查看容器的hostname</span></div><div class="line">hostname</div><div class="line"><span class="meta"># 在容器中创建一个文件</span></div><div class="line">echo <span class="string">"hello"</span> &gt; my_text.txt</div><div class="line">cat my_text.txt</div></pre></td></tr></table></figure>
+</li>
+<li><p>退出容器<br>先按下<code>ctrl+a</code>，然后再按<code>q</code>。</p>
+</li>
+</ol>
+<h4 id="【练习2】克隆LXC容器"><a href="#【练习2】克隆LXC容器" class="headerlink" title="【练习2】克隆LXC容器"></a>【练习2】克隆LXC容器</h4><ol>
+<li><p>宿主机上操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 冻结运行的容器</span></div><div class="line">sudo lxc-freeze -n demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 克隆容器之前，必须要先停止容器</span></div><div class="line">sudo lxc-stop --name demo-container</div><div class="line">sudo lxc-clone -o demo-container -n cloned-container</div><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 启动复制的容器</span></div><div class="line">sudo lxc-start --name cloned-container --daemon</div><div class="line"><span class="meta">#</span><span class="bash"> 进入到复制的容器:</span></div><div class="line">sudo lxc-console -n cloned-container</div><div class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></div><div class="line">Username: ubuntu</div><div class="line">Password: ubuntu</div></pre></td></tr></table></figure>
+</li>
+<li><p>克隆的容器中操作</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看克隆的容器是否也一起克隆了之前创建的文件</span></div><div class="line"><span class="keyword">ls</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>退出容器<br>先按下<code>ctrl+a</code>，然后再按<code>q</code>。</p>
+</li>
+<li><p>停止克隆的容器</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lxc-<span class="keyword">stop</span> --<span class="keyword">name</span> cloned-container</div></pre></td></tr></table></figure>
+</li>
+<li><p>销毁克隆的容器</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lxc-destroy <span class="comment">--name cloned-container</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>本篇文章主要是涉及容器，从what, why, how上讲述了容器的相关知识。<br>至于容器的历史，有兴趣的读者可以自己查看一下相关资料。<br><a href="http://www.dockone.io/article/1522" target="_blank" rel="external">容器简史：从20世纪70年代的chroot到2016的Docker</a>以及<a href="http://www.alauda.cn/2016/01/18/container-history/" target="_blank" rel="external">【容器那些事儿】容器技术的前世今生</a><br>下一篇将讲述Docker的出现以及相关的基本理论知识。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<li><a href="http://dockone.io/article/803" target="_blank" rel="external">为什么容器技术将主宰世界？</a></li>
+<li><a href="http://dockone.io/article/2442" target="_blank" rel="external">容器技术概览</a></li>
+<li><a href="https://www.ibm.com/developerworks/community/blogs/132cfa78-44b0-4376-85d0-d3096cd30d3f/entry/%E5%AE%B9%E5%99%A8_What_Why_How_%E6%AF%8F%E5%A4%A95%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%AC%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF_6?lang=zh" target="_blank" rel="external">容器What, Why, How - 每天5分钟玩转容器技术 - IBM</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/l-lxc-containers/" target="_blank" rel="external">LXC：Linux 容器工具</a></li>
+<li><a href="http://17173ops.com/2013/11/14/linux-lxc-install-guide.shtml#toc2" target="_blank" rel="external">LXC基础学习教程</a></li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/01/14/基于RabbitMQ topic的消息发送与接收/" itemprop="url">
                 基于RabbitMQ topic的消息发送与接收
               </a>
@@ -503,7 +706,7 @@ $ vagrant init yungsang/coreos
           <span itemprop="articleBody"><p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
 <h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
 <p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
-<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def <span class="keyword">volume</span><span class="bash"> = &#123;h, w, l -&gt; h * w * l&#125;</span></div><div class="line">def area = <span class="keyword">volume</span>.<span class="bash">curry(1)</span></div><div class="line">def lengthPA = <span class="keyword">volume</span>.<span class="bash">curry(1, 1)         // &lt;1&gt;</span></div><div class="line">def lengthC = <span class="keyword">volume</span>.<span class="bash">curry(1).curry(1)    // &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
+<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight flix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">volume</span> </span>= &#123;h, w, l -&gt; h * w * l&#125;</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">area</span> </span>= volume.curry(<span class="number">1</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthPA</span> </span>= volume.curry(<span class="number">1</span>, <span class="number">1</span>)         <span class="comment">// &lt;1&gt;</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthC</span> </span>= volume.curry(<span class="number">1</span>).curry(<span class="number">1</span>)    <span class="comment">// &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
 <p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/currying.groovy" target="_blank" rel="external">github</a><br>柯里化常见的应用场景：函数工厂、模板方法模式、隐藏参数。</p>
 <h3 id="二、缓存"><a href="#二、缓存" class="headerlink" title="二、缓存"></a>二、缓存</h3><p>缓存是很常见的一种需求（同时也是制造隐晦错误的源头）。缓存有两种实现方式：一种是手工进行状态管理，另一种是采用记忆机制。</p>
 <h4 id="手工进行状态管理"><a href="#手工进行状态管理" class="headerlink" title="手工进行状态管理"></a>手工进行状态管理</h4><p>在代码里面增加一个filed，每次计算之前之前先去检查是否存在于缓存中。但是当我们将缓存的取值范围增大时，可能报出OutOfMemoryError的错误。</p>
@@ -523,7 +726,7 @@ $ vagrant init yungsang/coreos
 <p>缓求值在Groovy中的应用：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def prepend(val, closure) &#123; new LazyList(val, closure) &#125;</div><div class="line">def integers(n) &#123; prepend(n, &#123; integers(n + <span class="number">1</span>) &#125;) &#125;</div><div class="line"></div><div class="line">@Test</div><div class="line">public void lazy_list_acts_like_a_list() &#123;</div><div class="line">    def naturalNumbers = integers(<span class="number">1</span>)</div><div class="line">    assertEquals('<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>', naturalNumbers.getHead(<span class="number">10</span>).join(' '))</div><div class="line">    def evenNumbers = naturalNumbers.filter &#123; it % <span class="number">2</span> == <span class="number">0</span> &#125;</div><div class="line">    assertEquals('<span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span> <span class="number">20</span>', evenNumbers.getHead(<span class="number">10</span>).join(' '))</div></pre></td></tr></table></figure></p>
 <h3 id="四、函数式的数据结构"><a href="#四、函数式的数据结构" class="headerlink" title="四、函数式的数据结构"></a>四、函数式的数据结构</h3><p>函数式语言里经常遇到返回两种截然不同的值的需求，它们用来建模这种行为的常用数据结构是Either。<br>使用Either表示两种结果的返回值，使用Option来表示有为空返回值的类型。Option类可近似看作为Either的子类。</p>
 <p>用Java的泛型来自己实现Either类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Either</span>&lt;<span class="title">A</span>,<span class="title">B</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> A left = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">private</span> B right = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Either</span><span class="params">(A a,B b)</span> </span>&#123;</div><div class="line">        left = a;</div><div class="line">        right = b;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">left</span><span class="params">(A a)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(a,<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">left</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLeft</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> B <span class="title">right</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">right</span><span class="params">(B b)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(<span class="keyword">null</span>,b);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fold</span><span class="params">(F&lt;A&gt; leftOption, F&lt;B&gt; rightOption)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(right == <span class="keyword">null</span>)</div><div class="line">            leftOption.f(left);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            rightOption.f(right);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="external">github</a><br>使用：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="built_in">String</span> s) &#123;</div><div class="line">    <span class="keyword">if</span> (不满足)</div><div class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> Exception(<span class="string">"Invalid Number"</span>));</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        int <span class="built_in">number</span> = <span class="keyword">new</span> RomanNumeral(s).toInt();</div><div class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> RomanNumeral(<span class="built_in">number</span> &gt;= MAX ? MAX : <span class="built_in">number</span>).toInt());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="external">github</a><br>使用：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">if</span> (不满足)</div><div class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> <span class="type">Exception</span>(<span class="string">"Invalid Number"</span>));</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        int number = <span class="keyword">new</span> <span class="type">RomanNumeral</span>(s).toInt();</div><div class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> <span class="type">RomanNumeral</span>(number &gt;= MAX ? MAX : <span class="type">number</span>).toInt());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h3 id="五、完美数的示例"><a href="#五、完美数的示例" class="headerlink" title="五、完美数的示例"></a>五、完美数的示例</h3><p>案例：</p>
 <blockquote>
 <p>自然数分类规则：<br>完美数： 真约数之和 = 数本身<br>过剩数： 真约数之和 &gt; 数本身<br>不足数： 真约数之和 &lt; 数本身<br>真约数和：除了数本身之外，其余正约数的和。</p>
@@ -1591,148 +1794,6 @@ WSGIServer: Serving HTTP on port 8888 …
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/03/05/WebServer1/" itemprop="url">
-                创建你自己的Web Server - part 1
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-03-05T14:58:00+08:00" content="2016-03-05">
-            2016-03-05
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Web-Server/" itemprop="url" rel="index">
-                  <span itemprop="name">Web Server</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/03/05/WebServer1/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/05/WebServer1/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><blockquote>
-<p>　　一天，女士外出散步，经过施工现场看到三个工人正在干活。<br>　　女士上前询问第一个工人：“你在干什么？”，被问题惹恼的第一个工人咆哮道：“难道你没看见我正在铺砖吗？”。<br>　　女士不满意刚才的答案，于是问第二个人他正在干什么。“我正在建造一堵墙。”第二个工人说着，便把注意力转向第一个工人说道：“喂，你刚刚超过了墙的末尾， 你需要把最后一块砖拿走。”<br>　　女士对第二个人的回答仍然不满意，于是她问第三个人正在干什么。第三个人看着天空回答她：“我正在建造世界上最大的教堂”。<br>　　正当第三个人站在那里仰望天空的时候，前两个人开始争论那块错误的砖块。于是第三个工人转向前两个人：“你们俩不用担心那块砖，这只是内部墙，它会被砖块砌满，没人见过那块砖。只需要把它挪到其它层就可以了。”<br><br>　　这个故事的寓意是：当你知道了整个系统并且理解不同的部分是如何组合在一起（砖，墙，教堂），你就可以更快的识别并修复问题（错误的砖块）。</p>
-</blockquote>
-<p>　　这与从头开始创建自己的web server有什么关系呢？<br>　　我相信要想成为一名更优秀的程序员，你必须更好的了解底层的软件系统，也就是日常使用的基础并且包括编程语言、编译器与中断、数据库与操作系统，web服务器与web框架。为了更好更深入的理解这些系统，你必须从头一点一点的开始重新构建它们。</p>
-<blockquote>
-<p>孔夫子云：<br>“吾听吾忘”<br><img src="/imgs/WS_confucius_hear.png" width="400" height="250"><br>“吾见吾记”<br><img src="/imgs/WS_confucius_see.png" width="400" height="250"><br>“吾做吾悟”<br><img src="/imgs/WS_confucius_do.png" width="400" height="250"><br>　　我希望在这一点上你们可以确信，从头开始构建不同的软件系统来学习它们如何运行是一个不错的方法。<br>　　在接下来的三部分的系列中，我会展示如何构建你自己基本的web服务器。让我们开始吧！</p>
-</blockquote>
-<h3 id="首先，什么是web-server呢？"><a href="#首先，什么是web-server呢？" class="headerlink" title="首先，什么是web server呢？"></a>首先，什么是web server呢？</h3><img src="/imgs/WS_HTTP_request_response.png" width="400" height="250">
-<p>　　简而言之，web server是一个坐落在物理服务器上的网络服务器（啊，在服务器上的服务器），并且等待客户端发送请求。当它收到请求时，它就生成一个响应，并将其发送回客户端。客户端和服务器之间的通信使用HTTP协议。一个客户端可以是你的浏览器或者任何其他支持HTTP的软件。<br>　　那么web server非常简单的实现会是什么样子？下面是我的理解。示例是用Python，即使你不会Python（它是一种非常简单的语言，试一试！），你应该能够通过代码和下面的解释理解内容。</p>
-<pre><code>import socket
-
-HOST, PORT = &apos;&apos;, 8888
-
-listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-listen_socket.bind((HOST, PORT))
-listen_socket.listen(1)
-print &apos;Serving HTTP on port %s ...&apos; % PORT
-while True:
-    client_connection, client_address = listen_socket.accept()
-    request = client_connection.recv(1024)
-    print request
-
-    http_response = &quot;&quot;&quot;\
-HTTP/1.1 200 OK
-
-Hello, World!
-&quot;&quot;&quot;
-    client_connection.sendall(http_response)
-    client_connection.close()
-</code></pre><p>　　保存上面的代码到<code>webserver.1py</code>文件或者在<a href="https://github.com/rspivak/lsbaws/blob/master/part1/webserver1.py" target="_blank" rel="external">GitHub</a>上直接下载，然后用下面的命令运行：</p>
-<pre><code>$ python webserver1.py
-Serving HTTP on port 8888 …
-</code></pre><p>　　然后在浏览器地址栏输入<code>http://localhost:8888/hello</code>，然后回车，见证奇迹的时刻到来了。你应该可以看到<code>Hello World!</code>显示在浏览器中，如下所示：<br><img src="/imgs/WS_browser_hello_world.png" width="400" height="250"></p>
-<p>　　试着做一下吧，你在测试时候我会等你的。做完了吗？好极了。现在我们一起讨论它是如何生效的吧。首先让我们从你输入的网址开始，它叫做<a href="http://baike.baidu.com/link?url=cigkFmQSCQHgSk9SfSVZH7palffbNp6nHiV0WjRy4LkAFH02SIDw-htgvq-wBlMDAORPltXx1i-xcqNpLeGxla" target="_blank" rel="external">URL</a>,下面是它的基本结构：<br><img src="/imgs/WS_URL_Web_address.png" width="400" height="250"></p>
-<p>　　这就是你如何告诉浏览器，它需要找到并且连接的web server地址，同时获取服务器页面的方式。在你的浏览器发送一个HTTP请求，它首先需要和Web server建立一个TCP连接。然后它基于TCP连接给服务器发送一个HTTP请求等待服务器发送一个HTTP的响应回来。当收到响应之后，它会显示响应信息<code>Hello World!</code>。
-　　</p>
-<h3 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h3><p>　　让我们更详细的探讨如何在发送HTTP请求和响应之前，建立客户端和服务器TCP连接。要做到这一点，它们都使用所谓的sockets。如果不直接使用浏览器，可以通过手动在命令行使用telnet来模拟浏览器。在运行web server的同一台计算机上，通过命令行激活一个telnet会话指定连接主机为localhost，连接端口为8888，然后回车：</p>
-<pre><code>$ telnet localhost 8888
-Trying 127.0.0.1 …
-Connected to localhost.
-</code></pre><p>　　这样，你就和服务器建立了一个TCP连接，这个服务器运行在本机，并且准备发送和接收HTTP消息。通过下面的图片，你可以看到一个服务器要经过的能够接收TCP连接的标准步骤。<br><img src="/imgs/WS_socket.png" width="400" height="250"></p>
-<p>　　在同一个telnet会话里，输入命令<code>GET /Hello HTTP/1.1</code>然后回车：</p>
-<pre><code>$ telnet localhost 8888
-Trying 127.0.0.1 …
-Connected to localhost.
-GET /hello HTTP/1.1
-
-HTTP/1.1 200 OK
-Hello, World!
-</code></pre><h3 id="HTTP请求"><a href="#HTTP请求" class="headerlink" title="HTTP请求"></a>HTTP请求</h3><p>　　刚才，你手动的模拟了浏览器，发送了一个HTTP请求并且收到了HTTP响应，下面是一个HTTP请求的基本结构：<br><img src="/imgs/WS_HTTP_request_anatomy.png" width="400" height="250"></p>
-<p>　　Http请求包含：请求行，以表明HTTP方法（GET，因为我们请求服务器返回给我们一些信息）；路径/hello，以表明我们想要的服务器页面；以及协议版本。<br>　　为了简单起见，我们的web server在这一点上完全无视上述请求行，你一样可以输入其他任何东西代替<code>GET /Hello HTTP/1.1</code>,也会得到”Hello, World!“的响应。一旦你输入了请求行并按下回车，客户端会发送请求给服务器，服务器解析请求行，并打印，然后返回适当的HTTP响应。
-　　</p>
-<h3 id="HTTP响应"><a href="#HTTP响应" class="headerlink" title="HTTP响应"></a>HTTP响应</h3><p>　　下面是服务器返回给客户端的HTTP响应（以telnet为例）：<br><img src="/imgs/WS_HTTP_response_anatomy.png" width="400" height="250"></p>
-<p>　　让我们深入剖析它，响应包含：状态行<code>HTTP/1.1 200 OK</code>，紧接着是需要的空行，然后就是HTTP的响应正文。响应状态行<code>HTTP/1.1 200 OK</code>包含HTTP的版本，HTTP的状态码（status code），以及对状态码的简短描述<code>OK</code>(reason-phrase)。当浏览器得到响应，会把响应正文展示出来，这就是你为什么在浏览器看到<code>Hello World!</code>的原因。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结　　"></a>总结　　</h3><p>　　上述是web server如何运行的基本模型。总而言之，web server创建一个监听socket并且开始循环的接收新的连接。客户端初始化一个TCP连接，当连接成功建立之后，客户端发送HTTP请求给服务器，服务器返回用于展示给用户的HTTP响应。要建立一个TCP响应，客户端和服务器都要使用sockets。<br>　　现在你有了一个非常基本的web server了， 你可以用浏览器和一些其他的HTTP客户端测试它。正如你所看到和你所希望的一样，你也可以通过telnet手动输入HTTP请求成为人工HTTP客户端。<br>　　下面提一个问题：你如何用你刚写出来的web server去运行一个Django应用，Flask应用和Pyramid应用，同时不对这个服务器做出单一改变来容纳所有这些不同的Web框架呢？在接下来的第二部分我会展示如何实现，敬请关注。</p>
-<blockquote>
-<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part1/" target="_blank" rel="external">Let’s Build A Web Server. Part 1.</a></p>
-</blockquote>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1771,21 +1832,21 @@ Hello, World!
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">35</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">17</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>
