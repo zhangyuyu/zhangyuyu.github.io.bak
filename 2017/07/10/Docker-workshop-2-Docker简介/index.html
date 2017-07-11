@@ -51,7 +51,7 @@
 <meta property="og:image" content="http://yoursite.com/imgs/docker-architecture.svg">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-engine.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-namespace-pid.png">
-<meta property="og:updated_time" content="2017-07-11T14:25:14.000Z">
+<meta property="og:updated_time" content="2017-07-11T14:26:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（二）Docker简介">
 <meta name="twitter:description" content="一、前言　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？　　上一篇讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Doc">
@@ -316,7 +316,7 @@
 <li>也可以下载并使用别人创建好的现成的镜像</li>
 <li>还可以在现有镜像上创建新的镜像</li>
 </ul>
-<p>在<a href="">下一篇 Docker的基本操作</a>里会有对镜像的详细介绍。</p>
+<p>在<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇 Docker的基本操作</a>里会有对镜像的详细介绍。</p>
 <h4 id="4-Docker容器"><a href="#4-Docker容器" class="headerlink" title="4. Docker容器"></a>4. Docker容器</h4><p>　　Docker 容器就是 Docker 镜像的运行实例。用户可以通过 CLI（docker）或是 API 启动、停止、移动或删除容器。可以这么认为，对于应用软件，镜像是软件生命周期的构建和打包阶段，而容器则是启动和运行阶段。<br>　　总结起来，Docker容器就是：</p>
 <ul>
 <li>一个镜像格式</li>
@@ -396,7 +396,7 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
 -1
 </code></pre><p>　　此时 cpu.cfs_quota_us 的内容为-1，表示默认情况下并没有限制容器的CPU使用。在容器被 stopped 后，该目录被删除。</p>
 <h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是涉及docker的基础理论知识，讲述了docker的出现，docker与LXC以及Microservice的关系，同时从what, why上理解了docker，最后涉及了cgroup和namespaces两个Linux内核机制。</p>
-<p>　　<a href="">下一篇</a>将讲述Docker的基本操作。</p>
+<p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的基本操作。</p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
 <li><a href="https://docs.docker.com/engine/faq/#what-does-docker-technology-add-to-just-plain-lxc" target="_blank" rel="external">what-does-docker-technology-add-to-just-plain-lxc</a></li>
 <li><a href="https://waylau.com/ahout-docker/" target="_blank" rel="external">简述Docker</a></li>
