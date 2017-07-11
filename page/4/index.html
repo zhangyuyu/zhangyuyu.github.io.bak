@@ -176,6 +176,289 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/27/SpringAOP-Advice/" itemprop="url">
+                SpringAOP_Advice
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-27T20:57:00+08:00" content="2015-08-27">
+            2015-08-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/27/SpringAOP-Advice/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/27/SpringAOP-Advice/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　Spring AOP即Aspect-oriented programming，面向切面编程，专门用于处理系统中分布于各个模块（不同方法）中的交叉关注点的问题。简单地说，就是一个拦截器（interceptor）拦截一些处理过程。例如，当一个method被执行，Spring AOP能够劫持正在运行的method，在method执行前或者后加入一些额外的功能。</p>
+<blockquote>
+<p>在Spring AOP中，支持4中类型的通知（Advice）:<br></p>
+<ul>
+<li>Before advice      ——method执行前通知<br></li>
+<li>After returning advice ——method返回一个结果后通知<br></li>
+<li>After throwing advice – method抛出异常后通知<br></li>
+<li>Around advice – 环绕通知，结合了以上三种</li>
+</ul>
+</blockquote>
+<h3 id="一、不使用AOP的简单例子"><a href="#一、不使用AOP的简单例子" class="headerlink" title="一、不使用AOP的简单例子"></a>一、不使用AOP的简单例子</h3><h4 id="1、在CustomerService-java中"><a href="#1、在CustomerService-java中" class="headerlink" title="1、在CustomerService.java中"></a>1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
+
+public class CustomerService {
+    private String name;
+    private String occupation;
+
+    public void setName(String name) {this.name = name;}
+
+    public void printName() {System.out.println(&quot;Customer name : &quot; + this.name);}
+
+    public void printOccupation() {System.out.println(&quot;Customer occupation : &quot; + this.occupation);}
+
+    public void setOccupation(String occupation) {this.occupation = occupation;}
+
+    public void printThrowException() {
+        throw new IllegalArgumentException();
+    }    
+}
+</code></pre><h4 id="2、在Spring-Customer-xml中"><a href="#2、在Spring-Customer-xml中" class="headerlink" title="2、在Spring-Customer.xml中"></a>2、在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre><h4 id="3、运行，在App-java中"><a href="#3、运行，在App-java中" class="headerlink" title="3、运行，在App.java中"></a>3、运行，在App.java中</h4><pre><code>package com.zhangyu.common;
+
+import com.zhangyu.customer.services.CustomerService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext appContext = new ClassPathXmlApplicationContext(
+                new String[] { &quot;Spring-Customer.xml&quot; });
+
+        CustomerService cust = (CustomerService) appContext
+                .getBean(&quot;customerService&quot;);
+
+        System.out.println(&quot;*************************&quot;);
+        cust.printName();
+        System.out.println(&quot;*************************&quot;);
+        cust.printOccupation();
+        System.out.println(&quot;*************************&quot;);
+        try {
+            cust.printThrowException();
+        } catch (Exception e) {
+
+        }
+    }
+}
+</code></pre><h4 id="4、结果"><a href="#4、结果" class="headerlink" title="4、结果"></a>4、结果</h4><pre><code>*************************
+Customer name : Zhang Yu
+*************************
+Customer occupation : developer
+*************************
+</code></pre><h3 id="二、使用AOP"><a href="#二、使用AOP" class="headerlink" title="二、使用AOP"></a>二、使用AOP</h3><h4 id="1、Before-Advice"><a href="#1、Before-Advice" class="headerlink" title="1、Before Advice"></a>1、Before Advice</h4><h5 id="（1）HelloBeforeMethod-java中"><a href="#（1）HelloBeforeMethod-java中" class="headerlink" title="（1）HelloBeforeMethod.java中"></a>（1）HelloBeforeMethod.java中</h5><p>　　创建一个实现了接口MethodBeforeAdvice的class，method运行前，将运行HelloBeforeMethod.java　　</p>
+<pre><code>package com.zhangyu.aop;
+
+import java.lang.reflect.Method;
+import org.springframework.aop.MethodBeforeAdvice;
+
+public class HelloBeforeMethod implements MethodBeforeAdvice {
+    @Override
+    public void before(Method method, Object[] args, Object target)
+            throws Throwable {
+        System.out.println(&quot;HelloBeforeMethod : Before method ,hello&quot;);
+    }
+}
+</code></pre><h5 id="2-Spring-Customer-xml中"><a href="#2-Spring-Customer-xml中" class="headerlink" title="(2) Spring-Customer.xml中"></a>(2) Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloBeforeMethodBean</code>，然后创建一个新的代理（proxy），命名为<code>customerServiceProxy</code>。其中,<code>target</code>定义你想劫持哪个bean，<code>interceptorNames</code>定义你想用哪个class(advice)劫持target。</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
+    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
+        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;helloAroundMethodBean&quot; class=&quot;com.zhangyu.aop.HelloAroundMethod&quot; /&gt;
+    &lt;bean id=&quot;helloBeforeMethodBean&quot; class=&quot;com.zhangyu.aop.HelloBeforeMethod&quot; /&gt;
+
+    &lt;bean id=&quot;customerServiceProxy&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
+        &lt;property name=&quot;target&quot; ref=&quot;customerService&quot; /&gt;
+        &lt;property name=&quot;interceptorNames&quot;&gt;
+            &lt;list&gt;
+                &lt;value&gt;helloBeforeMethodBean&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre><h5 id="3-运行，在App-java中"><a href="#3-运行，在App-java中" class="headerlink" title="(3) 运行，在App.java中　　"></a>(3) 运行，在App.java中　　</h5><p>　　将CustomerService cust改为从<code>customerServiceProxy</code>中getBean:</p>
+<pre><code>CustomerService cust = (CustomerService)appContext.getBean(&quot;customerServiceProxy&quot;);
+</code></pre><p>#####（4）结果</p>
+<pre><code>*************************
+HelloBeforeMethod : Before method ,hello
+Customer name : Zhang Yu
+*************************
+HelloBeforeMethod : Before method ,hello
+Customer occupation : developer
+*************************
+HelloBeforeMethod : Before method ,hello
+</code></pre><h4 id="2、After-Advice"><a href="#2、After-Advice" class="headerlink" title="2、After Advice"></a>2、After Advice</h4><h5 id="1-在HelloAfterMethod-java中"><a href="#1-在HelloAfterMethod-java中" class="headerlink" title="(1) 在HelloAfterMethod.java中"></a>(1) 在HelloAfterMethod.java中</h5><pre><code>package com.zhangyu.aop;
+
+import java.lang.reflect.Method;
+import org.springframework.aop.AfterReturningAdvice;
+
+public class HelloAfterMethod implements AfterReturningAdvice {
+    @Override
+    public void afterReturning(Object returnValue, Method method,
+            Object[] args, Object target) throws Throwable {
+        System.out.println(&quot;HelloAfterMethod : After method ,hello!&quot;);
+    }
+}
+</code></pre><h5 id="2-在Spring-Customer-xml中"><a href="#2-在Spring-Customer-xml中" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAfterMethodBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAfterMethodBean</code>。
+　　</p>
+<h5 id="（3）运行结果"><a href="#（3）运行结果" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
+Customer name : Zhang Yu
+HelloAfterMethod : After method ,hello
+*************************
+Customer occupation : developer
+HelloAfterMethod : After method ,hello
+*************************
+</code></pre><p>　　执行到cust.printThrowException()后，直接抛出异常，方法没有正常执行完毕（或者说没有返回结果），所以不运行切入的afterReturning方法。</p>
+<h4 id="3、After-throwing-advice"><a href="#3、After-throwing-advice" class="headerlink" title="3、After throwing advice"></a>3、After throwing advice</h4><p>　　创建一个实现了ThrowsAdvice接口的class，劫持IllegalArgumentException异常，目标method运行时，抛出IllegalArgumentException异常后，运行切入的方法。</p>
+<h5 id="1-在HelloThrowException-java中"><a href="#1-在HelloThrowException-java中" class="headerlink" title="(1) 在HelloThrowException.java中"></a>(1) 在HelloThrowException.java中</h5><pre><code>package com.zhangyu.aop;
+
+import org.springframework.aop.ThrowsAdvice;
+
+public class HelloThrowException implements ThrowsAdvice {
+    public void afterThrowing(IllegalArgumentException e) throws Throwable {
+        System.out.println(&quot;HelloThrowException : Throw exception ,hello&quot;);
+    }
+}
+</code></pre><h5 id="2-在Spring-Customer-xml中-1"><a href="#2-在Spring-Customer-xml中-1" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloThrowExceptionBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloThrowExceptionBean</code>。
+　　</p>
+<h5 id="（3）运行结果-1"><a href="#（3）运行结果-1" class="headerlink" title="（3）运行结果　　"></a>（3）运行结果　　</h5><pre><code>*************************
+Customer name : Zhang Yu
+*************************
+Customer occupation : developer
+*************************
+HelloThrowException : Throw exception ,hello
+</code></pre><p>者说没有返回结果），所以不运行切入的afterReturning方法。</p>
+<h4 id="4、Around-advice"><a href="#4、Around-advice" class="headerlink" title="4、Around advice"></a>4、Around advice</h4><h5 id="1-在HelloAroundMethod-java中"><a href="#1-在HelloAroundMethod-java中" class="headerlink" title="(1) 在HelloAroundMethod.java中"></a>(1) 在HelloAroundMethod.java中</h5><pre><code>package com.zhangyu.aop;
+
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+
+public class HelloAroundMethod implements MethodInterceptor {
+    @Override
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+
+        System.out.println(&quot;Method name : &quot; + methodInvocation.getMethod().getName());
+
+        // same with MethodBeforeAdvice
+        System.out.println(&quot;HelloAroundMethod : Before method ,hello&quot;);
+
+        try {
+            Object result = methodInvocation.proceed();
+
+            // same with AfterReturningAdvice
+            System.out.println(&quot;HelloAroundMethod : After method ,hello!&quot;);
+            return result;
+        } catch (IllegalArgumentException e) {
+            // same with ThrowsAdvice
+            System.out.println(&quot;HelloAroundMethod : Throw exception ,hello!&quot;);
+            throw e;
+        }
+    }
+}
+</code></pre><h5 id="2-在Spring-Customer-xml中-2"><a href="#2-在Spring-Customer-xml中-2" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAroundMethod</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAroundMethodBean</code>。
+　　</p>
+<h5 id="（3）运行结果-2"><a href="#（3）运行结果-2" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
+Method name : printName
+HelloAroundMethod : Before method ,hello!
+Customer name : Zhang Yu
+HelloAroundMethod : After method ,hello!
+*************************
+Method name : printOccupation
+HelloAroundMethod : Before method ,hello!
+Customer occupation : developer
+HelloAroundMethod : After method ,hello!
+*************************
+Method name : printThrowException
+HelloAroundMethod : Before method ,hello!
+HelloAroundMethod : Throw exception ,hello!
+</code></pre><h3 id="三、目录结构"><a href="#三、目录结构" class="headerlink" title="三、目录结构"></a>三、目录结构</h3><img src="/imgs/SpringAOP_Advice.png" width="300" height="500">
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/26/SpringBatch/" itemprop="url">
                 Spring Batch HelloWorld
               </a>
@@ -1210,7 +1493,7 @@ public class App
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
