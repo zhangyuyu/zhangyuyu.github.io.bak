@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-07-11T14:05:27.000Z</updated>
+  <updated>2017-07-11T14:24:53.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,55 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Docker Workshop（三）Docker的基本操作</title>
+    <link href="http://yoursite.com/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
+    <id>http://yoursite.com/2017/07/11/Docker-workshop-3-Docker的基本操作/</id>
+    <published>2017-07-11T14:08:27.000Z</published>
+    <updated>2017-07-11T14:24:53.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li>容器简介</li>
+<li>Docker简介</li>
+<li>Docker的基本操作</li>
+<li>Docker数据存储</li>
+<li>Docker网络</li>
+<li>Docker安全</li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<p>本章通过以下系列过程，来熟悉Docker的基本指令：</p>
+<ul>
+<li>构建镜像；</li>
+<li>搭建私有registry；</li>
+<li>上传镜像、获取镜像；</li>
+<li>创建容器、运行容器；</li>
+<li>连接容器</li>
+<li>使用Docker-compose工具</li>
+</ul>
+<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-worksh
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://yoursite.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker Workshop（二）Docker简介</title>
     <link href="http://yoursite.com/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/"/>
     <id>http://yoursite.com/2017/07/10/Docker-workshop-2-Docker简介/</id>
     <published>2017-07-10T00:59:59.000Z</published>
-    <updated>2017-07-11T14:05:27.000Z</updated>
+    <updated>2017-07-11T14:25:14.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -188,7 +232,7 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
 -1
 </code></pre><p>　　此时 cpu.cfs_quota_us 的内容为-1，表示默认情况下并没有限制容器的CPU使用。在容器被 stopped 后，该目录被删除。</p>
 <h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是涉及docker的基础理论知识，讲述了docker的出现，docker与LXC以及Microservice的关系，同时从what, why上理解了docker，最后涉及了cgroup和namespaces两个Linux内核机制。</p>
-<p>　　下一篇将讲述Docker的基本操作。</p>
+<p>　　<a href="">下一篇</a>将讲述Docker的基本操作。</p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
 <li><a href="https://docs.docker.com/engine/faq/#what-does-docker-technology-add-to-just-plain-lxc" target="_blank" rel="external">what-does-docker-technology-add-to-just-plain-lxc</a></li>
 <li><a href="https://waylau.com/ahout-docker/" target="_blank" rel="external">简述Docker</a></li>
@@ -2117,99 +2161,6 @@ $ ./startup.sh
     <summary type="html">
     
       &lt;h3 id=&quot;1、准备数据库&quot;&gt;&lt;a href=&quot;#1、准备数据库&quot; class=&quot;headerlink&quot; title=&quot;1、准备数据库&quot;&gt;&lt;/a&gt;1、准备数据库&lt;/h3&gt;&lt;h4 id=&quot;1-在本地mysql中create-一个数据库&quot;&gt;&lt;a href=&quot;#1-在本地mysql
-    
-    </summary>
-    
-      <category term="Servlet" scheme="http://yoursite.com/categories/Servlet/"/>
-    
-    
-      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>手动创建Servlet转发页面</title>
-    <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E8%BD%AC%E5%8F%91%E9%A1%B5%E9%9D%A2/"/>
-    <id>http://yoursite.com/2015/09/20/手动创建Servlet转发页面/</id>
-    <published>2015-09-20T02:12:41.000Z</published>
-    <updated>2015-10-21T14:33:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>　　在上一篇的基础上，本节实现转发页面。</p>
-<h3 id="1、创建servlet"><a href="#1、创建servlet" class="headerlink" title="1、创建servlet"></a>1、创建servlet</h3><h4 id="（1）在test目录下，新建一个index-html"><a href="#（1）在test目录下，新建一个index-html" class="headerlink" title="（1）在test目录下，新建一个index.html"></a>（1）在test目录下，新建一个index.html</h4><pre><code>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos; ?&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
-    &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-&lt;html lang=&quot;en&quot;
-      xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
-      xmlns:h=&quot;http://java.sun.com/jsf/html&quot;&gt;
-    &lt;head&gt;
-        &lt;title&gt;Hello index!&lt;/title&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;form action=&quot;hello&quot; method=&quot;GET&quot;&gt;
-            First Name: &lt;input type=&quot;text&quot; name=&quot;first_name&quot; /&gt;&lt;br /&gt;
-            Last Name: &lt;input type=&quot;text&quot; name=&quot;last_name&quot;   /&gt;&lt;br /&gt;
-            &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
-        &lt;/form&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
-</code></pre><h4 id="（2）在test-WEB-INF-classes下新建一个HEllo-java"><a href="#（2）在test-WEB-INF-classes下新建一个HEllo-java" class="headerlink" title="（2）在test/WEB_INF/classes下新建一个HEllo.java"></a>（2）在test/WEB_INF/classes下新建一个HEllo.java</h4><pre><code>import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-public class Hello extends HttpServlet {
-
-    public void doGet(HttpServletRequest request,HttpServletResponse response)throws ServletException, IOException{
-        response.setContentType(&quot;text/html&quot;);
-
-        PrintWriter out = response.getWriter();
-        String title = &quot;Using GET Method to Read Form Data&quot;;
-        String docType =
-        &quot;&lt;!doctype html public \&quot;-//w3c//dtd html 4.0 &quot; +
-        &quot;transitional//en\&quot;&gt;\n&quot;;
-        out.println(docType +
-                  &quot;&lt;html&gt;\n&quot; +
-                  &quot;&lt;head&gt;&lt;title&gt;&quot; + title + &quot;&lt;/title&gt;&lt;/head&gt;\n&quot; +
-                  &quot;&lt;body&gt;\n&quot; +
-                  &quot;&lt;h1 align=\&quot;center\&quot;&gt;&quot; + title + &quot;&lt;/h1&gt;\n&quot; +
-                  &quot;&lt;b&gt;First Name&lt;/b&gt;: &quot;
-                  + request.getParameter(&quot;first_name&quot;) + &quot;\n&quot; +
-                  &quot;&lt;b&gt;Last Name&lt;/b&gt;: &quot;
-                  + request.getParameter(&quot;last_name&quot;) + &quot;\n&quot; +
-                  &quot;&lt;/body&gt;&quot;+&quot;&lt;/html&gt;&quot;);
-  }
-}
-</code></pre><h3 id="2、编译生成class文件"><a href="#2、编译生成class文件" class="headerlink" title="2、编译生成class文件"></a>2、编译生成class文件</h3><pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26/libexec/webapps/test/WEB-INF/classes/Hello.java
-</code></pre><h3 id="3、部署"><a href="#3、部署" class="headerlink" title="3、部署"></a>3、部署</h3><p>　在web.xml中</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
-&lt;web-app&gt;
-    &lt;!-- Define servlets that are included in the example application --&gt;
-
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;Hello&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;Hello&lt;/servlet-class&gt;
-    &lt;/servlet&gt;
-
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;Hello&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;
-</code></pre><h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.24/libexec/bin
-$ ./startup.sh    
-</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。" target="_blank" rel="external">http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。</a></p>
-<h3 id="6、目录结构"><a href="#6、目录结构" class="headerlink" title="6、目录结构"></a>6、目录结构</h3><pre><code>|---test
-    |---index.html
-    |---WEB-INF
-        |---classes
-            |---Hello.java
-        |---lib
-        |---web.xml
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;　　在上一篇的基础上，本节实现转发页面。&lt;/p&gt;
-&lt;h3 id=&quot;1、创建servlet&quot;&gt;&lt;a href=&quot;#1、创建servlet&quot; class=&quot;headerlink&quot; title=&quot;1、创建servlet&quot;&gt;&lt;/a&gt;1、创建servlet&lt;/h3&gt;&lt;h4 id=&quot;（
     
     </summary>
     
