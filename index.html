@@ -251,7 +251,238 @@
 <li>连接容器</li>
 <li>使用Docker-compose工具</li>
 </ul>
-<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3></span>
+<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><h4 id="1-镜像是什么"><a href="#1-镜像是什么" class="headerlink" title="1. 镜像是什么"></a>1. 镜像是什么</h4><p>　　Docker镜像是一个特殊的<strong>文件系统</strong>，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
+<p>镜像通常包含：</p>
+<ul>
+<li>一个轻量级的操作系统发行版</li>
+<li>相关依赖</li>
+<li>单个应用或服务</li>
+</ul>
+<h4 id="2-镜像的分层存储"><a href="#2-镜像的分层存储" class="headerlink" title="2. 镜像的分层存储"></a>2. 镜像的分层存储</h4><p>　　传统的Linux加载bootfs时会先将rootfs设为read-only，然后在系统自检之后将rootfs从read-only改为read-write，然后我们就可以在rootfs上进行写和读的操作了。<br>　　但Docker的镜像却不是这样，它在bootfs自检完毕之后并不会把rootfs的read-only改为read-write。而是利用union mount（UnionFS的一种挂载机制）将一个或多个read-only的rootfs加载到之前的read-only的rootfs层之上。</p>
+<img src="/imgs/docker-image-layer1.png" width="400" height="250">
+<p>可以通过<code>docker info</code>查看宿主机上docker的文件系统方式：</p>
+<pre><code>$ docker info
+Containers: 3
+Images: 267
+Server Version: 1.9.1
+Storage Driver: aufs
+ Root Dir: /var/lib/docker/aufs
+ Backing Filesystem: extfs
+ Dirs: 273
+ Dirperm1 Supported: true
+Execution Driver: native-0.2
+Logging Driver: json-file
+Kernel Version: 3.19.0-32-generic
+Operating System: Ubuntu 14.04.3 LTS
+CPUs: 2
+Total Memory: 3.431 GiB
+Name: workshop
+ID: 27OE:SE73:WCPT:366X:CCGS:G2NQ:RB2A:UVJ2:A3OC:CZUJ:RYCB:XDDE
+WARNING: No swap limit support
+</code></pre><h4 id="3-练习构建镜像"><a href="#3-练习构建镜像" class="headerlink" title="3. 练习构建镜像"></a>3. 练习构建镜像</h4><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲到获取镜像有三种方式，其中自己从无到有地创建镜像，Docker有两种方式：</p>
+<ul>
+<li>创建一个容器，运行若干命令，再使用<code>docker commit</code>来生成一个新的镜像。以这种方式创建的镜像不具备再生产能力且无法实现版本控制性，因此绝对<strong>不值得提倡</strong>。</li>
+<li>创建一个<code>Dockerfile</code>然后再使用<code>docker build</code>来创建一个镜像。大多人会使用<code>Dockerfile</code>来创建镜像。</li>
+</ul>
+<p>【练习1】通过Dockerfile构建镜像<br>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
+<img src="/imgs/docker-image-layers-history.png" width="500" height="350">
+<p>2）生成镜像<br><code>docker build -t nginx-demo .</code>其中<code>.</code>是当前目录，包含<code>Dockerfile</code>文件</p>
+<pre><code>$ docker build -t nginx-demo .
+Sending build context to Docker daemon 7.168 kB
+Step 1 : FROM debian:8
+8: Pulling from library/debian
+aaec12cbddb4: Pull complete
+a4231e14d761: Pull complete
+Digest: sha256:64682f1a6d256b358b10dba3669b22f3594c69ec790548f5ba6362276ac9d4ca
+Status: Downloaded newer image for debian:8
+ ---&gt; a4231e14d761
+Step 2 : MAINTAINER John Citizen
+ ---&gt; Running in 35d7b813f3ec
+ ---&gt; 3abd0b877321
+Removing intermediate container 35d7b813f3ec
+Step 3 : RUN apt-get update &amp;&amp; apt-get install -y nginx
+ ---&gt; Running in f75d9c834ee9
+ ---&gt; 352a72a3b8a8
+Removing intermediate container f75d9c834ee9
+Step 4 : EXPOSE 80
+ ---&gt; Running in c9939361ce4d
+ ---&gt; e55ea9a20dd4
+Removing intermediate container c9939361ce4d
+Step 5 : CMD nginx -g daemon off;
+ ---&gt; Running in bdac893db4aa
+ ---&gt; 7bd0c6e98644
+Removing intermediate container bdac893db4aa
+Successfully built 7bd0c6e98644
+</code></pre><p>可以看到Docker会创建（create -&gt; commit -&gt; destroy）一些临时的容器，如<code>Step 2</code>的<code>35d7b813f3ec</code>，生成的新的镜像作为中间镜像会被保存在cache中。可以通过下面两种方式查看该临时容器：</p>
+<pre><code>$ docker inspect 3abd0b877321
+$ docker images -a |grep 3abd0b877321
+</code></pre><p>3）查看所有镜像</p>
+<pre><code>$ docker images
+</code></pre><p>4）查看<code>nginx-demo</code>镜像信息</p>
+<pre><code>$ docker inspect nginx-demo
+$ docker inspect -f &apos;{{ .Config.ExposedPorts }}&apos; nginx-demo
+</code></pre><p>5) 查看创建镜像的历史</p>
+<pre><code>$ docker history nginx-demo:latest
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+7bd0c6e98644        5 minutes ago       /bin/sh -c #(nop) CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon o   0 B
+e55ea9a20dd4        5 minutes ago       /bin/sh -c #(nop) EXPOSE 80/tcp                 0 B
+352a72a3b8a8        5 minutes ago       /bin/sh -c apt-get update &amp;&amp; apt-get install    71.8 MB
+3abd0b877321        6 minutes ago       /bin/sh -c #(nop) MAINTAINER John Citizen       0 B
+a4231e14d761        3 weeks ago         /bin/sh -c #(nop)  CMD [&quot;bash&quot;]                 0 B
+aaec12cbddb4        3 weeks ago         /bin/sh -c #(nop) ADD file:9c48682ff75c756544   123.5 MB
+</code></pre><ul>
+<li>容器镜像包括元数据和文件系统，其中文件系统是指对基础镜像的文件系统的修改，元数据不影响文件系统，只是会影响容器的配置;</li>
+<li>每个步骤都会生成一个新的镜像，新的镜像与上一次的镜像相比，要么元数据有了变化，要么文件系统有了变化而多加了一层;</li>
+<li>Docker在需要执行指令时通过创建临时镜像，运行指定的命令，再通过<code>docker commit</code>来生成新的镜像;</li>
+<li>Docker会将中间镜像都保存在缓存中，这样将来如果能直接使用的话就不需要再从头创建了。</li>
+<li>由于每一行指令，都会产生一个镜像，因此可以使用链式指令，有助于构建较小的镜像。(更多内容可以阅读《高性能Docker》)</li>
+</ul>
+<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><p>【练习2】使用Docker public仓库</p>
+<pre><code>$ docker search busybox
+NAME                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+busybox                         Busybox base image.                             1052      [OK]
+progrium/busybox                                                                65                   [OK]
+radial/busyboxplus              Full-chain, Internet enabled, busybox made...   13                   [OK]
+container4armhf/armhf-busybox   Automated build of Busybox for armhf devic...   8                    [OK]
+ofayau/busybox-jvm              Prepare busybox to install a 32 bits JVM.       2                    [OK]
+azukiapp/busybox                This image is meant to be used as the base...   2                    [OK]
+multiarch/busybox               multiarch ports of ubuntu-debootstrap           2                    [OK]
+ofayau/busybox-libc32           Busybox with 32 bits (and 64 bits) libs         1                    [OK]
+skomma/busybox-data             Docker image suitable for data volume cont...   1                    [OK]
+prom/busybox                    Prometheus Busybox Docker base images           1                    [OK]
+elektritter/busybox-teamspeak   Leightweight teamspeak3 container based on...   1                    [OK]
+clover/busybox                  BusyBox base image                              1                    [OK]
+getblank/busybox                Docker container busybox for Blank              1                    [OK]
+zanner/busybox                  https://github.com/sergej-kucharev/zanner-...   1                    [OK]
+cucy/busybox                    aouto  build busybox                            0                    [OK]
+adamant/busybox                 Busybox base image and debian package inst...   0                    [OK]
+sdurrheimer/prom-busybox        Moved to https://hub.docker.com/r/prom/bus...   0                    [OK]
+ggtools/busybox-ubuntu          Busybox ubuntu version with extra goodies       0                    [OK]
+ddn0/busybox                    fork of official busybox                        0                    [OK]
+hongtao12310/busybox            for busybox image based on the gcr.io/goog...   0                    [OK]
+freenas/busybox                 Simple Busybox interactive Linux container      0                    [OK]
+kakaximeng/busybox              busybox                                         0                    [OK]
+jahroots/busybox                Busybox containers                              0                    [OK]
+jiangshouzhuang/busybox         busybox                                         0                    [OK]
+stubbornrock/busybox            busybox:latest                                  0                    [OK]
+
+$ docker pull busybox
+</code></pre><p>【练习3】搭建Docker private仓库<br>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
+<pre><code>docker run -d \
+  -p 5000:5000 \
+  --restart=always \
+  --name registry \
+  -v /home/vagrant/topics/tmp/registry-certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry_hostname.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/registry_hostname.key \
+  registry:2
+</code></pre><p>2) 查看所有docker容器</p>
+<pre><code>$ docker ps -a
+</code></pre><p>3) 访问私有registry接口</p>
+<pre><code>$ sudo curl -is --cacert /etc/docker/certs.d/registry:5000/registry.crt https://registry:5000/v2/
+HTTP/1.1 200 OK
+Content-Length: 2
+Content-Type: application/json; charset=utf-8
+Docker-Distribution-Api-Version: registry/2.0
+Date: Wed, 12 Jul 2017 13:30:17 GMT
+HTTP/1.1 200 OK
+</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><p>【练习4】上传镜像到registry<br>1）给镜像打标签</p>
+<pre><code>$ docker tag nginx-demo registry:5000/nginx-demo
+</code></pre><p>2) 查看所有镜像</p>
+<pre><code>$ docker images
+REPOSITORY                      TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
+nginx-demo                      latest              8ef43fa97b67        About a minute ago   195.3 MB
+registry:5000/nginx-demo        latest              8ef43fa97b67        About a minute ago   195.3 MB
+</code></pre><p>3）上传镜像</p>
+<pre><code>$ docker push registry:5000/nginx-demo
+The push refers to a repository [registry:5000/nginx-demo] (len: 1)
+8ef43fa97b67: Pushed
+5982f0a481be: Pushed
+c329ad2e9994: Pushed
+cdea4d036852: Pushed
+aaec12cbddb4: Pushed
+latest: digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b size: 8470
+</code></pre><p>4）访问registry接口查看镜像是否存在</p>
+<pre><code>$ export CERT_PATH=/etc/docker/certs.d/registry:5000/registry.crt
+$ sudo curl -s --cacert ${CERT_PATH} https://registry:5000/v2/_catalog
+{&quot;repositories&quot;:[&quot;nginx-demo&quot;]}
+</code></pre><p>5) 删除本地镜像</p>
+<pre><code>$ docker rmi nginx-demo
+Untagged: nginx-demo:latest
+Deleted: 7bd0c6e986444a5855665a4b746130088904bc5b7626d5bb5c0dc3ab52fc1142
+Deleted: e55ea9a20dd4b5d4ede4a4873e18e94f139df646085c79c83d12f71815559dda
+Deleted: 352a72a3b8a8ad51f8a84a357fcb3af0a127c8cefc34b6d5839fdcd8c06ececd
+Deleted: 3abd0b8773212881d3e73babe2304d5b760c0b156095bd9496ceb2fedf71fd62
+</code></pre><p>6）从私有registry上拉取镜像</p>
+<pre><code>$ docker pull registry:5000/nginx-demo
+Using default tag: latest
+latest: Pulling from nginx-demo
+31f1e1f22679: Pull complete
+51c8e8d08671: Pull complete
+04ec693a6b9c: Pull complete
+ae06ee9e3b16: Pull complete
+59c395799b5f: Pull complete
+26d4e0d847a6: Pull complete
+Digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b
+Status: Downloaded newer image for registry:5000/nginx-demo:latest
+</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><p>【练习5】启动Docker容器<br>1) 启动一个容器</p>
+<pre><code>$ docker run -d -p 80:80 --name nginx-app registry:5000/nginx-demo
+a56d494e8af22247eccbd7e99f108501684b52395a50f479cca09caa8ec18b19
+$ docker ps
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                    NAMES
+a56d494e8af2        registry:5000/nginx-demo   &quot;nginx -g &apos;daemon off&quot;   3 seconds ago       Up 2 seconds        0.0.0.0:80-&gt;80/tcp       nginx-app
+7d01136fd367        registry:2                 &quot;/bin/registry /etc/d&quot;   22 minutes ago      Up 22 minutes       0.0.0.0:5000-&gt;5000/tcp   registry
+</code></pre><p>此处用<code>docker run</code>是创建并启动，<code>docker create</code>是单纯创建容器。<br>2）查看容器log</p>
+<pre><code>$ docker logs nginx-app
+</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><p>【练习6】连接多个Docker容器<br>假设我们有如下三个应用，且都已经publish到了registry中：</p>
+<ul>
+<li>shop-app，需要连接review和catalogue</li>
+<li>review，微服务</li>
+<li>catalogue，微服务</li>
+</ul>
+<p>1）先启动<code>review</code>和<code>catalogue</code></p>
+<pre><code>$ docker run -d -p 8082:8082 --name review registry:5000/review
+$ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
+</code></pre><p>2）连接<code>shop-app</code>到<code>review</code>和<code>catalogue</code></p>
+<pre><code>$ docker run -d -p 8080:8080 --name shop-app --link review:review --link catalogue:catalogue registry:5000/shop-app
+</code></pre><p>3）查看<code>shop-app</code>容器</p>
+<pre><code>$ docker exec shop-app cat /etc/hosts
+</code></pre><p>4）确认<code>shop-app</code>可以连接到<code>review</code></p>
+<pre><code>$ docker exec -t shop-app ping review
+</code></pre><p>　　以下是Docker link的一些限制：</p>
+<ul>
+<li>Docker link 只在同一宿主机内可以使用</li>
+<li>重新创建容器将会移除之前的链接</li>
+<li>被连接的容器必须是一个已经启动的容器</li>
+</ul>
+<p>　　在Docker发布1.9版本的时候推荐使用<code>Docker Networks</code>代替<code>Docker link</code>，后面的<a href="">Docker Workshop（五）Docker网络</a>会讲到Docker Networks。</p>
+<h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><p>　　Compose是用于定义和运行复杂Docker应用的工具。你可以在一个文件中定义一个多容器的应用，然后使用一条命令来启动你的应用，然后所有相关的操作都会被自动完成。</p>
+<p>【练习7】使用Docker compose工具<br>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
+<p>2) 启动三个容器</p>
+<pre><code>$ docker-compose up
+</code></pre><p>3） 查看运行的容器</p>
+<pre><code>$ docker-compose ps
+</code></pre><p>3）查看log</p>
+<pre><code>$ docker-compose logs
+</code></pre><p><code>docker-compose</code>可以查看所有在<code>docker-compose.yml</code>中声明的容器的日志，不用切换tab查看单独的docker容器日志。</p>
+<h3 id="九、使用容器时要避免的做法"><a href="#九、使用容器时要避免的做法" class="headerlink" title="九、使用容器时要避免的做法"></a>九、使用容器时要避免的做法</h3><ul>
+<li>不要在容器中保存数据（Don’t store data in containers）</li>
+<li>将应用打包到镜像再部署而不是更新到已有容器（Don’t ship your application in two pieces）</li>
+<li>不要产生过大的镜像 （Don’t create large images）</li>
+<li>不要使用单层镜像 （Don’t use a single layer image）</li>
+<li>不要从运行着的容器上产生镜像 （Don’t create images from running containers ）</li>
+<li>不要只是使用 “latest”标签 （Don’t use only the “latest” tag）</li>
+<li>不要在容器内运行超过一个的进程 （Don’t run more than one process in a single container ）</li>
+<li>不要在容器内保存 credentials，而是要从外面通过环境变量传入 （ Don’t store credentials in the image. Use environment variables）</li>
+<li>不要使用 root 用户跑容器进程（Don’t run processes as a root user ）</li>
+<li>不要依赖于IP地址，而是要从外面通过环境变量传入 （Don’t rely on IP addresses ）</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是按照构建流程练习了docker的一些常见基本指令，指令并不全面，详细的指令可以参考<a href="https://docs.docker.com/engine/reference/commandline/docker/#parent-command" target="_blank" rel="external">官网</a>进行练习。<br>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的数据存储。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<li><a href="http://feisky.xyz/docker/index.html" target="_blank" rel="external">Docker笔记</a></li>
+<li><a href="https://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/" target="_blank" rel="external">10 things to avoid in docker containers</a></li>
+</ul>
+</span>
         
       
     </div>
@@ -371,8 +602,8 @@
 <h3 id="五、Docker与Microservices的关系"><a href="#五、Docker与Microservices的关系" class="headerlink" title="五、Docker与Microservices的关系"></a>五、Docker与Microservices的关系</h3><p>　　Microservices（微服务）依赖于“基础设施自动化”，而Docker正是“基础设施自动化”的利器。可以说Docker的火爆，一定程度上也带动了微服务架构的兴起，而微服务的广泛应用也促进了Docker 繁荣，可以说两者相辅相成。</p>
 <h3 id="六、为什么使用Docker？"><a href="#六、为什么使用Docker？" class="headerlink" title="六、为什么使用Docker？"></a>六、为什么使用Docker？</h3><h4 id="1-Why-Docker"><a href="#1-Why-Docker" class="headerlink" title="1. Why Docker?"></a>1. Why Docker?</h4><p>　　按照当前官网<a href="https://docs.docker.com/engine/#why-docker" target="_blank" rel="external">Why Docker?</a>的解释，主要有四个方面：</p>
 <h5 id="1-1更快速的交付应用（Faster-delivery-of-your-applications）"><a href="#1-1更快速的交付应用（Faster-delivery-of-your-applications）" class="headerlink" title="1.1更快速的交付应用（Faster delivery of your applications）"></a>1.1更快速的交付应用（Faster delivery of your applications）</h5><ul>
-<li>我们经常希望我们的应用环境可以发挥更高的效率。现在所有的应用都可以放到Docker容器中。借助于Docker容器，程序开发员，系统管理员甚至QA和版本控制工程师都可以进行协同工作。Docker创建了一套标准的容器数据格式，在这套标准数据格式基础上，当系统管理员管理操作容器时，程序开发员不需要关心容器的变化，这样就可以更专心的关注自己的应用代码。而这种管理和开发的任务隔离，大大的简化了开发和部署的成本。</li>
-<li>Docker容器的创建非常容易，这样应用程序就可以进行快速迭代开发，从而缩短产品的上市周期。同时因为容器的快速创建特性，你所在团队中的成员可以了解应用每个版本的区别，借以熟悉应用如何工作以及应用如何构建。</li>
+<li>借助于Docker容器，程序开发员，系统管理员甚至QA和版本控制工程师都可以进行协同工作。Docker创建了一套标准的容器数据格式，在这套标准数据格式基础上，当系统管理员管理操作容器时，程序开发员不需要关心容器的变化，这样就可以更专心的关注自己的应用代码。而这种管理和开发的任务隔离，大大的简化了开发和部署的成本。</li>
+<li>Docker容器的创建非常容易，这样应用程序就可以进行快速迭代开发，从而缩短产品的上市周期。</li>
 <li>Docker的容器属于轻量级的容器，因此启动和停止都特别快。容器启动只需要毫秒级的时间，因此在进行开发、测试和部署各个环境之间切换时几乎感受不到时间的流失。</li>
 </ul>
 <h5 id="1-2-更轻松的部署和扩展（Deploy-and-scale-more-easily）"><a href="#1-2-更轻松的部署和扩展（Deploy-and-scale-more-easily）" class="headerlink" title="1.2 更轻松的部署和扩展（Deploy and scale more easily）"></a>1.2 更轻松的部署和扩展（Deploy and scale more easily）</h5><ul>
@@ -383,7 +614,7 @@
 <li>Docker的容器本身不需要额外创建虚拟机管理系统，因此你可以启动多套Docker容器，这样就可以充分发挥主机服务器的物理资源，也可以降低因为采购服务器licenses而带来的额外成本。</li>
 </ul>
 <h5 id="1-4-更简单的管理（Faster-deployment-makes-for-easier-management）"><a href="#1-4-更简单的管理（Faster-deployment-makes-for-easier-management）" class="headerlink" title="1.4 更简单的管理（Faster deployment makes for easier management）"></a>1.4 更简单的管理（Faster deployment makes for easier management）</h5><ul>
-<li>Docker快速部署和轻量级的特性，可以使应用快速迭代。每次小的变更，马上就可以看到效果。而不用将若干个小变更积攒到一定程度再变更。每次变更一小部分其实是一种非常安全的方式。</li>
+<li>Docker快速部署和轻量级的特性，可以使应用快速迭代。同时所有的修改都以增量的方式被分发和更新，从而实现自动化并且高效的管理。</li>
 </ul>
 <h4 id="2-Docker的使用场景"><a href="#2-Docker的使用场景" class="headerlink" title="2. Docker的使用场景"></a>2. Docker的使用场景</h4><ul>
 <li>简化配置</li>
@@ -432,9 +663,10 @@
 <li><a href="https://hub.docker.com/" target="_blank" rel="external">Docker Hub</a>是默认的 Registry，由 Docker公司维护，上面有数以万计的镜像，用户可以自由下载和使用。</li>
 <li>出于对速度或安全的考虑，用户也可以创建自己的私有Registry</li>
 </ul>
-<h3 id="九、Docker-Engine"><a href="#九、Docker-Engine" class="headerlink" title="九、Docker Engine"></a>九、Docker Engine</h3><img src="/imgs/docker-engine.png" width="300" height="150">
-<p>　　在Linux Kernel里对资源进行控制的机制是cgroup，实现资源隔离的机制是namespaces， cgroup和namespaces就是Linux container用到的两个内核机制。</p>
-<h4 id="1-namespace-资源隔离"><a href="#1-namespace-资源隔离" class="headerlink" title="1. namespace 资源隔离"></a>1. namespace 资源隔离</h4><ul>
+<h3 id="九、Docker核心技术"><a href="#九、Docker核心技术" class="headerlink" title="九、Docker核心技术"></a>九、Docker核心技术</h3><img src="/imgs/docker-core-tech.png" width="300" height="150">
+<p>　　Docker核心是一个操作系统级虚拟化方法, 理解起来可能并不像VM那样直观。我们从虚拟化方法的四个方面：隔离性、可配额/可度量、便携性、安全性来详细介绍Docker的技术细节。</p>
+<img src="/imgs/docker-core-engine.png" width="300" height="150">
+<h4 id="1-隔离性-namespace资源隔离"><a href="#1-隔离性-namespace资源隔离" class="headerlink" title="1. 隔离性: namespace资源隔离"></a>1. 隔离性: namespace资源隔离</h4><ul>
 <li>pid：每个容器都运行在自己的进程环境中；</li>
 <li>user：在container内部用container内部的用户执行程序而非Host上的用户。</li>
 <li>net：容器间的虚拟网络接口和IP地址都是分开的；</li>
@@ -443,7 +675,7 @@
 <li>ipc：进程间交互；</li>
 </ul>
 <p>　　例如：在主机和docker容器里，都可以拥有自己的init进程（PID=1），init进程是所有其他进程的祖先进程，docker容器其实是主机里的一个进程。<br><img src="/imgs/docker-namespace-pid.png" width="300" height="150"></p>
-<h4 id="2-cgroups资源限制"><a href="#2-cgroups资源限制" class="headerlink" title="2. cgroups资源限制"></a>2. cgroups资源限制</h4><p>　　cgroups是Linux内核提供的一种机制，用来限制、控制与分离一个进程组群的资源（如CPU、Memory、IO等）</p>
+<h4 id="2-可配额-可度量：cgroups资源限制"><a href="#2-可配额-可度量：cgroups资源限制" class="headerlink" title="2. 可配额/可度量：cgroups资源限制"></a>2. 可配额/可度量：cgroups资源限制</h4><p>　　cgroups是Linux内核提供的一种机制，用来限制、控制与分离一个进程组群的资源（如CPU、Memory、IO等）</p>
 <p>主要提供了如下功能:</p>
 <ul>
 <li>资源限制：限制任务使用的资源总额，并在超过这个配额时发出提示</li>
@@ -457,6 +689,15 @@
 <li>为这组进程分配其足够使用的内存</li>
 <li>为这组进程分配相应的网络带宽和磁盘存储限制</li>
 <li>限制访问某些设备（通过设置设备的白名单)</li>
+</ul>
+<h4 id="3-便携性-文件系统"><a href="#3-便携性-文件系统" class="headerlink" title="3. 便携性: 文件系统"></a>3. 便携性: 文件系统</h4><p>　　最初docker仅能在支持Aufs文件系统的Linux发行版上运行，但是由于Aufs未能加入linux内核，为了寻求兼容性、扩展性，Docker在内部通过graphdriver机制这种可扩展的方式来实现对不同文件系统的支持。目前，Docker支持Aufs，Devicemapper，Btrfs和Vfs四种文件系统。</p>
+<p>　　典型的Linux文件系统由bootfs和rootfs两部分组成，bootfs(boot file system)主要包含 bootloader和kernel，bootloader主要是引导加载kernel，当kernel被加载到内存中后 bootfs就被umount了。 rootfs (root file system) 包含的就是典型 Linux 系统中的/dev，/proc，/bin，/etc等标准目录和文件。<br><img src="/imgs/docker-aufs1.png" width="300" height="150"></p>
+<p>　　对于不同的linux发行版，bootfs基本是一致的，但rootfs会有差别，因此不同的发行版可以公用bootfs:<br><img src="/imgs/docker-aufs2.png" width="300" height="150"></p>
+<h4 id="4-安全性-AppArmor-SELinux-GRSEC"><a href="#4-安全性-AppArmor-SELinux-GRSEC" class="headerlink" title="4. 安全性: AppArmor, SELinux, GRSEC"></a>4. 安全性: AppArmor, SELinux, GRSEC</h4><p>　　安全永远是相对的，这里有三个方面可以考虑Docker的安全特性:</p>
+<ul>
+<li>由kernel namespaces和cgroups实现的Linux系统固有的安全标准;</li>
+<li>Docker Deamon的安全接口;</li>
+<li>Linux本身的安全加固解决方案,类如AppArmor, SELinux;</li>
 </ul>
 <h3 id="十、内核机制的练习"><a href="#十、内核机制的练习" class="headerlink" title="十、内核机制的练习"></a>十、内核机制的练习</h3><h4 id="【练习1】命名空间的练习"><a href="#【练习1】命名空间的练习" class="headerlink" title="【练习1】命名空间的练习"></a>【练习1】命名空间的练习</h4><pre><code># 创建一个Docker容器
 $ docker run -it --rm busybox
