@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-07-12T14:33:38.000Z</updated>
+  <updated>2017-07-13T11:12:44.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,104 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Docker Workshop（四）Docker数据存储</title>
+    <link href="http://yoursite.com/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/"/>
+    <id>http://yoursite.com/2017/07/13/Docker-workshop-4-Docker数据存储/</id>
+    <published>2017-07-13T00:18:24.000Z</published>
+    <updated>2017-07-13T11:12:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li>容器简介</li>
+<li>Docker简介</li>
+<li>Docker的基本操作</li>
+<li>Docker数据存储</li>
+<li>Docker网络</li>
+<li>Docker安全</li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<h3 id="三、Docker的存储方式"><a href="#三、Docker的存储方式" class="headerlink" title="三、Docker的存储方式"></a>三、Docker的存储方式</h3><p>　　Docker存储驱动包含：AUFS、Device mapper、OverlayFS、Btrfs、ZF，它们提供了接口支持<strong>镜像分层</strong>与<strong>写时复制机制Cow</strong>，这两种技术满足了容器的核心价值，即极快的创建速度，极小的存储资源消耗以及容器迁移的便捷性。<br>容器的Root Image存储分为以下三类：</p>
+<ul>
+<li>AUFS，Overlay : 联合文件系统。</li>
+<li>DeviceMapper：CoW块存储。</li>
+<li>ZFS，btrfs: CoW文件系统。</li>
+</ul>
+<p>　　Docker并不推荐采用Root Image的存储方式来存储应用数据。因为应用数据对安全，可用性，共享，性能等方面的要求和Root Image的要求是完全不一样的。<br>　　Docker采用了Volume这样一个独立的数据访问接口，应用通过Volume去访问相关的数据，Volume的实现和CoW的分层文件系统完全独立。<br>　　Volume通过Rancher Convoy或者Flocker这样的存储驱动去管理和访问具体的存储设备。</p>
+<h3 id="四、卷是什么"><a href="#四、卷是什么" class="headerlink" title="四、卷是什么"></a>四、卷是什么</h3><p>　　Docker的理念之一是将应用与其运行的环境进行打包，因此通常docker容器的生存周期与在容器中运行的程序的生存周期是一致的，当容器被销毁时，容器里的数据也会随之消失。</p>
+<p>　　为了能够<strong>保存（持久化）数据</strong>以及<strong>共享容器间的数据</strong>，Docker提出了Volume的概念。<br>简单来说，Volume就是目录或者文件，它可以绕过默认的联合文件系统，而以正常的文件或者目录的形式存在于宿主机上。</p>
+<h3 id="五、管理数据的两种方式"><a href="#五、管理数据的两种方式" class="headerlink" title="五、管理数据的两种方式"></a>五、管理数据的两种方式</h3><h4 id="1-数据卷（Data-volumes）"><a href="#1-数据卷（Data-volumes）" class="headerlink" title="1. 数据卷（Data volumes）"></a>1. 数据卷（Data volumes）</h4><p>数据卷特性：</p>
+<ul>
+<li>处于UFS(Union File System)之外</li>
+<li>主机文件系统中的普通目录</li>
+<li>在卷上的I/O性能应与主机上的完全相同</li>
+<li>卷的内容不包含在Docker镜像中</li>
+<li>任何对卷内容的修改不是镜像的一部分</li>
+<li>可被多个容器共享和重用</li>
+<li>持久化数据（即使容器已被删除</li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：数据卷的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的数据卷。</p>
+</blockquote>
+<p>可以使用以下两种方式创建：</p>
+<ul>
+<li>在Dockerfile中指定VOLUME /some/dir</li>
+<li>执行docker run -v /some/dir命令来指定</li>
+</ul>
+<h5 id="【练习1】用-v添加一个数据卷"><a href="#【练习1】用-v添加一个数据卷" class="headerlink" title="【练习1】用-v添加一个数据卷"></a>【练习1】用-v添加一个数据卷</h5><h5 id="【练习2】用Dockerfile挂载数据卷"><a href="#【练习2】用Dockerfile挂载数据卷" class="headerlink" title="【练习2】用Dockerfile挂载数据卷"></a>【练习2】用Dockerfile挂载数据卷</h5><h4 id="2-数据卷容器（Data-volume-containers）"><a href="#2-数据卷容器（Data-volume-containers）" class="headerlink" title="2. 数据卷容器（Data volume containers）"></a>2. 数据卷容器（Data volume containers）</h4><pre><code>docker run --volume-from some-container 
+</code></pre><h5 id="【练习3】创建数据卷容器"><a href="#【练习3】创建数据卷容器" class="headerlink" title="【练习3】创建数据卷容器"></a>【练习3】创建数据卷容器</h5><h5 id="【练习4】备份数据"><a href="#【练习4】备份数据" class="headerlink" title="【练习4】备份数据"></a>【练习4】备份数据</h5><h5 id="【练习5】恢复数据"><a href="#【练习5】恢复数据" class="headerlink" title="【练习5】恢复数据"></a>【练习5】恢复数据</h5><h5 id="【练习6】删除数据卷"><a href="#【练习6】删除数据卷" class="headerlink" title="【练习6】删除数据卷"></a>【练习6】删除数据卷</h5><h4 id="3-比较"><a href="#3-比较" class="headerlink" title="3. 比较"></a>3. 比较</h4><img src="/imgs/docker-volumn-vs-container.png" width="500" height="250">
+<h3 id="六、卷插件"><a href="#六、卷插件" class="headerlink" title="六、卷插件"></a>六、卷插件</h3><p>数据卷<br>优点：</p>
+<ul>
+<li>跟主机磁盘性能一样</li>
+<li>容器删除后依然保留</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>仅限本地磁盘</li>
+<li>不能随容器迁移</li>
+</ul>
+<p>Docker推出了Volume plugin接口机制，让第三方的存储厂商来支持Docker Volume并且在此基础上进行功能拓展。</p>
+<img src="/imgs/docker-volumn-plugin.png" width="500" height="250">
+<ul>
+<li><p>Rancher Convoy：Convoy是Rancher Labs用go开发的支持Device Mapper、NFS、EBS、GlusterFS多种后端存储的Docker Volume plugin driver. Convoy还提供了一个存储拓展功能（如快照、备份恢复等）的接口框架。</p>
+</li>
+<li><p>Flocker：Flocker volume plugin driver主要用于多主机环境Docker数据卷的迁移，从而支持数据库应用等stateful有状态应用的主机间迁移。</p>
+</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是讲述了Docker的数据存储以及数据管理。<br><a href="">下一篇</a>将讲述Docker的网络。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<li><a href="http://dockone.io/article/1257" target="_blank" rel="external">Docker容器对存储的定义</a></li>
+<li><a href="http://dockone.io/article/1729" target="_blank" rel="external">Docker存储方式选型建议</a></li>
+<li><a href="https://medium.com/@ramangupta/why-docker-data-containers-are-good-589b3c6c749e" target="_blank" rel="external">Why Docker Data Containers (Volumes!) are Good</a></li>
+<li><a href="https://rominirani.com/docker-tutorial-series-part-7-data-volumes-93073a1b5b72" target="_blank" rel="external">Data Volumes</a></li>
+<li><a href="http://container-solutions.com/understanding-volumes-docker/" target="_blank" rel="external">Understanding Volumes in Docker</a></li>
+<li><a href="http://clusterhq.com/2015/12/09/difference-docker-volumes-flocker-volumes/" target="_blank" rel="external">Docker Volumes vs Docker Volumes with Flocker</a></li>
+<li><a href="http://feisky.xyz/docker/data_management/volume.html" target="_blank" rel="external">Docker数据管理</a></li>
+<li><a href="http://www.ywnds.com/?p=7015" target="_blank" rel="external">Docker：容器数据管理</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-worksh
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://yoursite.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker Workshop（三）Docker的基本操作</title>
     <link href="http://yoursite.com/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
     <id>http://yoursite.com/2017/07/11/Docker-workshop-3-Docker的基本操作/</id>
     <published>2017-07-11T14:08:27.000Z</published>
-    <updated>2017-07-12T14:33:38.000Z</updated>
+    <updated>2017-07-13T00:23:19.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -77,7 +170,7 @@ WARNING: No swap limit support
 <li>创建一个容器，运行若干命令，再使用<code>docker commit</code>来生成一个新的镜像。以这种方式创建的镜像不具备再生产能力且无法实现版本控制性，因此绝对<strong>不值得提倡</strong>。</li>
 <li>创建一个<code>Dockerfile</code>然后再使用<code>docker build</code>来创建一个镜像。大多人会使用<code>Dockerfile</code>来创建镜像。</li>
 </ul>
-<p>【练习1】通过Dockerfile构建镜像<br>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
+<h4 id="【练习1】通过Dockerfile构建镜像"><a href="#【练习1】通过Dockerfile构建镜像" class="headerlink" title="【练习1】通过Dockerfile构建镜像"></a>【练习1】通过Dockerfile构建镜像</h4><p>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
 <img src="/imgs/docker-image-layers-history.png" width="500" height="350">
 <p>2）生成镜像<br><code>docker build -t nginx-demo .</code>其中<code>.</code>是当前目录，包含<code>Dockerfile</code>文件</p>
 <pre><code>$ docker build -t nginx-demo .
@@ -130,8 +223,7 @@ aaec12cbddb4        3 weeks ago         /bin/sh -c #(nop) ADD file:9c48682ff75c7
 <li>Docker会将中间镜像都保存在缓存中，这样将来如果能直接使用的话就不需要再从头创建了。</li>
 <li>由于每一行指令，都会产生一个镜像，因此可以使用链式指令，有助于构建较小的镜像。(更多内容可以阅读《高性能Docker》)</li>
 </ul>
-<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><p>【练习2】使用Docker public仓库</p>
-<pre><code>$ docker search busybox
+<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><h4 id="【练习2】使用Docker-public仓库"><a href="#【练习2】使用Docker-public仓库" class="headerlink" title="【练习2】使用Docker public仓库"></a>【练习2】使用Docker public仓库</h4><pre><code>$ docker search busybox
 NAME                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
 busybox                         Busybox base image.                             1052      [OK]
 progrium/busybox                                                                65                   [OK]
@@ -160,7 +252,7 @@ jiangshouzhuang/busybox         busybox                                         
 stubbornrock/busybox            busybox:latest                                  0                    [OK]
 
 $ docker pull busybox
-</code></pre><p>【练习3】搭建Docker private仓库<br>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
+</code></pre><h4 id="【练习3】搭建Docker-private仓库"><a href="#【练习3】搭建Docker-private仓库" class="headerlink" title="【练习3】搭建Docker private仓库"></a>【练习3】搭建Docker private仓库</h4><p>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
 <pre><code>docker run -d \
   -p 5000:5000 \
   --restart=always \
@@ -179,7 +271,7 @@ Content-Type: application/json; charset=utf-8
 Docker-Distribution-Api-Version: registry/2.0
 Date: Wed, 12 Jul 2017 13:30:17 GMT
 HTTP/1.1 200 OK
-</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><p>【练习4】上传镜像到registry<br>1）给镜像打标签</p>
+</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><h4 id="【练习4】上传镜像到registry"><a href="#【练习4】上传镜像到registry" class="headerlink" title="【练习4】上传镜像到registry"></a>【练习4】上传镜像到registry</h4><p>1）给镜像打标签</p>
 <pre><code>$ docker tag nginx-demo registry:5000/nginx-demo
 </code></pre><p>2) 查看所有镜像</p>
 <pre><code>$ docker images
@@ -218,7 +310,7 @@ ae06ee9e3b16: Pull complete
 26d4e0d847a6: Pull complete
 Digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b
 Status: Downloaded newer image for registry:5000/nginx-demo:latest
-</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><p>【练习5】启动Docker容器<br>1) 启动一个容器</p>
+</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><h4 id="【练习5】启动Docker容器"><a href="#【练习5】启动Docker容器" class="headerlink" title="【练习5】启动Docker容器"></a>【练习5】启动Docker容器</h4><p>1) 启动一个容器</p>
 <pre><code>$ docker run -d -p 80:80 --name nginx-app registry:5000/nginx-demo
 a56d494e8af22247eccbd7e99f108501684b52395a50f479cca09caa8ec18b19
 $ docker ps
@@ -227,7 +319,7 @@ a56d494e8af2        registry:5000/nginx-demo   &quot;nginx -g &apos;daemon off&q
 7d01136fd367        registry:2                 &quot;/bin/registry /etc/d&quot;   22 minutes ago      Up 22 minutes       0.0.0.0:5000-&gt;5000/tcp   registry
 </code></pre><p>此处用<code>docker run</code>是创建并启动，<code>docker create</code>是单纯创建容器。<br>2）查看容器log</p>
 <pre><code>$ docker logs nginx-app
-</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><p>【练习6】连接多个Docker容器<br>假设我们有如下三个应用，且都已经publish到了registry中：</p>
+</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><h4 id="【练习6】连接多个Docker容器"><a href="#【练习6】连接多个Docker容器" class="headerlink" title="【练习6】连接多个Docker容器"></a>【练习6】连接多个Docker容器</h4><p>假设我们有如下三个应用，且都已经publish到了registry中：</p>
 <ul>
 <li>shop-app，需要连接review和catalogue</li>
 <li>review，微服务</li>
@@ -250,7 +342,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 </ul>
 <p>　　在Docker发布1.9版本的时候推荐使用<code>Docker Networks</code>代替<code>Docker link</code>，后面的<a href="">Docker Workshop（五）Docker网络</a>会讲到Docker Networks。</p>
 <h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><p>　　Compose是用于定义和运行复杂Docker应用的工具。你可以在一个文件中定义一个多容器的应用，然后使用一条命令来启动你的应用，然后所有相关的操作都会被自动完成。</p>
-<p>【练习7】使用Docker compose工具<br>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
+<h4 id="【练习7】使用Docker-compose工具"><a href="#【练习7】使用Docker-compose工具" class="headerlink" title="【练习7】使用Docker compose工具"></a>【练习7】使用Docker compose工具</h4><p>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
 <p>2) 启动三个容器</p>
 <pre><code>$ docker-compose up
 </code></pre><p>3） 查看运行的容器</p>
@@ -2236,172 +2328,6 @@ Hello World
 &lt;p&gt;在客户端的请求访问后端资源之前，拦截这些请求。&lt;br&gt;&lt;br&gt;在服务器的响应发送回客户端之前，处理这些响应。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;
-    
-    </summary>
-    
-      <category term="Servlet" scheme="http://yoursite.com/categories/Servlet/"/>
-    
-    
-      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>手动创建Servlet连接数据库</title>
-    <link href="http://yoursite.com/2015/09/20/%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BAServlet%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    <id>http://yoursite.com/2015/09/20/手动创建Servlet连接数据库/</id>
-    <published>2015-09-20T02:20:41.000Z</published>
-    <updated>2015-10-21T14:34:03.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1、准备数据库"><a href="#1、准备数据库" class="headerlink" title="1、准备数据库"></a>1、准备数据库</h3><h4 id="1-在本地mysql中create-一个数据库"><a href="#1-在本地mysql中create-一个数据库" class="headerlink" title="(1)在本地mysql中create 一个数据库"></a>(1)在本地mysql中create 一个数据库</h4><pre><code>$ mysql.server start
-$ mysql -uroot -p
-mysql&gt; show databases;
-mysql&gt; create database test;
-mysql&gt; use test;
-mysql&gt; create table raw_report(
-       name varchar(20),
-       sex varchar(10),
-       age varchar(10),
-       birthday varchar(20)
-  );
-mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Alex&apos;,&apos;M&apos;,&apos;20&apos;,&apos;08/07/1995&apos;);
-mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Alice&apos;,&apos;F&apos;,&apos;18&apos;,&apos;08/07/1997&apos;);
-mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Bob&apos;,&apos;M&apos;,&apos;21&apos;,&apos;08/07/1994&apos;);
-mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Mary&apos;,&apos;F&apos;,&apos;23&apos;,&apos;08/07/1992&apos;);
-</code></pre><h3 id="2、创建servlet"><a href="#2、创建servlet" class="headerlink" title="2、创建servlet"></a>2、创建servlet</h3><p>　　在test/WEB_INF/classes下新建一个DBServlet.java</p>
-<pre><code>import java.io.*;                                    //导入java.io包
-import java.util.*;
-import java.sql.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-public class DBServlet extends HttpServlet{            //定义一个继承HttpServlet的公有类
-    ServletConfig config=null;                        //定义一个ServletConfig对象
-    private String driverName=&quot;&quot;;                    //定义私有字符串常量并初始化
-    private String username=&quot;&quot;;                    //定义的数据库用户名
-    private String password=&quot;&quot;;                    //定义的数据库连接密码
-    private String dbName=&quot;&quot;;                        //定义的数据库名
-    private Connection conn;                        //初始化连接
-    private Statement stmt;                        //初始化数据库操作
-    ResultSet rs=null;   
-                             //初始化结果集
-    public void init(ServletConfig config)throws ServletException{
-        super.init(config);                            //继承父类的init()方法
-        this.config=config;                            //获取配置信息
-        driverName=config.getInitParameter(&quot;driverName&quot;);//从配置文件中获取JDBC驱动名
-        username=config.getInitParameter(&quot;username&quot;);    //获取数据库用户名
-        password=config.getInitParameter(&quot;password&quot;);    //获取数据库连接密码
-        dbName=config.getInitParameter(&quot;dbName&quot;);    //获取要连接的数据库
-    }
-
-    public void doGet(HttpServletRequest req,HttpServletResponse resp)throws IOException,ServletException{
-        resp.setContentType(&quot;text/html;charset=GBK&quot;);    //设置字符编码格式
-        PrintWriter out=resp.getWriter();                //实例化对象，用于页面输出
-        out.println(&quot;&lt;html&gt;&quot;);                    //实现生成静态Html
-        out.println(&quot;&lt;head&gt;&quot;);
-        out.println(&quot;&lt;meta http-equiv=\&quot;Content-Type\&quot;content=\&quot;text/html;charset=GBK\&quot;&gt;&quot;);
-        out.println(&quot;&lt;title&gt;DataBase Connection&lt;/title&gt;&quot;);
-        out.println(&quot;&lt;/head&gt;&quot;);
-        out.println(&quot;&lt;body bgcolor=\&quot;white\&quot;&gt;&quot;);
-        out.println(&quot;&lt;center&gt;&quot;);
-        String url=&quot;jdbc:mysql://localhost:3306/test&quot;;
-        try{
-                Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-                conn=DriverManager.getConnection(url,username,password);
-                stmt=conn.createStatement();
-                String sql=&quot;select * from raw_report&quot;;
-                rs=stmt.executeQuery(sql);
-
-                out.println(&quot;Servlet访问数据库成功&quot;);
-                out.println(&quot;&lt;table border=1 bordercolorlight=#000000&gt;&quot;);
-                out.println(&quot;&lt;tr&gt;&lt;td width=40&gt;name&lt;/td&gt;&quot;);
-                out.println(&quot;&lt;td&gt;sex&lt;/td&gt;&quot;);
-                out.println(&quot;&lt;td&gt;age&lt;/td&gt;&quot;);
-                out.println(&quot;&lt;td&gt;birthday&lt;/td&gt;&quot;);
-                while(rs.next()){
-                     out.println(&quot;&lt;tr&gt;&lt;td&gt;&quot;+rs.getString(1)+&quot;&lt;/td&gt;&quot;);
-                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(2)+&quot;&lt;/td&gt;&quot;);
-                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(3)+&quot;&lt;/td&gt;&quot;);
-                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(4)+&quot;&lt;/td&gt;&quot;);
-                     out.println(&quot;&lt;tr&gt;&quot;);
-                }
-                out.println(&quot;&lt;/table&gt;&quot;);
-
-                rs.close();
-                stmt.close();
-                conn.close();    
-
-            }catch(Exception e){
-                e.printStackTrace();
-                out.println(e.toString());    
-            }
-            out.println(&quot;&lt;/center&gt;&quot;);
-            out.println(&quot;&lt;/body&gt;&quot;);
-            out.println(&quot;&lt;/html&gt;&quot;);
-        }
-
-        public void doPost(HttpServletRequest req,HttpServletResponse resp)throws IOException,ServletException{
-            this.doGet(req,resp);
-        }
-
-        public void destory(){
-            config=null;
-            driverName=null;
-            username=null;
-            password=null;
-            dbName=null;
-            conn=null;
-            stmt=null;
-            rs=null;
-        }
-}
-</code></pre><h3 id="3、编译生成class文件"><a href="#3、编译生成class文件" class="headerlink" title="3、编译生成class文件"></a>3、编译生成class文件</h3><pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.24/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.24/libexec/webapps/test/WEB-INF/classes/DBServlet.java
-</code></pre><h3 id="4、部署"><a href="#4、部署" class="headerlink" title="4、部署"></a>4、部署</h3><p>　　在web.xml中</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
-&lt;web-app&gt;
-    &lt;servlet&gt;
-    &lt;description&gt;This is the description of my J2EE component&lt;/description&gt;
-    &lt;display-name&gt;This is the display name of my J2EE component&lt;/display-name&gt;
-    &lt;servlet-name&gt;DBServlet&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;DBServlet&lt;/servlet-class&gt;
-    &lt;init-param&gt;
-            &lt;param-name&gt;driverName&lt;/param-name&gt;
-            &lt;param-value&gt;com.mysql.jdbc.Driver&lt;/param-value&gt;
-        &lt;/init-param&gt;
-        &lt;init-param&gt;
-        &lt;param-name&gt;username&lt;/param-name&gt;            
-            &lt;param-value&gt;用户名&lt;/param-value&gt;                
-        &lt;/init-param&gt;
-        &lt;init-param&gt;
-            &lt;param-name&gt;password&lt;/param-name&gt;        
-            &lt;param-value&gt;密码&lt;/param-value&gt;                
-        &lt;/init-param&gt;
-        &lt;init-param&gt;
-            &lt;param-name&gt;dbName&lt;/param-name&gt;    
-            &lt;param-value&gt;test&lt;/param-value&gt;    
-        &lt;/init-param&gt;
-
-  &lt;/servlet&gt;
-
-  &lt;servlet-mapping&gt;
-     &lt;servlet-name&gt;DBServlet&lt;/servlet-name&gt;
-     &lt;url-pattern&gt;/DB&lt;/url-pattern&gt;
-   &lt;/servlet-mapping&gt;
-
-&lt;/web-app&gt;
-</code></pre><h3 id="5、启动tomcat"><a href="#5、启动tomcat" class="headerlink" title="5、启动tomcat"></a>5、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.24/libexec/bin
-$ ./startup.sh    
-</code></pre><h3 id="6、运行"><a href="#6、运行" class="headerlink" title="6、运行"></a>6、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/DB" target="_blank" rel="external">http://localhost:8080/test/DB</a></p>
-<h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
-    |---WEB-INF
-        |---classes
-            |---DBServlet.java
-        |---lib
-        |---web.xml
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1、准备数据库&quot;&gt;&lt;a href=&quot;#1、准备数据库&quot; class=&quot;headerlink&quot; title=&quot;1、准备数据库&quot;&gt;&lt;/a&gt;1、准备数据库&lt;/h3&gt;&lt;h4 id=&quot;1-在本地mysql中create-一个数据库&quot;&gt;&lt;a href=&quot;#1-在本地mysql
     
     </summary>
     

@@ -176,6 +176,131 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/28/SpringMVC-Gradle-xml/" itemprop="url">
+                SpringMVC_Gradle_xml
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-28T12:35:55+08:00" content="2015-08-28">
+            2015-08-28
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/28/SpringMVC-Gradle-xml/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/28/SpringMVC-Gradle-xml/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、Gradle-Build"><a href="#一、Gradle-Build" class="headerlink" title="一、Gradle Build"></a>一、Gradle Build</h3><pre><code>apply plugin: &apos;java&apos;
+apply plugin: &apos;war&apos;
+apply plugin: &apos;idea&apos;
+apply plugin: &apos;jetty&apos;
+
+// JDK 7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+
+    compile &apos;ch.qos.logback:logback-classic:1.1.3&apos;
+    compile &apos;org.springframework:spring-webmvc:4.1.6.RELEASE&apos;
+    compile &apos;javax.servlet:jstl:1.2&apos;
+
+}
+
+// Embeded Jetty for testing
+jettyRun{
+    contextPath = &quot;spring4&quot;
+    httpPort = 8080
+}
+
+jettyRunWar{
+    contextPath = &quot;spring4&quot;
+    httpPort = 8080
+}
+</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
+<h3 id="二、Spring-MVC"><a href="#二、Spring-MVC" class="headerlink" title="二、Spring MVC"></a>二、Spring MVC</h3><h4 id="1、WelcomeController-java"><a href="#1、WelcomeController-java" class="headerlink" title="1、WelcomeController.java"></a>1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java"><a href="#2、HelloWorldService-java" class="headerlink" title="2、HelloWorldService.java"></a>2、HelloWorldService.java</h4><h4 id="3、logback-xml"><a href="#3、logback-xml" class="headerlink" title="3、logback.xml"></a>3、logback.xml</h4><h4 id="4、spring-core-config-xml"><a href="#4、spring-core-config-xml" class="headerlink" title="4、spring-core-config.xml"></a>4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml"><a href="#5、spring-mvc-config-xml" class="headerlink" title="5、spring-mvc-config.xml"></a>5、spring-mvc-config.xml</h4><h4 id="6、web-xml"><a href="#6、web-xml" class="headerlink" title="6、web.xml"></a>6、web.xml</h4><h3 id="三、运行，输出结果"><a href="#三、运行，输出结果" class="headerlink" title="三、运行，输出结果"></a>三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
+<pre><code>$ gradle jettyRun                    
+:compileJava
+:processResources
+:classes
+:jettyRun
+Building 75% &gt; :jettyRun &gt; Running at http://localhost:8080/spring4
+</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
+<h3 id="四、目录结构"><a href="#四、目录结构" class="headerlink" title="四、目录结构"></a>四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/27/SpringAOP-Pointcut-Advisor/" itemprop="url">
                 SpringAOP_Pointcut&Advisor
               </a>
@@ -1757,7 +1882,7 @@ public class App
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">38</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>

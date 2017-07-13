@@ -50,7 +50,7 @@
 <meta property="og:description" content="一、前言　　上一篇 Docker简介讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。　　本篇将开始实际动手操作，熟悉docker基本的指令。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-image-layer1.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-image-layers-history.png">
-<meta property="og:updated_time" content="2017-07-12T14:33:38.000Z">
+<meta property="og:updated_time" content="2017-07-13T00:23:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（三）Docker的基本操作">
 <meta name="twitter:description" content="一、前言　　上一篇 Docker简介讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。　　本篇将开始实际动手操作，熟悉docker基本的指令。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全">
@@ -284,7 +284,7 @@ WARNING: No swap limit support
 <li>创建一个容器，运行若干命令，再使用<code>docker commit</code>来生成一个新的镜像。以这种方式创建的镜像不具备再生产能力且无法实现版本控制性，因此绝对<strong>不值得提倡</strong>。</li>
 <li>创建一个<code>Dockerfile</code>然后再使用<code>docker build</code>来创建一个镜像。大多人会使用<code>Dockerfile</code>来创建镜像。</li>
 </ul>
-<p>【练习1】通过Dockerfile构建镜像<br>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
+<h4 id="【练习1】通过Dockerfile构建镜像"><a href="#【练习1】通过Dockerfile构建镜像" class="headerlink" title="【练习1】通过Dockerfile构建镜像"></a>【练习1】通过Dockerfile构建镜像</h4><p>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
 <img src="/imgs/docker-image-layers-history.png" width="500" height="350">
 <p>2）生成镜像<br><code>docker build -t nginx-demo .</code>其中<code>.</code>是当前目录，包含<code>Dockerfile</code>文件</p>
 <pre><code>$ docker build -t nginx-demo .
@@ -337,8 +337,7 @@ aaec12cbddb4        3 weeks ago         /bin/sh -c #(nop) ADD file:9c48682ff75c7
 <li>Docker会将中间镜像都保存在缓存中，这样将来如果能直接使用的话就不需要再从头创建了。</li>
 <li>由于每一行指令，都会产生一个镜像，因此可以使用链式指令，有助于构建较小的镜像。(更多内容可以阅读《高性能Docker》)</li>
 </ul>
-<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><p>【练习2】使用Docker public仓库</p>
-<pre><code>$ docker search busybox
+<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><h4 id="【练习2】使用Docker-public仓库"><a href="#【练习2】使用Docker-public仓库" class="headerlink" title="【练习2】使用Docker public仓库"></a>【练习2】使用Docker public仓库</h4><pre><code>$ docker search busybox
 NAME                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
 busybox                         Busybox base image.                             1052      [OK]
 progrium/busybox                                                                65                   [OK]
@@ -367,7 +366,7 @@ jiangshouzhuang/busybox         busybox                                         
 stubbornrock/busybox            busybox:latest                                  0                    [OK]
 
 $ docker pull busybox
-</code></pre><p>【练习3】搭建Docker private仓库<br>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
+</code></pre><h4 id="【练习3】搭建Docker-private仓库"><a href="#【练习3】搭建Docker-private仓库" class="headerlink" title="【练习3】搭建Docker private仓库"></a>【练习3】搭建Docker private仓库</h4><p>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
 <pre><code>docker run -d \
   -p 5000:5000 \
   --restart=always \
@@ -386,7 +385,7 @@ Content-Type: application/json; charset=utf-8
 Docker-Distribution-Api-Version: registry/2.0
 Date: Wed, 12 Jul 2017 13:30:17 GMT
 HTTP/1.1 200 OK
-</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><p>【练习4】上传镜像到registry<br>1）给镜像打标签</p>
+</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><h4 id="【练习4】上传镜像到registry"><a href="#【练习4】上传镜像到registry" class="headerlink" title="【练习4】上传镜像到registry"></a>【练习4】上传镜像到registry</h4><p>1）给镜像打标签</p>
 <pre><code>$ docker tag nginx-demo registry:5000/nginx-demo
 </code></pre><p>2) 查看所有镜像</p>
 <pre><code>$ docker images
@@ -425,7 +424,7 @@ ae06ee9e3b16: Pull complete
 26d4e0d847a6: Pull complete
 Digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b
 Status: Downloaded newer image for registry:5000/nginx-demo:latest
-</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><p>【练习5】启动Docker容器<br>1) 启动一个容器</p>
+</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><h4 id="【练习5】启动Docker容器"><a href="#【练习5】启动Docker容器" class="headerlink" title="【练习5】启动Docker容器"></a>【练习5】启动Docker容器</h4><p>1) 启动一个容器</p>
 <pre><code>$ docker run -d -p 80:80 --name nginx-app registry:5000/nginx-demo
 a56d494e8af22247eccbd7e99f108501684b52395a50f479cca09caa8ec18b19
 $ docker ps
@@ -434,7 +433,7 @@ a56d494e8af2        registry:5000/nginx-demo   &quot;nginx -g &apos;daemon off&q
 7d01136fd367        registry:2                 &quot;/bin/registry /etc/d&quot;   22 minutes ago      Up 22 minutes       0.0.0.0:5000-&gt;5000/tcp   registry
 </code></pre><p>此处用<code>docker run</code>是创建并启动，<code>docker create</code>是单纯创建容器。<br>2）查看容器log</p>
 <pre><code>$ docker logs nginx-app
-</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><p>【练习6】连接多个Docker容器<br>假设我们有如下三个应用，且都已经publish到了registry中：</p>
+</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><h4 id="【练习6】连接多个Docker容器"><a href="#【练习6】连接多个Docker容器" class="headerlink" title="【练习6】连接多个Docker容器"></a>【练习6】连接多个Docker容器</h4><p>假设我们有如下三个应用，且都已经publish到了registry中：</p>
 <ul>
 <li>shop-app，需要连接review和catalogue</li>
 <li>review，微服务</li>
@@ -457,7 +456,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 </ul>
 <p>　　在Docker发布1.9版本的时候推荐使用<code>Docker Networks</code>代替<code>Docker link</code>，后面的<a href="">Docker Workshop（五）Docker网络</a>会讲到Docker Networks。</p>
 <h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><p>　　Compose是用于定义和运行复杂Docker应用的工具。你可以在一个文件中定义一个多容器的应用，然后使用一条命令来启动你的应用，然后所有相关的操作都会被自动完成。</p>
-<p>【练习7】使用Docker compose工具<br>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
+<h4 id="【练习7】使用Docker-compose工具"><a href="#【练习7】使用Docker-compose工具" class="headerlink" title="【练习7】使用Docker compose工具"></a>【练习7】使用Docker compose工具</h4><p>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
 <p>2) 启动三个容器</p>
 <pre><code>$ docker-compose up
 </code></pre><p>3） 查看运行的容器</p>
@@ -498,6 +497,8 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/13/Docker-workshop-4-Docker数据存储/" rel="prev">Docker Workshop（四）Docker数据存储</a>
             
           </div>
 
@@ -569,7 +570,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">38</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -618,7 +619,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Docker镜像"><span class="nav-number">3.</span> <span class="nav-text">三、Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-镜像是什么"><span class="nav-number">3.1.</span> <span class="nav-text">1. 镜像是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-镜像的分层存储"><span class="nav-number">3.2.</span> <span class="nav-text">2. 镜像的分层存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-练习构建镜像"><span class="nav-number">3.3.</span> <span class="nav-text">3. 练习构建镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Docker仓库"><span class="nav-number">4.</span> <span class="nav-text">四、Docker仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、发布镜像到仓库"><span class="nav-number">5.</span> <span class="nav-text">五、发布镜像到仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、启动Docker容器"><span class="nav-number">6.</span> <span class="nav-text">六、启动Docker容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、连接Docker容器"><span class="nav-number">7.</span> <span class="nav-text">七、连接Docker容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、使用Docker-Compose"><span class="nav-number">8.</span> <span class="nav-text">八、使用Docker Compose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、使用容器时要避免的做法"><span class="nav-number">9.</span> <span class="nav-text">九、使用容器时要避免的做法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">10.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#References"><span class="nav-number">11.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Docker镜像"><span class="nav-number">3.</span> <span class="nav-text">三、Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-镜像是什么"><span class="nav-number">3.1.</span> <span class="nav-text">1. 镜像是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-镜像的分层存储"><span class="nav-number">3.2.</span> <span class="nav-text">2. 镜像的分层存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-练习构建镜像"><span class="nav-number">3.3.</span> <span class="nav-text">3. 练习构建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习1】通过Dockerfile构建镜像"><span class="nav-number">3.4.</span> <span class="nav-text">【练习1】通过Dockerfile构建镜像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Docker仓库"><span class="nav-number">4.</span> <span class="nav-text">四、Docker仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习2】使用Docker-public仓库"><span class="nav-number">4.1.</span> <span class="nav-text">【练习2】使用Docker public仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习3】搭建Docker-private仓库"><span class="nav-number">4.2.</span> <span class="nav-text">【练习3】搭建Docker private仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、发布镜像到仓库"><span class="nav-number">5.</span> <span class="nav-text">五、发布镜像到仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习4】上传镜像到registry"><span class="nav-number">5.1.</span> <span class="nav-text">【练习4】上传镜像到registry</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、启动Docker容器"><span class="nav-number">6.</span> <span class="nav-text">六、启动Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习5】启动Docker容器"><span class="nav-number">6.1.</span> <span class="nav-text">【练习5】启动Docker容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、连接Docker容器"><span class="nav-number">7.</span> <span class="nav-text">七、连接Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习6】连接多个Docker容器"><span class="nav-number">7.1.</span> <span class="nav-text">【练习6】连接多个Docker容器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、使用Docker-Compose"><span class="nav-number">8.</span> <span class="nav-text">八、使用Docker Compose</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习7】使用Docker-compose工具"><span class="nav-number">8.1.</span> <span class="nav-text">【练习7】使用Docker compose工具</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、使用容器时要避免的做法"><span class="nav-number">9.</span> <span class="nav-text">九、使用容器时要避免的做法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">10.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#References"><span class="nav-number">11.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

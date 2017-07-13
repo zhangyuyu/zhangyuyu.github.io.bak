@@ -176,6 +176,233 @@
           
           
             
+              <a class="post-title-link" href="/2015/09/20/手动创建Servlet连接数据库/" itemprop="url">
+                手动创建Servlet连接数据库
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-09-20T10:20:41+08:00" content="2015-09-20">
+            2015-09-20
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Servlet/" itemprop="url" rel="index">
+                  <span itemprop="name">Servlet</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/20/手动创建Servlet连接数据库/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/20/手动创建Servlet连接数据库/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="1、准备数据库"><a href="#1、准备数据库" class="headerlink" title="1、准备数据库"></a>1、准备数据库</h3><h4 id="1-在本地mysql中create-一个数据库"><a href="#1-在本地mysql中create-一个数据库" class="headerlink" title="(1)在本地mysql中create 一个数据库"></a>(1)在本地mysql中create 一个数据库</h4><pre><code>$ mysql.server start
+$ mysql -uroot -p
+mysql&gt; show databases;
+mysql&gt; create database test;
+mysql&gt; use test;
+mysql&gt; create table raw_report(
+       name varchar(20),
+       sex varchar(10),
+       age varchar(10),
+       birthday varchar(20)
+  );
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Alex&apos;,&apos;M&apos;,&apos;20&apos;,&apos;08/07/1995&apos;);
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Alice&apos;,&apos;F&apos;,&apos;18&apos;,&apos;08/07/1997&apos;);
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Bob&apos;,&apos;M&apos;,&apos;21&apos;,&apos;08/07/1994&apos;);
+mysql&gt; INSERT raw_report(name, sex, age, birthday) VALUES(&apos;Mary&apos;,&apos;F&apos;,&apos;23&apos;,&apos;08/07/1992&apos;);
+</code></pre><h3 id="2、创建servlet"><a href="#2、创建servlet" class="headerlink" title="2、创建servlet"></a>2、创建servlet</h3><p>　　在test/WEB_INF/classes下新建一个DBServlet.java</p>
+<pre><code>import java.io.*;                                    //导入java.io包
+import java.util.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class DBServlet extends HttpServlet{            //定义一个继承HttpServlet的公有类
+    ServletConfig config=null;                        //定义一个ServletConfig对象
+    private String driverName=&quot;&quot;;                    //定义私有字符串常量并初始化
+    private String username=&quot;&quot;;                    //定义的数据库用户名
+    private String password=&quot;&quot;;                    //定义的数据库连接密码
+    private String dbName=&quot;&quot;;                        //定义的数据库名
+    private Connection conn;                        //初始化连接
+    private Statement stmt;                        //初始化数据库操作
+    ResultSet rs=null;   
+                             //初始化结果集
+    public void init(ServletConfig config)throws ServletException{
+        super.init(config);                            //继承父类的init()方法
+        this.config=config;                            //获取配置信息
+        driverName=config.getInitParameter(&quot;driverName&quot;);//从配置文件中获取JDBC驱动名
+        username=config.getInitParameter(&quot;username&quot;);    //获取数据库用户名
+        password=config.getInitParameter(&quot;password&quot;);    //获取数据库连接密码
+        dbName=config.getInitParameter(&quot;dbName&quot;);    //获取要连接的数据库
+    }
+
+    public void doGet(HttpServletRequest req,HttpServletResponse resp)throws IOException,ServletException{
+        resp.setContentType(&quot;text/html;charset=GBK&quot;);    //设置字符编码格式
+        PrintWriter out=resp.getWriter();                //实例化对象，用于页面输出
+        out.println(&quot;&lt;html&gt;&quot;);                    //实现生成静态Html
+        out.println(&quot;&lt;head&gt;&quot;);
+        out.println(&quot;&lt;meta http-equiv=\&quot;Content-Type\&quot;content=\&quot;text/html;charset=GBK\&quot;&gt;&quot;);
+        out.println(&quot;&lt;title&gt;DataBase Connection&lt;/title&gt;&quot;);
+        out.println(&quot;&lt;/head&gt;&quot;);
+        out.println(&quot;&lt;body bgcolor=\&quot;white\&quot;&gt;&quot;);
+        out.println(&quot;&lt;center&gt;&quot;);
+        String url=&quot;jdbc:mysql://localhost:3306/test&quot;;
+        try{
+                Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+                conn=DriverManager.getConnection(url,username,password);
+                stmt=conn.createStatement();
+                String sql=&quot;select * from raw_report&quot;;
+                rs=stmt.executeQuery(sql);
+
+                out.println(&quot;Servlet访问数据库成功&quot;);
+                out.println(&quot;&lt;table border=1 bordercolorlight=#000000&gt;&quot;);
+                out.println(&quot;&lt;tr&gt;&lt;td width=40&gt;name&lt;/td&gt;&quot;);
+                out.println(&quot;&lt;td&gt;sex&lt;/td&gt;&quot;);
+                out.println(&quot;&lt;td&gt;age&lt;/td&gt;&quot;);
+                out.println(&quot;&lt;td&gt;birthday&lt;/td&gt;&quot;);
+                while(rs.next()){
+                     out.println(&quot;&lt;tr&gt;&lt;td&gt;&quot;+rs.getString(1)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(2)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(3)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;td&gt;&quot;+rs.getString(4)+&quot;&lt;/td&gt;&quot;);
+                     out.println(&quot;&lt;tr&gt;&quot;);
+                }
+                out.println(&quot;&lt;/table&gt;&quot;);
+
+                rs.close();
+                stmt.close();
+                conn.close();    
+
+            }catch(Exception e){
+                e.printStackTrace();
+                out.println(e.toString());    
+            }
+            out.println(&quot;&lt;/center&gt;&quot;);
+            out.println(&quot;&lt;/body&gt;&quot;);
+            out.println(&quot;&lt;/html&gt;&quot;);
+        }
+
+        public void doPost(HttpServletRequest req,HttpServletResponse resp)throws IOException,ServletException{
+            this.doGet(req,resp);
+        }
+
+        public void destory(){
+            config=null;
+            driverName=null;
+            username=null;
+            password=null;
+            dbName=null;
+            conn=null;
+            stmt=null;
+            rs=null;
+        }
+}
+</code></pre><h3 id="3、编译生成class文件"><a href="#3、编译生成class文件" class="headerlink" title="3、编译生成class文件"></a>3、编译生成class文件</h3><pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.24/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.24/libexec/webapps/test/WEB-INF/classes/DBServlet.java
+</code></pre><h3 id="4、部署"><a href="#4、部署" class="headerlink" title="4、部署"></a>4、部署</h3><p>　　在web.xml中</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app&gt;
+    &lt;servlet&gt;
+    &lt;description&gt;This is the description of my J2EE component&lt;/description&gt;
+    &lt;display-name&gt;This is the display name of my J2EE component&lt;/display-name&gt;
+    &lt;servlet-name&gt;DBServlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;DBServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+            &lt;param-name&gt;driverName&lt;/param-name&gt;
+            &lt;param-value&gt;com.mysql.jdbc.Driver&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+        &lt;param-name&gt;username&lt;/param-name&gt;            
+            &lt;param-value&gt;用户名&lt;/param-value&gt;                
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;password&lt;/param-name&gt;        
+            &lt;param-value&gt;密码&lt;/param-value&gt;                
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;dbName&lt;/param-name&gt;    
+            &lt;param-value&gt;test&lt;/param-value&gt;    
+        &lt;/init-param&gt;
+
+  &lt;/servlet&gt;
+
+  &lt;servlet-mapping&gt;
+     &lt;servlet-name&gt;DBServlet&lt;/servlet-name&gt;
+     &lt;url-pattern&gt;/DB&lt;/url-pattern&gt;
+   &lt;/servlet-mapping&gt;
+
+&lt;/web-app&gt;
+</code></pre><h3 id="5、启动tomcat"><a href="#5、启动tomcat" class="headerlink" title="5、启动tomcat"></a>5、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.24/libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="6、运行"><a href="#6、运行" class="headerlink" title="6、运行"></a>6、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/DB" target="_blank" rel="external">http://localhost:8080/test/DB</a></p>
+<h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
+    |---WEB-INF
+        |---classes
+            |---DBServlet.java
+        |---lib
+        |---web.xml
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/09/20/手动创建Servlet转发页面/" itemprop="url">
                 手动创建Servlet转发页面
               </a>
@@ -1762,131 +1989,6 @@ Default Running!
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/28/SpringMVC-Gradle-xml/" itemprop="url">
-                SpringMVC_Gradle_xml
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-28T12:35:55+08:00" content="2015-08-28">
-            2015-08-28
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/28/SpringMVC-Gradle-xml/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/28/SpringMVC-Gradle-xml/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、Gradle-Build"><a href="#一、Gradle-Build" class="headerlink" title="一、Gradle Build"></a>一、Gradle Build</h3><pre><code>apply plugin: &apos;java&apos;
-apply plugin: &apos;war&apos;
-apply plugin: &apos;idea&apos;
-apply plugin: &apos;jetty&apos;
-
-// JDK 7
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-dependencies {
-
-    compile &apos;ch.qos.logback:logback-classic:1.1.3&apos;
-    compile &apos;org.springframework:spring-webmvc:4.1.6.RELEASE&apos;
-    compile &apos;javax.servlet:jstl:1.2&apos;
-
-}
-
-// Embeded Jetty for testing
-jettyRun{
-    contextPath = &quot;spring4&quot;
-    httpPort = 8080
-}
-
-jettyRunWar{
-    contextPath = &quot;spring4&quot;
-    httpPort = 8080
-}
-</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
-<h3 id="二、Spring-MVC"><a href="#二、Spring-MVC" class="headerlink" title="二、Spring MVC"></a>二、Spring MVC</h3><h4 id="1、WelcomeController-java"><a href="#1、WelcomeController-java" class="headerlink" title="1、WelcomeController.java"></a>1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java"><a href="#2、HelloWorldService-java" class="headerlink" title="2、HelloWorldService.java"></a>2、HelloWorldService.java</h4><h4 id="3、logback-xml"><a href="#3、logback-xml" class="headerlink" title="3、logback.xml"></a>3、logback.xml</h4><h4 id="4、spring-core-config-xml"><a href="#4、spring-core-config-xml" class="headerlink" title="4、spring-core-config.xml"></a>4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml"><a href="#5、spring-mvc-config-xml" class="headerlink" title="5、spring-mvc-config.xml"></a>5、spring-mvc-config.xml</h4><h4 id="6、web-xml"><a href="#6、web-xml" class="headerlink" title="6、web.xml"></a>6、web.xml</h4><h3 id="三、运行，输出结果"><a href="#三、运行，输出结果" class="headerlink" title="三、运行，输出结果"></a>三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
-<pre><code>$ gradle jettyRun                    
-:compileJava
-:processResources
-:classes
-:jettyRun
-Building 75% &gt; :jettyRun &gt; Running at http://localhost:8080/spring4
-</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
-<h3 id="四、目录结构"><a href="#四、目录结构" class="headerlink" title="四、目录结构"></a>四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1925,7 +2027,7 @@ Building 75% &gt; :jettyRun &gt; Running at http://localhost:8080/spring4
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">38</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
