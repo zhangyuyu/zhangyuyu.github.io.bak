@@ -176,6 +176,228 @@
           
           
             
+              <a class="post-title-link" href="/2015/08/29/Gradle/" itemprop="url">
+                Gradle
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-29T00:01:59+08:00" content="2015-08-29">
+            2015-08-29
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Gradle/" itemprop="url" rel="index">
+                  <span itemprop="name">Gradle</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/29/Gradle/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/29/Gradle/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>　　每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。<br>　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Property以完成特定的操作。<br>　　gradle命令在当前路径下寻找一个叫build.gradle的文件夹，也叫做build script,严格来说build configuration script，它定义了project和其tasks.</p>
+<h3 id="一、HelloWorld"><a href="#一、HelloWorld" class="headerlink" title="一、HelloWorld"></a>一、HelloWorld</h3><h4 id="1、调用Project的task-方法"><a href="#1、调用Project的task-方法" class="headerlink" title="1、调用Project的task()方法"></a>1、调用Project的task()方法</h4><p>在build.gradle中</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
+}
+</code></pre><p>　　其中<code>&lt;&lt;</code>表示向hello中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
+<h4 id="2、使用doLast加入执行过程"><a href="#2、使用doLast加入执行过程" class="headerlink" title="2、使用doLast加入执行过程"></a>2、使用doLast加入执行过程</h4><pre><code>task hello {
+        doLast {
+            println &apos;Hello world!&apos;
+        }
+    }    
+</code></pre><h4 id="3、create方式"><a href="#3、create方式" class="headerlink" title="3、create方式"></a>3、create方式</h4><pre><code>tasks.create(name: &apos;hello&apos;) &lt;&lt; {
+   println &apos;Hello world!&apos;
+}
+</code></pre><h4 id="4、运行，结果"><a href="#4、运行，结果" class="headerlink" title="4、运行，结果"></a>4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
+<pre><code>$ gradle -q hello
+Hello world!
+</code></pre><p>　　</p>
+<h3 id="二、使用Grovvy"><a href="#二、使用Grovvy" class="headerlink" title="二、使用Grovvy"></a>二、使用Grovvy</h3><h4 id="eg1"><a href="#eg1" class="headerlink" title="eg1:"></a>eg1:</h4><p>build.gradle:</p>
+<pre><code>task upper &lt;&lt; {
+    String someString = &apos;mY_nAmE&apos;
+    println &quot;Original: &quot; + someString 
+    println &quot;Upper case: &quot; + someString.toUpperCase()
+}
+</code></pre><p>Terminal：</p>
+<pre><code>$ gradle -q upper
+Original: mY_nAmE
+Upper case: MY_NAME
+</code></pre><h4 id="eg2"><a href="#eg2" class="headerlink" title="eg2:"></a>eg2:</h4><p>build.gradle:</p>
+<pre><code>task count &lt;&lt; {
+    4.times { print &quot;$it &quot; }
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q count
+0 1 2 3 
+</code></pre><h3 id="三、task依赖"><a href="#三、task依赖" class="headerlink" title="三、task依赖"></a>三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
+<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候："><a href="#1、声明Task依赖关系的一种方式是在定义一个Task的时候：" class="headerlink" title="1、声明Task依赖关系的一种方式是在定义一个Task的时候："></a>1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
+<pre><code>task taskX &lt;&lt; {
+    println &apos;taskY!&apos;
+}
+task taskY(dependsOn: taskX){
+    println &quot;taskX!&quot;
+}
+</code></pre><p>Terminal:</p>
+<pre><code>&gt; gradle -q taskY
+taskX
+taskY
+</code></pre><h4 id="2、被依赖的Task还不存在的时候"><a href="#2、被依赖的Task还不存在的时候" class="headerlink" title="2、被依赖的Task还不存在的时候"></a>2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
+<pre><code>task taskX(dependsOn: &apos;taskY&apos;) &lt;&lt; {
+    println &apos;taskX&apos;
+}
+task taskY &lt;&lt; {
+    println &apos;taskY&apos;    
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q taskX
+taskY
+taskX    
+</code></pre><h4 id="3、Example"><a href="#3、Example" class="headerlink" title="3、Example"></a>3、Example</h4><p>gradle.build</p>
+<pre><code>task branch &lt;&lt; {
+    println &quot;use version=$version&quot;
+}
+
+task myTask(dependsOn: &apos;mybranch&apos;) &lt;&lt; {
+    println &apos;this is my task!&apos;
+}
+
+gradle.taskGraph.whenReady {taskGraph -&gt;
+    if (taskGraph.hasTask(myTask)) {
+        version = &apos;1.0&apos;
+    } else {
+        version = &apos;2.0&apos;
+    }
+}    
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q branch  
+use version=2.0
+$ gradle -q myTask
+use version=1.0
+this is my task!
+</code></pre><h3 id="四、动态task"><a href="#四、动态task" class="headerlink" title="四、动态task"></a>四、动态task</h3><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
+    }
+}
+</code></pre><p>Ternimal:</p>
+<pre><code>$ gradle -q task1
+I&apos;m task number 1
+</code></pre><p>　　注意，task是从0开始的，即此处存在task0、task1、task2、task3。可输入<code>gradle tasks</code>查看所有task。</p>
+<h3 id="五、操控现有task"><a href="#五、操控现有task" class="headerlink" title="五、操控现有task"></a>五、操控现有task</h3><h4 id="1、添加依赖"><a href="#1、添加依赖" class="headerlink" title="1、添加依赖"></a>1、添加依赖</h4><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
+    }
+}
+task0.dependsOn task2, task3
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q task0
+I&apos;m task number 2
+I&apos;m task number 3
+I&apos;m task number 0
+</code></pre><h4 id="2、添加行为"><a href="#2、添加行为" class="headerlink" title="2、添加行为"></a>2、添加行为</h4><p>build.gradle:</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
+}
+hello.doFirst {
+    println &apos;Hello first&apos;
+}
+hello.doLast {
+    println &apos;Hello last&apos;
+}
+hello &lt;&lt; {
+    println &apos;Hello hello!&apos;
+}
+</code></pre><p>Treminal:</p>
+<pre><code>$ gradle -q hello
+Hello first
+Hello world!
+Hello last
+Hello hello!
+</code></pre><h3 id="六、默认task"><a href="#六、默认task" class="headerlink" title="六、默认task"></a>六、默认task</h3><p>build.gradle:</p>
+<pre><code>defaultTasks &apos;clean&apos;, &apos;run&apos;
+
+task clean &lt;&lt; {
+    println &apos;Default Cleaning!&apos;
+}
+
+task run &lt;&lt; {
+    println &apos;Default Running!&apos;
+}
+
+task other &lt;&lt; {
+    println &quot;I&apos;m not a default task!&quot;
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q
+Default Cleaning!
+Default Running!
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/28/SpringMVC-Gradle-xml/" itemprop="url">
                 SpringMVC_Gradle_xml
               </a>
@@ -1882,7 +2104,7 @@ public class App
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">38</span>
+              <span class="site-state-item-count">39</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>

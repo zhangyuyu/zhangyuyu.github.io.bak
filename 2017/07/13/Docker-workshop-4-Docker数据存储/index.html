@@ -2,8 +2,6 @@
 <html class="theme-next use-motion ">
 <head>
   
-    
-
 
 <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -52,7 +50,7 @@
 <meta property="og:description" content="一、前言　　上一篇 Docker的基本操作按照构建流程练习了docker的一些常见基本指令。本篇主要讲述Docker数据管理相关的内容。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  本章主要通过练习数据卷和数">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-volumn-vs-container.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-volumn-plugin.png">
-<meta property="og:updated_time" content="2017-07-17T07:15:40.000Z">
+<meta property="og:updated_time" content="2017-07-17T12:48:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（四）Docker数据存储">
 <meta name="twitter:description" content="一、前言　　上一篇 Docker的基本操作按照构建流程练习了docker的一些常见基本指令。本篇主要讲述Docker数据管理相关的内容。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  本章主要通过练习数据卷和数">
@@ -231,13 +229,13 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
-<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+        <span itemprop="articleBody"><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li>容器简介</li>
-<li>Docker简介</li>
-<li>Docker的基本操作</li>
-<li>Docker数据存储</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><strong>Docker数据存储</strong></li>
 <li>Docker网络</li>
 <li>Docker安全</li>
 <li>多主机部署</li>
@@ -245,21 +243,21 @@
 <li>日志、跟踪、监控</li>
 </ul>
 <p>本章主要通过练习<code>数据卷</code>和<code>数据卷容器</code>来理解Docker的数据管理。</p>
-<h3 id="三、Docker的存储方式"><a href="#三、Docker的存储方式" class="headerlink" title="三、Docker的存储方式"></a>三、Docker的存储方式</h3><p>　　Docker存储驱动包含：AUFS、Device mapper、OverlayFS、Btrfs、ZF，它们提供了接口支持<strong>镜像分层</strong>与<strong>写时复制机制Cow</strong>，这两种技术满足了容器的核心价值，即极快的创建速度，极小的存储资源消耗以及容器迁移的便捷性。<br>容器的Root Image存储分为以下三类：</p>
+<h2 id="三、Docker的存储方式"><a href="#三、Docker的存储方式" class="headerlink" title="三、Docker的存储方式"></a>三、Docker的存储方式</h2><p>　　Docker存储驱动包含：AUFS、Device mapper、OverlayFS、Btrfs、ZF，它们提供了接口支持<strong>镜像分层</strong>与<strong>写时复制机制Cow</strong>，这两种技术满足了容器的核心价值，即极快的创建速度，极小的存储资源消耗以及容器迁移的便捷性。<br>容器的Root Image存储分为以下三类：</p>
 <ul>
 <li>AUFS，Overlay : 联合文件系统。</li>
 <li>DeviceMapper：CoW块存储。</li>
 <li>ZFS，btrfs: CoW文件系统。</li>
 </ul>
 <p>　　Docker并不推荐采用Root Image的存储方式来存储应用数据。因为应用数据对安全，可用性，共享，性能等方面的要求和Root Image的要求是完全不一样的。<br>　　Docker采用了Volume这样一个独立的数据访问接口，应用通过Volume去访问相关的数据，Volume的实现和CoW的分层文件系统完全独立。<br>　　Volume通过Rancher Convoy或者Flocker这样的存储驱动去管理和访问具体的存储设备。</p>
-<h3 id="四、卷是什么"><a href="#四、卷是什么" class="headerlink" title="四、卷是什么"></a>四、卷是什么</h3><p>　　Docker的理念之一是将应用与其运行的环境进行打包，因此通常docker容器的生存周期与在容器中运行的程序的生存周期是一致的，当容器被销毁时，容器里的数据也会随之消失。</p>
+<h2 id="四、卷是什么"><a href="#四、卷是什么" class="headerlink" title="四、卷是什么"></a>四、卷是什么</h2><p>　　Docker的理念之一是将应用与其运行的环境进行打包，因此通常docker容器的生存周期与在容器中运行的程序的生存周期是一致的，当容器被销毁时，容器里的数据也会随之消失。</p>
 <p>　　为了能够<strong>保存（持久化）数据</strong>以及<strong>共享容器间的数据</strong>，Docker提出了Volume的概念。<br>简单来说，Volume就是目录或者文件，它可以绕过默认的联合文件系统，而以正常的文件或者目录的形式存在于宿主机上。</p>
-<h3 id="五、管理数据的两种方式"><a href="#五、管理数据的两种方式" class="headerlink" title="五、管理数据的两种方式"></a>五、管理数据的两种方式</h3><p>在容器中管理数据主要有两种方式：</p>
+<h2 id="五、管理数据的两种方式"><a href="#五、管理数据的两种方式" class="headerlink" title="五、管理数据的两种方式"></a>五、管理数据的两种方式</h2><p>在容器中管理数据主要有两种方式：</p>
 <ul>
 <li>数据卷（Data volumes）</li>
 <li>数据卷容器（Data volume containers）</li>
 </ul>
-<h4 id="1-数据卷（Data-volumes）"><a href="#1-数据卷（Data-volumes）" class="headerlink" title="1. 数据卷（Data volumes）"></a>1. 数据卷（Data volumes）</h4><p>　　数据卷是容器内的一个特殊目录，该目录绕过UFS，不向顶层的可读写layer写入。数据卷用来保存、固化数据，独立于容器的生存周期，不会主动被回收。</p>
+<h3 id="1-数据卷（Data-volumes）"><a href="#1-数据卷（Data-volumes）" class="headerlink" title="1. 数据卷（Data volumes）"></a>1. 数据卷（Data volumes）</h3><p>　　数据卷是容器内的一个特殊目录，该目录绕过UFS，不向顶层的可读写layer写入。数据卷用来保存、固化数据，独立于容器的生存周期，不会主动被回收。</p>
 <p>数据卷特性：</p>
 <ul>
 <li>处于UFS(Union File System)之外</li>
@@ -278,7 +276,7 @@
 <li>在Dockerfile中指定VOLUME /some/dir</li>
 <li>执行docker run -v /some/dir命令来指定<br>　　两种方式的区别在于<code>run的-v</code>可以指定挂载到宿主机的哪个目录，而<code>Dockerfile的VOLUME</code>不能，其挂载目录由docker随机生成。</li>
 </ul>
-<h5 id="【练习1】用-v添加一个数据卷"><a href="#【练习1】用-v添加一个数据卷" class="headerlink" title="【练习1】用-v添加一个数据卷"></a>【练习1】用-v添加一个数据卷</h5><p>1）启动一个基于busybox镜像的容器volume-example,并在其根目录下挂载一个data卷</p>
+<h4 id="【练习1】用-v添加一个数据卷"><a href="#【练习1】用-v添加一个数据卷" class="headerlink" title="【练习1】用-v添加一个数据卷"></a>【练习1】用-v添加一个数据卷</h4><p>1）启动一个基于busybox镜像的容器volume-example,并在其根目录下挂载一个data卷</p>
 <pre><code>$ docker run -d -it --name volume-example -v /data busybox
 </code></pre><p>2）查看data是否挂载成功</p>
 <pre><code>$ docker exec volume-example ls | grep data
@@ -312,7 +310,7 @@ local               093c2cccfcc37e01d0ae4c145dcfb25a6c65a4b94617944efaa8f130463b
         &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/093c2cccfcc37e01d0ae4c145dcfb25a6c65a4b94617944efaa8f130463bcc6f/_data&quot;
     }
 ]
-</code></pre><h5 id="【练习2】用Dockerfile挂载数据卷"><a href="#【练习2】用Dockerfile挂载数据卷" class="headerlink" title="【练习2】用Dockerfile挂载数据卷"></a>【练习2】用Dockerfile挂载数据卷</h5><p>1） 创建一个<code>Dockerfile</code><br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="string">busybox</span></div><div class="line"><span class="string">RUN</span> <span class="string">mkdir</span> <span class="string">/test-dir</span></div><div class="line"><span class="string">COPY</span> <span class="string">test.yml</span> <span class="string">/test-dir</span></div><div class="line"><span class="string">VOLUME</span> <span class="string">/test-dir</span></div></pre></td></tr></table></figure></p>
+</code></pre><h4 id="【练习2】用Dockerfile挂载数据卷"><a href="#【练习2】用Dockerfile挂载数据卷" class="headerlink" title="【练习2】用Dockerfile挂载数据卷"></a>【练习2】用Dockerfile挂载数据卷</h4><p>1） 创建一个<code>Dockerfile</code><br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="string">busybox</span></div><div class="line"><span class="string">RUN</span> <span class="string">mkdir</span> <span class="string">/test-dir</span></div><div class="line"><span class="string">COPY</span> <span class="string">test.yml</span> <span class="string">/test-dir</span></div><div class="line"><span class="string">VOLUME</span> <span class="string">/test-dir</span></div></pre></td></tr></table></figure></p>
 <p>2) 创建一个<code>test.yml</code>文件</p>
 <pre><code>$ echo &quot;This is a test file for testing volume from Dockerfile.&quot; &gt; test.yml
 </code></pre><p>3) 构建一个镜像</p>
@@ -365,13 +363,13 @@ test.yml
 map[/test-dir:{}]
 </code></pre><p>由于没有指定挂载到的宿主机目录，因此会默认挂载到宿主机的/var/lib/docker/volumes下的一个随机名称的目录下，因此Dockerfile里面的VOLUME不能指定主机挂载目录。</p>
 </blockquote>
-<h4 id="2-数据卷容器（Data-volume-containers）"><a href="#2-数据卷容器（Data-volume-containers）" class="headerlink" title="2. 数据卷容器（Data volume containers）"></a>2. 数据卷容器（Data volume containers）</h4><p>　　如果你有一些持续更新的数据需要在容器之间共享，最好创建数据卷容器。<br>数据卷容器，其实就是一个正常的容器，是一个挂载了数据卷但是不执行任何命令的容器，其目的只是为其他容器提供数据卷，方便数据在多容器之间共享、复用。</p>
+<h3 id="2-数据卷容器（Data-volume-containers）"><a href="#2-数据卷容器（Data-volume-containers）" class="headerlink" title="2. 数据卷容器（Data volume containers）"></a>2. 数据卷容器（Data volume containers）</h3><p>　　如果你有一些持续更新的数据需要在容器之间共享，最好创建数据卷容器。<br>数据卷容器，其实就是一个正常的容器，是一个挂载了数据卷但是不执行任何命令的容器，其目的只是为其他容器提供数据卷，方便数据在多容器之间共享、复用。</p>
 <p>使用数据容器的两个注意点：</p>
 <ul>
 <li>不要运行数据容器，这纯粹是在浪费资源。</li>
 <li>不要为了数据容器而使用“最小的镜像”，如busybox或scratch，只使用数据库镜像本身就可以了。你已经拥有该镜像，所以并不需要占用额外的空间。</li>
 </ul>
-<h5 id="【练习3】创建数据卷容器"><a href="#【练习3】创建数据卷容器" class="headerlink" title="【练习3】创建数据卷容器"></a>【练习3】创建数据卷容器</h5><p>练习2里面已经创建了一个挂载数据卷的镜像了，这里我们只需要用该镜像创建(create，不用run)一个数据卷容器</p>
+<h4 id="【练习3】创建数据卷容器"><a href="#【练习3】创建数据卷容器" class="headerlink" title="【练习3】创建数据卷容器"></a>【练习3】创建数据卷容器</h4><p>练习2里面已经创建了一个挂载数据卷的镜像了，这里我们只需要用该镜像创建(create，不用run)一个数据卷容器</p>
 <pre><code>$ docker create --name volume-data-container volume-example:test
 90cd6d51d364e6054c715f554c9a7921519ef4e4cddb2f5a54e1f86d8d202840
 $ docker run -d --volumes-from volume-data-container --name volume-other volume-example:test
@@ -385,7 +383,7 @@ $ docker inspect -f {{.Mounts}} volume-other
 <li>使用 –volumes-from 参数所挂载数据卷的容器自己并不需要保持在运行状态。</li>
 <li>也可以从其他已经挂载了数据卷的容器来级联挂载数据卷。</li>
 </ul>
-<h5 id="【练习4】备份数据"><a href="#【练习4】备份数据" class="headerlink" title="【练习4】备份数据"></a>【练习4】备份数据</h5><pre><code>$  sudo docker run  --volumes-from volume-data-container -v ~/backup:/backup --name volume-backup volume-example:test tar cvf /backup/backup.tar /test-dir
+<h4 id="【练习4】备份数据"><a href="#【练习4】备份数据" class="headerlink" title="【练习4】备份数据"></a>【练习4】备份数据</h4><pre><code>$  sudo docker run  --volumes-from volume-data-container -v ~/backup:/backup --name volume-backup volume-example:test tar cvf /backup/backup.tar /test-dir
 test-dir/
 test-dir/test.yml
 </code></pre><ul>
@@ -396,19 +394,19 @@ test-dir/test.yml
 <p>  $ ls ~/backup/<br>  backup.tar</p>
 </li>
 </ul>
-<h5 id="【练习5】恢复数据"><a href="#【练习5】恢复数据" class="headerlink" title="【练习5】恢复数据"></a>【练习5】恢复数据</h5><p>1）创建一个带有数据卷的容器</p>
+<h4 id="【练习5】恢复数据"><a href="#【练习5】恢复数据" class="headerlink" title="【练习5】恢复数据"></a>【练习5】恢复数据</h4><p>1）创建一个带有数据卷的容器</p>
 <pre><code>$ sudo docker run -v /test-dir --name volumn-data-container2 volume-example:test /bin/sh 
 </code></pre><p>2）创建另外一个新的容器，挂载上面的数据卷容器，并使用untar解压备份文件到所挂载的容器卷</p>
 <pre><code>$ sudo docker run --volumes-from volumn-data-container2 -v ~/backup:/backup busybox tar xvf /backup/backup.tar
-</code></pre><h5 id="【练习6】删除数据卷"><a href="#【练习6】删除数据卷" class="headerlink" title="【练习6】删除数据卷"></a>【练习6】删除数据卷</h5><p>如果你已经使用docker rm来删除你的容器，那可能有很多的孤立的Volume仍在占用着空间。</p>
+</code></pre><h4 id="【练习6】删除数据卷"><a href="#【练习6】删除数据卷" class="headerlink" title="【练习6】删除数据卷"></a>【练习6】删除数据卷</h4><p>如果你已经使用docker rm来删除你的容器，那可能有很多的孤立的Volume仍在占用着空间。</p>
 <p>Volume只有在下列情况下才能被删除：</p>
 <ul>
 <li>该容器是用docker rm －v命令来删除的（-v是必不可少的）。</li>
 <li>docker run中使用了–rm参数</li>
 <li>手动去<code>/var/lib/docker/volumes/</code>删除</li>
 </ul>
-<h4 id="3-数据卷和数据卷容器的比较"><a href="#3-数据卷和数据卷容器的比较" class="headerlink" title="3. 数据卷和数据卷容器的比较"></a>3. 数据卷和数据卷容器的比较</h4><img src="/imgs/docker-volumn-vs-container.png" width="500" height="250">
-<h3 id="六、卷插件"><a href="#六、卷插件" class="headerlink" title="六、卷插件"></a>六、卷插件</h3><p>数据卷<br>优点：</p>
+<h3 id="3-数据卷和数据卷容器的比较"><a href="#3-数据卷和数据卷容器的比较" class="headerlink" title="3. 数据卷和数据卷容器的比较"></a>3. 数据卷和数据卷容器的比较</h3><img src="/imgs/docker-volumn-vs-container.png" width="500" height="250">
+<h2 id="六、卷插件"><a href="#六、卷插件" class="headerlink" title="六、卷插件"></a>六、卷插件</h2><p>数据卷<br>优点：</p>
 <ul>
 <li>跟主机磁盘性能一样</li>
 <li>容器删除后依然保留</li>
@@ -426,8 +424,8 @@ test-dir/test.yml
 <li><p>Flocker：Flocker volume plugin driver主要用于多主机环境Docker数据卷的迁移，从而支持数据库应用等stateful有状态应用的主机间迁移。</p>
 </li>
 </ul>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是讲述了Docker的数据存储以及数据管理。<br><a href="">下一篇</a>将讲述Docker的网络。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇文章主要是讲述了Docker的数据存储以及数据管理。<br><a href="">下一篇</a>将讲述Docker的网络。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://dockone.io/article/1257" target="_blank" rel="external">Docker容器对存储的定义</a></li>
 <li><a href="http://dockone.io/article/1729" target="_blank" rel="external">Docker存储方式选型建议</a></li>
 <li><a href="https://medium.com/@ramangupta/why-docker-data-containers-are-good-589b3c6c749e" target="_blank" rel="external">Why Docker Data Containers (Volumes!) are Good</a></li>
@@ -453,6 +451,8 @@ test-dir/test.yml
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/17/Docker-workshop-5-Docker网络/" rel="prev">Docker Workshop（五）Docker网络</a>
             
           </div>
 
@@ -524,7 +524,7 @@ test-dir/test.yml
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">38</span>
+              <span class="site-state-item-count">39</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
@@ -573,7 +573,7 @@ test-dir/test.yml
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Docker的存储方式"><span class="nav-number">3.</span> <span class="nav-text">三、Docker的存储方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、卷是什么"><span class="nav-number">4.</span> <span class="nav-text">四、卷是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、管理数据的两种方式"><span class="nav-number">5.</span> <span class="nav-text">五、管理数据的两种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-数据卷（Data-volumes）"><span class="nav-number">5.1.</span> <span class="nav-text">1. 数据卷（Data volumes）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#【练习1】用-v添加一个数据卷"><span class="nav-number">5.1.1.</span> <span class="nav-text">【练习1】用-v添加一个数据卷</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#【练习2】用Dockerfile挂载数据卷"><span class="nav-number">5.1.2.</span> <span class="nav-text">【练习2】用Dockerfile挂载数据卷</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据卷容器（Data-volume-containers）"><span class="nav-number">5.2.</span> <span class="nav-text">2. 数据卷容器（Data volume containers）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#【练习3】创建数据卷容器"><span class="nav-number">5.2.1.</span> <span class="nav-text">【练习3】创建数据卷容器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#【练习4】备份数据"><span class="nav-number">5.2.2.</span> <span class="nav-text">【练习4】备份数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#【练习5】恢复数据"><span class="nav-number">5.2.3.</span> <span class="nav-text">【练习5】恢复数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#【练习6】删除数据卷"><span class="nav-number">5.2.4.</span> <span class="nav-text">【练习6】删除数据卷</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-数据卷和数据卷容器的比较"><span class="nav-number">5.3.</span> <span class="nav-text">3. 数据卷和数据卷容器的比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、卷插件"><span class="nav-number">6.</span> <span class="nav-text">六、卷插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">7.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#References"><span class="nav-number">8.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Docker的存储方式"><span class="nav-number">3.</span> <span class="nav-text">三、Docker的存储方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、卷是什么"><span class="nav-number">4.</span> <span class="nav-text">四、卷是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、管理数据的两种方式"><span class="nav-number">5.</span> <span class="nav-text">五、管理数据的两种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据卷（Data-volumes）"><span class="nav-number">5.1.</span> <span class="nav-text">1. 数据卷（Data volumes）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习1】用-v添加一个数据卷"><span class="nav-number">5.1.1.</span> <span class="nav-text">【练习1】用-v添加一个数据卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习2】用Dockerfile挂载数据卷"><span class="nav-number">5.1.2.</span> <span class="nav-text">【练习2】用Dockerfile挂载数据卷</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数据卷容器（Data-volume-containers）"><span class="nav-number">5.2.</span> <span class="nav-text">2. 数据卷容器（Data volume containers）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习3】创建数据卷容器"><span class="nav-number">5.2.1.</span> <span class="nav-text">【练习3】创建数据卷容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习4】备份数据"><span class="nav-number">5.2.2.</span> <span class="nav-text">【练习4】备份数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习5】恢复数据"><span class="nav-number">5.2.3.</span> <span class="nav-text">【练习5】恢复数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#【练习6】删除数据卷"><span class="nav-number">5.2.4.</span> <span class="nav-text">【练习6】删除数据卷</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-数据卷和数据卷容器的比较"><span class="nav-number">5.3.</span> <span class="nav-text">3. 数据卷和数据卷容器的比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、卷插件"><span class="nav-number">6.</span> <span class="nav-text">六、卷插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">7.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">8.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

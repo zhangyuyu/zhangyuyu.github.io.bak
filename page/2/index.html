@@ -176,6 +176,119 @@
           
           
             
+              <a class="post-title-link" href="/2016/04/27/微服务-consul架构/" itemprop="url">
+                Consul架构
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2016-04-27T19:10:52+08:00" content="2016-04-27">
+            2016-04-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/MicroServices/" itemprop="url" rel="index">
+                  <span itemprop="name">MicroServices</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/04/27/微服务-consul架构/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/27/微服务-consul架构/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
+<li><a href="#agent">Agent</a></li>
+<li><a href="#client">Client</a></li>
+<li><a href="#server">Server</a></li>
+<li><a href="#datacenter">DataCenter</a></li>
+<li><a href="#gossip">Gossip</a></li>
+<li><a href="#consensus">Consensus</a></li>
+<li><a href="#rpc">RPC</a></li>
+</ul>
+<h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
+<h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
+<h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
+<h4 id="DataCenter"><a href="#DataCenter" class="headerlink" title="DataCenter"></a><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
+<h4 id="Gossip"><a href="#Gossip" class="headerlink" title="Gossip"></a><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
+<h4 id="Consensus"><a href="#Consensus" class="headerlink" title="Consensus"></a><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a></p>
+<h4 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="external">Remote Procedure Call</a></p>
+<p>　　下图为Consul的架构图：<br><img src="/imgs/consul-arch.jpg" width="400" height="250"></p>
+<h3 id="使用Consul发现服务的三个组件"><a href="#使用Consul发现服务的三个组件" class="headerlink" title="使用Consul发现服务的三个组件"></a>使用Consul发现服务的三个组件</h3><ol>
+<li><p>Consul 存储服务信息<br>　　tool to store information about services</p>
+</li>
+<li><p>Registrator 注册Docker服务<br>　　tool to register Docker servicecs</p>
+</li>
+<li><p>Consul-template 查询注册的服务并应用配置<br>　　tool to query registered services and apply configuration</p>
+</li>
+</ol>
+<p>　　下图为Consul和ECS之间一起运作的架构：<br><img src="/imgs/consul-EC2.png" width="400" height="250"></p>
+<blockquote>
+<p>Consul官网对于Consul架构的解释:<br><br><a href="https://www.consul.io/docs/internals/architecture.html" target="_blank" rel="external">CONSUL ARCHITECTURE</a><br></p>
+<p>Amazon官网上的博客:<br><br><a href="https://aws.amazon.com/blogs/compute/service-discovery-via-consul-with-amazon-ecs/" target="_blank" rel="external">Service Discovery via Consul with Amazon ECS</a><br><br>翻译的中文版地址:<br><br><a href="http://yaowenjie.github.io/cloud/service-discovery-via-consul-with-amazon-ecs" target="_blank" rel="external">在ECS上使用Consul实现服务发现</a></p>
+</blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/" itemprop="url">
                 微服务-服务发现工具：ZooKeeper vs etcd vs Consul
               </a>
@@ -1688,172 +1801,6 @@ $ ./startup.sh
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/15/手动创建Servlet过滤器/" itemprop="url">
-                手动创建Servlet过滤器
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-10-15T20:18:09+08:00" content="2015-10-15">
-            2015-10-15
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Servlet/" itemprop="url" rel="index">
-                  <span itemprop="name">Servlet</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/15/手动创建Servlet过滤器/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/15/手动创建Servlet过滤器/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：</p>
-<blockquote>
-<p>在客户端的请求访问后端资源之前，拦截这些请求。<br><br>在服务器的响应发送回客户端之前，处理这些响应。</p>
-</blockquote>
-<p>　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。</p>
-<h3 id="1、创建Filter"><a href="#1、创建Filter" class="headerlink" title="1、创建Filter"></a>1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
-<pre><code>import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
-
-public class LogFilter implements Filter  {
-    public void  init(FilterConfig config) 
-                         throws ServletException{
-        // 获取初始化参数
-        String testParam = config.getInitParameter(&quot;test-param&quot;); 
-
-        // 输出初始化参数
-        System.out.println(&quot;********Test Param: &quot; + testParam); 
-
-   }
-    public void  doFilter(ServletRequest request, 
-                 ServletResponse response,
-                 FilterChain chain) 
-                 throws java.io.IOException, ServletException {
-
-        PrintWriter out = response.getWriter();
-        out.println(&quot;[ Time : &quot;+ new Date().toString()+&quot; ]&quot;);    
-        // 把请求传回过滤链
-        chain.doFilter(request,response);
-   }
-   public void destroy( ){
-      /* 在 Filter 实例被 Web 容器从服务移除之前调用 */
-   }
- }
-</code></pre><p>　　过滤器是一个实现了 javax.servlet.Filter 接口的Java类.javax.servlet.Filter 接口定义了三个方法:</p>
-<blockquote>
-<p>（1）public void doFilter (ServletRequest, ServletResponse, FilterChain)<br>该方法在每次一个请求/响应对因客户端在链的末端请求资源而通过链传递时由容器调用。<br><br>（2）public void init(FilterConfig filterConfig)<br>该方法由Web容器调用，指示一个过滤器被放入服务。<br><br>（3）public void destroy()<br>该方法由Web容器调用，指示一个过滤器被取出服务。</p>
-</blockquote>
-<h3 id="2、编译"><a href="#2、编译" class="headerlink" title="2、编译"></a>2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
-<pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26、libexec/webapps/test/WEB-INF/classes/LogFilter.java
-</code></pre><h3 id="3、部署"><a href="#3、部署" class="headerlink" title="3、部署"></a>3、部署</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
-&lt;web-app&gt;
-
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;ServletExample&lt;/servlet-class&gt;
-    &lt;/servlet&gt;
-
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/test&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-
-    &lt;filter&gt;
-       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
-       &lt;filter-class&gt;LogFilter&lt;/filter-class&gt;
-       &lt;init-param&gt;
-          &lt;param-name&gt;test-param&lt;/param-name&gt;
-          &lt;param-value&gt;Initialization Paramter&lt;/param-value&gt;
-       &lt;/init-param&gt;
-    &lt;/filter&gt;
-
-    &lt;filter-mapping&gt;
-       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
-       &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/filter-mapping&gt;
-&lt;/web-app&gt;
-</code></pre><p>　　过滤器被部署在部署web.xml中然后映射到部署的Servlet名称或 URL模式。有多个过滤器时，执行的顺序是按它们在声明的顺序。
-　　</p>
-<h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
-$ ./startup.sh    
-</code></pre><h3 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
-　　</p>
-<h3 id="6、结果"><a href="#6、结果" class="headerlink" title="6、结果"></a>6、结果</h3><pre><code>[ Time : Thu Oct 15 20:56:29 CST 2015 ]
-Hello World
-</code></pre><h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
-    |---WEB-INF
-        |---classes
-            |---ServletExample.java
-            |---LogFilter.java
-        |---lib
-        |---web.xml
-</code></pre></span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1892,7 +1839,7 @@ Hello World
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">38</span>
+              <span class="site-state-item-count">39</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
