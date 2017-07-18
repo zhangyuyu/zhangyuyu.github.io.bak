@@ -361,17 +361,22 @@ ACCEPT     tcp  --  anywhere             172.17.0.2           tcp dpt:5000
 </ul>
 <h2 id="四、Docker网络模式"><a href="#四、Docker网络模式" class="headerlink" title="四、Docker网络模式"></a>四、Docker网络模式</h2><p><a href="#1-单节点网络模式">1. 单节点网络模式</a></p>
 <ul>
-<li><a href="#1-1.host模式">host模式</a></li>
-<li><a href="#1-2.container模式">container模式</a> </li>
-<li><a href="#1-3.none模式">none模式</a></li>
-<li><a href="#1-4.bridge模式">bridge模式</a></li>
+<li><a href="#1-1.bridge模式">bridge模式</a></li>
+<li><a href="#1-2.host模式">host模式</a></li>
+<li><a href="#1-3.container模式">container模式</a> </li>
+<li><a href="#1-4.none模式">none模式</a></li>
 </ul>
 <p><a href="#2-多节点网络模式">2. 多节点网络模式</a></p>
 <ul>
 <li><a href="#2-1.原生支持">原生支持</a></li>
 <li><a href="#2-2.插件">插件</a></li>
 </ul>
-<h3 id="1-单节点网络模式"><a href="#1-单节点网络模式" class="headerlink" title="1-单节点网络模式"></a>1-单节点网络模式</h3><h4 id="1-1-host模式"><a href="#1-1-host模式" class="headerlink" title="1-1.host模式"></a>1-1.host模式</h4><h4 id="1-2-container模式"><a href="#1-2-container模式" class="headerlink" title="1-2.container模式"></a>1-2.container模式</h4><h4 id="1-3-none模式"><a href="#1-3-none模式" class="headerlink" title="1-3.none模式"></a>1-3.none模式</h4><h4 id="1-4-bridge模式"><a href="#1-4-bridge模式" class="headerlink" title="1-4.bridge模式"></a>1-4.bridge模式</h4><p>####【练习2】单主机创建网络<br>1) 创建<code>web</code>网络，并创建一个基于<code>web</code>网络的容器<code>web_container</code></p>
+<h3 id="1-单节点网络模式"><a href="#1-单节点网络模式" class="headerlink" title="1-单节点网络模式"></a>1-单节点网络模式</h3><h4 id="1-1-bridge模式"><a href="#1-1-bridge模式" class="headerlink" title="1-1.bridge模式"></a>1-1.bridge模式</h4><p>使用–net=host指定<br>该模式中，Docker守护进程创建一个虚拟以太网桥docker0，附加在其上的任何网卡之间都能自动转发数据包。默认情况下，守护进程会创建一对对等接口，将其中一个接口设置为容器的eth0接口，另一个接口放置在宿主机的命名空间中，从而将宿主机上的所有容器都连接到这个内部网络上。同时，守护进程还会从网桥的私有地址空间中分配一个IP地址和子网给该容器。</p>
+<h4 id="1-2-host模式"><a href="#1-2-host模式" class="headerlink" title="1-2.host模式"></a>1-2.host模式</h4><p>使用–net=host指定<br>该模式将禁用Docker容器的网络隔离。因为容器共享了宿主机的网络命名空间，直接暴露在公共网络中。因此，你需要通过端口映射（port mapping）来进行协调。</p>
+<p>当使用host模式网络时，容器实际上继承了宿主机的IP地址。该模式比bridge模式更快（因为没有路由开销），但是它将容器直接暴露在公共网络中，是有安全隐患的。</p>
+<h4 id="1-3-container模式"><a href="#1-3-container模式" class="headerlink" title="1-3.container模式"></a>1-3.container模式</h4><p>使用–net=host指定<br>该模式会重用另一个容器的网络命名空间。通常来说，当你想要自定义网络栈时，该模式是很有用的。实际上，该模式也是Kubernetes使用的网络模式。</p>
+<h4 id="1-4-none模式"><a href="#1-4-none模式" class="headerlink" title="1-4.none模式"></a>1-4.none模式</h4><p>使用–net=none指定<br>该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）；你希望自定义网络。</p>
+<p>####【练习2】单主机创建网络<br>1) 创建<code>web</code>网络，并创建一个基于<code>web</code>网络的容器<code>web_container</code></p>
 <pre><code>$ docker network create web
 a3f32cf362412ca10cc375c0cbf304c15b1cfd2a0da6addb97ef3606bcb04350
 $ docker network ls
@@ -495,7 +500,7 @@ PING app_container.web (172.18.0.3): 56 data bytes
 }
 </code></pre></li>
 </ul>
-<h3 id="2-多节点网络模式"><a href="#2-多节点网络模式" class="headerlink" title="2-多节点网络模式"></a>2-多节点网络模式</h3><h4 id="2-1-原生支持"><a href="#2-1-原生支持" class="headerlink" title="2-1.原生支持"></a>2-1.原生支持</h4><p>一类是 Docker 在 1.19 版本中引入的基于 VxLAN 的对跨节点网络的原生支持，即自带重叠网络(Overlay Network) 组件。<br>Docker 支持 Consul, Etcd, 和 ZooKeeper 三种分布式key-value 存储。其中，etcd 是一个高可用的分布式 k/v存储系统，使用etcd的场景默认处理的数据都是控制数据，对于应用数据，只推荐数据量很小，但是更新访问频繁的情况。</p>
+<h3 id="2-多节点网络模式"><a href="#2-多节点网络模式" class="headerlink" title="2-多节点网络模式"></a>2-多节点网络模式</h3><h4 id="2-1-原生支持"><a href="#2-1-原生支持" class="headerlink" title="2-1.原生支持"></a>2-1.原生支持</h4><p>Docker 在 1.19 版本中引入的基于 VxLAN 的对跨节点网络的原生支持，即自带重叠网络(Overlay Network) 组件。<br>Docker 支持 Consul, Etcd, 和 ZooKeeper 三种分布式key-value 存储。其中，etcd 是一个高可用的分布式 k/v存储系统，使用etcd的场景默认处理的数据都是控制数据，对于应用数据，只推荐数据量很小，但是更新访问频繁的情况。</p>
 <h4 id="【练习3】利用Docker-Swarm多主机创建网络"><a href="#【练习3】利用Docker-Swarm多主机创建网络" class="headerlink" title="【练习3】利用Docker Swarm多主机创建网络"></a>【练习3】利用Docker Swarm多主机创建网络</h4><p>1) 先准备两台虚拟机作为Docker Swarm的两个节点Node1，Node2。</p>
 <pre><code>$ midir docker-cluster
 $ cd docker-cluster
@@ -612,12 +617,14 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
 10.0.0.3
 
  vagrant@vagrant:~$ docker exec hello.1.66zkihz10oaoxv1i94niud0cy apt-get update; apt-get install iputils-ping -y; ping 10.0.0.4
-</code></pre><h4 id="2-2-插件"><a href="#2-2-插件" class="headerlink" title="2-2.插件"></a>2-2.插件</h4><p>另一种是通过插件（plugin）方式引入的第三方实现方案，比如 Weave, Calico, Contiv Netplugin, Cisco, VMware, MidoNet, pipework, flannel等等。</p>
+</code></pre><h4 id="2-2-插件"><a href="#2-2-插件" class="headerlink" title="2-2.插件"></a>2-2.插件</h4><p>该方式是通过插件（plugin）方式引入的第三方实现方案，比如 Weave, Calico, Contiv Netplugin, Cisco, VMware, MidoNet, pipework, flannel等等。</p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要是讲述Docker网络相关的内容，包括Docker的网络实现、网络创建过程、网络模型组件与优势、网络模式（单节点、多节点）等。<br><a href="">下一篇</a>将讲述Docker的安全。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://dockone.io/article/1261" target="_blank" rel="external">Docker网络模式</a></li>
 <li><a href="http://www.cnblogs.com/sammyliu/p/5894191.html" target="_blank" rel="external">理解Docker网络</a></li>
 <li><a href="https://yeasy.gitbooks.io/docker_practice/content/advanced_network/&lt;ptp class=&quot;html&quot;&gt;&lt;/ptp" target="_blank" rel="external">Docker从入门到实践-高级网络配置</a></li>
+<li><a href="http://dockone.io/article/1736" target="_blank" rel="external">使用Docker Swarm来运行服务</a></li>
+<li><a href="http://kiwenlau.com/2016/07/03/vagrant-vm-cluster/" target="_blank" rel="external">使用Vagrant创建多节点虚拟机集群</a></li>
 </ul>
 </span>
         
@@ -709,7 +716,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
 <li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
 <li><strong>Docker数据存储</strong></li>
-<li>Docker网络</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
 <li>Docker安全</li>
 <li>多主机部署</li>
 <li>服务发现</li>
@@ -897,7 +904,7 @@ test-dir/test.yml
 <li><p>Flocker：Flocker volume plugin driver主要用于多主机环境Docker数据卷的迁移，从而支持数据库应用等stateful有状态应用的主机间迁移。</p>
 </li>
 </ul>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇文章主要是讲述了Docker的数据存储以及数据管理。<br><a href="">下一篇</a>将讲述Docker的网络。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇文章主要是讲述了Docker的数据存储以及数据管理。<br><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的网络。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://dockone.io/article/1257" target="_blank" rel="external">Docker容器对存储的定义</a></li>
 <li><a href="http://dockone.io/article/1729" target="_blank" rel="external">Docker存储方式选型建议</a></li>
@@ -998,7 +1005,7 @@ test-dir/test.yml
 <li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
 <li><strong>Docker的基本操作</strong></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li>Docker网络</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
 <li>Docker安全</li>
 <li>多主机部署</li>
 <li>服务发现</li>
@@ -1326,14 +1333,14 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li>容器简介</li>
-<li>Docker简介</li>
-<li>Docker的基本操作</li>
-<li>Docker数据存储</li>
-<li>Docker网络</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><strong>Docker简介</strong></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
 <li>Docker安全</li>
 <li>多主机部署</li>
 <li>服务发现</li>
@@ -1598,11 +1605,11 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
           <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。<br>　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li>容器简介</li>
-<li>Docker简介</li>
-<li>Docker的基本操作</li>
-<li>Docker数据存储</li>
-<li>Docker网络</li>
+<li><strong>容器简介</strong></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
 <li>Docker安全</li>
 <li>多主机部署</li>
 <li>服务发现</li>
