@@ -184,6 +184,319 @@
           
           
             
+              <a class="post-title-link" href="/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/" itemprop="url">
+                Slf4j MDC使用和基于Logback的实现分析
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2017-08-17T14:01:52+08:00" content="2017-08-17">
+            2017-08-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/日志/" itemprop="url" rel="index">
+                  <span itemprop="name">日志</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>上一篇<a href="">Java日志管理</a>里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。</p>
+<ul>
+<li>使用日志门面，开发者只需要针对门面接口开发，而调用组件的应用程序则可以搭配自己喜好的日志实现工具，目前来看Slf4j + LogBack组合方式是比较通用的方式。</li>
+<li>对于web应用而言，多线程的调用是很常见的，我们可能需要对一个用户的操作流程进行归类标记，用来区分哪个行为和哪个日志事件有关，MDC则很好的处理这个需求。</li>
+</ul>
+<p>本篇将介绍Slf4j + LogBack的组合方式，介绍MDC的使用，并结合源码对实现原理进行分析。</p>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>起源于最近看到项目使用了MDC，好奇这是个什么东西的情况下，系统的了解了Java的日志管理，并借此机会分析其实现原理，记录下来，理清思路。</p>
+<h3 id="三、Slf4j-MDC-介绍"><a href="#三、Slf4j-MDC-介绍" class="headerlink" title="三、Slf4j MDC 介绍"></a>三、Slf4j MDC 介绍</h3><p>Slf4j是什么<br>MDC是什么?</p>
+<h3 id="四、Log-MDC-实现分析"><a href="#四、Log-MDC-实现分析" class="headerlink" title="四、Log MDC 实现分析"></a>四、Log MDC 实现分析</h3><h4 id="1-Slf4j-MDC-实现分析"><a href="#1-Slf4j-MDC-实现分析" class="headerlink" title="1. Slf4j MDC 实现分析"></a>1. Slf4j MDC 实现分析</h4><h4 id="2-Logback-MDC-实现分析"><a href="#2-Logback-MDC-实现分析" class="headerlink" title="2. Logback MDC 实现分析"></a>2. Logback MDC 实现分析</h4><h4 id="3-MDC-clear-操作"><a href="#3-MDC-clear-操作" class="headerlink" title="3. MDC clear 操作"></a>3. MDC clear 操作</h4><h3 id="五、-Logback-日志输出实现"><a href="#五、-Logback-日志输出实现" class="headerlink" title="五、 Logback 日志输出实现"></a>五、 Logback 日志输出实现</h3><h4 id="1-初始化"><a href="#1-初始化" class="headerlink" title="1. 初始化"></a>1. 初始化</h4><h4 id="2-输出日志模板解析"><a href="#2-输出日志模板解析" class="headerlink" title="2. 输出日志模板解析"></a>2. 输出日志模板解析</h4><h4 id="3-日志输出分析"><a href="#3-日志输出分析" class="headerlink" title="3. 日志输出分析"></a>3. 日志输出分析</h4><h3 id="六、Reference"><a href="#六、Reference" class="headerlink" title="六、Reference"></a>六、Reference</h3><ul>
+<li><a href="https://ketao1989.github.io/2015/04/29/LogBack-Implemention-And-Slf4j-Mdc/" target="_blank" rel="external">Slf4j MDC 使用和 基于 Logback 的实现分析</a></li>
+<li><a href="http://www.importnew.com/16331.html" target="_blank" rel="external">Java日志终极指南</a></li>
+<li><a href="https://my.oschina.net/dabird/blog/821868" target="_blank" rel="external">https://my.oschina.net/dabird/blog/821868</a></li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2017/08/17/Log-Java日志管理/" itemprop="url">
+                Java日志管理
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2017-08-17T13:53:47+08:00" content="2017-08-17">
+            2017-08-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/日志/" itemprop="url" rel="index">
+                  <span itemprop="name">日志</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/08/17/Log-Java日志管理/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/17/Log-Java日志管理/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。</p>
+<ul>
+<li>过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。</li>
+<li>问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。</li>
+<li>业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。</li>
+<li>数据恢复－－通过反向执行过程日志，可以将数据可以会滚到之前的状态。</li>
+<li>健康检查以及系统优化－－通过查看系统日志，确定程序运行的健康状况，调节系统参数，优化程序性能。</li>
+</ul>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>猛地发现自己一直错误地把Sl4j和java.util.logging、Logback、Log4j理解为同一层次的概念。<br>继而查了相关的资料，站在更高一层，理解一下Java的日志管理相关的框架————Log4j、JUL、JCL、Slf4j、Logback 、Log4j2。</p>
+<img src="/imgs/java-log-frameworks.png" width="500" height="350">
+<p>分为两个层次的概念：</p>
+<ul>
+<li>日志框架(Implement)：日志系统是日志的具体实现。如Log4j、java.util.Logging、Logback、Log4j2。</li>
+<li>日志门面（Facade）：为了解决多个日志系统的兼容问题，日志门面应运而生。如Commons logging和Slf4j。</li>
+</ul>
+<h3 id="三、Java常见日志库的历史"><a href="#三、Java常见日志库的历史" class="headerlink" title="三、Java常见日志库的历史"></a>三、Java常见日志库的历史</h3><p>Logging frameworks出现之前（Java 1.3及以前），Java打日志依赖System.out.println()，System.err.println()或者e.printStackTrace()。Debug日志被写入STDOUT流,错误日志被写入STDERR流。</p>
+<p>Logging frameworks的出现：<br>先来一幅图从整体上看一下Java常见日志库的时间先后顺序：<br><img src="/imgs/java-log-history.png" width="500" height="350"></p>
+<h4 id="1-Log4j"><a href="#1-Log4j" class="headerlink" title="1. Log4j"></a>1. Log4j</h4><p>Log4j可以说是一个里程碑式的框架，它提出的一些基本理念，深深地影响了后来者，直至今天，这些理念也依然在被广泛使用：</p>
+<ul>
+<li>Logger－－Logger负责捕捉事件并将其发送给合适的Appender。</li>
+<li>Appender－－也被称为Handler，负责将日志事件记录到目标位置。在将日志事件输出之前，Appenders使用Layouts来对事件进行格式化处理。</li>
+<li>Layout－－也被称为Formatter，它负责对日志事件中的数据进行转换和格式化。Layouts决定了数据在一条日志记录中的最终形式。</li>
+</ul>
+<h4 id="2-Java-Util-Log"><a href="#2-Java-Util-Log" class="headerlink" title="2. Java Util Log"></a>2. Java Util Log</h4><p>Sun公司开始意识到JDK需要一个记录日志的特性。受Log4j的启发，Sun在Java 1.4版本中引入了一个新的API, 叫java.util.logging, 但是，JUL功能远不如Log4j完善，如果开发者要使用它，就意味着需要自己写Appenders(Sun称它为Handlers)，而且，只有两个Handlers可被使用：Console和File，这就意味着，开发者只能将日志写入Console和文件。</p>
+<blockquote>
+<p>如前面所述，JUL在Java 1.4才被引入，在这之前，并没有官方的日志库供开发者使用。于是便有了很多日志相关的”轮子”。我想这应该是当前会有如此多日志框架的一个很重要的原因。</p>
+</blockquote>
+<h4 id="3-Commons-Logging"><a href="#3-Commons-Logging" class="headerlink" title="3. Commons Logging"></a>3. Commons Logging</h4><p>由于项目的日志打印必然依赖以上两个框架中至少一个，无论是jul还是Log4j,开发者必须去两个都配置。这时候，Apache的Commons logging（Jakarta Commons Logging）出现了。<br>它的主要作用是提供一个日志门面，使用者可以使用不同的日志实现。用户可以自由选择第三方的日志组件作为具体实现（Log4j或JUL），JCL会通过动态查找的机制，在程序运行时自动找出真正使用的日志库。JCL内部有一个Simple logger的简单实现，但是功能很弱。</p>
+<h4 id="4-Slf4j"><a href="#4-Slf4j" class="headerlink" title="4. Slf4j"></a>4. Slf4j</h4><p>JCL是在运行期间查找符合条件的日志类，然后使用类加载的方式加载指定的日志类。这种机制带来了不可预见的后果，如类加载问题，这会让开发者遇到各种奇怪的问题，增加了调试的困难度。<br>也正是因为如此，Log4j 的作者发起了另一个项目，也就是 Slf4j（Simple Logging Facade for JAVA）。<br>Slf4j 同 JCL类似，也是提供了一个公共的接口，开发者只需要关注接口，不用关心下层实现。同时 Slf4j 的实现只要遵循这个接口，就可以做到各个日志系统之间的无缝兼容。</p>
+<h4 id="5-Logback"><a href="#5-Logback" class="headerlink" title="5. Logback"></a>5. Logback</h4><p>Logback是Slf4j接口的一套具体实现，又是同一个作者，因而保证了其和Log4j相近的使用方式，也具有Slf4j的全部特性。</p>
+<p>现在我们有了两个流行的 Log Facade，以及三个流行的 Log Implementation。Gülcü 是个追求完美的人，他决定让这些Log之间都能够方便的互相替换，所以做了各种 Adapter 和 Bridge 来连接。<br><img src="/imgs/java-log-adapter-bridge1.png" width="500" height="350"></p>
+<blockquote>
+<p>在这里需要注意不能搞出循环的桥接，比如下面这些依赖就不能同时存在:</p>
+<ul>
+<li>jcl-over-slf4j 和 slf4j-jcl</li>
+<li>log4j-over-slf4j 和 slf4j-log4j12</li>
+<li>jul-to-slf4j 和 slf4j-jdk14</li>
+</ul>
+</blockquote>
+<h4 id="6-Log4j2"><a href="#6-Log4j2" class="headerlink" title="6. Log4j2"></a>6. Log4j2</h4><p>Log4j2 是 Log4j、Slf4j、Logback 的作者的又一个作品，它对 Log4j 做了很大的改进，提供了多种现代特性，而且它的异步性能优越，在分布式系统中性能要远好于 Logback，同时也支持 Slf4j 与 JCL。<br>Log4j2 也做了 Facade/Implementation 分离的设计，分成了 log4j-api 和 log4j-core。</p>
+<p>现在好了，我们有了三个流行的Log Facade和四个流行的Log Implementation，这时候桥接关系的图如下图：<br><img src="/imgs/java-log-adapter-bridge2.png" width="500" height="350"></p>
+<h3 id="四、Java-日志框架对比"><a href="#四、Java-日志框架对比" class="headerlink" title="四、Java 日志框架对比"></a>四、Java 日志框架对比</h3><p>这里主要讲述一下几个日志框架（Log4j、JUL、Logback、Log4j2）的对比。</p>
+<h4 id="1-Log4j-VS-JUL"><a href="#1-Log4j-VS-JUL" class="headerlink" title="1. Log4j VS JUL"></a>1. Log4j VS JUL</h4><ul>
+<li><p>处理器<br>JUL包含4种具体的handler的实现，而Log4j则包括超过12个的appender实现。<br>JUL的handler足够用来进行基本的日志记录 - 他们允许你写入到一个buffer，一个console，一个socket，和一个file中。Log4j的appenders，另一方面，大概覆盖了所有logging输出目的地你可以想到的。他们可以写到NT日志或者Unix syslog中，或者甚至发送Email。</p>
+</li>
+<li><p>格式化器<br>JUL包含了两个格式化类：XMLFormatter和SimpleFormatter。Log4j包含了对应的布局器:XMLLayout和SimpleLayout.Log4j还提供了TTCCLayout，它格式化LoggingEvents到富内容字符串，和HTMLLayout，它可格式化LoggingEvent到HMTL表格中。</p>
+</li>
+</ul>
+<h4 id="2-Logback-VS-Log4j"><a href="#2-Logback-VS-Log4j" class="headerlink" title="2. Logback VS Log4j"></a>2. Logback VS Log4j</h4><p>Logback当前分成三个模块：logback-core,logback- classic和logback-access:</p>
+<ul>
+<li>logback-core是其它两个模块的基础模块。</li>
+<li>logback-classic是log4j的一个改良版本。此外logback-classic完整实现Slf4j API使你可以很方便地更换成其它日记系统如Log4j或JDK14 Logging。</li>
+<li>logback-access访问模块与Servlet容器集成提供通过Http来访问日记的功能。 </li>
+</ul>
+<h4 id="3-Log4j2-VS-Logback"><a href="#3-Log4j2-VS-Logback" class="headerlink" title="3. Log4j2 VS Logback"></a>3. Log4j2 VS Logback</h4><p>Log4j2是Log4j的升级版，与之前的版本Log4j 1.x相比、有重大的改进，在修正了Logback固有的架构问题的同时，改进了许多Logback所具有的功能。log4j2与log4j1发生了很大的变化，不兼容。</p>
+<ul>
+<li><p>性能<br>由于采用了更先进的锁机制和LMAX Disruptor库，Log4j2的性能优于Logback，特别是在多线程环境下和使用异步日志的环境下。</p>
+</li>
+<li><p>垃圾<br>Log4j2实现了“无垃圾”和“低垃圾”模式。Log4j2在记录日志时，能够重用对象（如String等），尽可能避免实例化新的临时对象，减少因日志记录产生的垃圾对象，减少垃圾回收带来的性能下降。<br>Logback能够自动压缩/删除旧日志。</p>
+</li>
+<li><p>与Slf4j的适配<br>二者都能够适配Slf4j，Logback与Slf4j的适配应该会更好一些，毕竟省掉了一层适配库</p>
+</li>
+</ul>
+<h3 id="五、Java-日志门面对比"><a href="#五、Java-日志门面对比" class="headerlink" title="五、Java 日志门面对比"></a>五、Java 日志门面对比</h3><p>这里主要对比一下日志门面Commons logging和Slf4j：</p>
+<p>Common logging通过<em>动态查找</em>的机制，在程序运行时自动找出真正使用的日志库。由于它使用了ClassLoader寻找和载入底层的日志库， 导致了象OSGI这样的框架无法正常工作，因为OSGI的不同的插件使用自己的ClassLoader。 OSGI的这种机制保证了插件互相独立，然而却使Apache Common-Logging无法工作。</p>
+<p>Slf4j在编译时<em>静态绑定</em>真正的Log库,因此可以在OSGI中使用。另外，Slf4j 支持参数化的log字符串，避免了之前为了减少字符串拼接的性能损耗而不得不写的if(logger.isDebugEnable())，现在你可以直接写：logger.debug(“current user is: {}”, user)。拼装消息被推迟到了它能够确定是不是要显示这条消息的时候，但是获取参数的代价并没有幸免。</p>
+<h3 id="六、日志框架与日志门面组合"><a href="#六、日志框架与日志门面组合" class="headerlink" title="六、日志框架与日志门面组合"></a>六、日志框架与日志门面组合</h3><p>使用日志门面可以方便的切换具体的日志实现。而且如果依赖多个项目，使用了不同的Log Facade，还可以方便的通过Adapter 转接到同一个实现上。 因此为了考虑扩展性，一般我们在程序开发的时候，会选择使用commons-logging或者slf4j这些日志门面，而不是直接使用log4j或者logback这些实现。</p>
+<p>以下是几种比较常见的日志方案组合：</p>
+<h4 id="1-JCL-Log4j"><a href="#1-JCL-Log4j" class="headerlink" title="1. JCL + Log4j"></a>1. JCL + Log4j</h4><p>需要的jar包：</p>
+<ul>
+<li>commons-logging</li>
+<li>log4j</li>
+</ul>
+<h4 id="2-Slf4j-Logback"><a href="#2-Slf4j-Logback" class="headerlink" title="2. Slf4j + Logback"></a>2. Slf4j + Logback</h4><p>需要的jar包：</p>
+<ul>
+<li>slf4j-api</li>
+<li>logback-core</li>
+<li>logback-classic(集成包)</li>
+</ul>
+<h4 id="3-Log4j2"><a href="#3-Log4j2" class="headerlink" title="3. Log4j2"></a>3. Log4j2</h4><p>Log4j2需要的jar分成2个：</p>
+<ul>
+<li>log4j-api： 作为日志接口层，用于统一底层日志系统</li>
+<li>log4j-core : 作为上述日志接口的实现，是一个实际的日志框架</li>
+</ul>
+<h4 id="4-JCL-log4j2"><a href="#4-JCL-log4j2" class="headerlink" title="4. JCL + log4j2"></a>4. JCL + log4j2</h4><p>需要的jar包：</p>
+<ul>
+<li>commons-logging</li>
+<li>log4j-api</li>
+<li>log4j-core</li>
+<li>log4j-jcl（log4j2与commons-logging的集成包）</li>
+</ul>
+<p>现在的方式JCL + Log4j组合在性能和部分功能上都比较弱，如果要改进可以考虑以下几点：</p>
+<ul>
+<li>考虑性能和占位符等功能方面<br>推荐slf4j + logback方式 或者log4j2方式，这种方式对现有系统迁移改动较大，无论是代码内log声明还是配置文件上，而且slf4j不支持fatal打印；</li>
+<li>考虑系统迁移性<br>推荐commons-logging+log4j2,代码不需要改动，只需要改动对应log4j配置文件即可，但是无法利用其占位符功能；</li>
+<li>新系统搭建<br>不涉及到系统迁移的情况，新系统搭建可以采用纯log4j2方式，其既提供了接口也提供了实现，在性能上也得到了比较大提升。</li>
+</ul>
+<h3 id="七、NDC、MDC、ThreadContext"><a href="#七、NDC、MDC、ThreadContext" class="headerlink" title="七、NDC、MDC、ThreadContext"></a>七、NDC、MDC、ThreadContext</h3><p>当处理多线程应用程序，特别是web服务时，跟踪事件可能会变得困难。当针对多个同时存在的多个用户生成日志记录时，你如何区分哪个行为和哪个日志事件有关呢？如何两个用户没有成功打开一个相同的文件，或者在同一时间没有成功登陆，那么怎么处理日志记录？你可能需要一种方式来将日志记录和程序中的唯一标示符关联起来，这些标识符可能是用户ID，会话ID或者设备ID。而这就是NDC、MDC以及ThreadContext的用武之地。</p>
+<p>NDC、MDC和ThreadContext通过向单独的日志记录中添加独一无二的数据戳，来创建日志足迹（log trails）。这些数据戳也被称为鱼标记（fish tagging），我们可以通过一个或者多个独一无二的值来区分日志。这些数据戳在每个线程级别上进行管理，并且一直持续到线程结束，或者直到数据戳被删掉。例如，如果你的Web应用程序为每个用户生成一个新的线程，那么你可以使用这个用户的ID来标记日志记录。当你想在一个复杂的系统中跟踪特定的请求、事务或者用户，这是一种非常有用的方法。</p>
+<h4 id="1-NDC"><a href="#1-NDC" class="headerlink" title="1. NDC"></a>1. NDC</h4><p>NDC或者嵌套诊断上下文（Nested Diagnostic Context）是基于栈的思想，信息可以被放到栈上或者从栈中移除。而栈中的值可以被Logger访问，并且Logger无需显示想日志方法中传入任何值。</p>
+<ul>
+<li>NDC.push()方法将值存储在栈中；</li>
+<li>NDC.pop()方法将一些项从栈中移除；</li>
+<li>NDC.remove()方法让Java回收内存，以免造成内存溢出。</li>
+</ul>
+<h4 id="2-MDC"><a href="#2-MDC" class="headerlink" title="2. MDC"></a>2. MDC</h4><p>MDC或者映射诊断上下文和NDC很相似，不同之处在于MDC将值存储在键值对中，而不是栈中。这样你可以很容易的在Layout中引用一个单独的键。</p>
+<ul>
+<li>MDC.put(key,value) 方法将一个新的键值对添加到上下文中；</li>
+<li>MDC.remove(key) 方法会移除指定的键值对；</li>
+<li>MDC.clear()方法将所有的键值对从MDC中移除，这样会降低内存的使用量，并阻止MDC在后面试图调用那些已经过期的数据。</li>
+</ul>
+<blockquote>
+<p>Slf4j 只有 MDC，没有 NDC<br>Logback内置没有实现NDC，但是slf4j-ext包提供了一个NDC实现，它使用MDC作为基础。</p>
+</blockquote>
+<h4 id="3-ThreadContext"><a href="#3-ThreadContext" class="headerlink" title="3. ThreadContext"></a>3. ThreadContext</h4><blockquote>
+<p>Log4j版本2中将MDC和NDC合并到一个单独的组件中，这个组件被称为ThreadContext(线程上下文)。</p>
+</blockquote>
+<p>ThreadContext可以看成是NDC和MDC的结合体，它分别用<code>Thread Context Stack</code>和<code>Thread Context Map</code>来表示<code>NDC</code>和<code>MDC</code>。</p>
+<ul>
+<li>ThreadContext.clearStack()，清除NDC；</li>
+<li>ThreadContext.clearMap()，清除MDC；</li>
+<li>ThreadContext.clearAll()，清除所有。</li>
+</ul>
+<h3 id="八、总结"><a href="#八、总结" class="headerlink" title="八、总结"></a>八、总结</h3><p>本文从日志的好处讲起，先总体上概述了日志相关库分为：日志框架和日志门面；然后按照时间顺序列举了这些日志常见库；随后对它们进行简单的对比；提出了几个常见的日之框架与日志门面的组合使用；最后提到了NDC、MDC、ThreadContext的概念为<a href="">下一篇文章</a>提供一点理论基础。<br>针对每个库更详细的特性或者具体的使用步骤，大家可以自行去对应的官网查看。</p>
+<h3 id="九、Reference"><a href="#九、Reference" class="headerlink" title="九、Reference"></a>九、Reference</h3><ul>
+<li><a href="http://patchouli-know.com/2017/04/08/java-log/" target="_blank" rel="external">Java 日志系统梳理</a></li>
+<li><a href="http://group.jobbole.com/30249/" target="_blank" rel="external">聊一聊那些年我们用过的 Java 日志框架</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-practicelog/" target="_blank" rel="external">Java 日志管理最佳实践</a></li>
+<li><a href="http://blog.csdn.net/yycdaizi/article/details/8276265" target="_blank" rel="external">Java日志组件介绍</a></li>
+<li><a href="http://blog.csdn.net/gaojiaweir0011/article/details/8217604" target="_blank" rel="external">Log4j 对比 java.util.logging</a></li>
+<li><a href="http://dev.sei.pku.edu.cn/trac/pkuas/blog/2011/04/06/zhanglei09/my_topic" target="_blank" rel="external">Log4J与Java Logging调研</a></li>
+<li><a href="http://tech.lede.com/2017/02/06/rd/server/log4jSearch/" target="_blank" rel="external">日志工具现状调研</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/web/wa-lo-usertrack/index.html" target="_blank" rel="external">在Web 应用中增加用户跟踪功能</a></li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/07/17/Docker-workshop-5-Docker网络/" itemprop="url">
                 Docker Workshop（五）Docker网络
               </a>
@@ -2133,355 +2446,11 @@ $ vagrant init yungsang/coreos
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/12/函数式编程初探1/" itemprop="url">
-                函数式编程初探（一）
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-12T17:35:13+08:00" content="2016-11-12">
-            2016-11-12
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                  <span itemprop="name">函数式编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/12/函数式编程初探1/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探1/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
-<h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
-<h3 id="三、背景"><a href="#三、背景" class="headerlink" title="三、背景"></a>三、背景</h3><p>函数式编程（Functional Programming）其实相对于计算机的历史而言是一个非常古老的概念，甚至早于第一台计算机的诞生。函数式编程的基础模型来源于 λ 演算，而 λ 演算并非设计于在计算机上执行，它是由 Alonzo Church 和 Stephen Cole Kleene 在 20 世纪三十年代引入的一套用于研究函数定义、函数应用和递归的形式系统。</p>
-<h3 id="四、为什么？"><a href="#四、为什么？" class="headerlink" title="四、为什么？"></a>四、为什么？</h3><p>在《函数式编程思维》这本书中，多处指出<code>函数式编程思维</code>的好处之一,是能够将低层次细节的控制权移交给运行时,从而消弭了一大批注定会发生的程序错误。这使得程序员得以在更高的抽象层次上工作，同时运行时也有了执行复杂优化的自由空间。</p>
-<p>在阮一峰的<a href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html" target="_blank" rel="external">《函数式编程初探》</a>一文中，<br>函数式编程的五大特点如下：</p>
-<ol>
-<li>函数是”第一等公民”</li>
-<li>只用”表达式”，不用”语句”</li>
-<li>没有”副作用”</li>
-<li>不修改状态</li>
-<li>引用透明<br>函数的运行不依赖于外部变量或”状态”，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。</li>
-</ol>
-<p>函数式编程的好处如下：</p>
-<ol>
-<li>代码简洁，开发快速</li>
-<li>接近自然语言，易于理解</li>
-<li>更方便的代码管理(每一个函数都可以被看做独立单元，很有利于进行单元测试以及模块化组合)</li>
-<li>易于”并发编程”</li>
-<li>代码的热升级（函数式编程没有副作用，只要保证接口不变，内部实现是外部无关的）</li>
-</ol>
-<h3 id="五、转变思维"><a href="#五、转变思维" class="headerlink" title="五、转变思维"></a>五、转变思维</h3><p>先大致说明一下函数式编程与命令式编程的区别吧！</p>
-<p>命令式编程：按照“程序是一系列改变状态的命令”来建模的一种编程风格。<br>函数式编程将程序描述为表达式和变换，以数学方程的形式建立模型，并且尽量避免可变的状态。</p>
-<p>《Working with Lagacy Code》的作者Michael Feathers的用以下一句话说明了函数式抽象和面向对象抽象的关键区别：</p>
-<blockquote>
-<p>面向对象编程通过封装不确定因素来使代码能被人理解；函数式编程通过尽量减少不确定因素来使代码能被人理解。——Michael Feathers</p>
-</blockquote>
-<p>在面向对象的命令式编程语言里面，重用的单元是类和类之间沟通用的消息。所以OOP的世界提倡开发人员针对具体问题<strong>建立专门的数据结构</strong>，相关的专门操作以“方法”的形式附加在数据结构上。<br>函数式编程语言重用的思路很不一样，它提倡在<strong>有限的几种关键数据结构</strong>（如list、set、map）上运用针对这些数据结构高度优化过的操作，以此构成基本运转结构。</p>
-<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>程序员往往都是讨厌看文档而偏爱看代码的，上述那么多文字，你不一定看的下去，还是首先来一个hello world吧。<br>对于计算表达式（1+2）* 3，</p>
-<p>传统的编程方式是：<br>int a = 1 + 2<br>int b = a * 3</p>
-<p>而对于函数式编程方式是：<br>int result = multiply(add(1,2), 3)<br>这里函数作为参数进行传递。</p>
-<h4 id="函数式编程的常见函数"><a href="#函数式编程的常见函数" class="headerlink" title="函数式编程的常见函数"></a>函数式编程的常见函数</h4><p>从一个例子说起，假设我们有一个名字列表，其中一些条目由单个字符构成。现在的任务是：</p>
-<ul>
-<li>除去单字符条目</li>
-<li>放在一个逗号分隔的字符串中进行返回</li>
-<li>每个名字的首字母都是大写<br>代码可参考《函数式编程思维》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/trans/TheCompanyProcess.java" target="_blank" rel="external">github</a><br>传统的java实现<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> cleanNames(List&lt;<span class="keyword">String</span>&gt; listOfNames) &#123;</div><div class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder();</div><div class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; listOfNames.<span class="built_in">size</span>(); i++) &#123;</div><div class="line">        <span class="keyword">if</span> (listOfNames.<span class="built_in">get</span>(i).length() &gt; <span class="number">1</span>) &#123;</div><div class="line">            result.<span class="built_in">append</span>(capitalizeString(listOfNames.<span class="built_in">get</span>(i))).<span class="built_in">append</span>(<span class="string">","</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>).toString();</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> capitalizeString(<span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + s.substring(<span class="number">1</span>, s.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>命令式编程鼓励程序员将操作安排在循环内部执行，本例中的三个操作filter、transform、convert都必须依赖于相同的低层次机制。</p>
-<p>Java8的实现：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="built_in">String</span> cleanNames(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names) &#123;</div><div class="line">    <span class="keyword">if</span> (names == <span class="built_in">null</span>) <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">    <span class="keyword">return</span> names</div><div class="line">            .stream()</div><div class="line">            .filter(name -&gt; name.length() &gt; <span class="number">1</span>)</div><div class="line">            .<span class="built_in">map</span>(name -&gt; capitalize(name))</div><div class="line">            .collect(Collectors.joining(<span class="string">","</span>));</div><div class="line">&#125;</div><div class="line"><span class="keyword">private</span> <span class="built_in">String</span> capitalize(<span class="built_in">String</span> e) &#123;</div><div class="line">    <span class="keyword">return</span> e.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + e.substring(<span class="number">1</span>, e.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>两者的对比，可以发现后者这种更高层次的抽象思考有一些好处：</p>
-<ul>
-<li>促使我们换一种角度去归类问题，看到问题的共性。</li>
-<li>让运行时有更大的余地去做只能的优化（有时候调整作业的先后顺序会更有效率）。</li>
-<li>让埋头实现细节的开发者看到原本视野之外的解决方案（比如，如果改用多线程，传统的方式可能需要自己手动穿插一些线程相关的代码）</li>
-</ul>
-<p>可以从上述例子中，看到三个函数filter、map、fold/reduce的影子。</p>
-<ol>
-<li><p>filter——筛选<br>根据用户定义的条件来筛选列表中的条目，并由此产生一个较小的新列表。</p>
-</li>
-<li><p>map——映射<br>对原集合的每一个元素执行给定的函数，从而变换成一个新的集合。</p>
-</li>
-<li><p>fold/reduce——折叠/化约<br>用一个累积量来“收集”集合元素。</p>
-</li>
-</ol>
-<p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
-<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/01/RxJava/" itemprop="url">
-                RxJava
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-01T22:19:46+08:00" content="2016-11-01">
-            2016-11-01
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/RxJava/" itemprop="url" rel="index">
-                  <span itemprop="name">RxJava</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/01/RxJava/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/01/RxJava/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
-<h3 id="二、响应式编程"><a href="#二、响应式编程" class="headerlink" title="二、响应式编程"></a>二、响应式编程</h3><p>响应式编程是一种面向数据流和变化传播的编程范式，数据更新是相关联的。<br>在交互式编程中，A = B + C这样的表达式意味着将B与C之和赋给A，而此后B与C的改变都与A无关。<br>而在响应式编程中，A会去“响应”B或C的变化，即一旦B或C改变之后，A的值也会随之变化。</p>
-<h3 id="三、定义"><a href="#三、定义" class="headerlink" title="三、定义"></a>三、定义</h3><p>我的理解是，RxJava本质上是一个异步操作库，是一个能让你用极其简洁的逻辑去处理繁琐复杂任务的异步事件库。（其实初学者把握两点就好了：观察者模式和异步）</p>
-<h3 id="四、背景"><a href="#四、背景" class="headerlink" title="四、背景"></a>四、背景</h3><p>Rx的全称是Reactive Extensions。直译过来就是响应式扩展。<br>Rx基于观察者模式，是一种编程模型。其目标是提供一致的编程接口，帮助开发者更方便的处理异步数据流。<br>Rx最初是LINQ的一个扩展，由微软的架构师Erik Meijer领导的团队开发，在2012年11月开源。<br>Rx的大部分语言库由ReactiveX这个组织负责维护，比较流行的有RxJava/RxJS/Rx.NET，社区网站是 reactivex.io。<br>RxJava是 ReactiveX 在JVM上的一个实现。</p>
-<h3 id="五、为什么"><a href="#五、为什么" class="headerlink" title="五、为什么?"></a>五、为什么?</h3><ul>
-<li>函数式风格</li>
-<li>简化代码</li>
-<li>异步错误处理</li>
-<li>轻松使用并发</li>
-</ul>
-<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>说了很多，其实对RxJava是什么，其实还不是很明确，我们先来一个Hello world。</p>
-<pre><code>Observable
-    .create(new OnSubscribe&lt;String&gt;() {
-        @Override
-        public void call(Subscriber&lt;? super String&gt; subscriber) {
-            subscriber.onNext(&quot;Hello World&quot;);
-        }
-    })
-    .subscribe(new Subscriber&lt;String&gt;() {
-        @Override
-        public void onNext(String s) {
-            System.out.println(s);
-        }
-    });
-</code></pre><p>简化下来就是：</p>
-<pre><code>Observable.create(subscriber -&gt; {
-    subscriber.onNext(&quot;Hello World!&quot;);
-}).subscribe(System.out::println);
-</code></pre><p>执行的过程就是创建、监听、订阅。</p>
-<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
-<li>Observable：被观察者</li>
-<li>Observer: 观察者</li>
-<li>Subscriber：观察者，implements Observer。 </li>
-<li>OnSubscribe：一个接口类，是连接被观察者和观察者的桥梁，另外要说明的是onSubscribe是Observable的一个局部变量。</li>
-</ul>
-<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><h5 id="第1步：创建观察者Observer"><a href="#第1步：创建观察者Observer" class="headerlink" title="第1步：创建观察者Observer"></a>第1步：创建观察者Observer</h5><pre><code>Observer&lt;Object&gt; observer = new Observer&lt;Object&gt;() {
-
-    @Override
-    public void onCompleted() {
-
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
-    public void onNext(Object s) {
-
-    }
-};
-</code></pre><h5 id="第2步：创建被观察者Observable"><a href="#第2步：创建被观察者Observable" class="headerlink" title="第2步：创建被观察者Observable"></a>第2步：创建被观察者Observable</h5><p>Observable.create()方法可以创建一个Observable，<br>使用create()创建Observable需要一个OnSubscribe对象，这个对象继承Action1。<br>当观察者订阅我们的Observable时，它作为一个参数传入并执行call()函数。</p>
-<pre><code>Observable&lt;Object&gt; observable = Observable.create(new Observable.OnSubscribe&lt;Object&gt;() {         
-    @Override
-    public void call(Subscriber&lt;? super Object&gt; subscriber) {
-
-    }
-});
-</code></pre><p>除了create()，just()和from()同样可以创建Observable。看看下面两个例子：</p>
-<p>just(T…)将传入的参数依次发送</p>
-<pre><code>Observable observable = Observable.just(&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;);
-//上面这行代码会依次调用
-//onNext(&quot;One&quot;);
-//onNext(&quot;Two&quot;);
-//onNext(&quot;Three&quot;);
-//onCompleted();
-</code></pre><p>from(T[])/from(Iterable&lt;? extends T&gt;)将传入的数组或者Iterable拆分成Java对象依次发送</p>
-<pre><code>String[] parameters = {&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;};
-Observable observable = Observable.from(parameters);
-//上面这行代码会依次调用
-//onNext(&quot;One&quot;);
-//onNext(&quot;Two&quot;);
-//onNext(&quot;Three&quot;);
-//onCompleted();
-</code></pre><h5 id="第3步：被观察者Observable订阅观察者Observer"><a href="#第3步：被观察者Observable订阅观察者Observer" class="headerlink" title="第3步：被观察者Observable订阅观察者Observer"></a>第3步：被观察者Observable订阅观察者Observer</h5><p>你没看错，不同于普通的观察者模式，这里是被观察者订阅观察者：</p>
-<pre><code>observable.subscribe(observer);
-</code></pre><p>连起来就是：</p>
-<pre><code>Observable.create(new OnSubscribe&lt;String&gt;() {
-        @Override
-        public void call(Subscriber&lt;? super String&gt; subscriber) {
-            subscriber.onNext(&quot;Hello World!&quot;);
-            subscriber.onCompleted();
-        }
-
-    }).subscribe(new Subscriber&lt;String&gt;() {
-
-        @Override
-        public void onCompleted() {
-            System.out.println(&quot;Done&quot;);
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            e.printStackTrace();
-        }
-
-        @Override
-        public void onNext(String t) {
-            System.out.println(t);
-        }
-
-    });
-</code></pre><p>这里表面是被观察者订阅观察者，是为了更好的链式结构。<br>实际上，过程如下：</p>
-<ul>
-<li>创建一个被观察者，并传入一个OnSubcribe。</li>
-<li>创建一个观察者Subscriber。</li>
-<li>一旦发生subscribe时，会自动触发上述的OnSubcribe的call方法。</li>
-<li>而OnSubcribe的call方法中的参数subscriber就是第二步中的被观察者Subscriber。</li>
-<li>然后就调用上述代码中的<code>subscriber.onNext(&quot;Hello World!&quot;);</code></li>
-<li>也就是真实上述代码中<code>Override</code>的<code>onNext()</code>方法了。<br>所以本质上来讲，还是被观察者执行订阅操作的。</li>
-</ul>
-<h3 id="七、操作符"><a href="#七、操作符" class="headerlink" title="七、操作符"></a>七、操作符</h3><p>有了对上一步调用的理解，再去看源代码中操作符的实质，就很简单了。</p>
-<p>RxJava的操作符分为如下几类：</p>
-<ul>
-<li>转换类操作符<br>map、flatMap、concatMap等等</li>
-<li>过滤类操作符<br>filter、find等等</li>
-<li>组合类操作符<br>concat、merge、zip等等</li>
-<li>数学类操作符<br>count、max等等</li>
-<li>布尔类操作符<br>includes、some等等</li>
-</ul>
-<p>对于这些操作符的调用分析，读者可以自己查看源代码。<br>对于操作符的用法，可以参考<a href="https://github.com/zhangyuyu/learnrxjava" target="_blank" rel="external">Github TDD 练习</a>。<br>对于操作符形象化的理解，可以参考一个交互式的动画网站<a href="http://rxmarbles.com/" target="_blank" rel="external">http://rxmarbles.com/</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
   </nav>
 
  </div>
@@ -2515,21 +2484,21 @@ Observable observable = Observable.from(parameters);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">39</span>
+              <span class="site-state-item-count">41</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

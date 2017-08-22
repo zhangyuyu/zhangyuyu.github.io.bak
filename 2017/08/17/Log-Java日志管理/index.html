@@ -1,0 +1,794 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="行是知之始，知是行之成" />
+
+
+
+  <meta name="keywords" content="日志," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="一、前言日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。  过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。 问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。 业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。 数据恢复－－通过反">
+<meta name="keywords" content="日志">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java日志管理">
+<meta property="og:url" content="http://yoursite.com/2017/08/17/Log-Java日志管理/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="一、前言日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。  过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。 问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。 业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。 数据恢复－－通过反">
+<meta property="og:image" content="http://yoursite.com/imgs/java-log-frameworks.png">
+<meta property="og:image" content="http://yoursite.com/imgs/java-log-history.png">
+<meta property="og:image" content="http://yoursite.com/imgs/java-log-adapter-bridge1.png">
+<meta property="og:image" content="http://yoursite.com/imgs/java-log-adapter-bridge2.png">
+<meta property="og:updated_time" content="2017-08-22T10:37:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java日志管理">
+<meta name="twitter:description" content="一、前言日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。  过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。 问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。 业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。 数据恢复－－通过反">
+<meta name="twitter:image" content="http://yoursite.com/imgs/java-log-frameworks.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'post'
+  };
+</script>
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+  <title> Java日志管理 | 若见喻笺 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">若见喻笺</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            <i class="menu-item-icon icon-next-guestbook"></i> <br />
+            留言
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Java日志管理
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2017-08-17T13:53:47+08:00" content="2017-08-17">
+            2017-08-17
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/日志/" itemprop="url" rel="index">
+                  <span itemprop="name">日志</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/08/17/Log-Java日志管理/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/17/Log-Java日志管理/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。</p>
+<ul>
+<li>过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。</li>
+<li>问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。</li>
+<li>业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。</li>
+<li>数据恢复－－通过反向执行过程日志，可以将数据可以会滚到之前的状态。</li>
+<li>健康检查以及系统优化－－通过查看系统日志，确定程序运行的健康状况，调节系统参数，优化程序性能。</li>
+</ul>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>猛地发现自己一直错误地把Sl4j和java.util.logging、Logback、Log4j理解为同一层次的概念。<br>继而查了相关的资料，站在更高一层，理解一下Java的日志管理相关的框架————Log4j、JUL、JCL、Slf4j、Logback 、Log4j2。</p>
+<img src="/imgs/java-log-frameworks.png" width="500" height="350">
+<p>分为两个层次的概念：</p>
+<ul>
+<li>日志框架(Implement)：日志系统是日志的具体实现。如Log4j、java.util.Logging、Logback、Log4j2。</li>
+<li>日志门面（Facade）：为了解决多个日志系统的兼容问题，日志门面应运而生。如Commons logging和Slf4j。</li>
+</ul>
+<h3 id="三、Java常见日志库的历史"><a href="#三、Java常见日志库的历史" class="headerlink" title="三、Java常见日志库的历史"></a>三、Java常见日志库的历史</h3><p>Logging frameworks出现之前（Java 1.3及以前），Java打日志依赖System.out.println()，System.err.println()或者e.printStackTrace()。Debug日志被写入STDOUT流,错误日志被写入STDERR流。</p>
+<p>Logging frameworks的出现：<br>先来一幅图从整体上看一下Java常见日志库的时间先后顺序：<br><img src="/imgs/java-log-history.png" width="500" height="350"></p>
+<h4 id="1-Log4j"><a href="#1-Log4j" class="headerlink" title="1. Log4j"></a>1. Log4j</h4><p>Log4j可以说是一个里程碑式的框架，它提出的一些基本理念，深深地影响了后来者，直至今天，这些理念也依然在被广泛使用：</p>
+<ul>
+<li>Logger－－Logger负责捕捉事件并将其发送给合适的Appender。</li>
+<li>Appender－－也被称为Handler，负责将日志事件记录到目标位置。在将日志事件输出之前，Appenders使用Layouts来对事件进行格式化处理。</li>
+<li>Layout－－也被称为Formatter，它负责对日志事件中的数据进行转换和格式化。Layouts决定了数据在一条日志记录中的最终形式。</li>
+</ul>
+<h4 id="2-Java-Util-Log"><a href="#2-Java-Util-Log" class="headerlink" title="2. Java Util Log"></a>2. Java Util Log</h4><p>Sun公司开始意识到JDK需要一个记录日志的特性。受Log4j的启发，Sun在Java 1.4版本中引入了一个新的API, 叫java.util.logging, 但是，JUL功能远不如Log4j完善，如果开发者要使用它，就意味着需要自己写Appenders(Sun称它为Handlers)，而且，只有两个Handlers可被使用：Console和File，这就意味着，开发者只能将日志写入Console和文件。</p>
+<blockquote>
+<p>如前面所述，JUL在Java 1.4才被引入，在这之前，并没有官方的日志库供开发者使用。于是便有了很多日志相关的”轮子”。我想这应该是当前会有如此多日志框架的一个很重要的原因。</p>
+</blockquote>
+<h4 id="3-Commons-Logging"><a href="#3-Commons-Logging" class="headerlink" title="3. Commons Logging"></a>3. Commons Logging</h4><p>由于项目的日志打印必然依赖以上两个框架中至少一个，无论是jul还是Log4j,开发者必须去两个都配置。这时候，Apache的Commons logging（Jakarta Commons Logging）出现了。<br>它的主要作用是提供一个日志门面，使用者可以使用不同的日志实现。用户可以自由选择第三方的日志组件作为具体实现（Log4j或JUL），JCL会通过动态查找的机制，在程序运行时自动找出真正使用的日志库。JCL内部有一个Simple logger的简单实现，但是功能很弱。</p>
+<h4 id="4-Slf4j"><a href="#4-Slf4j" class="headerlink" title="4. Slf4j"></a>4. Slf4j</h4><p>JCL是在运行期间查找符合条件的日志类，然后使用类加载的方式加载指定的日志类。这种机制带来了不可预见的后果，如类加载问题，这会让开发者遇到各种奇怪的问题，增加了调试的困难度。<br>也正是因为如此，Log4j 的作者发起了另一个项目，也就是 Slf4j（Simple Logging Facade for JAVA）。<br>Slf4j 同 JCL类似，也是提供了一个公共的接口，开发者只需要关注接口，不用关心下层实现。同时 Slf4j 的实现只要遵循这个接口，就可以做到各个日志系统之间的无缝兼容。</p>
+<h4 id="5-Logback"><a href="#5-Logback" class="headerlink" title="5. Logback"></a>5. Logback</h4><p>Logback是Slf4j接口的一套具体实现，又是同一个作者，因而保证了其和Log4j相近的使用方式，也具有Slf4j的全部特性。</p>
+<p>现在我们有了两个流行的 Log Facade，以及三个流行的 Log Implementation。Gülcü 是个追求完美的人，他决定让这些Log之间都能够方便的互相替换，所以做了各种 Adapter 和 Bridge 来连接。<br><img src="/imgs/java-log-adapter-bridge1.png" width="500" height="350"></p>
+<blockquote>
+<p>在这里需要注意不能搞出循环的桥接，比如下面这些依赖就不能同时存在:</p>
+<ul>
+<li>jcl-over-slf4j 和 slf4j-jcl</li>
+<li>log4j-over-slf4j 和 slf4j-log4j12</li>
+<li>jul-to-slf4j 和 slf4j-jdk14</li>
+</ul>
+</blockquote>
+<h4 id="6-Log4j2"><a href="#6-Log4j2" class="headerlink" title="6. Log4j2"></a>6. Log4j2</h4><p>Log4j2 是 Log4j、Slf4j、Logback 的作者的又一个作品，它对 Log4j 做了很大的改进，提供了多种现代特性，而且它的异步性能优越，在分布式系统中性能要远好于 Logback，同时也支持 Slf4j 与 JCL。<br>Log4j2 也做了 Facade/Implementation 分离的设计，分成了 log4j-api 和 log4j-core。</p>
+<p>现在好了，我们有了三个流行的Log Facade和四个流行的Log Implementation，这时候桥接关系的图如下图：<br><img src="/imgs/java-log-adapter-bridge2.png" width="500" height="350"></p>
+<h3 id="四、Java-日志框架对比"><a href="#四、Java-日志框架对比" class="headerlink" title="四、Java 日志框架对比"></a>四、Java 日志框架对比</h3><p>这里主要讲述一下几个日志框架（Log4j、JUL、Logback、Log4j2）的对比。</p>
+<h4 id="1-Log4j-VS-JUL"><a href="#1-Log4j-VS-JUL" class="headerlink" title="1. Log4j VS JUL"></a>1. Log4j VS JUL</h4><ul>
+<li><p>处理器<br>JUL包含4种具体的handler的实现，而Log4j则包括超过12个的appender实现。<br>JUL的handler足够用来进行基本的日志记录 - 他们允许你写入到一个buffer，一个console，一个socket，和一个file中。Log4j的appenders，另一方面，大概覆盖了所有logging输出目的地你可以想到的。他们可以写到NT日志或者Unix syslog中，或者甚至发送Email。</p>
+</li>
+<li><p>格式化器<br>JUL包含了两个格式化类：XMLFormatter和SimpleFormatter。Log4j包含了对应的布局器:XMLLayout和SimpleLayout.Log4j还提供了TTCCLayout，它格式化LoggingEvents到富内容字符串，和HTMLLayout，它可格式化LoggingEvent到HMTL表格中。</p>
+</li>
+</ul>
+<h4 id="2-Logback-VS-Log4j"><a href="#2-Logback-VS-Log4j" class="headerlink" title="2. Logback VS Log4j"></a>2. Logback VS Log4j</h4><p>Logback当前分成三个模块：logback-core,logback- classic和logback-access:</p>
+<ul>
+<li>logback-core是其它两个模块的基础模块。</li>
+<li>logback-classic是log4j的一个改良版本。此外logback-classic完整实现Slf4j API使你可以很方便地更换成其它日记系统如Log4j或JDK14 Logging。</li>
+<li>logback-access访问模块与Servlet容器集成提供通过Http来访问日记的功能。 </li>
+</ul>
+<h4 id="3-Log4j2-VS-Logback"><a href="#3-Log4j2-VS-Logback" class="headerlink" title="3. Log4j2 VS Logback"></a>3. Log4j2 VS Logback</h4><p>Log4j2是Log4j的升级版，与之前的版本Log4j 1.x相比、有重大的改进，在修正了Logback固有的架构问题的同时，改进了许多Logback所具有的功能。log4j2与log4j1发生了很大的变化，不兼容。</p>
+<ul>
+<li><p>性能<br>由于采用了更先进的锁机制和LMAX Disruptor库，Log4j2的性能优于Logback，特别是在多线程环境下和使用异步日志的环境下。</p>
+</li>
+<li><p>垃圾<br>Log4j2实现了“无垃圾”和“低垃圾”模式。Log4j2在记录日志时，能够重用对象（如String等），尽可能避免实例化新的临时对象，减少因日志记录产生的垃圾对象，减少垃圾回收带来的性能下降。<br>Logback能够自动压缩/删除旧日志。</p>
+</li>
+<li><p>与Slf4j的适配<br>二者都能够适配Slf4j，Logback与Slf4j的适配应该会更好一些，毕竟省掉了一层适配库</p>
+</li>
+</ul>
+<h3 id="五、Java-日志门面对比"><a href="#五、Java-日志门面对比" class="headerlink" title="五、Java 日志门面对比"></a>五、Java 日志门面对比</h3><p>这里主要对比一下日志门面Commons logging和Slf4j：</p>
+<p>Common logging通过<em>动态查找</em>的机制，在程序运行时自动找出真正使用的日志库。由于它使用了ClassLoader寻找和载入底层的日志库， 导致了象OSGI这样的框架无法正常工作，因为OSGI的不同的插件使用自己的ClassLoader。 OSGI的这种机制保证了插件互相独立，然而却使Apache Common-Logging无法工作。</p>
+<p>Slf4j在编译时<em>静态绑定</em>真正的Log库,因此可以在OSGI中使用。另外，Slf4j 支持参数化的log字符串，避免了之前为了减少字符串拼接的性能损耗而不得不写的if(logger.isDebugEnable())，现在你可以直接写：logger.debug(“current user is: {}”, user)。拼装消息被推迟到了它能够确定是不是要显示这条消息的时候，但是获取参数的代价并没有幸免。</p>
+<h3 id="六、日志框架与日志门面组合"><a href="#六、日志框架与日志门面组合" class="headerlink" title="六、日志框架与日志门面组合"></a>六、日志框架与日志门面组合</h3><p>使用日志门面可以方便的切换具体的日志实现。而且如果依赖多个项目，使用了不同的Log Facade，还可以方便的通过Adapter 转接到同一个实现上。 因此为了考虑扩展性，一般我们在程序开发的时候，会选择使用commons-logging或者slf4j这些日志门面，而不是直接使用log4j或者logback这些实现。</p>
+<p>以下是几种比较常见的日志方案组合：</p>
+<h4 id="1-JCL-Log4j"><a href="#1-JCL-Log4j" class="headerlink" title="1. JCL + Log4j"></a>1. JCL + Log4j</h4><p>需要的jar包：</p>
+<ul>
+<li>commons-logging</li>
+<li>log4j</li>
+</ul>
+<h4 id="2-Slf4j-Logback"><a href="#2-Slf4j-Logback" class="headerlink" title="2. Slf4j + Logback"></a>2. Slf4j + Logback</h4><p>需要的jar包：</p>
+<ul>
+<li>slf4j-api</li>
+<li>logback-core</li>
+<li>logback-classic(集成包)</li>
+</ul>
+<h4 id="3-Log4j2"><a href="#3-Log4j2" class="headerlink" title="3. Log4j2"></a>3. Log4j2</h4><p>Log4j2需要的jar分成2个：</p>
+<ul>
+<li>log4j-api： 作为日志接口层，用于统一底层日志系统</li>
+<li>log4j-core : 作为上述日志接口的实现，是一个实际的日志框架</li>
+</ul>
+<h4 id="4-JCL-log4j2"><a href="#4-JCL-log4j2" class="headerlink" title="4. JCL + log4j2"></a>4. JCL + log4j2</h4><p>需要的jar包：</p>
+<ul>
+<li>commons-logging</li>
+<li>log4j-api</li>
+<li>log4j-core</li>
+<li>log4j-jcl（log4j2与commons-logging的集成包）</li>
+</ul>
+<p>现在的方式JCL + Log4j组合在性能和部分功能上都比较弱，如果要改进可以考虑以下几点：</p>
+<ul>
+<li>考虑性能和占位符等功能方面<br>推荐slf4j + logback方式 或者log4j2方式，这种方式对现有系统迁移改动较大，无论是代码内log声明还是配置文件上，而且slf4j不支持fatal打印；</li>
+<li>考虑系统迁移性<br>推荐commons-logging+log4j2,代码不需要改动，只需要改动对应log4j配置文件即可，但是无法利用其占位符功能；</li>
+<li>新系统搭建<br>不涉及到系统迁移的情况，新系统搭建可以采用纯log4j2方式，其既提供了接口也提供了实现，在性能上也得到了比较大提升。</li>
+</ul>
+<h3 id="七、NDC、MDC、ThreadContext"><a href="#七、NDC、MDC、ThreadContext" class="headerlink" title="七、NDC、MDC、ThreadContext"></a>七、NDC、MDC、ThreadContext</h3><p>当处理多线程应用程序，特别是web服务时，跟踪事件可能会变得困难。当针对多个同时存在的多个用户生成日志记录时，你如何区分哪个行为和哪个日志事件有关呢？如何两个用户没有成功打开一个相同的文件，或者在同一时间没有成功登陆，那么怎么处理日志记录？你可能需要一种方式来将日志记录和程序中的唯一标示符关联起来，这些标识符可能是用户ID，会话ID或者设备ID。而这就是NDC、MDC以及ThreadContext的用武之地。</p>
+<p>NDC、MDC和ThreadContext通过向单独的日志记录中添加独一无二的数据戳，来创建日志足迹（log trails）。这些数据戳也被称为鱼标记（fish tagging），我们可以通过一个或者多个独一无二的值来区分日志。这些数据戳在每个线程级别上进行管理，并且一直持续到线程结束，或者直到数据戳被删掉。例如，如果你的Web应用程序为每个用户生成一个新的线程，那么你可以使用这个用户的ID来标记日志记录。当你想在一个复杂的系统中跟踪特定的请求、事务或者用户，这是一种非常有用的方法。</p>
+<h4 id="1-NDC"><a href="#1-NDC" class="headerlink" title="1. NDC"></a>1. NDC</h4><p>NDC或者嵌套诊断上下文（Nested Diagnostic Context）是基于栈的思想，信息可以被放到栈上或者从栈中移除。而栈中的值可以被Logger访问，并且Logger无需显示想日志方法中传入任何值。</p>
+<ul>
+<li>NDC.push()方法将值存储在栈中；</li>
+<li>NDC.pop()方法将一些项从栈中移除；</li>
+<li>NDC.remove()方法让Java回收内存，以免造成内存溢出。</li>
+</ul>
+<h4 id="2-MDC"><a href="#2-MDC" class="headerlink" title="2. MDC"></a>2. MDC</h4><p>MDC或者映射诊断上下文和NDC很相似，不同之处在于MDC将值存储在键值对中，而不是栈中。这样你可以很容易的在Layout中引用一个单独的键。</p>
+<ul>
+<li>MDC.put(key,value) 方法将一个新的键值对添加到上下文中；</li>
+<li>MDC.remove(key) 方法会移除指定的键值对；</li>
+<li>MDC.clear()方法将所有的键值对从MDC中移除，这样会降低内存的使用量，并阻止MDC在后面试图调用那些已经过期的数据。</li>
+</ul>
+<blockquote>
+<p>Slf4j 只有 MDC，没有 NDC<br>Logback内置没有实现NDC，但是slf4j-ext包提供了一个NDC实现，它使用MDC作为基础。</p>
+</blockquote>
+<h4 id="3-ThreadContext"><a href="#3-ThreadContext" class="headerlink" title="3. ThreadContext"></a>3. ThreadContext</h4><blockquote>
+<p>Log4j版本2中将MDC和NDC合并到一个单独的组件中，这个组件被称为ThreadContext(线程上下文)。</p>
+</blockquote>
+<p>ThreadContext可以看成是NDC和MDC的结合体，它分别用<code>Thread Context Stack</code>和<code>Thread Context Map</code>来表示<code>NDC</code>和<code>MDC</code>。</p>
+<ul>
+<li>ThreadContext.clearStack()，清除NDC；</li>
+<li>ThreadContext.clearMap()，清除MDC；</li>
+<li>ThreadContext.clearAll()，清除所有。</li>
+</ul>
+<h3 id="八、总结"><a href="#八、总结" class="headerlink" title="八、总结"></a>八、总结</h3><p>本文从日志的好处讲起，先总体上概述了日志相关库分为：日志框架和日志门面；然后按照时间顺序列举了这些日志常见库；随后对它们进行简单的对比；提出了几个常见的日之框架与日志门面的组合使用；最后提到了NDC、MDC、ThreadContext的概念为<a href="">下一篇文章</a>提供一点理论基础。<br>针对每个库更详细的特性或者具体的使用步骤，大家可以自行去对应的官网查看。</p>
+<h3 id="九、Reference"><a href="#九、Reference" class="headerlink" title="九、Reference"></a>九、Reference</h3><ul>
+<li><a href="http://patchouli-know.com/2017/04/08/java-log/" target="_blank" rel="external">Java 日志系统梳理</a></li>
+<li><a href="http://group.jobbole.com/30249/" target="_blank" rel="external">聊一聊那些年我们用过的 Java 日志框架</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-practicelog/" target="_blank" rel="external">Java 日志管理最佳实践</a></li>
+<li><a href="http://blog.csdn.net/yycdaizi/article/details/8276265" target="_blank" rel="external">Java日志组件介绍</a></li>
+<li><a href="http://blog.csdn.net/gaojiaweir0011/article/details/8217604" target="_blank" rel="external">Log4j 对比 java.util.logging</a></li>
+<li><a href="http://dev.sei.pku.edu.cn/trac/pkuas/blog/2011/04/06/zhanglei09/my_topic" target="_blank" rel="external">Log4J与Java Logging调研</a></li>
+<li><a href="http://tech.lede.com/2017/02/06/rd/server/log4jSearch/" target="_blank" rel="external">日志工具现状调研</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/web/wa-lo-usertrack/index.html" target="_blank" rel="external">在Web 应用中增加用户跟踪功能</a></li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/日志/" rel="tag">#日志</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/" rel="prev">Slf4j MDC使用和基于Logback的实现分析</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/17/Docker-workshop-5-Docker网络/" rel="next">Docker Workshop（五）Docker网络</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2017/08/17/Log-Java日志管理/"
+                   data-title="Java日志管理" data-url="http://yoursite.com/2017/08/17/Log-Java日志管理/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/imgs/figure.jpg" alt="Zhang Yu" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Zhang Yu</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">分類</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">標籤</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Java常见日志库的历史"><span class="nav-number">3.</span> <span class="nav-text">三、Java常见日志库的历史</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Log4j"><span class="nav-number">3.1.</span> <span class="nav-text">1. Log4j</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Java-Util-Log"><span class="nav-number">3.2.</span> <span class="nav-text">2. Java Util Log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Commons-Logging"><span class="nav-number">3.3.</span> <span class="nav-text">3. Commons Logging</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Slf4j"><span class="nav-number">3.4.</span> <span class="nav-text">4. Slf4j</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Logback"><span class="nav-number">3.5.</span> <span class="nav-text">5. Logback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Log4j2"><span class="nav-number">3.6.</span> <span class="nav-text">6. Log4j2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Java-日志框架对比"><span class="nav-number">4.</span> <span class="nav-text">四、Java 日志框架对比</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Log4j-VS-JUL"><span class="nav-number">4.1.</span> <span class="nav-text">1. Log4j VS JUL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Logback-VS-Log4j"><span class="nav-number">4.2.</span> <span class="nav-text">2. Logback VS Log4j</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Log4j2-VS-Logback"><span class="nav-number">4.3.</span> <span class="nav-text">3. Log4j2 VS Logback</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Java-日志门面对比"><span class="nav-number">5.</span> <span class="nav-text">五、Java 日志门面对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、日志框架与日志门面组合"><span class="nav-number">6.</span> <span class="nav-text">六、日志框架与日志门面组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-JCL-Log4j"><span class="nav-number">6.1.</span> <span class="nav-text">1. JCL + Log4j</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Slf4j-Logback"><span class="nav-number">6.2.</span> <span class="nav-text">2. Slf4j + Logback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Log4j2"><span class="nav-number">6.3.</span> <span class="nav-text">3. Log4j2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-JCL-log4j2"><span class="nav-number">6.4.</span> <span class="nav-text">4. JCL + log4j2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、NDC、MDC、ThreadContext"><span class="nav-number">7.</span> <span class="nav-text">七、NDC、MDC、ThreadContext</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-NDC"><span class="nav-number">7.1.</span> <span class="nav-text">1. NDC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-MDC"><span class="nav-number">7.2.</span> <span class="nav-text">2. MDC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ThreadContext"><span class="nav-number">7.3.</span> <span class="nav-text">3. ThreadContext</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、总结"><span class="nav-number">8.</span> <span class="nav-text">八、总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#九、Reference"><span class="nav-number">9.</span> <span class="nav-text">九、Reference</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhangyuyu"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+<a href="https://github.com/zhangyuyu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-
+</body>
+</html>
