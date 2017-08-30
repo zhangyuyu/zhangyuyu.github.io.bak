@@ -237,14 +237,14 @@
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　上一篇<a href="">Java日志管理</a>里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。</p>
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　上一篇<a href="http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/" target="_blank" rel="external">Java日志管理</a>里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。</p>
 <ul>
 <li>使用日志门面，开发者只需要针对门面接口开发，而调用组件的应用程序则可以搭配自己喜好的日志实现工具，目前来看Slf4j + LogBack组合方式是比较通用的方式。</li>
 <li>对于web应用而言，多线程的调用是很常见的，我们可能需要对一个用户的操作流程进行归类标记，用来区分哪个行为和哪个日志事件有关，MDC则很好的处理这个需求。</li>
 </ul>
 <p>本篇将介绍Slf4j + LogBack的组合方式，介绍MDC的使用，并结合源码对实现原理进行分析。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　起源于最近看到项目使用了MDC，好奇这是个什么东西的情况下，系统的了解了Java的日志管理，并借此机会分析其实现原理，记录下来，理清思路。</p>
-<h3 id="三、Slf4j-MDC-介绍"><a href="#三、Slf4j-MDC-介绍" class="headerlink" title="三、Slf4j MDC 介绍"></a>三、Slf4j MDC 介绍</h3><p>　　介绍Slf4j和MDC的由来，可以参考上一篇<a href="">Java日志管理</a>。</p>
+<h3 id="三、Slf4j-MDC-介绍"><a href="#三、Slf4j-MDC-介绍" class="headerlink" title="三、Slf4j MDC 介绍"></a>三、Slf4j MDC 介绍</h3><p>　　介绍Slf4j和MDC的由来，可以参考上一篇<a href="http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/" target="_blank" rel="external">Java日志管理</a>。</p>
 <h4 id="1-Slf4j是什么？"><a href="#1-Slf4j是什么？" class="headerlink" title="1. Slf4j是什么？"></a>1. Slf4j是什么？</h4><p>　　Slf4j全称为Simple Logging Facade for Java (简单日志门面)，作为各种日志框架的简单门面或者抽象，包括JUL，Log4j，Logback。SLF4J允许用户在部署期间加入自己希望使用的日志系统。其实Slf4j与Log4j, Logback都是同一作者。</p>
 <h4 id="2-MDC是什么"><a href="#2-MDC是什么" class="headerlink" title="2. MDC是什么?"></a>2. MDC是什么?</h4><p>　　MDC全称为Mapped Diagnostic Context（映射调试上下文）是 log4j 和 logback 提供的一种方便在多线程条件下记录日志的功能。<br>　　典型的例子是 Web 应用服务器。当用户访问某个页面时，应用服务器可能会创建一个新的线程来处理该请求，也可能从线程池中复用已有的线程。在一个用户的会话存续期间，可能有多个线程处理过该用户的请求。这使得比较难以区分不同用户所对应的日志。当需要追踪某个用户在系统中的相关日志记录时，就会变得很麻烦。</p>
 <blockquote>
@@ -525,7 +525,7 @@
 <li>ThreadContext.clearMap()，清除MDC；</li>
 <li>ThreadContext.clearAll()，清除所有。</li>
 </ul>
-<h3 id="八、总结"><a href="#八、总结" class="headerlink" title="八、总结"></a>八、总结</h3><p>本文从日志的好处讲起，先总体上概述了日志相关库分为：日志框架和日志门面；然后按照时间顺序列举了这些日志常见库；随后对它们进行简单的对比；提出了几个常见的日之框架与日志门面的组合使用；最后提到了NDC、MDC、ThreadContext的概念为<a href="">下一篇文章</a>提供一点理论基础。<br>针对每个库更详细的特性或者具体的使用步骤，大家可以自行去对应的官网查看。</p>
+<h3 id="八、总结"><a href="#八、总结" class="headerlink" title="八、总结"></a>八、总结</h3><p>本文从日志的好处讲起，先总体上概述了日志相关库分为：日志框架和日志门面；然后按照时间顺序列举了这些日志常见库；随后对它们进行简单的对比；提出了几个常见的日之框架与日志门面的组合使用；最后提到了NDC、MDC、ThreadContext的概念为<a href="http://zhangyuyu.github.io/2017/08/17/Log-Slf4j%20MDC%20%E4%BD%BF%E7%94%A8%E5%92%8C%E5%9F%BA%E4%BA%8E%20Logback%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_blank" rel="external">下一篇文章</a>提供一点理论基础。<br>针对每个库更详细的特性或者具体的使用步骤，大家可以自行去对应的官网查看。</p>
 <h3 id="九、Reference"><a href="#九、Reference" class="headerlink" title="九、Reference"></a>九、Reference</h3><ul>
 <li><a href="http://patchouli-know.com/2017/04/08/java-log/" target="_blank" rel="external">Java 日志系统梳理</a></li>
 <li><a href="http://group.jobbole.com/30249/" target="_blank" rel="external">聊一聊那些年我们用过的 Java 日志框架</a></li>

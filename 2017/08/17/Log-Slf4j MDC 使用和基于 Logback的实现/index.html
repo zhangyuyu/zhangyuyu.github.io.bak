@@ -48,7 +48,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　上一篇Java日志管理里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。  使用日志门面，开发者只需要针对门面接口开发，而调用组件的应用程序则可以搭配自己喜好的日志实现工具，目前来看Slf4j + LogBack组合方式是比较通用的方式。 对于web应用而言，多线程的调用是很常见的，我们可能需要对一个用户的操作流">
-<meta property="og:updated_time" content="2017-08-30T08:49:29.000Z">
+<meta property="og:updated_time" content="2017-08-30T08:53:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Slf4j MDC使用和基于Logback的实现分析">
 <meta name="twitter:description" content="一、前言　　上一篇Java日志管理里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。  使用日志门面，开发者只需要针对门面接口开发，而调用组件的应用程序则可以搭配自己喜好的日志实现工具，目前来看Slf4j + LogBack组合方式是比较通用的方式。 对于web应用而言，多线程的调用是很常见的，我们可能需要对一个用户的操作流">
@@ -234,14 +234,14 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　上一篇<a href="">Java日志管理</a>里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。</p>
+        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　上一篇<a href="http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/" target="_blank" rel="external">Java日志管理</a>里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。</p>
 <ul>
 <li>使用日志门面，开发者只需要针对门面接口开发，而调用组件的应用程序则可以搭配自己喜好的日志实现工具，目前来看Slf4j + LogBack组合方式是比较通用的方式。</li>
 <li>对于web应用而言，多线程的调用是很常见的，我们可能需要对一个用户的操作流程进行归类标记，用来区分哪个行为和哪个日志事件有关，MDC则很好的处理这个需求。</li>
 </ul>
 <p>本篇将介绍Slf4j + LogBack的组合方式，介绍MDC的使用，并结合源码对实现原理进行分析。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　起源于最近看到项目使用了MDC，好奇这是个什么东西的情况下，系统的了解了Java的日志管理，并借此机会分析其实现原理，记录下来，理清思路。</p>
-<h3 id="三、Slf4j-MDC-介绍"><a href="#三、Slf4j-MDC-介绍" class="headerlink" title="三、Slf4j MDC 介绍"></a>三、Slf4j MDC 介绍</h3><p>　　介绍Slf4j和MDC的由来，可以参考上一篇<a href="">Java日志管理</a>。</p>
+<h3 id="三、Slf4j-MDC-介绍"><a href="#三、Slf4j-MDC-介绍" class="headerlink" title="三、Slf4j MDC 介绍"></a>三、Slf4j MDC 介绍</h3><p>　　介绍Slf4j和MDC的由来，可以参考上一篇<a href="http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/" target="_blank" rel="external">Java日志管理</a>。</p>
 <h4 id="1-Slf4j是什么？"><a href="#1-Slf4j是什么？" class="headerlink" title="1. Slf4j是什么？"></a>1. Slf4j是什么？</h4><p>　　Slf4j全称为Simple Logging Facade for Java (简单日志门面)，作为各种日志框架的简单门面或者抽象，包括JUL，Log4j，Logback。SLF4J允许用户在部署期间加入自己希望使用的日志系统。其实Slf4j与Log4j, Logback都是同一作者。</p>
 <h4 id="2-MDC是什么"><a href="#2-MDC是什么" class="headerlink" title="2. MDC是什么?"></a>2. MDC是什么?</h4><p>　　MDC全称为Mapped Diagnostic Context（映射调试上下文）是 log4j 和 logback 提供的一种方便在多线程条件下记录日志的功能。<br>　　典型的例子是 Web 应用服务器。当用户访问某个页面时，应用服务器可能会创建一个新的线程来处理该请求，也可能从线程池中复用已有的线程。在一个用户的会话存续期间，可能有多个线程处理过该用户的请求。这使得比较难以区分不同用户所对应的日志。当需要追踪某个用户在系统中的相关日志记录时，就会变得很麻烦。</p>
 <blockquote>
