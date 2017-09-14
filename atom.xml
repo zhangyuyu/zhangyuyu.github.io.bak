@@ -276,11 +276,119 @@
   </entry>
   
   <entry>
+    <title>Docker Workshop（六）Docker安全</title>
+    <link href="http://yoursite.com/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/"/>
+    <id>http://yoursite.com/2017/07/20/Docker-workshop-6-Docker安全/</id>
+    <published>2017-07-20T00:49:15.000Z</published>
+    <updated>2017-09-14T13:54:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">上一篇 Docker网络</a>主要讲述了网络模型、网络模式。<br>本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
+<li><strong>Docker安全</strong></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<h2 id="三、Docker访问主机系统"><a href="#三、Docker访问主机系统" class="headerlink" title="三、Docker访问主机系统"></a>三、Docker访问主机系统</h2><p>很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。</p>
+<h3 id="【练习】访问主机系统"><a href="#【练习】访问主机系统" class="headerlink" title="【练习】访问主机系统"></a>【练习】访问主机系统</h3><p>1）主机上访问文件系统</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/shadow  # 使用普通用户访问</div><div class="line">cat: /etc/shadow: Permission denied</div><div class="line">$ who am i<span class="comment">; groups;  # 查看当前的用户和组</span></div><div class="line">vagrant  pts/<span class="number">0</span>        <span class="number">2017-09-14</span> <span class="number">08</span>:<span class="number">08</span> (<span class="number">10.0.2.2</span>)</div><div class="line">vagrant docker</div><div class="line">$ sudo cat /etc/shadow  # 使用root用户访问</div><div class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>2) Docker容器里访问文件系统</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ docker run -v /:/hostfs busybox cat /hostfs/etc/shadow</div><div class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>可以看出只有root用户才能访问上面的文件。而Docker容器是用root权限运行的，所以在docker group下的用户间接地就有了root权限，也就可以访问到上述文件了。</p>
+<p>3）Docker容器里修改主机文件系统</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ ls / | grep threat</div><div class="line">$ docker <span class="built_in">run</span> -<span class="keyword">it</span> -v /:/hostfs busybox touch /hostfs/threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</div><div class="line">$ ls / | grep threat</div><div class="line">threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</div></pre></td></tr></table></figure>
+<p>可以看到，在Docker容器中创建的文件出现在了宿主机中，即在Docker容器中能够修改主机文件系统。</p>
+<p>更严重的时，如果是 Privileged 容器，即在运行容器时指定–privileged=true参数，则能够允许容器所有设备执行任意操作，能够读写内核内存/proc/kcore，使用参数–net=host可以嗅探主机所有网络流量。</p>
+<p>4）查看Docker容器和Metadata在宿主机上存储的地址</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ ll /var/lib/docker/</div><div class="line">total 84</div><div class="line">drwxr-xr-x  <span class="number"> 9 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 ./</div><div class="line">drwxr-xr-x <span class="number"> 52 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>../</div><div class="line">drwxr-xr-x  <span class="number"> 5 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>aufs/</div><div class="line">drwx------  <span class="number"> 8 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 containers/</div><div class="line">drwx------<span class="number"> 259 </span>root root<span class="number"> 36864 </span>Sep<span class="number"> 14 </span>08:10 graph/</div><div class="line">-rw-r--r--  <span class="number"> 1 </span>root root <span class="number"> 5120 </span>Sep<span class="number"> 14 </span>12:24 linkgraph.db</div><div class="line">drwxr-x---  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>network/</div><div class="line">-rw-------  <span class="number"> 1 </span>root root <span class="number"> 2116 </span>Sep<span class="number"> 14 </span>08:14 repositories-aufs</div><div class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:10 tmp/</div><div class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>trust/</div><div class="line">drwx------  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:08 volumes/</div></pre></td></tr></table></figure>
+<p>运行态容器默认都是使用/var/lib/docker目录，容器内部写日志、产生运行时数据等都会影响该目录，并且产生的文件越来越多，占用空间越来越大，因此需要定期清理无用的镜像和容器。可以用Logical Volume Manager (LVM)为Docker挂载点/var/lib/docker创建单独的分区，最好是SSD盘。</p>
+<h2 id="四、Docker的安全性"><a href="#四、Docker的安全性" class="headerlink" title="四、Docker的安全性"></a>四、Docker的安全性</h2><p>Docker的安全性主要体现在如下几个方面：</p>
+<ul>
+<li><a href="4-1.Docker容器的安全性">Docker容器的安全性</a></li>
+<li><a href="4-2.镜像的安全性">镜像的安全性</a></li>
+<li><a href="4-3.Docker daemon的安全性">Docker daemon的安全性</a></li>
+</ul>
+<h3 id="4-1-Docker容器的安全性"><a href="#4-1-Docker容器的安全性" class="headerlink" title="4-1.Docker容器的安全性"></a>4-1.Docker容器的安全性</h3><p>指容器是否会危害到宿主机或其他容器。<br>容器的安全性问题的根源在于容器和宿主机共用内核，因此受攻击的面特别大，另外，如果容器里的应用导致Linux内核崩溃，那么毫无疑问，整个系统哥都会崩溃。这一点与虚拟机是不同的，虚拟机与宿主机的接口非常有限，而且虚拟机崩溃一般不会导致宿主机崩溃。</p>
+<h3 id="4-2-镜像的安全性"><a href="#4-2-镜像的安全性" class="headerlink" title="4-2.镜像的安全性"></a>4-2.镜像的安全性</h3><p>用户如何确保下载下来的镜像是可信的、未被篡改过的；</p>
+<h3 id="4-3-Docker-daemon的安全性"><a href="#4-3-Docker-daemon的安全性" class="headerlink" title="4-3.Docker daemon的安全性"></a>4-3.Docker daemon的安全性</h3><p>如何确保发送给daemon的命令是由可信用户发起的。用户通过CLI或者REST API向daemon发送命令已完成对容器的各种操作，例如通过docker exec命令删除容器里的数据，因此需要保证client与daemon的连接时可信的。</p>
+<h2 id="五、Docker安全最佳实践"><a href="#五、Docker安全最佳实践" class="headerlink" title="五、Docker安全最佳实践"></a>五、Docker安全最佳实践</h2><h3 id="主机"><a href="#主机" class="headerlink" title="主机"></a>主机</h3><ul>
+<li>保持内核及时更新，防止黑客利用未修复的漏洞进行攻击</li>
+<li>增强主机安全保护，如果主机不安全了，容器也就谈不上安全了</li>
+<li>保持Docker及时更新，特别要关注Docker安全相关方面的更新</li>
+</ul>
+<h3 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h3><ul>
+<li>在Dockerfile中为容器创建一个非root用户</li>
+<li>以非root用户运行容器进程，最大程度控制用户的权限范围</li>
+<li>只使用受信的基础镜像，可由最小基础镜像开始(Busybox, Alpine)，最好是建立本地仓库镜像</li>
+<li>仅安装必要的包，因为可能有些包会有漏洞，一定程度上降低风险</li>
+<li>重新构建镜像时需要包含安全补丁，防止黑客利用漏洞实施攻击</li>
+</ul>
+<h3 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h3><ul>
+<li>只允许受信用户控制Docker守护进程，保证与Daemon的连接是可信的</li>
+<li>不使用不受信的镜像仓库，因为镜像可能会被篡改过</li>
+<li>必要时请为Docker守护进程应用 TLS 认证网络</li>
+<li>限制容器之间的网络通信，如果两个容器之间没有通信的必要就限制其网络通信功能</li>
+</ul>
+<h3 id="容器运行时"><a href="#容器运行时" class="headerlink" title="容器运行时"></a>容器运行时</h3><ul>
+<li>不要到产品环境中使用任何开发者工具(boot2docker, kinematic)</li>
+<li>限制容器使用Linux内核能力和资源使用，为守护进程设置受限的控制资源权限(–ulimit)</li>
+<li>不要使用 Privileged 容器，如果使用–privileged参数将授予容器与主机几乎相同的权限</li>
+<li>指定容器重启策略为on-failure，重启策略(Restart policies)有四种：<code>no</code>、<code>on-failure</code>、<code>always</code>、<code>unless-stopped</code>。</li>
+<li>使用强制权限控制系统 AppArmor 和 Linux安全增强工具 SELinux 保证额外的安全层</li>
+</ul>
+<p>更多详情，可以参考<a href="https://learn.cisecurity.org/benchmarks" target="_blank" rel="external">Security Benchmarks</a>制定的容器的安全基准。下面截取了其中的一部分目录：<br><img src="/imgs/docker-security-host.png" width="500" height="250"></p>
+<center>主机</center><br><br><br><img src="/imgs/docker-security-images.png" width="500" height="250"><br><center>镜像</center><br><br><br><img src="/imgs/docker-security-daemon.png" width="500" height="250"><br><center>守护进程</center><br><br><br><img src="/imgs/docker-security-container-runtime.png" width="500" height="250"><br><center>容器运行时</center>
+
+<h3 id="六、构建容器平台时候的安全问题"><a href="#六、构建容器平台时候的安全问题" class="headerlink" title="六、构建容器平台时候的安全问题"></a>六、构建容器平台时候的安全问题</h3><p>上面说到的安全问题基本上是容器自身的，就是单独去考虑一个容器时，容器自身的一个安全性的问题。那么，当我们构建一个云平台的时候，这时容器是大量的，也可能是多租户的，特别是公有云，用户上传上来的应用是否安全，在这种情况下，怎么来去考虑一个容器平台的安全问题。可以从四个方面：</p>
+<ul>
+<li>基础架构层安全</li>
+<li>容器调度层安全</li>
+<li>容器调度层安全</li>
+<li>容器调度层安全</li>
+</ul>
+<p>我们可以采取的一些措施：</p>
+<ul>
+<li>建立容器云平台的安全基线</li>
+<li>容器 CI/CD 过程加密验证</li>
+<li>加强平台的权限访问控制或者 API 密钥管理</li>
+<li>加强容器的安全测试及渗透测试</li>
+<li>加强安全漏洞扫</li>
+</ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要列举了一些Docker安全的最佳实践，并没有做过多的解释，具体情况还需要结合具体的项目实践。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://www.freebuf.com/articles/system/69809.html" target="_blank" rel="external">浅谈Docker隔离性和安全性</a></li>
+<li><a href="https://segmentfault.com/a/1190000005794220" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="https://mp.weixin.qq.com/s/IN_JJhg_oG7ILVjNj-UexA" target="_blank" rel="external">绝不避谈 Docker 安全</a></li>
+<li><a href="http://securityer.lofter.com/post/1d0f3ee7_d4e69b1" target="_blank" rel="external">如何打造安全的容器云平台</a></li>
+<li><a href="http://www.10tiao.com/html/167/201707/2650762256/2.html" target="_blank" rel="external">从自身漏洞与架构缺陷，谈Docker安全建设</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://yoursite.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker Workshop（五）Docker网络</title>
     <link href="http://yoursite.com/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/"/>
     <id>http://yoursite.com/2017/07/17/Docker-workshop-5-Docker网络/</id>
     <published>2017-07-17T08:50:23.000Z</published>
-    <updated>2017-07-18T14:29:56.000Z</updated>
+    <updated>2017-09-01T00:50:45.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">上一篇 Docker的数据存储</a>主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。<br>本篇主要讲述网络的实现、网络模型、网络模式等相关知识。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -2778,63 +2886,6 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
     
     
       <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Yeoman</title>
-    <link href="http://yoursite.com/2015/11/21/Yeoman/"/>
-    <id>http://yoursite.com/2015/11/21/Yeoman/</id>
-    <published>2015-11-21T01:15:32.000Z</published>
-    <updated>2015-11-21T06:38:05.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="一、认识Yeoman"><a href="#一、认识Yeoman" class="headerlink" title="一、认识Yeoman"></a>一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
-<blockquote>
-<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
-</blockquote>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置："><a href="#1、在安装Yeoman之前，你需要确认以下配置：" class="headerlink" title="1、在安装Yeoman之前，你需要确认以下配置："></a>1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
-<li>Node.js 版本在0.10以上</li>
-<li>npm 版本在1.3.7以上</li>
-</ul>
-<h4 id="2、安装"><a href="#2、安装" class="headerlink" title="2、安装"></a>2、安装</h4><pre><code>npm install -g yo grunt-cli bower
-</code></pre><h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入"><a href="#1、创建一个文件夹CustomerUI，并进入" class="headerlink" title="1、创建一个文件夹CustomerUI，并进入"></a>1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器"><a href="#2、安装Yeoman生成器" class="headerlink" title="2、安装Yeoman生成器"></a>2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
-<pre><code>yo
-</code></pre><img src="/imgs/yo.png" width="400" height="300">
-<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
-<p>2.2 如果你知道要安装的生成器的名字：</p>
-<pre><code>yo angular
-</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
-<h4 id="3、选择"><a href="#3、选择" class="headerlink" title="3、选择"></a>3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
-<h4 id="4、目录"><a href="#4、目录" class="headerlink" title="4、目录"></a>4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
-<ul>
-<li>app/：Web应用的父级目录。<ul>
-<li>index.html： Angular应用的基准HTML文件（base html file）</li>
-<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
-<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
-<li>scripts：我们的JS文件<ul>
-<li>app.js：主程序</li>
-<li>controllers：Angular控制器</li>
-</ul>
-</li>
-<li>styles：我们的CSS文件</li>
-<li>views：Angular模板</li>
-</ul>
-</li>
-<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
-<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
-</ul>
-<h4 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h4><pre><code>grunt serve
-</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;一、认识Yeoman&quot;&gt;&lt;a href=&quot;#一、认识Yeoman&quot; class=&quot;headerlink&quot; title=&quot;一、认识Yeoman&quot;&gt;&lt;/a&gt;一、认识Yeoman&lt;/h3&gt;&lt;p&gt;　　Yeoman的logo是一个戴帽子的男人。&lt;br&gt;　　&lt;img src=
-    
-    </summary>
-    
-    
-      <category term="AngularJs" scheme="http://yoursite.com/tags/AngularJs/"/>
     
   </entry>
   

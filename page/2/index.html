@@ -184,6 +184,118 @@
           
           
             
+              <a class="post-title-link" href="/2016/11/12/函数式编程初探2/" itemprop="url">
+                函数式编程初探（二）
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2016-11-12T19:35:10+08:00" content="2016-11-12">
+            2016-11-12
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                  <span itemprop="name">函数式编程</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/11/12/函数式编程初探2/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探2/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
+<h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
+<p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
+<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight flix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">volume</span> </span>= &#123;h, w, l -&gt; h * w * l&#125;</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">area</span> </span>= volume.curry(<span class="number">1</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthPA</span> </span>= volume.curry(<span class="number">1</span>, <span class="number">1</span>)         <span class="comment">// &lt;1&gt;</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthC</span> </span>= volume.curry(<span class="number">1</span>).curry(<span class="number">1</span>)    <span class="comment">// &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
+<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/currying.groovy" target="_blank" rel="external">github</a><br>柯里化常见的应用场景：函数工厂、模板方法模式、隐藏参数。</p>
+<h3 id="二、缓存"><a href="#二、缓存" class="headerlink" title="二、缓存"></a>二、缓存</h3><p>缓存是很常见的一种需求（同时也是制造隐晦错误的源头）。缓存有两种实现方式：一种是手工进行状态管理，另一种是采用记忆机制。</p>
+<h4 id="手工进行状态管理"><a href="#手工进行状态管理" class="headerlink" title="手工进行状态管理"></a>手工进行状态管理</h4><p>在代码里面增加一个filed，每次计算之前之前先去检查是否存在于缓存中。但是当我们将缓存的取值范围增大时，可能报出OutOfMemoryError的错误。</p>
+<p>缓存可以提高性能，但是缓存有代价：它提高了代码的非本质复杂性和维护负担。同时，编写缓存的代码还要兼顾执行的环境（比如缓存范围）。<br>代码示例参考下文<a href="#完美数的手工缓存实现">完美数的手工缓存实现</a></p>
+<h4 id="记忆机制"><a href="#记忆机制" class="headerlink" title="记忆机制"></a>记忆机制</h4><p>Groovy语言记忆函数的办法是，先将要记忆的函数定义成闭包，然后对该闭包执行memoize()方法来获得一个新函数，以后我们调用这个新函数的时候，其结果就会被缓存起来。<br>请保证所有被记忆的函数：</p>
+<ul>
+<li>没有副作用</li>
+<li>不依赖任何外部信息<br>代码示例参考下文<a href="#完美数的记忆实现">完美数的记忆实现</a></li>
+</ul>
+<h3 id="三、缓求值"><a href="#三、缓求值" class="headerlink" title="三、缓求值"></a>三、缓求值</h3><p>缓求值指尽可能地推迟求解表达式。缓求值的集合不会预先算好所有的元素，而是在用到的时才落实下来。这样做有几个好处：</p>
+<ul>
+<li>昂贵的运算只有到了绝对必要的时候才执行</li>
+<li>我们可以建立无限大的集合，只要一直接到请求，就一直送出元素</li>
+<li>按缓求值的方式来使用映射、筛选等函数式概念，可以产生更高效的代码。</li>
+</ul>
+<p>例如：<code>print length([2+1, 3*2, 1/0, 5-4])</code><br>对于严格求值的编程语言，执行（甚至编译）时，会发生<code>被零除</code>的异常；<br>对于非严格（也叫缓求值）的里，则会得出<code>4</code>的结果。</p>
+<p>缓求值在Groovy中的应用：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def prepend(val, closure) &#123; new LazyList(val, closure) &#125;</div><div class="line">def integers(n) &#123; prepend(n, &#123; integers(n + <span class="number">1</span>) &#125;) &#125;</div><div class="line"></div><div class="line">@Test</div><div class="line">public void lazy_list_acts_like_a_list() &#123;</div><div class="line">    def naturalNumbers = integers(<span class="number">1</span>)</div><div class="line">    assertEquals('<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>', naturalNumbers.getHead(<span class="number">10</span>).join(' '))</div><div class="line">    def evenNumbers = naturalNumbers.filter &#123; it % <span class="number">2</span> == <span class="number">0</span> &#125;</div><div class="line">    assertEquals('<span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span> <span class="number">20</span>', evenNumbers.getHead(<span class="number">10</span>).join(' '))</div></pre></td></tr></table></figure></p>
+<h3 id="四、函数式的数据结构"><a href="#四、函数式的数据结构" class="headerlink" title="四、函数式的数据结构"></a>四、函数式的数据结构</h3><p>函数式语言里经常遇到返回两种截然不同的值的需求，它们用来建模这种行为的常用数据结构是Either。<br>使用Either表示两种结果的返回值，使用Option来表示有为空返回值的类型。Option类可近似看作为Either的子类。</p>
+<p>用Java的泛型来自己实现Either类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Either</span>&lt;<span class="title">A</span>,<span class="title">B</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> A left = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">private</span> B right = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Either</span><span class="params">(A a,B b)</span> </span>&#123;</div><div class="line">        left = a;</div><div class="line">        right = b;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">left</span><span class="params">(A a)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(a,<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">left</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLeft</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> B <span class="title">right</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">right</span><span class="params">(B b)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(<span class="keyword">null</span>,b);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fold</span><span class="params">(F&lt;A&gt; leftOption, F&lt;B&gt; rightOption)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(right == <span class="keyword">null</span>)</div><div class="line">            leftOption.f(left);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            rightOption.f(right);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="external">github</a><br>使用：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">if</span> (不满足)</div><div class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> <span class="type">Exception</span>(<span class="string">"Invalid Number"</span>));</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        int number = <span class="keyword">new</span> <span class="type">RomanNumeral</span>(s).toInt();</div><div class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> <span class="type">RomanNumeral</span>(number &gt;= MAX ? MAX : <span class="type">number</span>).toInt());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="五、完美数的示例"><a href="#五、完美数的示例" class="headerlink" title="五、完美数的示例"></a>五、完美数的示例</h3><p>案例：</p>
+<blockquote>
+<p>自然数分类规则：<br>完美数： 真约数之和 = 数本身<br>过剩数： 真约数之和 &gt; 数本身<br>不足数： 真约数之和 &lt; 数本身<br>真约数和：除了数本身之外，其余正约数的和。</p>
+</blockquote>
+<p>代码比较长，可以直接查看《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/" target="_blank" rel="external">github</a>总结如下：<br>1.完美数的命令式解法<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java</a><br>2.稍向函数式靠拢的完美数分类实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java</a><br>3.完美数分类的Java8实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java</a><br><span id="完美数的手工缓存实现">4.完美数的手工缓存实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy</a><br><span id="完美数的记忆实现">5.完美数的记忆实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy</a></p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2016/11/12/函数式编程初探1/" itemprop="url">
                 函数式编程初探（一）
               </a>
@@ -1722,111 +1834,6 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/11/21/Yeoman/" itemprop="url">
-                Yeoman
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-11-21T09:15:32+08:00" content="2015-11-21">
-            2015-11-21
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/21/Yeoman/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/21/Yeoman/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、认识Yeoman"><a href="#一、认识Yeoman" class="headerlink" title="一、认识Yeoman"></a>一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
-<blockquote>
-<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
-</blockquote>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置："><a href="#1、在安装Yeoman之前，你需要确认以下配置：" class="headerlink" title="1、在安装Yeoman之前，你需要确认以下配置："></a>1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
-<li>Node.js 版本在0.10以上</li>
-<li>npm 版本在1.3.7以上</li>
-</ul>
-<h4 id="2、安装"><a href="#2、安装" class="headerlink" title="2、安装"></a>2、安装</h4><pre><code>npm install -g yo grunt-cli bower
-</code></pre><h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入"><a href="#1、创建一个文件夹CustomerUI，并进入" class="headerlink" title="1、创建一个文件夹CustomerUI，并进入"></a>1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器"><a href="#2、安装Yeoman生成器" class="headerlink" title="2、安装Yeoman生成器"></a>2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
-<pre><code>yo
-</code></pre><img src="/imgs/yo.png" width="400" height="300">
-<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
-<p>2.2 如果你知道要安装的生成器的名字：</p>
-<pre><code>yo angular
-</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
-<h4 id="3、选择"><a href="#3、选择" class="headerlink" title="3、选择"></a>3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
-<h4 id="4、目录"><a href="#4、目录" class="headerlink" title="4、目录"></a>4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
-<ul>
-<li>app/：Web应用的父级目录。<ul>
-<li>index.html： Angular应用的基准HTML文件（base html file）</li>
-<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
-<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
-<li>scripts：我们的JS文件<ul>
-<li>app.js：主程序</li>
-<li>controllers：Angular控制器</li>
-</ul>
-</li>
-<li>styles：我们的CSS文件</li>
-<li>views：Angular模板</li>
-</ul>
-</li>
-<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
-<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
-</ul>
-<h4 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h4><pre><code>grunt serve
-</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1865,7 +1872,7 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">42</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>

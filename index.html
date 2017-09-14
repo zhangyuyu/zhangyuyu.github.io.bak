@@ -566,6 +566,175 @@
           
           
             
+              <a class="post-title-link" href="/2017/07/20/Docker-workshop-6-Docker安全/" itemprop="url">
+                Docker Workshop（六）Docker安全
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2017-07-20T08:49:15+08:00" content="2017-07-20">
+            2017-07-20
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Docker/" itemprop="url" rel="index">
+                  <span itemprop="name">Docker</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/07/20/Docker-workshop-6-Docker安全/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/20/Docker-workshop-6-Docker安全/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">上一篇 Docker网络</a>主要讲述了网络模型、网络模式。<br>本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
+<li><strong>Docker安全</strong></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<h2 id="三、Docker访问主机系统"><a href="#三、Docker访问主机系统" class="headerlink" title="三、Docker访问主机系统"></a>三、Docker访问主机系统</h2><p>很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。</p>
+<h3 id="【练习】访问主机系统"><a href="#【练习】访问主机系统" class="headerlink" title="【练习】访问主机系统"></a>【练习】访问主机系统</h3><p>1）主机上访问文件系统</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/shadow  # 使用普通用户访问</div><div class="line">cat: /etc/shadow: Permission denied</div><div class="line">$ who am i<span class="comment">; groups;  # 查看当前的用户和组</span></div><div class="line">vagrant  pts/<span class="number">0</span>        <span class="number">2017-09-14</span> <span class="number">08</span>:<span class="number">08</span> (<span class="number">10.0.2.2</span>)</div><div class="line">vagrant docker</div><div class="line">$ sudo cat /etc/shadow  # 使用root用户访问</div><div class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>2) Docker容器里访问文件系统</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ docker run -v /:/hostfs busybox cat /hostfs/etc/shadow</div><div class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>可以看出只有root用户才能访问上面的文件。而Docker容器是用root权限运行的，所以在docker group下的用户间接地就有了root权限，也就可以访问到上述文件了。</p>
+<p>3）Docker容器里修改主机文件系统</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ ls / | grep threat</div><div class="line">$ docker <span class="built_in">run</span> -<span class="keyword">it</span> -v /:/hostfs busybox touch /hostfs/threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</div><div class="line">$ ls / | grep threat</div><div class="line">threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</div></pre></td></tr></table></figure>
+<p>可以看到，在Docker容器中创建的文件出现在了宿主机中，即在Docker容器中能够修改主机文件系统。</p>
+<p>更严重的时，如果是 Privileged 容器，即在运行容器时指定–privileged=true参数，则能够允许容器所有设备执行任意操作，能够读写内核内存/proc/kcore，使用参数–net=host可以嗅探主机所有网络流量。</p>
+<p>4）查看Docker容器和Metadata在宿主机上存储的地址</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ ll /var/lib/docker/</div><div class="line">total 84</div><div class="line">drwxr-xr-x  <span class="number"> 9 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 ./</div><div class="line">drwxr-xr-x <span class="number"> 52 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>../</div><div class="line">drwxr-xr-x  <span class="number"> 5 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>aufs/</div><div class="line">drwx------  <span class="number"> 8 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 containers/</div><div class="line">drwx------<span class="number"> 259 </span>root root<span class="number"> 36864 </span>Sep<span class="number"> 14 </span>08:10 graph/</div><div class="line">-rw-r--r--  <span class="number"> 1 </span>root root <span class="number"> 5120 </span>Sep<span class="number"> 14 </span>12:24 linkgraph.db</div><div class="line">drwxr-x---  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>network/</div><div class="line">-rw-------  <span class="number"> 1 </span>root root <span class="number"> 2116 </span>Sep<span class="number"> 14 </span>08:14 repositories-aufs</div><div class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:10 tmp/</div><div class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>trust/</div><div class="line">drwx------  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:08 volumes/</div></pre></td></tr></table></figure>
+<p>运行态容器默认都是使用/var/lib/docker目录，容器内部写日志、产生运行时数据等都会影响该目录，并且产生的文件越来越多，占用空间越来越大，因此需要定期清理无用的镜像和容器。可以用Logical Volume Manager (LVM)为Docker挂载点/var/lib/docker创建单独的分区，最好是SSD盘。</p>
+<h2 id="四、Docker的安全性"><a href="#四、Docker的安全性" class="headerlink" title="四、Docker的安全性"></a>四、Docker的安全性</h2><p>Docker的安全性主要体现在如下几个方面：</p>
+<ul>
+<li><a href="4-1.Docker容器的安全性">Docker容器的安全性</a></li>
+<li><a href="4-2.镜像的安全性">镜像的安全性</a></li>
+<li><a href="4-3.Docker daemon的安全性">Docker daemon的安全性</a></li>
+</ul>
+<h3 id="4-1-Docker容器的安全性"><a href="#4-1-Docker容器的安全性" class="headerlink" title="4-1.Docker容器的安全性"></a>4-1.Docker容器的安全性</h3><p>指容器是否会危害到宿主机或其他容器。<br>容器的安全性问题的根源在于容器和宿主机共用内核，因此受攻击的面特别大，另外，如果容器里的应用导致Linux内核崩溃，那么毫无疑问，整个系统哥都会崩溃。这一点与虚拟机是不同的，虚拟机与宿主机的接口非常有限，而且虚拟机崩溃一般不会导致宿主机崩溃。</p>
+<h3 id="4-2-镜像的安全性"><a href="#4-2-镜像的安全性" class="headerlink" title="4-2.镜像的安全性"></a>4-2.镜像的安全性</h3><p>用户如何确保下载下来的镜像是可信的、未被篡改过的；</p>
+<h3 id="4-3-Docker-daemon的安全性"><a href="#4-3-Docker-daemon的安全性" class="headerlink" title="4-3.Docker daemon的安全性"></a>4-3.Docker daemon的安全性</h3><p>如何确保发送给daemon的命令是由可信用户发起的。用户通过CLI或者REST API向daemon发送命令已完成对容器的各种操作，例如通过docker exec命令删除容器里的数据，因此需要保证client与daemon的连接时可信的。</p>
+<h2 id="五、Docker安全最佳实践"><a href="#五、Docker安全最佳实践" class="headerlink" title="五、Docker安全最佳实践"></a>五、Docker安全最佳实践</h2><h3 id="主机"><a href="#主机" class="headerlink" title="主机"></a>主机</h3><ul>
+<li>保持内核及时更新，防止黑客利用未修复的漏洞进行攻击</li>
+<li>增强主机安全保护，如果主机不安全了，容器也就谈不上安全了</li>
+<li>保持Docker及时更新，特别要关注Docker安全相关方面的更新</li>
+</ul>
+<h3 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h3><ul>
+<li>在Dockerfile中为容器创建一个非root用户</li>
+<li>以非root用户运行容器进程，最大程度控制用户的权限范围</li>
+<li>只使用受信的基础镜像，可由最小基础镜像开始(Busybox, Alpine)，最好是建立本地仓库镜像</li>
+<li>仅安装必要的包，因为可能有些包会有漏洞，一定程度上降低风险</li>
+<li>重新构建镜像时需要包含安全补丁，防止黑客利用漏洞实施攻击</li>
+</ul>
+<h3 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h3><ul>
+<li>只允许受信用户控制Docker守护进程，保证与Daemon的连接是可信的</li>
+<li>不使用不受信的镜像仓库，因为镜像可能会被篡改过</li>
+<li>必要时请为Docker守护进程应用 TLS 认证网络</li>
+<li>限制容器之间的网络通信，如果两个容器之间没有通信的必要就限制其网络通信功能</li>
+</ul>
+<h3 id="容器运行时"><a href="#容器运行时" class="headerlink" title="容器运行时"></a>容器运行时</h3><ul>
+<li>不要到产品环境中使用任何开发者工具(boot2docker, kinematic)</li>
+<li>限制容器使用Linux内核能力和资源使用，为守护进程设置受限的控制资源权限(–ulimit)</li>
+<li>不要使用 Privileged 容器，如果使用–privileged参数将授予容器与主机几乎相同的权限</li>
+<li>指定容器重启策略为on-failure，重启策略(Restart policies)有四种：<code>no</code>、<code>on-failure</code>、<code>always</code>、<code>unless-stopped</code>。</li>
+<li>使用强制权限控制系统 AppArmor 和 Linux安全增强工具 SELinux 保证额外的安全层</li>
+</ul>
+<p>更多详情，可以参考<a href="https://learn.cisecurity.org/benchmarks" target="_blank" rel="external">Security Benchmarks</a>制定的容器的安全基准。下面截取了其中的一部分目录：<br><img src="/imgs/docker-security-host.png" width="500" height="250"></p>
+<center>主机</center><br><br><br><img src="/imgs/docker-security-images.png" width="500" height="250"><br><center>镜像</center><br><br><br><img src="/imgs/docker-security-daemon.png" width="500" height="250"><br><center>守护进程</center><br><br><br><img src="/imgs/docker-security-container-runtime.png" width="500" height="250"><br><center>容器运行时</center>
+
+<h3 id="六、构建容器平台时候的安全问题"><a href="#六、构建容器平台时候的安全问题" class="headerlink" title="六、构建容器平台时候的安全问题"></a>六、构建容器平台时候的安全问题</h3><p>上面说到的安全问题基本上是容器自身的，就是单独去考虑一个容器时，容器自身的一个安全性的问题。那么，当我们构建一个云平台的时候，这时容器是大量的，也可能是多租户的，特别是公有云，用户上传上来的应用是否安全，在这种情况下，怎么来去考虑一个容器平台的安全问题。可以从四个方面：</p>
+<ul>
+<li>基础架构层安全</li>
+<li>容器调度层安全</li>
+<li>容器调度层安全</li>
+<li>容器调度层安全</li>
+</ul>
+<p>我们可以采取的一些措施：</p>
+<ul>
+<li>建立容器云平台的安全基线</li>
+<li>容器 CI/CD 过程加密验证</li>
+<li>加强平台的权限访问控制或者 API 密钥管理</li>
+<li>加强容器的安全测试及渗透测试</li>
+<li>加强安全漏洞扫</li>
+</ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要列举了一些Docker安全的最佳实践，并没有做过多的解释，具体情况还需要结合具体的项目实践。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://www.freebuf.com/articles/system/69809.html" target="_blank" rel="external">浅谈Docker隔离性和安全性</a></li>
+<li><a href="https://segmentfault.com/a/1190000005794220" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="https://mp.weixin.qq.com/s/IN_JJhg_oG7ILVjNj-UexA" target="_blank" rel="external">绝不避谈 Docker 安全</a></li>
+<li><a href="http://securityer.lofter.com/post/1d0f3ee7_d4e69b1" target="_blank" rel="external">如何打造安全的容器云平台</a></li>
+<li><a href="http://www.10tiao.com/html/167/201707/2650762256/2.html" target="_blank" rel="external">从自身漏洞与架构缺陷，谈Docker安全建设</a></li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/07/17/Docker-workshop-5-Docker网络/" itemprop="url">
                 Docker Workshop（五）Docker网络
               </a>
@@ -2403,118 +2572,6 @@ $ vagrant init yungsang/coreos
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/12/函数式编程初探2/" itemprop="url">
-                函数式编程初探（二）
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-12T19:35:10+08:00" content="2016-11-12">
-            2016-11-12
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                  <span itemprop="name">函数式编程</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/12/函数式编程初探2/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探2/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
-<h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
-<p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
-<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight flix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">volume</span> </span>= &#123;h, w, l -&gt; h * w * l&#125;</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">area</span> </span>= volume.curry(<span class="number">1</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthPA</span> </span>= volume.curry(<span class="number">1</span>, <span class="number">1</span>)         <span class="comment">// &lt;1&gt;</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthC</span> </span>= volume.curry(<span class="number">1</span>).curry(<span class="number">1</span>)    <span class="comment">// &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
-<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/currying.groovy" target="_blank" rel="external">github</a><br>柯里化常见的应用场景：函数工厂、模板方法模式、隐藏参数。</p>
-<h3 id="二、缓存"><a href="#二、缓存" class="headerlink" title="二、缓存"></a>二、缓存</h3><p>缓存是很常见的一种需求（同时也是制造隐晦错误的源头）。缓存有两种实现方式：一种是手工进行状态管理，另一种是采用记忆机制。</p>
-<h4 id="手工进行状态管理"><a href="#手工进行状态管理" class="headerlink" title="手工进行状态管理"></a>手工进行状态管理</h4><p>在代码里面增加一个filed，每次计算之前之前先去检查是否存在于缓存中。但是当我们将缓存的取值范围增大时，可能报出OutOfMemoryError的错误。</p>
-<p>缓存可以提高性能，但是缓存有代价：它提高了代码的非本质复杂性和维护负担。同时，编写缓存的代码还要兼顾执行的环境（比如缓存范围）。<br>代码示例参考下文<a href="#完美数的手工缓存实现">完美数的手工缓存实现</a></p>
-<h4 id="记忆机制"><a href="#记忆机制" class="headerlink" title="记忆机制"></a>记忆机制</h4><p>Groovy语言记忆函数的办法是，先将要记忆的函数定义成闭包，然后对该闭包执行memoize()方法来获得一个新函数，以后我们调用这个新函数的时候，其结果就会被缓存起来。<br>请保证所有被记忆的函数：</p>
-<ul>
-<li>没有副作用</li>
-<li>不依赖任何外部信息<br>代码示例参考下文<a href="#完美数的记忆实现">完美数的记忆实现</a></li>
-</ul>
-<h3 id="三、缓求值"><a href="#三、缓求值" class="headerlink" title="三、缓求值"></a>三、缓求值</h3><p>缓求值指尽可能地推迟求解表达式。缓求值的集合不会预先算好所有的元素，而是在用到的时才落实下来。这样做有几个好处：</p>
-<ul>
-<li>昂贵的运算只有到了绝对必要的时候才执行</li>
-<li>我们可以建立无限大的集合，只要一直接到请求，就一直送出元素</li>
-<li>按缓求值的方式来使用映射、筛选等函数式概念，可以产生更高效的代码。</li>
-</ul>
-<p>例如：<code>print length([2+1, 3*2, 1/0, 5-4])</code><br>对于严格求值的编程语言，执行（甚至编译）时，会发生<code>被零除</code>的异常；<br>对于非严格（也叫缓求值）的里，则会得出<code>4</code>的结果。</p>
-<p>缓求值在Groovy中的应用：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def prepend(val, closure) &#123; new LazyList(val, closure) &#125;</div><div class="line">def integers(n) &#123; prepend(n, &#123; integers(n + <span class="number">1</span>) &#125;) &#125;</div><div class="line"></div><div class="line">@Test</div><div class="line">public void lazy_list_acts_like_a_list() &#123;</div><div class="line">    def naturalNumbers = integers(<span class="number">1</span>)</div><div class="line">    assertEquals('<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>', naturalNumbers.getHead(<span class="number">10</span>).join(' '))</div><div class="line">    def evenNumbers = naturalNumbers.filter &#123; it % <span class="number">2</span> == <span class="number">0</span> &#125;</div><div class="line">    assertEquals('<span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span> <span class="number">20</span>', evenNumbers.getHead(<span class="number">10</span>).join(' '))</div></pre></td></tr></table></figure></p>
-<h3 id="四、函数式的数据结构"><a href="#四、函数式的数据结构" class="headerlink" title="四、函数式的数据结构"></a>四、函数式的数据结构</h3><p>函数式语言里经常遇到返回两种截然不同的值的需求，它们用来建模这种行为的常用数据结构是Either。<br>使用Either表示两种结果的返回值，使用Option来表示有为空返回值的类型。Option类可近似看作为Either的子类。</p>
-<p>用Java的泛型来自己实现Either类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Either</span>&lt;<span class="title">A</span>,<span class="title">B</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> A left = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">private</span> B right = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Either</span><span class="params">(A a,B b)</span> </span>&#123;</div><div class="line">        left = a;</div><div class="line">        right = b;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">left</span><span class="params">(A a)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(a,<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">left</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLeft</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> B <span class="title">right</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">right</span><span class="params">(B b)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(<span class="keyword">null</span>,b);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fold</span><span class="params">(F&lt;A&gt; leftOption, F&lt;B&gt; rightOption)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(right == <span class="keyword">null</span>)</div><div class="line">            leftOption.f(left);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            rightOption.f(right);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="external">github</a><br>使用：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">if</span> (不满足)</div><div class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> <span class="type">Exception</span>(<span class="string">"Invalid Number"</span>));</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        int number = <span class="keyword">new</span> <span class="type">RomanNumeral</span>(s).toInt();</div><div class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> <span class="type">RomanNumeral</span>(number &gt;= MAX ? MAX : <span class="type">number</span>).toInt());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="五、完美数的示例"><a href="#五、完美数的示例" class="headerlink" title="五、完美数的示例"></a>五、完美数的示例</h3><p>案例：</p>
-<blockquote>
-<p>自然数分类规则：<br>完美数： 真约数之和 = 数本身<br>过剩数： 真约数之和 &gt; 数本身<br>不足数： 真约数之和 &lt; 数本身<br>真约数和：除了数本身之外，其余正约数的和。</p>
-</blockquote>
-<p>代码比较长，可以直接查看《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/" target="_blank" rel="external">github</a>总结如下：<br>1.完美数的命令式解法<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java</a><br>2.稍向函数式靠拢的完美数分类实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java</a><br>3.完美数分类的Java8实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java</a><br><span id="完美数的手工缓存实现">4.完美数的手工缓存实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy</a><br><span id="完美数的记忆实现">5.完美数的记忆实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy</a></p>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2553,7 +2610,7 @@ $ vagrant init yungsang/coreos
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">42</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
