@@ -388,7 +388,7 @@
     <link href="http://yoursite.com/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/"/>
     <id>http://yoursite.com/2017/07/17/Docker-workshop-5-Docker网络/</id>
     <published>2017-07-17T08:50:23.000Z</published>
-    <updated>2017-09-01T00:50:45.000Z</updated>
+    <updated>2017-09-14T13:57:39.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">上一篇 Docker的数据存储</a>主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。<br>本篇主要讲述网络的实现、网络模型、网络模式等相关知识。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -398,7 +398,7 @@
 <li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
 <li><strong>Docker网络</strong></li>
-<li>Docker安全</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -779,7 +779,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
 
  vagrant@vagrant:~$ docker exec hello.1.66zkihz10oaoxv1i94niud0cy apt-get update; apt-get install iputils-ping -y; ping 10.0.0.4
 </code></pre><h4 id="2-2-插件"><a href="#2-2-插件" class="headerlink" title="2-2.插件"></a>2-2.插件</h4><p>该方式是通过插件（plugin）方式引入的第三方实现方案，比如 Weave, Calico, Contiv Netplugin, Cisco, VMware, MidoNet, pipework, flannel等等。</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要是讲述Docker网络相关的内容，包括Docker的网络实现、网络创建过程、网络模型组件与优势、网络模式（单节点、多节点）等。<br><a href="">下一篇</a>将讲述Docker的安全。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要是讲述Docker网络相关的内容，包括Docker的网络实现、网络创建过程、网络模型组件与优势、网络模式（单节点、多节点）等。<br><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">下一篇</a>将讲述Docker的安全。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://dockone.io/article/1261" target="_blank" rel="external">Docker网络模式</a></li>
 <li><a href="http://www.cnblogs.com/sammyliu/p/5894191.html" target="_blank" rel="external">理解Docker网络</a></li>
@@ -807,7 +807,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
     <link href="http://yoursite.com/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/"/>
     <id>http://yoursite.com/2017/07/13/Docker-workshop-4-Docker数据存储/</id>
     <published>2017-07-13T00:18:24.000Z</published>
-    <updated>2017-07-18T14:32:02.000Z</updated>
+    <updated>2017-09-14T13:57:04.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -817,7 +817,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
 <li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
 <li><strong>Docker数据存储</strong></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li>Docker安全</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -1035,7 +1035,7 @@ test-dir/test.yml
     <link href="http://yoursite.com/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
     <id>http://yoursite.com/2017/07/11/Docker-workshop-3-Docker的基本操作/</id>
     <published>2017-07-11T14:08:27.000Z</published>
-    <updated>2017-07-18T14:31:23.000Z</updated>
+    <updated>2017-09-14T13:57:26.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -1045,7 +1045,7 @@ test-dir/test.yml
 <li><strong>Docker的基本操作</strong></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li>Docker安全</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -1085,7 +1085,7 @@ Operating System: Ubuntu 14.04.3 LTS
 CPUs: 2
 Total Memory: 3.431 GiB
 Name: workshop
-ID: 27OE:SE73:WCPT:366X:CCGS:G2NQ:RB2A:UVJ2:A3OC:CZUJ:RYCB:XDDE
+id=: 27OE:SE73:WCPT:366X:CCGS:G2NQ:RB2A:UVJ2:A3OC:CZUJ:RYCB:XDDE
 WARNING: No swap limit support
 </code></pre><h4 id="3-练习构建镜像"><a href="#3-练习构建镜像" class="headerlink" title="3. 练习构建镜像"></a>3. 练习构建镜像</h4><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲到获取镜像有三种方式，其中自己从无到有地创建镜像，Docker有两种方式：</p>
 <ul>
@@ -1309,7 +1309,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
     <link href="http://yoursite.com/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/"/>
     <id>http://yoursite.com/2017/07/10/Docker-workshop-2-Docker简介/</id>
     <published>2017-07-10T00:59:59.000Z</published>
-    <updated>2017-07-18T14:38:23.000Z</updated>
+    <updated>2017-09-14T13:57:16.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -1319,7 +1319,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 <li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li>Docker安全</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -1517,7 +1517,7 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
     <link href="http://yoursite.com/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/"/>
     <id>http://yoursite.com/2017/07/09/Docker-workshop-1-容器简介/</id>
     <published>2017-07-09T10:25:04.000Z</published>
-    <updated>2017-07-18T14:38:41.000Z</updated>
+    <updated>2017-09-14T13:57:20.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。<br>　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -1527,7 +1527,7 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
 <li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li>Docker安全</li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
