@@ -50,7 +50,7 @@
 <meta property="og:description" content="一、前言　　上一篇 Docker的数据存储主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。本篇主要讲述网络的实现、网络模型、网络模式等相关知识。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  三、网">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-network-implement.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-network-concept.png">
-<meta property="og:updated_time" content="2017-09-14T13:57:39.000Z">
+<meta property="og:updated_time" content="2017-09-21T12:31:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（五）Docker网络">
 <meta name="twitter:description" content="一、前言　　上一篇 Docker的数据存储主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。本篇主要讲述网络的实现、网络模型、网络模式等相关知识。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  三、网">
@@ -266,7 +266,7 @@
 <li>从网桥可用地址段中获取一个空闲地址分配给容器的eth0（例如172.17.0.2/16），并配置默认路由网关为dokcer0的IP地址。</li>
 </ul>
 <p>　　完成这些配置之后，该容器就可以使用eth0虚拟网卡来连接其它容器和访问外部网络了。<br>　　当该容器结束后，Docker会清空容器，容器内的网络接口eth0会随网络命名空间一起被清除，veth0ac844e接口也被自动从docker0卸载。</p>
-<p>　　另外，可以在docker运行的时候通过–net参数指定容器的网络配置，有<a href="1-单节点网络模式">四个可选值</a>。</p>
+<p>　　另外，可以在docker运行的时候通过–net参数指定容器的网络配置，有<a href="#1-单节点网络模式">四个可选值</a>。</p>
 <h3 id="【练习1】网络创建细节"><a href="#【练习1】网络创建细节" class="headerlink" title="【练习1】网络创建细节"></a>【练习1】网络创建细节</h3><p>1）启动一个 /bin/bash 容器，指定 –net=none 参数</p>
 <pre><code>$ sudo docker run -i -t --rm --net=none busybox /bin/sh
 </code></pre><p>2) 在<code>本地主机</code>查找容器的进程 id，并为它创建网络命名空间。</p>
@@ -379,10 +379,10 @@ ACCEPT     tcp  --  anywhere             172.17.0.2           tcp dpt:5000
 <li><a href="#2-1.原生支持">原生支持</a></li>
 <li><a href="#2-2.插件">插件</a></li>
 </ul>
-<h3 id="1-单节点网络模式"><a href="#1-单节点网络模式" class="headerlink" title="1-单节点网络模式"></a>1-单节点网络模式</h3><h4 id="1-1-bridge模式"><a href="#1-1-bridge模式" class="headerlink" title="1-1.bridge模式"></a>1-1.bridge模式</h4><p>使用–net=host指定<br>该模式中，Docker守护进程创建一个虚拟以太网桥docker0，附加在其上的任何网卡之间都能自动转发数据包。默认情况下，守护进程会创建一对对等接口，将其中一个接口设置为容器的eth0接口，另一个接口放置在宿主机的命名空间中，从而将宿主机上的所有容器都连接到这个内部网络上。同时，守护进程还会从网桥的私有地址空间中分配一个IP地址和子网给该容器。</p>
+<h3 id="1-单节点网络模式"><a href="#1-单节点网络模式" class="headerlink" title="1-单节点网络模式"></a>1-单节点网络模式</h3><h4 id="1-1-bridge模式"><a href="#1-1-bridge模式" class="headerlink" title="1-1.bridge模式"></a>1-1.bridge模式</h4><p>使用–net=bridge指定<br>该模式中，Docker守护进程创建一个虚拟以太网桥docker0，附加在其上的任何网卡之间都能自动转发数据包。默认情况下，守护进程会创建一对对等接口，将其中一个接口设置为容器的eth0接口，另一个接口放置在宿主机的命名空间中，从而将宿主机上的所有容器都连接到这个内部网络上。同时，守护进程还会从网桥的私有地址空间中分配一个IP地址和子网给该容器。</p>
 <h4 id="1-2-host模式"><a href="#1-2-host模式" class="headerlink" title="1-2.host模式"></a>1-2.host模式</h4><p>使用–net=host指定<br>该模式将禁用Docker容器的网络隔离。因为容器共享了宿主机的网络命名空间，直接暴露在公共网络中。因此，你需要通过端口映射（port mapping）来进行协调。</p>
 <p>当使用host模式网络时，容器实际上继承了宿主机的IP地址。该模式比bridge模式更快（因为没有路由开销），但是它将容器直接暴露在公共网络中，是有安全隐患的。</p>
-<h4 id="1-3-container模式"><a href="#1-3-container模式" class="headerlink" title="1-3.container模式"></a>1-3.container模式</h4><p>使用–net=host指定<br>该模式会重用另一个容器的网络命名空间。通常来说，当你想要自定义网络栈时，该模式是很有用的。实际上，该模式也是Kubernetes使用的网络模式。</p>
+<h4 id="1-3-container模式"><a href="#1-3-container模式" class="headerlink" title="1-3.container模式"></a>1-3.container模式</h4><p>使用–net=container指定<br>该模式会重用另一个容器的网络命名空间。通常来说，当你想要自定义网络栈时，该模式是很有用的。实际上，该模式也是Kubernetes使用的网络模式。</p>
 <h4 id="1-4-none模式"><a href="#1-4-none模式" class="headerlink" title="1-4.none模式"></a>1-4.none模式</h4><p>使用–net=none指定<br>该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）；你希望自定义网络。</p>
 <p>####【练习2】单主机创建网络<br>1) 创建<code>web</code>网络，并创建一个基于<code>web</code>网络的容器<code>web_container</code></p>
 <pre><code>$ docker network create web
@@ -723,21 +723,21 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">44</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">標籤</span>
               </a>
           </div>

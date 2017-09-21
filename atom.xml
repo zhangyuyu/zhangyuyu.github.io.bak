@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-08-30T08:53:37.000Z</updated>
+  <updated>2017-09-18T14:29:07.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,1301 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2017/09/18/Buddy-workshop/"/>
+    <id>http://yoursite.com/2017/09/18/Buddy-workshop/</id>
+    <published>2017-09-18T14:28:16.000Z</published>
+    <updated>2017-09-18T14:29:07.000Z</updated>
+    
+    <content type="html"><![CDATA[<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="date" content="2017-09-14 22:02:53">
+<meta name="category" content="Others">
+<meta name="tags" content="培训"><style>body {
+  max-width: 980px;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 45px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headeranchor-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+.markdown-body .headeranchor-link:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .headeranchor,
+.markdown-body h2 .headeranchor,
+.markdown-body h3 .headeranchor,
+.markdown-body h4 .headeranchor,
+.markdown-body h5 .headeranchor,
+.markdown-body h6 .headeranchor {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+.markdown-body h1:hover .headeranchor-link,
+.markdown-body h2:hover .headeranchor-link,
+.markdown-body h3:hover .headeranchor-link,
+.markdown-body h4:hover .headeranchor-link,
+.markdown-body h5:hover .headeranchor-link,
+.markdown-body h6:hover .headeranchor-link {
+  height: 1em;
+  padding-left: 8px;
+  margin-left: -30px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .headeranchor-link .headeranchor,
+.markdown-body h2:hover .headeranchor-link .headeranchor,
+.markdown-body h3:hover .headeranchor-link .headeranchor,
+.markdown-body h4:hover .headeranchor-link .headeranchor,
+.markdown-body h5:hover .headeranchor-link .headeranchor,
+.markdown-body h6:hover .headeranchor-link .headeranchor {
+  display: inline-block;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* Multimarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px octicons-anchor;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\f05c';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><title>Buddy Workshop</title></head><body><article class="markdown-body"><h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>一、前言</h2>
+<p>每个职场新人，初入职场时候，或多或少遇到了很多需要帮助的地方，有技术上的，有情绪上的，有环境上的，我们盼望着有一个“导师”能够引导、指导我们度过最开始的那段迷茫期。<br>
+抑或是，当换到一个新环境，开始一个崭新的工作，很多流程、机制、文化都难以快速适应，这时候如果有一个“老司机”带我们轻松度过最开始的那段适应期，真真是极好的。</p>
+<p>每个人都曾度过这个阶段，每个人都有过期盼，那么如果你作为一个“导师”，你会怎么做呢？</p>
+<p>本篇文章，不是从“职场小白”或“新入职同事”的角度出发，而是从“带人（Buddy）”的角度出发，了解一些“培养人这件事”中，可能需要知道的理论知识。</p>
+<h2 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>二、背景</h2>
+<p>在ThoughtWorks已经两年了，这中间虽然自己有在带新人，包括应届毕业生，社招进来的同事，但是一直没有系统的梳理过这中间需要的软技能，只是用以自己被带过的感受在努力带好新人，给他们营造良好的氛围、帮助他们更快的适应环境、督促或者指引他们持续学习、不断进步。</p>
+<p>最近，参加了公司举办的一次Buddy Workshop，系统的梳理了Buddy应知应会的一些内容。</p>
+<p>培训是让人快速完成一些重要理论知识从0到1的过程，而真正的从1到100的过程，还需要在未来的实践中不断前行。有些理论可能当下并没有那么深刻的感触，在以后的道路上才会感触颇多，因此以此博文记录一下要点，方便以后再次回忆。</p>
+<p>具体内容分为以下几个方面：<br>
+<em> 为什么要带人？<br>
+</em> 培养成什么样的人？<br>
+<em> 如何培养？<br>
+</em> 面对的挑战<br>
+<em> 构建完善的培养体系<br>
+</em> 练习</p>
+<h2 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>三、为什么要带人</h2>
+<h3 id="1"><a name="user-content-1" href="#1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>1. 提升自己的能力</h3>
+<p 250="250" 500="500" _="%" _imgs_buddy-cone-of-experience.png="/imgs/buddy-cone-of-experience.png" img="img">正如Cone of experience（学习金字塔）里面告诉我们的，我们是通过“教“的过程才真正学会，而不是学好了才能去教。<br></p>
+<p>Teaching is Learning，这一点在费曼技巧里面也有一些体现。把教别人的过程作为帮助自己学习的过程。表面看起来是知识输出，但实际上这个过程还有额外的三个价值：<br>
+<em> 因为要教别人，就会督促自己发现知识阻塞，进一步打通已有知识。<br>
+</em> 教别人的过程，是一个强化记忆和认识的过程<br>
+* 教别人之后，别人提出疑问、质疑和新想法，会增强我们的认识</p>
+<p>具体的对自己能力的提升，我列举了一些如下：</p>
+<ul>
+<li>自身对相应知识的掌握</li>
+<li>知识的表达能力</li>
+<li>沟通能力等软技能</li>
+</ul>
+<h3 id="2"><a name="user-content-2" href="#2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>2. 构建组织环境</h3>
+<p>我们工作都是以团队为单位的，站在团队的角度，我们不希望因为某一个人某段时间的离开，造成了交付的延迟，因此持续培养新人，让其慢慢承担我们所承担的事情，是非常重要的。<br>
+此外，在一个团队中，我们不可能一个人做所有的事情，在带人过程中，把自己的事情share出去，也是一个非常明智的选择。</p>
+<h3 id="3"><a name="user-content-3" href="#3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>3. 发展他人拥有我们希望具备的品质</h3>
+<p>我们都希望和同事相处融洽，培养他们拥有我们希望具备的品质，能够增加合作默契等。<br>
+但是，这并不代表着，我们把他们全部培养成只适合这一家公司的人才，我们还要站在他们未来的角度，培养他们应当具备的品质，这一点在下面”培养成什么样的人“中会涉及到。</p>
+<h2 id="_4"><a name="user-content-_4" href="#_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>四、培养成什么样的人</h2>
+<p>在如今这个信息爆炸和知识爆炸的时代，我们需要不断的学习，不断的进步，以保持持续竞争力，来督促自己的成长，应对未知的变化，从而走向我们希望的生活，因此培养<strong>终身学习</strong>的<strong>数字化人才</strong>就是我们培养的目标。</p>
+<h3 id="1_1"><a name="user-content-1_1" href="#1_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>1. 终身学习</h3>
+<p>“终身学习”是指持续的、自愿的和自我激励式的学习。“终身学习”不仅发生在童年时期或者教室中，而是贯穿人的一生，可以发生在任何时间、任何场合、任何条件下。学习的目的可以是为了个人发展，也可以是为了职业需要。﻿<br>
+终身学习有几个特点：<br>
+<em> 持续<br>
+</em> 自愿<br>
+* 自我激励<br>
+更多终身学习内容，可以参考文末的Reference。</p>
+<h3 id="2_1"><a name="user-content-2_1" href="#2_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>2. 数字化人才</h3>
+<p 250="250" 500="500" _="%" _imgs_buddy-digital-talent.png="/imgs/buddy-digital-talent.png" img="img">数字化人才的定义是以敏捷为核心，具备设计思维、商业视角和工程实践能力的人才。<br></p>
+<p>数字化人才既具备工程实现的能力，又有商业嗅觉，了解用户和市场，还有设计思维，知道如何一步步做出用户满意的产品。以敏捷的心态为基础：快速试错、持续改进。当今社会，想要取得成功，跨界能力显得愈发重要。</p>
+<h2 id="_5"><a name="user-content-_5" href="#_5" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>五、如何培养</h2>
+<p>构建<strong>以学习者为中心的可视化教学</strong></p>
+<h3 id="1_2"><a name="user-content-1_2" href="#1_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>1. 少讲课、多辅导</h3>
+<h3 id="2_2"><a name="user-content-2_2" href="#2_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>2. 验收</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>可视化工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>知识储备</td>
+<td>读书打卡</td>
+</tr>
+<tr>
+<td>概念掌握</td>
+<td>概念图</td>
+</tr>
+<tr>
+<td>业务理解</td>
+<td>业务蓝图</td>
+</tr>
+<tr>
+<td>任务拆分</td>
+<td>Taksing</td>
+</tr>
+<tr>
+<td>技能掌握</td>
+<td>限时编程</td>
+</tr>
+<tr>
+<td>持续改进</td>
+<td>总结 / 述职</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3_1"><a name="user-content-3_1" href="#3_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>3. 反馈</h3>
+<p>戴明循环（PDCA）<br>
+Plan<br>
+Do<br>
+Check<br>
+Action</p>
+<h3 id="4"><a name="user-content-4" href="#4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>4. 正确对待时间鸿沟与现实约束</h3>
+<h2 id="_6"><a name="user-content-_6" href="#_6" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>六、面对的挑战</h2>
+<h3 id="1_3"><a name="user-content-1_3" href="#1_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>1. 自身业务</h3>
+<h3 id="2_3"><a name="user-content-2_3" href="#2_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>2. 发展他人</h3>
+<h3 id="3_2"><a name="user-content-3_2" href="#3_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>3. 缺少导师和可视化工具</h3>
+<h3 id="4_1"><a name="user-content-4_1" href="#4_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>4. 难以关注整体</h3>
+<h2 id="_7"><a name="user-content-_7" href="#_7" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>七、构建完善的培养体系</h2>
+<p>胜任力模型<br>
+教头计划</p>
+<h2 id="_8"><a name="user-content-_8" href="#_8" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>八、练习</h2>
+<h3 id="1_4"><a name="user-content-1_4" href="#1_4" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>1. 概念图</h3>
+<h3 id="2-tasking"><a name="user-content-2-tasking" href="#2-tasking" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>2. Tasking</h3>
+<h3 id="3_3"><a name="user-content-3_3" href="#3_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>3. 反馈与倾听</h3>
+<h2 id="_9"><a name="user-content-_9" href="#_9" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>最后</h2>
+<h2 id="references"><a name="user-content-references" href="#references" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>References</h2>
+<ul>
+<li><a href="http://jiaching.com/%E6%95%99%E5%B0%B1%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E5%AD%B8%E2%94%82%E6%AD%A3%E7%A2%BA%E7%9A%84%E5%AD%B8%E7%BF%92%E4%B9%8B%E9%81%93/" target="_blank" rel="external">教就是最好的学</a></li>
+<li><a href="http://www.jianshu.com/p/15e3e774d6b9" target="_blank" rel="external">好好学习</a></li>
+<li><a href="https://mp.weixin.qq.com/s/lz3Y237k3hNmb4zCusZNkw" target="_blank" rel="external">10个终身学习方法</a></li>
+<li><a href="https://school.thoughtworks.cn/" target="_blank" rel="external">思沃学院</a></li>
+<li><a href="http://www.jianshu.com/p/f196468e0203" target="_blank" rel="external">如何培养终身学习者</a></li>
+<li><a href="http://www.360doc.com/content/16/0721/12/132526_577268647.shtml" target="_blank" rel="external">费曼技巧</a></li>
+<li><a href="https://www.zybuluo.com/jtong/note/504192" target="_blank" rel="external">像机器人一样思考 系列文章</a></li>
+</ul></article></body></html>]]></content>
+    
+    <summary type="html">
+    
+      &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;date&quot; content=&quot;2017-09-14 22:02:53&quot;&gt;
+&lt;meta name=&quot;category&quot; content=&quot;Others&quot;&gt;
+&lt;m
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Buddy Workshop</title>
+    <link href="http://yoursite.com/2017/09/14/Buddy-workshop/"/>
+    <id>http://yoursite.com/2017/09/14/Buddy-workshop/</id>
+    <published>2017-09-14T14:02:53.000Z</published>
+    <updated>2017-09-21T12:34:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>每个职场新人，初入职场时候，或多或少遇到了很多需要帮助的地方，有技术上的，有情绪上的，有环境上的，我们盼望着有一个“导师”能够引导、指导我们度过最开始的那段迷茫期。<br>抑或是，当换到一个新环境，开始一个崭新的工作，很多流程、机制、文化都难以快速适应，这时候如果有一个“老司机”带我们轻松度过最开始的那段适应期，真真是极好的。</p>
+<p>每个人都曾度过这个阶段，每个人都有过期盼，那么如果你作为一个“导师”，你会怎么做呢？</p>
+<p>本篇文章，不是从“职场小白”或“新入职同事”的角度出发，而是从“带人（Buddy）”的角度出发，了解一些“培养人这件事”中，可能需要知道的理论知识。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>在ThoughtWorks已经两年了，这中间虽然自己有在带新人，包括应届毕业生，社招进来的同事，但是一直没有系统的梳理过这中间需要的软技能，只是用以自己被带过的感受在努力带好新人，给他们营造良好的氛围、帮助他们更快的适应环境、督促或者指引他们持续学习、不断进步。</p>
+<p>最近，参加了公司举办的一次Buddy Workshop，系统的梳理了Buddy应知应会的一些内容。</p>
+<p>培训是让人快速完成一些重要理论知识从0到1的过程，而真正的从1到100的过程，还需要在未来的实践中不断前行。有些理论可能当下并没有那么深刻的感触，在以后的道路上才会感触颇多，因此以此博文记录一下要点，方便以后再次回忆。</p>
+<p>具体内容分为以下几个方面：</p>
+<ul>
+<li>为什么要带人？</li>
+<li>培养成什么样的人？</li>
+<li>如何培养？</li>
+<li>面对的挑战</li>
+<li>构建完善的培养体系</li>
+<li>练习</li>
+</ul>
+<h2 id="三、为什么要带人"><a href="#三、为什么要带人" class="headerlink" title="三、为什么要带人"></a>三、为什么要带人</h2><h3 id="1-提升自己的能力"><a href="#1-提升自己的能力" class="headerlink" title="1. 提升自己的能力"></a>1. 提升自己的能力</h3><p>正如Cone of experience（学习金字塔）里面告诉我们的，我们是通过“教“的过程才真正学会，而不是学好了才能去教。<br><img src="/imgs/buddy-cone-of-experience.png" width="500" height="250"></p>
+<p>Teaching is Learning，这一点在费曼技巧里面也有一些体现。把教别人的过程作为帮助自己学习的过程。表面看起来是知识输出，但实际上这个过程还有额外的三个价值：</p>
+<ul>
+<li>因为要教别人，就会督促自己发现知识阻塞，进一步打通已有知识。</li>
+<li>教别人的过程，是一个强化记忆和认识的过程</li>
+<li>教别人之后，别人提出疑问、质疑和新想法，会增强我们的认识</li>
+</ul>
+<p>具体的对自己能力的提升，我列举了一些如下：</p>
+<ul>
+<li>自身对相应知识的掌握</li>
+<li>知识的表达能力</li>
+<li>沟通能力等软技能</li>
+</ul>
+<h3 id="2-构建组织环境"><a href="#2-构建组织环境" class="headerlink" title="2. 构建组织环境"></a>2. 构建组织环境</h3><p>我们工作都是以团队为单位的，站在团队的角度，我们不希望因为某一个人某段时间的离开，造成了交付的延迟，因此持续培养新人，让其慢慢承担我们所承担的事情，是非常重要的。<br>此外，在一个团队中，我们不可能一个人做所有的事情，在带人过程中，把自己的事情share出去，也是一个非常明智的选择。</p>
+<h3 id="3-发展他人拥有我们希望具备的品质"><a href="#3-发展他人拥有我们希望具备的品质" class="headerlink" title="3. 发展他人拥有我们希望具备的品质"></a>3. 发展他人拥有我们希望具备的品质</h3><p>我们都希望和同事相处融洽，培养他们拥有我们希望具备的品质，能够增加合作默契等。<br>但是，这并不代表着，我们把他们全部培养成只适合这一家公司的人才，我们还要站在他们未来的角度，培养他们应当具备的品质，这一点在下面”培养成什么样的人“中会涉及到。</p>
+<h2 id="四、培养成什么样的人"><a href="#四、培养成什么样的人" class="headerlink" title="四、培养成什么样的人"></a>四、培养成什么样的人</h2><p>在如今这个信息爆炸和知识爆炸的时代，我们需要不断的学习，不断的进步，以保持持续竞争力，来督促自己的成长，应对未知的变化，从而走向我们希望的生活，因此<strong>培养<u>终身学习</u>的<u>数字化人才</u></strong>就是我们培养的目标。</p>
+<h3 id="1-终身学习"><a href="#1-终身学习" class="headerlink" title="1. 终身学习"></a>1. 终身学习</h3><p>“终身学习”是指持续的、自愿的和自我激励式的学习。“终身学习”不仅发生在童年时期或者教室中，而是贯穿人的一生，可以发生在任何时间、任何场合、任何条件下。学习的目的可以是为了个人发展，也可以是为了职业需要。﻿<br>终身学习有几个特点：</p>
+<ul>
+<li>持续</li>
+<li>自愿</li>
+<li>自我激励<br>更多终身学习内容，可以参考文末的Reference。</li>
+</ul>
+<h3 id="2-数字化人才"><a href="#2-数字化人才" class="headerlink" title="2. 数字化人才"></a>2. 数字化人才</h3><p>数字化人才的定义是以敏捷为核心，具备设计思维、商业视角和工程实践能力的人才。<br><img src="/imgs/buddy-digital-talent.png" width="500" height="250"></p>
+<p>数字化人才既具备工程实现的能力，又有商业嗅觉，了解用户和市场，还有设计思维，知道如何一步步做出用户满意的产品。以敏捷的心态为基础：快速试错、持续改进。当今社会，想要取得成功，跨界能力显得愈发重要。</p>
+<h2 id="五、如何培养"><a href="#五、如何培养" class="headerlink" title="五、如何培养"></a>五、如何培养</h2><p><strong>构建以<u>学习者为中心</u>的<u>可视化教学</u></strong></p>
+<h3 id="1-少讲课、多辅导"><a href="#1-少讲课、多辅导" class="headerlink" title="1. 少讲课、多辅导"></a>1. 少讲课、多辅导</h3><p>讲课，老师是主角，它是一种告知行为；辅导，主角是学员自己，它带有训练性质。</p>
+<p>以我切身的经验来看，讲课了很多东西，吸收到的只有一小部分，有些事情，讲了很多次，可能学习者都没有印象。反而，你讲的也累了，耐心也没有那么多了，学习者也怅惘了，自信心没有那么足了。<br>而辅导，你告诉他怎么找答案，不会的再来问你。那么久而久之，学习者学习的方式就自主了，掌握的知识更牢固了。</p>
+<h3 id="2-验收"><a href="#2-验收" class="headerlink" title="2. 验收"></a>2. 验收</h3><p>验收机制顾名思义就是把我们学习过的知识重新整理一篇，看哪些是我们已经掌握好的，哪些是未能渗透掌握的，并以此加深巩固。</p>
+<p>也许你还会觉得很陌生，但其实我们每个人都会有使用过验收机制：</p>
+<ul>
+<li>学校里接受教育时，不定期或定期的各种考试；</li>
+<li>敏捷里写Story时，各种场景的Acceptance Criteria；</li>
+<li>游戏里闯关时，每一关都要达到的标准。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>可视化工具 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>知识储备</td>
+<td>读书打卡  </td>
+</tr>
+<tr>
+<td>概念掌握</td>
+<td>概念图  </td>
+</tr>
+<tr>
+<td>业务理解</td>
+<td>业务蓝图  </td>
+</tr>
+<tr>
+<td>任务拆分</td>
+<td>Taksing  </td>
+</tr>
+<tr>
+<td>技能掌握</td>
+<td>限时编程  </td>
+</tr>
+<tr>
+<td>持续改进</td>
+<td>总结 / 述职 /5w2h</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-反馈"><a href="#3-反馈" class="headerlink" title="3. 反馈"></a>3. 反馈</h3><p>戴明循环（PDCA）讲究从计划开始，经过实践，再反思，产生的改进行动再纳入下一轮计划的持续改进过程。<br><img src="/imgs/buddy-pdca.png" width="500" height="250"></p>
+<p>Plan - Do - Check - Action是持续改进提升的模型， 这一套适用于很多方面，这里我们也可以用来不断改进我们的培养过程、以及锻炼学习过程。</p>
+<h3 id="4-正确对待时间鸿沟与现实约束"><a href="#4-正确对待时间鸿沟与现实约束" class="headerlink" title="4. 正确对待时间鸿沟与现实约束"></a>4. 正确对待时间鸿沟与现实约束</h3><h4 id="德弗雷斯模型"><a href="#德弗雷斯模型" class="headerlink" title="德弗雷斯模型"></a>德弗雷斯模型</h4><p>德雷福斯模型（Dreyfus model of skill acquisition）概括了从新手到专家必须经历的 5 个阶段，每两个阶段之间都需要经历一定的时间，无法避免。因此在培养的时候，不能一蹴而就，要正确对待这个时间的鸿沟。</p>
+<img src="/imgs/buddy-coaching-evolution.png" width="500" height="250">
+<h4 id="一切能力的核心"><a href="#一切能力的核心" class="headerlink" title="一切能力的核心"></a>一切能力的核心</h4><p>公司同事曾经做过一个调查，具体内容是，到底是什么样的人，才是能够让我司每一个团队（注意，是每一个团队）都能说出“我愿意与他共事”的人呢？<br>经过大量的各种访谈，并对结果进行整理和记录，大致列出如下16个维度：</p>
+<ul>
+<li>努力程度</li>
+<li>上进心</li>
+<li>责任心</li>
+<li>认真的做事态度</li>
+<li>理解能力</li>
+<li>表达能力</li>
+<li>自学能力</li>
+<li>英文能力</li>
+<li>协作能力</li>
+<li>改进速度</li>
+<li>求知欲</li>
+<li>主动性</li>
+<li>文化契合度</li>
+<li>正能量</li>
+<li>分享精神</li>
+<li>思维能力</li>
+</ul>
+<p>其实，最后总结下来，核心能力就是<strong>理解能力</strong>和<strong>表达能力</strong>，也就是我们的听、说、读、写的能力。而这些能力是在我们小学一、二年级时候建立的。<br>这个现实的约束，与我们成长的环境有关，我们无法从头再来，因此正确认识到这个现实约束，显得尤为关键。</p>
+<h4 id="院校、企业在人员培养方面的区别"><a href="#院校、企业在人员培养方面的区别" class="headerlink" title="院校、企业在人员培养方面的区别"></a>院校、企业在人员培养方面的区别</h4><h2 id="六、面对的挑战"><a href="#六、面对的挑战" class="headerlink" title="六、面对的挑战"></a>六、面对的挑战</h2><h3 id="1-自身业务"><a href="#1-自身业务" class="headerlink" title="1. 自身业务"></a>1. 自身业务</h3><h3 id="2-发展他人"><a href="#2-发展他人" class="headerlink" title="2. 发展他人"></a>2. 发展他人</h3><p>由于 Buddy 的工作经验和带人技巧参差不齐，所以是否能够准确评价毕业生，是否能够高质量的提升毕业生水平，并不能达成一致效果，导致一部分毕业生缺乏方向，缺乏安全感，进步有限。</p>
+<h3 id="3-缺少导师和可视化工具"><a href="#3-缺少导师和可视化工具" class="headerlink" title="3. 缺少导师和可视化工具"></a>3. 缺少导师和可视化工具</h3><h3 id="4-难以关注整体"><a href="#4-难以关注整体" class="headerlink" title="4. 难以关注整体"></a>4. 难以关注整体</h3><h2 id="七、构建完善的培养体系"><a href="#七、构建完善的培养体系" class="headerlink" title="七、构建完善的培养体系"></a>七、构建完善的培养体系</h2><p>胜任力模型<br>教头计划</p>
+<h2 id="八、练习"><a href="#八、练习" class="headerlink" title="八、练习"></a>八、练习</h2><h3 id="1-概念图"><a href="#1-概念图" class="headerlink" title="1. 概念图"></a>1. 概念图</h3><p>利用CmapTools进行概念图的绘制</p>
+<h3 id="2-Tasking"><a href="#2-Tasking" class="headerlink" title="2. Tasking"></a>2. Tasking</h3><p>强调程序的输入和输出。</p>
+<h3 id="3-反馈与倾听"><a href="#3-反馈与倾听" class="headerlink" title="3. 反馈与倾听"></a>3. 反馈与倾听</h3><h4 id="区分观察和评论"><a href="#区分观察和评论" class="headerlink" title="区分观察和评论"></a>区分观察和评论</h4><h4 id="区分感受和想法"><a href="#区分感受和想法" class="headerlink" title="区分感受和想法"></a>区分感受和想法</h4><h4 id="需要和感受的关系"><a href="#需要和感受的关系" class="headerlink" title="需要和感受的关系"></a>需要和感受的关系</h4><h4 id="区分请求和命令"><a href="#区分请求和命令" class="headerlink" title="区分请求和命令"></a>区分请求和命令</h4><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://jiaching.com/%E6%95%99%E5%B0%B1%E6%98%AF%E6%9C%80%E5%A5%BD%E7%9A%84%E5%AD%B8%E2%94%82%E6%AD%A3%E7%A2%BA%E7%9A%84%E5%AD%B8%E7%BF%92%E4%B9%8B%E9%81%93/" target="_blank" rel="external">教就是最好的学</a></li>
+<li><a href="http://www.jianshu.com/p/15e3e774d6b9" target="_blank" rel="external">好好学习</a></li>
+<li><a href="https://mp.weixin.qq.com/s/lz3Y237k3hNmb4zCusZNkw" target="_blank" rel="external">10个终身学习方法</a></li>
+<li><a href="https://school.thoughtworks.cn/" target="_blank" rel="external">思沃学院</a></li>
+<li><a href="http://www.jianshu.com/p/f196468e0203" target="_blank" rel="external">如何培养终身学习者</a></li>
+<li><a href="http://www.360doc.com/content/16/0721/12/132526_577268647.shtml" target="_blank" rel="external">费曼技巧</a></li>
+<li><a href="https://www.zybuluo.com/flysmart/note/213521" target="_blank" rel="external">德雷福斯模型</a></li>
+<li><a href="https://www.zybuluo.com/jtong/note/504192" target="_blank" rel="external">像机器人一样思考 系列文章</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;每个职场新人，初入职场时候，或多或少遇到了很多需要帮助的地方，有技术上的，有情绪上的，有环境上的，我们盼望着有一个“导师”能
+    
+    </summary>
+    
+      <category term="Others" scheme="http://yoursite.com/categories/Others/"/>
+    
+    
+      <category term="培训" scheme="http://yoursite.com/tags/%E5%9F%B9%E8%AE%AD/"/>
+    
+  </entry>
   
   <entry>
     <title>Slf4j MDC使用和基于Logback的实现分析</title>
@@ -388,7 +1683,7 @@
     <link href="http://yoursite.com/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/"/>
     <id>http://yoursite.com/2017/07/17/Docker-workshop-5-Docker网络/</id>
     <published>2017-07-17T08:50:23.000Z</published>
-    <updated>2017-09-14T13:57:39.000Z</updated>
+    <updated>2017-09-21T12:31:07.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">上一篇 Docker的数据存储</a>主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。<br>本篇主要讲述网络的实现、网络模型、网络模式等相关知识。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -419,7 +1714,7 @@
 <li>从网桥可用地址段中获取一个空闲地址分配给容器的eth0（例如172.17.0.2/16），并配置默认路由网关为dokcer0的IP地址。</li>
 </ul>
 <p>　　完成这些配置之后，该容器就可以使用eth0虚拟网卡来连接其它容器和访问外部网络了。<br>　　当该容器结束后，Docker会清空容器，容器内的网络接口eth0会随网络命名空间一起被清除，veth0ac844e接口也被自动从docker0卸载。</p>
-<p>　　另外，可以在docker运行的时候通过–net参数指定容器的网络配置，有<a href="1-单节点网络模式">四个可选值</a>。</p>
+<p>　　另外，可以在docker运行的时候通过–net参数指定容器的网络配置，有<a href="#1-单节点网络模式">四个可选值</a>。</p>
 <h3 id="【练习1】网络创建细节"><a href="#【练习1】网络创建细节" class="headerlink" title="【练习1】网络创建细节"></a>【练习1】网络创建细节</h3><p>1）启动一个 /bin/bash 容器，指定 –net=none 参数</p>
 <pre><code>$ sudo docker run -i -t --rm --net=none busybox /bin/sh
 </code></pre><p>2) 在<code>本地主机</code>查找容器的进程 id，并为它创建网络命名空间。</p>
@@ -532,10 +1827,10 @@ ACCEPT     tcp  --  anywhere             172.17.0.2           tcp dpt:5000
 <li><a href="#2-1.原生支持">原生支持</a></li>
 <li><a href="#2-2.插件">插件</a></li>
 </ul>
-<h3 id="1-单节点网络模式"><a href="#1-单节点网络模式" class="headerlink" title="1-单节点网络模式"></a>1-单节点网络模式</h3><h4 id="1-1-bridge模式"><a href="#1-1-bridge模式" class="headerlink" title="1-1.bridge模式"></a>1-1.bridge模式</h4><p>使用–net=host指定<br>该模式中，Docker守护进程创建一个虚拟以太网桥docker0，附加在其上的任何网卡之间都能自动转发数据包。默认情况下，守护进程会创建一对对等接口，将其中一个接口设置为容器的eth0接口，另一个接口放置在宿主机的命名空间中，从而将宿主机上的所有容器都连接到这个内部网络上。同时，守护进程还会从网桥的私有地址空间中分配一个IP地址和子网给该容器。</p>
+<h3 id="1-单节点网络模式"><a href="#1-单节点网络模式" class="headerlink" title="1-单节点网络模式"></a>1-单节点网络模式</h3><h4 id="1-1-bridge模式"><a href="#1-1-bridge模式" class="headerlink" title="1-1.bridge模式"></a>1-1.bridge模式</h4><p>使用–net=bridge指定<br>该模式中，Docker守护进程创建一个虚拟以太网桥docker0，附加在其上的任何网卡之间都能自动转发数据包。默认情况下，守护进程会创建一对对等接口，将其中一个接口设置为容器的eth0接口，另一个接口放置在宿主机的命名空间中，从而将宿主机上的所有容器都连接到这个内部网络上。同时，守护进程还会从网桥的私有地址空间中分配一个IP地址和子网给该容器。</p>
 <h4 id="1-2-host模式"><a href="#1-2-host模式" class="headerlink" title="1-2.host模式"></a>1-2.host模式</h4><p>使用–net=host指定<br>该模式将禁用Docker容器的网络隔离。因为容器共享了宿主机的网络命名空间，直接暴露在公共网络中。因此，你需要通过端口映射（port mapping）来进行协调。</p>
 <p>当使用host模式网络时，容器实际上继承了宿主机的IP地址。该模式比bridge模式更快（因为没有路由开销），但是它将容器直接暴露在公共网络中，是有安全隐患的。</p>
-<h4 id="1-3-container模式"><a href="#1-3-container模式" class="headerlink" title="1-3.container模式"></a>1-3.container模式</h4><p>使用–net=host指定<br>该模式会重用另一个容器的网络命名空间。通常来说，当你想要自定义网络栈时，该模式是很有用的。实际上，该模式也是Kubernetes使用的网络模式。</p>
+<h4 id="1-3-container模式"><a href="#1-3-container模式" class="headerlink" title="1-3.container模式"></a>1-3.container模式</h4><p>使用–net=container指定<br>该模式会重用另一个容器的网络命名空间。通常来说，当你想要自定义网络栈时，该模式是很有用的。实际上，该模式也是Kubernetes使用的网络模式。</p>
 <h4 id="1-4-none模式"><a href="#1-4-none模式" class="headerlink" title="1-4.none模式"></a>1-4.none模式</h4><p>使用–net=none指定<br>该模式将容器放置在它自己的网络栈中，但是并不进行任何配置。实际上，该模式关闭了容器的网络功能，在以下两种情况下是有用的：容器并不需要网络（例如只需要写磁盘卷的批处理任务）；你希望自定义网络。</p>
 <p>####【练习2】单主机创建网络<br>1) 创建<code>web</code>网络，并创建一个基于<code>web</code>网络的容器<code>web_container</code></p>
 <pre><code>$ docker network create web
@@ -2618,274 +3913,6 @@ Hello, World!
     
     
       <category term="webServer" scheme="http://yoursite.com/tags/webServer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vagrant</title>
-    <link href="http://yoursite.com/2015/11/21/Vagrant/"/>
-    <id>http://yoursite.com/2015/11/21/Vagrant/</id>
-    <published>2015-11-21T07:11:35.000Z</published>
-    <updated>2015-11-21T08:35:27.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="一、Vagrant的认识"><a href="#一、Vagrant的认识" class="headerlink" title="一、Vagrant的认识"></a>一、Vagrant的认识</h3><p>　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。</p>
-<blockquote>
-<p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
-</blockquote>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
-<blockquote>
-<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
-</blockquote>
-<h4 id="3、安装系统镜像"><a href="#3、安装系统镜像" class="headerlink" title="3、安装系统镜像"></a>3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
-<ul>
-<li>新建一个文件夹，如AgentBox,然后进入目录</li>
-<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
-</ul>
-<p>3.2 通过添加box方式</p>
-<ul>
-<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
-<li><code>$ vagrant box add {title} {url}</code><ul>
-<li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
-<li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
-</ul>
-</li>
-<li>初始化开发环境<br>　　先进入box里面，然后<code>$ vagrant init AgentBox</code></li>
-<li>启动环境<code>vagrant up</code></li>
-</ul>
-<h3 id="三、常用指令"><a href="#三、常用指令" class="headerlink" title="三、常用指令"></a>三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
-<blockquote>
-<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
-</blockquote>
-<p>2、vagrant init，初始化</p>
-<blockquote>
-<p>如果你添加的box名称不是base，那么需要在初始化的时候指定名称，例如vagrant init AgentBox</p>
-</blockquote>
-<p>3、vagrant up，启动虚拟机<br>4、vagrant ssh，ssh到虚拟机<br>5、vagrant reload，重启虚拟机（重新载入配置文件）<br>6、vagrant package –base precise64_default_1447845103364_6382 –output precise64.box打包分发<br>7、vagrant box list<br>8、vagrant status</p>
-<h3 id="四、主要配置"><a href="#四、主要配置" class="headerlink" title="四、主要配置"></a>四、主要配置</h3><p>　　开发目录下有一个文件Vagrantfile，里面包含有大量的配置信息，主要包括三个方面的配置，虚拟机的配置、SSH配置、Vagrant的一些基础配置。</p>
-<p>1、box设置</p>
-<pre><code>config.vm.box = &quot;AgentBox&quot;
-</code></pre><p>2、hostname设置</p>
-<pre><code>config.vm.hostname = &quot;for_work&quot;
-</code></pre><p>3、虚拟机网络设置</p>
-<pre><code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;
-config.vm.network &quot;public_network&quot;
-</code></pre><p>4、同步目录</p>
-<pre><code>config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;
-</code></pre><p>5、端口转发</p>
-<pre><code>config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080
-</code></pre><p>6、内存和cpu核心</p>
-<pre><code>config.vm.provider &quot;virtualbox&quot; do |vb|
-  #Display the VirtualBox GUI when booting the machine
-  vb.gui = true
-  #Customize the amount of memory on the VM:
-  vb.memory = &quot;1024&quot;
-  vb.cpus = 2
-  vb.name = &quot;my_vm&quot;
-end
-</code></pre><blockquote>
-<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;一、Vagrant的认识&quot;&gt;&lt;a href=&quot;#一、Vagrant的认识&quot; class=&quot;headerlink&quot; title=&quot;一、Vagrant的认识&quot;&gt;&lt;/a&gt;一、Vagrant的认识&lt;/h3&gt;&lt;p&gt;　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层
-    
-    </summary>
-    
-    
-      <category term="Vagrant" scheme="http://yoursite.com/tags/Vagrant/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>AnguarJS跨域请求</title>
-    <link href="http://yoursite.com/2015/11/21/Anguar%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82/"/>
-    <id>http://yoursite.com/2015/11/21/Anguar跨域请求/</id>
-    <published>2015-11-21T05:18:41.000Z</published>
-    <updated>2015-11-21T06:49:41.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。<br>　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy）浏览器会禁止这种跨域请求。</p>
-<h3 id="一、视图"><a href="#一、视图" class="headerlink" title="一、视图"></a>一、视图</h3><h4 id="1-在main-html中"><a href="#1-在main-html中" class="headerlink" title="1.在main.html中"></a>1.在<code>main.html</code>中</h4><pre><code>&lt;div class=&quot;jumbotron&quot;&gt;
-  &lt;h1&gt;Hello!&lt;/h1&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;row marketing&quot;&gt;
-  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/createCustomer&quot;&gt;Create&lt;/a&gt;
-  &lt;a class=&quot;btn btn-lg btn-success&quot; ng-href=&quot;#/getCustomer&quot;&gt;GetByName&lt;/a&gt;
-&lt;/div&gt;
-</code></pre><h4 id="2-在getView-html中"><a href="#2-在getView-html中" class="headerlink" title="2.在getView.html中"></a>2.在<code>getView.html</code>中</h4><pre><code>&lt;p&gt;This is the get customer by name view.&lt;/p&gt;
-&lt;h4&gt;Name&lt;/h4&gt;
-&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
-&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;getCustomer()&quot; &gt;Get&lt;/button&gt;&lt;br&gt;&lt;br&gt;
-{{info}}
-</code></pre><h4 id="3-在createView-html中"><a href="#3-在createView-html中" class="headerlink" title="3.在createView.html中"></a>3.在<code>createView.html</code>中</h4><pre><code>&lt;p&gt;This is the create customer view.&lt;/p&gt;
-&lt;h4&gt;Name&lt;/h4&gt;
-&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;/&gt;
-&lt;h4&gt;Age&lt;/h4&gt;
-&lt;input type=&quot;text&quot; ng-model=&quot;age&quot;/&gt;&lt;br&gt;&lt;br&gt;
-&lt;button class=&quot;btn btn-lg btn-success&quot; ng-click=&quot;createCustomer()&quot; &gt;Create&lt;/button&gt;&lt;br&gt;&lt;br&gt;
-{{info}}
-</code></pre><h3 id="二、controller"><a href="#二、controller" class="headerlink" title="二、controller"></a>二、controller</h3><h4 id="1-在getCustomer-js中"><a href="#1-在getCustomer-js中" class="headerlink" title="1.在getCustomer.js中"></a>1.在<code>getCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
-
-angular.module(&apos;customerUiApp&apos;)
-  .controller(&apos;GetCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
-
-     $scope.getCustomer = function(){
-       var url = &apos;http://localhost:8080/customers?name=&apos; + $scope.name;
-       $http({
-          url : url,
-          method : &apos;GET&apos;
-       }).then(function(response) {
-          $scope.info = response.data;
-          alert(&apos;Get &apos;+$scope.name+&apos; successfully!&apos;);
-        },function(response) {
-          $scope.info = response.data || &quot;Request failed&quot;;
-          alert($scope.info);
-       });
-     };
-  }]);      
-</code></pre><h4 id="2-在createCustomer-js中"><a href="#2-在createCustomer-js中" class="headerlink" title="2.在createCustomer.js中"></a>2.在<code>createCustomer.js</code>中</h4><pre><code>&apos;use strict&apos;;
-
-angular.module(&apos;customerUiApp&apos;)
-  .controller(&apos;CreateCtrl&apos;, [&apos;$scope&apos;, &apos;$http&apos;, function ($scope, $http) {
-    $scope.createCustomer = function(){
-       $http({
-          url : &apos;http://localhost:8080/customers&apos;,
-          method : &apos;POST&apos;,
-          data: {
-              name : $scope.name,
-              age : $scope.age
-          }
-       }).then(function(response) {
-          $scope.info = response.data;
-          alert(&apos;Create &apos;+$scope.name+&apos; successfully!&apos;);
-        },function(response) {
-          $scope.info = response.data || &quot;Request failed&quot;;
-          alert($scope.info);
-       });
-    };
-
-  }]);
-</code></pre><h3 id="三、配置路由"><a href="#三、配置路由" class="headerlink" title="三、配置路由"></a>三、配置路由</h3><p>在<code>app.js</code>中</p>
-<pre><code>&apos;use strict&apos;;
-
-angular.module(&apos;customerUiApp&apos;, [&apos;ngRoute&apos;])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when(&apos;/&apos;, {
-        templateUrl: &apos;views/main.html&apos;
-      })
-      .when(&apos;/createCustomer&apos;, {
-        templateUrl: &apos;views/createView.html&apos;,
-        controller: &apos;CreateCtrl&apos;
-      })
-      .when(&apos;/getCustomer&apos;, {
-        templateUrl: &apos;views/getView.html&apos;,
-        controller: &apos;GetCtrl&apos;
-      })
-      .otherwise({
-        redirectTo: &apos;/&apos;
-      });
-  });
-</code></pre><h3 id="四、基准HTML文件"><a href="#四、基准HTML文件" class="headerlink" title="四、基准HTML文件"></a>四、基准HTML文件</h3><p>在<code>index.html</code>中</p>
-<pre><code>&lt;!doctype html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;title&gt;AngularTest&lt;/title&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;bower_components/bootstrap/dist/css/bootstrap.css&quot; /&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
-  &lt;/head&gt;
-
-  &lt;body ng-app=&quot;customerUiApp&quot;&gt;
-    &lt;div class=&quot;container&quot;&gt;
-    &lt;div ng-view=&quot;&quot;&gt;&lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;script src=&quot;bower_components/jquery/dist/jquery.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;bower_components/angular/angular.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;bower_components/bootstrap/dist/js/bootstrap.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;bower_components/angular-route/angular-route.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;scripts/app.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;scripts/controllers/createCustomer.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;scripts/controllers/getCustomer.js&quot;&gt;&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><p>导入主程序<code>app.js</code>以及<code>createCustomer.js</code>、<code>getCustomer.js</code>controller。</p>
-<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><h4 id="1、在test-spec-controllers-getCustomer-js中"><a href="#1、在test-spec-controllers-getCustomer-js中" class="headerlink" title="1、在test/spec/controllers/getCustomer.js中"></a>1、在test/spec/controllers/getCustomer.js中</h4><pre><code>&apos;use strict&apos;;
-
-describe(&apos;Controller: GetCtrl&apos;, function () {
-  beforeEach(module(&apos;customerUiApp&apos;));
-
-  var GetCtrl,scope,$httpBackend;
-
-  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
-    scope = $rootScope.$new();
-    $httpBackend = _$httpBackend_;
-    GetCtrl = $controller(&apos;GetCtrl&apos;, {
-      $scope: scope
-    });
-  }));
-
-  it(&apos;should send get request&apos;, function () {
-    $httpBackend
-      .expect(&apos;GET&apos;, &apos;http://localhost:8080/customers?name=Alex&apos;)
-      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
-    scope.name = &apos;Alex&apos;;
-
-    scope.getCustomer();
-    $httpBackend.flush();
-
-    expect(scope.info.name).toBe(&apos;Alex&apos;);
-    expect(scope.info.age).toBe(&apos;20&apos;);
-  });
-});
-</code></pre><h4 id="2、在test-spec-controllers-createCustomer-js中"><a href="#2、在test-spec-controllers-createCustomer-js中" class="headerlink" title="2、在test/spec/controllers/createCustomer.js中"></a>2、在test/spec/controllers/createCustomer.js中</h4><pre><code>&apos;use strict&apos;;
-
-describe(&apos;Controller: CreateCtrl&apos;, function () {
-  beforeEach(module(&apos;customerUiApp&apos;));
-
-  var CreateCtrl,scope,$httpBackend;
-
-  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
-    scope = $rootScope.$new();
-    $httpBackend = _$httpBackend_;
-    CreateCtrl = $controller(&apos;CreateCtrl&apos;, {
-      $scope: scope
-    });
-  }));
-
-  it(&apos;should send post request&apos;, function () {
-    $httpBackend
-      .expect(&apos;POST&apos;, &apos;http://localhost:8080/customers&apos;)
-      .respond( {name :&apos;Alex&apos;, age:&apos;20&apos;});
-    scope.name = &apos;Alex&apos;;
-
-    scope.createCustomer();
-    $httpBackend.flush();
-
-    expect(scope.info.name).toBe(&apos;Alex&apos;);
-    expect(scope.info.age).toBe(&apos;20&apos;);
-  });
-});
-</code></pre><h3 id="六、运行及结果"><a href="#六、运行及结果" class="headerlink" title="六、运行及结果"></a>六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口"><a href="#1、本地启动CustomerApi运行在8080端口" class="headerlink" title="1、本地启动CustomerApi运行在8080端口"></a>1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt-serve启动CustomerUI"><a href="#2、grunt-serve启动CustomerUI" class="headerlink" title="2、grunt serve启动CustomerUI"></a>2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求"><a href="#3、在terminal中输入下述命令，使其允许跨域请求" class="headerlink" title="3、在terminal中输入下述命令，使其允许跨域请求"></a>3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code>open /Applications/Google\ Chrome.app --args --allow-file-access-from-files --disable-web-security
-</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
-<h4 id="5、点击GetByName"><a href="#5、点击GetByName" class="headerlink" title="5、点击GetByName"></a>5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
-　　</p>
-<blockquote>
-<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;　　本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。&lt;br&gt;　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/
-    
-    </summary>
-    
-    
-      <category term="AngularJS" scheme="http://yoursite.com/tags/AngularJS/"/>
     
   </entry>
   
