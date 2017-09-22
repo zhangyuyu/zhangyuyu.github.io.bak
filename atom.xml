@@ -1468,7 +1468,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
     <link href="http://yoursite.com/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/"/>
     <id>http://yoursite.com/2017/07/10/Docker-workshop-2-Docker简介/</id>
     <published>2017-07-10T00:59:59.000Z</published>
-    <updated>2017-09-14T13:57:16.000Z</updated>
+    <updated>2017-09-22T11:28:50.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -1606,6 +1606,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 </ul>
 <h3 id="十、内核机制的练习"><a href="#十、内核机制的练习" class="headerlink" title="十、内核机制的练习"></a>十、内核机制的练习</h3><h4 id="【练习1】命名空间的练习"><a href="#【练习1】命名空间的练习" class="headerlink" title="【练习1】命名空间的练习"></a>【练习1】命名空间的练习</h4><pre><code># 创建一个Docker容器
 $ docker run -it --rm busybox
+
 # 列出所有的namespace
 $ ls -l /proc/$$/ns
 lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 ipc -&gt; ipc:[4026531839]
@@ -1614,13 +1615,27 @@ lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 net -&gt; net:[4026531957]
 lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 pid -&gt; pid:[4026531836]
 lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 user -&gt; user:[4026531837]
 lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 uts -&gt; uts:[4026531838]
+
 # 查看 pid namespace:
 $ ps aux
+
 # 查看 mnt namespace:
 $ cat /proc/mounts
+
 # 查看 uts namespace
 $ hostname
+
 # 查看 ipc namespace
+$ ipcs
+
+# 在宿主机里使用ipcmk -Q命令创建一个message queue
+$ ipcmk -Q
+Message queue id: 0
+
+# 再次查看宿主机ipc namespace
+$ ipcs
+
+# 在容器里查看ipc namespace
 $ ipcs
 </code></pre><p>退出容器，按<code>ctrl + d</code></p>
 <h4 id="【练习2】cgroup的练习"><a href="#【练习2】cgroup的练习" class="headerlink" title="【练习2】cgroup的练习"></a>【练习2】cgroup的练习</h4><pre><code># 列出所有的subsystem
