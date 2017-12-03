@@ -184,6 +184,359 @@
           
           
             
+              <a class="post-title-link" href="/2015/09/20/手动创建Servlet/" itemprop="url">
+                手动创建Servlet
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-09-20T09:34:01+08:00" content="2015-09-20">
+            2015-09-20
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Servlet/" itemprop="url" rel="index">
+                  <span itemprop="name">Servlet</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/20/手动创建Servlet/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/20/手动创建Servlet/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="1、创建servlet"><a href="#1、创建servlet" class="headerlink" title="1、创建servlet"></a>1、创建servlet</h3><p>　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）<br>　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为<em>WEB-INF</em>的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件ServletExample.java</p>
+<pre><code>import javax.servlet.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class ServletExample implements Servlet {
+    private int count;
+
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+
+    }
+
+    @Override
+    public ServletConfig getServletConfig() {
+        return null;
+    }
+
+    @Override
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        PrintWriter out = servletResponse.getWriter();
+        out.print(&quot;Hello World&quot;);
+
+    }
+
+    @Override
+    public String getServletInfo() {
+        return null;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
+</code></pre><h3 id="2、编译生成class文件"><a href="#2、编译生成class文件" class="headerlink" title="2、编译生成class文件"></a>2、编译生成class文件</h3><p>　　进行编译，这时候要手动指明jar包的位置，不然的话会找不到。</p>
+<pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26/libexec/webapps/test/WEB-INF/classes/ServletExample.java
+</code></pre><h3 id="3、部署servlet"><a href="#3、部署servlet" class="headerlink" title="3、部署servlet"></a>3、部署servlet</h3><p>　　在上述新建的web.xml中，</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app&gt;
+    &lt;!-- Define servlets that are included in the example application --&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ServletExample&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/test&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;　　
+</code></pre><p>　　其中，<servlet-name>对应创建的servlet的java文件名，<servlet-class>指明servlet所在的的路径包括包和类名，<url-pattern>可以任意取。每添加一个servlet时就必须在web.xml中进行部署。</url-pattern></servlet-class></servlet-name></p>
+<h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><p>　　到tomcat的bin目录下，运行startup.sh文件。(保险起见，可以在运行startup.sh之前，先运行shutdown.sh)</p>
+<pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
+$ ./startup.sh    
+</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/test，结果为显示`Hello" target="_blank" rel="external">http://localhost:8080/test/test，结果为显示`Hello</a> World`　</p>
+<h3 id="6、目录结构"><a href="#6、目录结构" class="headerlink" title="6、目录结构"></a>6、目录结构</h3><pre><code>|---test
+    |---WEB-INF
+        |---classes
+            |---ServletExample.java
+        |---lib
+        |---web.xml
+</code></pre><p>　　</p>
+<blockquote>
+<p>此外，可以在tomcat下的conf里的tomcat-users.xml配置username和password进行manager webapp。</p>
+<pre><code>&lt;role rolename=&quot;zhang&apos;yu&quot;/&gt;
+&lt;user username=&quot;用户名&quot; password=&quot;密码&quot; roles=&quot;manager-gui&quot;/&gt;
+</code></pre></blockquote>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring-Autowired/" itemprop="url">
+                Spring-Auto-Wiring-@Autowired
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-08-30T12:52:14+08:00" content="2015-08-30">
+            2015-08-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Spring/" itemprop="url" rel="index">
+                  <span itemprop="name">Spring</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/30/Spring-Auto-Wiring-Autowired/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/30/Spring-Auto-Wiring-Autowired/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、bean"><a href="#一、bean" class="headerlink" title="一、bean"></a>一、bean</h3><p>Customer.java</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class Customer 
+{
+    @Autowired
+    private Person person;
+    private int type;
+    private String action;
+
+    //getter and setter methods
+
+    @Override
+    public String toString() {
+        return &quot;Customer [person=&quot; + person + &quot;, type=&quot; + type + &quot;, action=&quot;
+                + action + &quot;]&quot;;
+}
+}
+</code></pre><p>Person.java</p>
+<pre><code>package com.mkyong.common;
+
+public class Person {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Person [name=&quot; + name + &quot;]&quot;;
+    }
+}
+</code></pre><h3 id="二、-AutowiredAnnotationBeanPostProcessor"><a href="#二、-AutowiredAnnotationBeanPostProcessor" class="headerlink" title="二、 AutowiredAnnotationBeanPostProcessor"></a>二、 AutowiredAnnotationBeanPostProcessor</h3><p>　　使用@Autowired, 必须在<code>SpringBeans.xml</code>登记 <code>AutowiredAnnotationBeanPostProcessor</code>,下面有两种方式：</p>
+<h4 id="1、context-annotation-config"><a href="#1、context-annotation-config" class="headerlink" title="1、context:annotation-config"></a>1、context:annotation-config</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean id=&quot;CustomerBean&quot; class=&quot;com.mkyong.common.Customer&quot;&gt;
+        &lt;property name=&quot;action&quot; value=&quot;buy&quot; /&gt;
+        &lt;property name=&quot;type&quot; value=&quot;1&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;PersonBean&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong&quot; /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><h4 id="2、直接包含AutowiredAnnotationBeanPostProcessor"><a href="#2、直接包含AutowiredAnnotationBeanPostProcessor" class="headerlink" title="2、直接包含AutowiredAnnotationBeanPostProcessor"></a>2、直接包含AutowiredAnnotationBeanPostProcessor</h4><p>将<code>&lt;context:annotation-config /&gt;</code>替换成<code>&lt;bean 
+class=&quot;org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor&quot;/&gt;</code></p>
+<h3 id="三、运行"><a href="#三、运行" class="headerlink" title="三、运行"></a>三、运行</h3><p>在App.java中</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext(
+                &quot;SpringBeans.xml&quot;);
+
+        Customer cust = (Customer) context.getBean(&quot;customer&quot;);
+        System.out.println(cust);
+    }
+}
+</code></pre><h3 id="四、运行结果"><a href="#四、运行结果" class="headerlink" title="四、运行结果"></a>四、运行结果</h3><pre><code>Customer [person=Person [name=mkyongA], type=1, action=buy]
+</code></pre><h3 id="五、Dependency-checking"><a href="#五、Dependency-checking" class="headerlink" title="五、Dependency checking"></a>五、Dependency checking</h3><p>　　默认情况下，the @Autowired是使用Dependency checking的，确保属性总是可以成功注入。如果Spring没有找到匹配的bean去wire，就会扔出异常。可以使用<code>@Autowired(required=false)</code>去关闭Dependency checking。</p>
+<h3 id="六、-Qualifier"><a href="#六、-Qualifier" class="headerlink" title="六、@Qualifier"></a>六、@Qualifier</h3><p>　　@Qualifier用来控制哪个bean应该被autowire。例如，在下面的例子的SpringBeans.xml中配置了PersonBean1和PersonBean2.</p>
+<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;
+
+    &lt;context:annotation-config /&gt;
+
+    &lt;bean id=&quot;CustomerBean&quot; class=&quot;com.mkyong.common.Customer&quot;&gt;
+        &lt;property name=&quot;action&quot; value=&quot;buy&quot; /&gt;
+        &lt;property name=&quot;type&quot; value=&quot;1&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;PersonBean1&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong1&quot; /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id=&quot;PersonBean2&quot; class=&quot;com.mkyong.common.Person&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;mkyong2&quot; /&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre><p>此时，在Customer.java中用@Qualifier(“PersonBean1”)就可以将PersonBean1注入到Customer的person属性中。</p>
+<pre><code>package com.mkyong.common;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+public class Customer 
+{
+    @Autowired
+    @Qualifier(&quot;PersonBean1&quot;)
+    private Person person;
+    private int type;
+    private String action;
+    //getter and setter methods
+}
+</code></pre></span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/08/30/Spring-Auto-Wiring/" itemprop="url">
                 Spring-Auto-Wiring
               </a>
@@ -1653,705 +2006,6 @@ HelloAroundMethod : After method ,hello!
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/27/SpringAOP-Advice/" itemprop="url">
-                SpringAOP_Advice
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-27T20:57:00+08:00" content="2015-08-27">
-            2015-08-27
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/27/SpringAOP-Advice/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/27/SpringAOP-Advice/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　Spring AOP即Aspect-oriented programming，面向切面编程，专门用于处理系统中分布于各个模块（不同方法）中的交叉关注点的问题。简单地说，就是一个拦截器（interceptor）拦截一些处理过程。例如，当一个method被执行，Spring AOP能够劫持正在运行的method，在method执行前或者后加入一些额外的功能。</p>
-<blockquote>
-<p>在Spring AOP中，支持4中类型的通知（Advice）:<br></p>
-<ul>
-<li>Before advice      ——method执行前通知<br></li>
-<li>After returning advice ——method返回一个结果后通知<br></li>
-<li>After throwing advice – method抛出异常后通知<br></li>
-<li>Around advice – 环绕通知，结合了以上三种</li>
-</ul>
-</blockquote>
-<h3 id="一、不使用AOP的简单例子"><a href="#一、不使用AOP的简单例子" class="headerlink" title="一、不使用AOP的简单例子"></a>一、不使用AOP的简单例子</h3><h4 id="1、在CustomerService-java中"><a href="#1、在CustomerService-java中" class="headerlink" title="1、在CustomerService.java中"></a>1、在CustomerService.java中</h4><pre><code>package com.zhangyu.customer.services;
-
-public class CustomerService {
-    private String name;
-    private String occupation;
-
-    public void setName(String name) {this.name = name;}
-
-    public void printName() {System.out.println(&quot;Customer name : &quot; + this.name);}
-
-    public void printOccupation() {System.out.println(&quot;Customer occupation : &quot; + this.occupation);}
-
-    public void setOccupation(String occupation) {this.occupation = occupation;}
-
-    public void printThrowException() {
-        throw new IllegalArgumentException();
-    }    
-}
-</code></pre><h4 id="2、在Spring-Customer-xml中"><a href="#2、在Spring-Customer-xml中" class="headerlink" title="2、在Spring-Customer.xml中"></a>2、在Spring-Customer.xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
-
-    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
-        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
-        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
-    &lt;/bean&gt;
-&lt;/beans&gt;
-</code></pre><h4 id="3、运行，在App-java中"><a href="#3、运行，在App-java中" class="headerlink" title="3、运行，在App.java中"></a>3、运行，在App.java中</h4><pre><code>package com.zhangyu.common;
-
-import com.zhangyu.customer.services.CustomerService;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class App {
-    public static void main(String[] args) {
-        ApplicationContext appContext = new ClassPathXmlApplicationContext(
-                new String[] { &quot;Spring-Customer.xml&quot; });
-
-        CustomerService cust = (CustomerService) appContext
-                .getBean(&quot;customerService&quot;);
-
-        System.out.println(&quot;*************************&quot;);
-        cust.printName();
-        System.out.println(&quot;*************************&quot;);
-        cust.printOccupation();
-        System.out.println(&quot;*************************&quot;);
-        try {
-            cust.printThrowException();
-        } catch (Exception e) {
-
-        }
-    }
-}
-</code></pre><h4 id="4、结果"><a href="#4、结果" class="headerlink" title="4、结果"></a>4、结果</h4><pre><code>*************************
-Customer name : Zhang Yu
-*************************
-Customer occupation : developer
-*************************
-</code></pre><h3 id="二、使用AOP"><a href="#二、使用AOP" class="headerlink" title="二、使用AOP"></a>二、使用AOP</h3><h4 id="1、Before-Advice"><a href="#1、Before-Advice" class="headerlink" title="1、Before Advice"></a>1、Before Advice</h4><h5 id="（1）HelloBeforeMethod-java中"><a href="#（1）HelloBeforeMethod-java中" class="headerlink" title="（1）HelloBeforeMethod.java中"></a>（1）HelloBeforeMethod.java中</h5><p>　　创建一个实现了接口MethodBeforeAdvice的class，method运行前，将运行HelloBeforeMethod.java　　</p>
-<pre><code>package com.zhangyu.aop;
-
-import java.lang.reflect.Method;
-import org.springframework.aop.MethodBeforeAdvice;
-
-public class HelloBeforeMethod implements MethodBeforeAdvice {
-    @Override
-    public void before(Method method, Object[] args, Object target)
-            throws Throwable {
-        System.out.println(&quot;HelloBeforeMethod : Before method ,hello&quot;);
-    }
-}
-</code></pre><h5 id="2-Spring-Customer-xml中"><a href="#2-Spring-Customer-xml中" class="headerlink" title="(2) Spring-Customer.xml中"></a>(2) Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloBeforeMethodBean</code>，然后创建一个新的代理（proxy），命名为<code>customerServiceProxy</code>。其中,<code>target</code>定义你想劫持哪个bean，<code>interceptorNames</code>定义你想用哪个class(advice)劫持target。</p>
-<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
-    &lt;bean id=&quot;customerService&quot; class=&quot;com.zhangyu.customer.services.CustomerService&quot;&gt;
-        &lt;property name=&quot;name&quot; value=&quot;Zhang Yu&quot; /&gt;
-        &lt;property name=&quot;occupation&quot; value=&quot;developer&quot; /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean id=&quot;helloAroundMethodBean&quot; class=&quot;com.zhangyu.aop.HelloAroundMethod&quot; /&gt;
-    &lt;bean id=&quot;helloBeforeMethodBean&quot; class=&quot;com.zhangyu.aop.HelloBeforeMethod&quot; /&gt;
-
-    &lt;bean id=&quot;customerServiceProxy&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
-        &lt;property name=&quot;target&quot; ref=&quot;customerService&quot; /&gt;
-        &lt;property name=&quot;interceptorNames&quot;&gt;
-            &lt;list&gt;
-                &lt;value&gt;helloBeforeMethodBean&lt;/value&gt;
-            &lt;/list&gt;
-        &lt;/property&gt;
-    &lt;/bean&gt;
-&lt;/beans&gt;
-</code></pre><h5 id="3-运行，在App-java中"><a href="#3-运行，在App-java中" class="headerlink" title="(3) 运行，在App.java中　　"></a>(3) 运行，在App.java中　　</h5><p>　　将CustomerService cust改为从<code>customerServiceProxy</code>中getBean:</p>
-<pre><code>CustomerService cust = (CustomerService)appContext.getBean(&quot;customerServiceProxy&quot;);
-</code></pre><p>#####（4）结果</p>
-<pre><code>*************************
-HelloBeforeMethod : Before method ,hello
-Customer name : Zhang Yu
-*************************
-HelloBeforeMethod : Before method ,hello
-Customer occupation : developer
-*************************
-HelloBeforeMethod : Before method ,hello
-</code></pre><h4 id="2、After-Advice"><a href="#2、After-Advice" class="headerlink" title="2、After Advice"></a>2、After Advice</h4><h5 id="1-在HelloAfterMethod-java中"><a href="#1-在HelloAfterMethod-java中" class="headerlink" title="(1) 在HelloAfterMethod.java中"></a>(1) 在HelloAfterMethod.java中</h5><pre><code>package com.zhangyu.aop;
-
-import java.lang.reflect.Method;
-import org.springframework.aop.AfterReturningAdvice;
-
-public class HelloAfterMethod implements AfterReturningAdvice {
-    @Override
-    public void afterReturning(Object returnValue, Method method,
-            Object[] args, Object target) throws Throwable {
-        System.out.println(&quot;HelloAfterMethod : After method ,hello!&quot;);
-    }
-}
-</code></pre><h5 id="2-在Spring-Customer-xml中"><a href="#2-在Spring-Customer-xml中" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAfterMethodBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAfterMethodBean</code>。
-　　</p>
-<h5 id="（3）运行结果"><a href="#（3）运行结果" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
-Customer name : Zhang Yu
-HelloAfterMethod : After method ,hello
-*************************
-Customer occupation : developer
-HelloAfterMethod : After method ,hello
-*************************
-</code></pre><p>　　执行到cust.printThrowException()后，直接抛出异常，方法没有正常执行完毕（或者说没有返回结果），所以不运行切入的afterReturning方法。</p>
-<h4 id="3、After-throwing-advice"><a href="#3、After-throwing-advice" class="headerlink" title="3、After throwing advice"></a>3、After throwing advice</h4><p>　　创建一个实现了ThrowsAdvice接口的class，劫持IllegalArgumentException异常，目标method运行时，抛出IllegalArgumentException异常后，运行切入的方法。</p>
-<h5 id="1-在HelloThrowException-java中"><a href="#1-在HelloThrowException-java中" class="headerlink" title="(1) 在HelloThrowException.java中"></a>(1) 在HelloThrowException.java中</h5><pre><code>package com.zhangyu.aop;
-
-import org.springframework.aop.ThrowsAdvice;
-
-public class HelloThrowException implements ThrowsAdvice {
-    public void afterThrowing(IllegalArgumentException e) throws Throwable {
-        System.out.println(&quot;HelloThrowException : Throw exception ,hello&quot;);
-    }
-}
-</code></pre><h5 id="2-在Spring-Customer-xml中-1"><a href="#2-在Spring-Customer-xml中-1" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloThrowExceptionBean</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloThrowExceptionBean</code>。
-　　</p>
-<h5 id="（3）运行结果-1"><a href="#（3）运行结果-1" class="headerlink" title="（3）运行结果　　"></a>（3）运行结果　　</h5><pre><code>*************************
-Customer name : Zhang Yu
-*************************
-Customer occupation : developer
-*************************
-HelloThrowException : Throw exception ,hello
-</code></pre><p>者说没有返回结果），所以不运行切入的afterReturning方法。</p>
-<h4 id="4、Around-advice"><a href="#4、Around-advice" class="headerlink" title="4、Around advice"></a>4、Around advice</h4><h5 id="1-在HelloAroundMethod-java中"><a href="#1-在HelloAroundMethod-java中" class="headerlink" title="(1) 在HelloAroundMethod.java中"></a>(1) 在HelloAroundMethod.java中</h5><pre><code>package com.zhangyu.aop;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-
-public class HelloAroundMethod implements MethodInterceptor {
-    @Override
-    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-
-        System.out.println(&quot;Method name : &quot; + methodInvocation.getMethod().getName());
-
-        // same with MethodBeforeAdvice
-        System.out.println(&quot;HelloAroundMethod : Before method ,hello&quot;);
-
-        try {
-            Object result = methodInvocation.proceed();
-
-            // same with AfterReturningAdvice
-            System.out.println(&quot;HelloAroundMethod : After method ,hello!&quot;);
-            return result;
-        } catch (IllegalArgumentException e) {
-            // same with ThrowsAdvice
-            System.out.println(&quot;HelloAroundMethod : Throw exception ,hello!&quot;);
-            throw e;
-        }
-    }
-}
-</code></pre><h5 id="2-在Spring-Customer-xml中-2"><a href="#2-在Spring-Customer-xml中-2" class="headerlink" title="(2) 在Spring-Customer.xml中"></a>(2) 在Spring-Customer.xml中</h5><p>　　在Spring-Customer.xml中加入新的bean配置<code>HelloAroundMethod</code>，然后在customerServiceProxy中设置”interceptorNames”的value为<code>helloAroundMethodBean</code>。
-　　</p>
-<h5 id="（3）运行结果-2"><a href="#（3）运行结果-2" class="headerlink" title="（3）运行结果"></a>（3）运行结果</h5><pre><code>*************************
-Method name : printName
-HelloAroundMethod : Before method ,hello!
-Customer name : Zhang Yu
-HelloAroundMethod : After method ,hello!
-*************************
-Method name : printOccupation
-HelloAroundMethod : Before method ,hello!
-Customer occupation : developer
-HelloAroundMethod : After method ,hello!
-*************************
-Method name : printThrowException
-HelloAroundMethod : Before method ,hello!
-HelloAroundMethod : Throw exception ,hello!
-</code></pre><h3 id="三、目录结构"><a href="#三、目录结构" class="headerlink" title="三、目录结构"></a>三、目录结构</h3><img src="/imgs/SpringAOP_Advice.png" width="300" height="500">
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/08/26/SpringBatch/" itemprop="url">
-                Spring Batch HelloWorld
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2015-08-26T20:28:47+08:00" content="2015-08-26">
-            2015-08-26
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Spring/" itemprop="url" rel="index">
-                  <span itemprop="name">Spring</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/08/26/SpringBatch/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/26/SpringBatch/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、Spring-Batch流程"><a href="#一、Spring-Batch流程" class="headerlink" title="一、Spring Batch流程"></a>一、Spring Batch流程</h3><img src="/imgs/SpringBatch流程.png" width="600" height="300">
-<p>　　每个Batch都会包含一个Job，每个Job装了若干Step，Step读取数据，处理数据，然后将这些数据存储起来(ItemReader用来读取数据，ItemProcessor用来处理数据，ItemWriter用来写数据) 。JobLauncher用来启动Job，JobRepository是上述处理提供的一种持久化机制，它为JobLauncher，Job，和Step实例提供CRUD(Create\Retrieve\Update\Delete)操作。</p>
-<blockquote>
-<p>1 Job = Many Steps.<br>1 Step = 1 READ-PROCESS-WRITE or 1 Tasklet.<br>Job = {Step 1 -&gt; Step 2 -&gt; Step 3} (Chained together)</p>
-</blockquote>
-<p>　　从DB或是文件中取出数据的时候，read操作每次只读取一条记录，之后将读取的这条数据传递给processor(item)处理，框架将重复做这两步操作，直到读取记录的件数达到batch配置信息中”commin-interval”设定值的时候，就会调用一次write操作。然后再重复以上处理，直到处理完所有的数据。当这个Step的工作完成以后，或是跳到其他Step，或是结束处理。</p>
-<h3 id="二、Spring-Batch-Jobs"><a href="#二、Spring-Batch-Jobs" class="headerlink" title="二、Spring Batch Jobs"></a>二、Spring Batch Jobs</h3><h4 id="1、content-xml"><a href="#1、content-xml" class="headerlink" title="1、content.xml"></a>1、content.xml</h4><p>　　content.xml中定义了批处理任务中需要的基础设施，主要配置任务仓库、任务调度器、任务执行中用到的事务管理器。</p>
-<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-xsi:schemaLocation=&quot;
-    http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd&quot;&gt;
-
-    &lt;!-- stored job-meta in memory --&gt;
-    &lt;bean id=&quot;jobRepository&quot;
-        class=&quot;org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean&quot;&gt;
-        &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot; /&gt;
-    &lt;/bean&gt;
-
-      &lt;!-- stored job-meta in database --&gt;
-    &lt;!--&lt;bean id=&quot;jobRepository&quot;
-        class=&quot;org.springframework.batch.core.repository.support.JobRepositoryFactoryBean&quot;&gt;
-        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
-        &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot; /&gt;
-        &lt;property name=&quot;databaseType&quot; value=&quot;mysql&quot; /&gt;
-    &lt;/bean&gt;--&gt;
-
-    &lt;bean id=&quot;transactionManager&quot;
-        class=&quot;org.springframework.batch.support.transaction.ResourcelessTransactionManager&quot; /&gt;
-
-    &lt;bean id=&quot;jobLauncher&quot;
-        class=&quot;org.springframework.batch.core.launch.support.SimpleJobLauncher&quot;&gt;
-        &lt;property name=&quot;jobRepository&quot; ref=&quot;jobRepository&quot; /&gt;
-    &lt;/bean&gt;
-
-&lt;/beans&gt;
-</code></pre><h4 id="2、job-hello-world-xml"><a href="#2、job-hello-world-xml" class="headerlink" title="2、job-hello-world.xml"></a>2、job-hello-world.xml</h4><img src="/imgs/helloWorldJob.png" width="600" height="300">
-<p>　　首先，helloWorldJob里面配置了读（cvsFileItemReader），写（xmlItemWriter） 以及处理（itemProcessor），并设置了commit-interval=”10”。<br>　　之后，对cvsFileItemReader中涉及的resource和lineMapper进行配置。对xmlItemWriter中涉及的resource、marshaller、rootTagName进行配置。而处理过程，则由稍后讲述的itemProcessor.java完成。</p>
-<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:batch=&quot;http://www.springframework.org/schema/batch&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/batch
-    http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
-    http://www.springframework.org/schema/beans 
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd&quot;&gt;
-
-    &lt;import resource=&quot;../config/context.xml&quot; /&gt;
-    &lt;!--&lt;import resource=&quot;../config/database.xml&quot; /&gt;--&gt;
-
-    &lt;bean id=&quot;report&quot; class=&quot;com.mkyong.model.Report&quot; scope=&quot;prototype&quot; /&gt;
-    &lt;bean id=&quot;itemProcessor&quot; class=&quot;com.mkyong.CustomItemProcessor&quot; /&gt;
-
-    &lt;batch:job id=&quot;helloWorldJob&quot;&gt;
-        &lt;batch:step id=&quot;step1&quot;&gt;
-            &lt;batch:tasklet&gt;
-                &lt;batch:chunk reader=&quot;cvsFileItemReader&quot; writer=&quot;xmlItemWriter&quot; processor=&quot;itemProcessor&quot;commit-interval=&quot;10&quot;&gt;
-                &lt;/batch:chunk&gt;
-            &lt;/batch:tasklet&gt;
-        &lt;/batch:step&gt;
-    &lt;/batch:job&gt;
-
-    &lt;bean id=&quot;cvsFileItemReader&quot; class=&quot;org.springframework.batch.item.file.FlatFileItemReader&quot;&gt;
-
-        &lt;property name=&quot;resource&quot; value=&quot;classpath:cvs/input/report.csv&quot; /&gt;
-
-        &lt;property name=&quot;lineMapper&quot;&gt;
-            &lt;bean class=&quot;org.springframework.batch.item.file.mapping.DefaultLineMapper&quot;&gt;
-                &lt;property name=&quot;lineTokenizer&quot;&gt;
-                    &lt;bean 
-                        class=&quot;org.springframework.batch.item.file.transform.DelimitedLineTokenizer&quot;&gt;
-                        &lt;property name=&quot;names&quot; value=&quot;id,sales,qty,staffName,date&quot; /&gt;
-                    &lt;/bean&gt;
-                &lt;/property&gt;
-                &lt;property name=&quot;fieldSetMapper&quot;&gt;
-                &lt;bean class=&quot;com.mkyong.ReportFieldSetMapper&quot; /&gt;
-                &lt;/property&gt;
-            &lt;/bean&gt;
-        &lt;/property&gt;
-
-    &lt;/bean&gt;
-
-    &lt;bean id=&quot;xmlItemWriter&quot; class=&quot;org.springframework.batch.item.xml.StaxEventItemWriter&quot;&gt;
-        &lt;property name=&quot;resource&quot; value=&quot;file:xml/outputs/report.xml&quot; /&gt;
-        &lt;property name=&quot;marshaller&quot; ref=&quot;reportMarshaller&quot; /&gt;
-        &lt;property name=&quot;rootTagName&quot; value=&quot;report&quot; /&gt;
-    &lt;/bean&gt;
-
-    &lt;bean id=&quot;reportMarshaller&quot; class=&quot;org.springframework.oxm.jaxb.Jaxb2Marshaller&quot;&gt;
-        &lt;property name=&quot;classesToBeBound&quot;&gt;
-            &lt;list&gt;
-                &lt;value&gt;com.mkyong.model.Report&lt;/value&gt;
-            &lt;/list&gt;
-        &lt;/property&gt;
-    &lt;/bean&gt;
-&lt;/beans&gt;
-</code></pre><h4 id="3、ReportFieldSetMapper-java"><a href="#3、ReportFieldSetMapper-java" class="headerlink" title="3、ReportFieldSetMapper.java"></a>3、ReportFieldSetMapper.java</h4><p>　　读取时，主要是通过ReportFieldSetMapper.java来完成report.csv到Report.java的映射。</p>
-<pre><code>package com.mkyong;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import org.springframework.batch.item.file.mapping.FieldSetMapper;
-import org.springframework.batch.item.file.transform.FieldSet;
-import org.springframework.validation.BindException;
-import com.mkyong.model.Report;
-
-public class ReportFieldSetMapper implements FieldSetMapper&lt;Report&gt; {
-
-private SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);
-
-@Override
-public Report mapFieldSet(FieldSet fieldSet) throws BindException {
-
-    Report report = new Report();
-    report.setId(fieldSet.readInt(0));
-    report.setSales(fieldSet.readBigDecimal(1));
-    report.setQty(fieldSet.readInt(2));
-    report.setStaffName(fieldSet.readString(3));
-
-    //default format yyyy-MM-dd
-    //fieldSet.readDate(4);
-    String date = fieldSet.readString(4);
-    try {
-        report.setDate(dateFormat.parse(date));
-    } catch (ParseException e) {
-        e.printStackTrace();
-    }
-
-    return report;
-}
-</code></pre><p>}</p>
-<h4 id="4、report-csv"><a href="#4、report-csv" class="headerlink" title="4、report.csv"></a>4、report.csv</h4><pre><code>1001,&quot;213,100&quot;,980,&quot;mkyong&quot;, 29/7/2013
-1002,&quot;320,200&quot;,1080,&quot;staff 1&quot;, 30/7/2013
-1003,&quot;342,197&quot;,1200,&quot;staff 2&quot;, 31/7/2013
-</code></pre><h4 id="5、Report-java"><a href="#5、Report-java" class="headerlink" title="5、Report.java"></a>5、Report.java</h4><pre><code>package com.mkyong.model;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = &quot;record&quot;)
-public class Report {
-
-    private int id;
-    private BigDecimal sales;
-    private int qty;
-    private String staffName;
-    private Date date;
-
-    @XmlAttribute(name = &quot;id&quot;)
-    public int getId() {return id;}
-
-    public void setId(int id) {this.id = id;}
-
-    @XmlElement(name = &quot;sales&quot;)
-    public BigDecimal getSales() {return sales;}
-
-    public void setSales(BigDecimal sales) {this.sales = sales;}
-
-    @XmlElement(name = &quot;qty&quot;)
-    public int getQty() {return qty;}
-
-    public void setQty(int qty) {    this.qty = qty;}
-
-    @XmlElement(name = &quot;staffName&quot;)
-    public String getStaffName() {return staffName;}
-
-    public void setStaffName(String staffName) {this.staffName = staffName;}
-
-    @XmlElement(name = &quot;date&quot;)
-    public Date getDate() {return date;}
-
-    public void setDate(Date date) {this.date = date;}
-
-    @Override
-    public String toString() {
-        return &quot;Report [id=&quot; + id +
-                &quot;, sales=&quot; + sales +
-                &quot;, qty=&quot; + qty +
-                &quot;, staffName=&quot; + staffName +
-                &quot;]&quot;;
-    }
-}
-</code></pre><h4 id="6、CustomItemProcessor-java"><a href="#6、CustomItemProcessor-java" class="headerlink" title="6、CustomItemProcessor.java"></a>6、CustomItemProcessor.java</h4><pre><code>package com.mkyong;
-
-import org.springframework.batch.item.ItemProcessor;
-import com.mkyong.model.Report;
-
-public class CustomItemProcessor implements ItemProcessor&lt;Report, Report&gt; {
-
-    @Override
-    public Report process(Report item) throws Exception {
-
-        System.out.println(&quot;Processing...&quot; + item);
-        return item;
-    }
-}
-</code></pre><h3 id="三、创建测试App"><a href="#三、创建测试App" class="headerlink" title="三、创建测试App"></a>三、创建测试App</h3><p>在App.java中</p>
-<pre><code>package com.mkyong;
-
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-public class App {
-    public static void main(String[] args) {
-
-        String[] springConfig  = {&quot;spring/batch/jobs/job-hello-world.xml&quot;};
-        ApplicationContext context = 
-                new ClassPathXmlApplicationContext(springConfig);
-
-        JobLauncher jobLauncher = (JobLauncher) context.getBean(&quot;jobLauncher&quot;);
-        Job job = (Job) context.getBean(&quot;helloWorldJob&quot;);
-
-        try {
-            JobExecution execution = jobLauncher.run(job, new JobParameters());
-            System.out.println(&quot;Exit Status : &quot; + execution.getStatus());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(&quot;Done&quot;);
-    }
-}
-</code></pre><h3 id="四、结果"><a href="#四、结果" class="headerlink" title="四、结果"></a>四、结果</h3><p>report.xml</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;report&gt;
-    &lt;record id=&quot;1001&quot;&gt;
-        &lt;date&gt;2013-07-29T00:00:00+08:00&lt;/date&gt;
-        &lt;qty&gt;980&lt;/qty&gt;
-        &lt;sales&gt;213100&lt;/sales&gt;
-        &lt;staffName&gt;mkyong&lt;/staffName&gt;
-    &lt;/record&gt;
-    &lt;record id=&quot;1002&quot;&gt;
-        &lt;date&gt;2013-07-30T00:00:00+08:00&lt;/date&gt;
-        &lt;qty&gt;1080&lt;/qty&gt;
-        &lt;sales&gt;320200&lt;/sales&gt;
-        &lt;staffName&gt;staff 1&lt;/staffName&gt;
-    &lt;/record&gt;
-    &lt;record id=&quot;1003&quot;&gt;
-        &lt;date&gt;2013-07-31T00:00:00+08:00&lt;/date&gt;
-        &lt;qty&gt;1200&lt;/qty&gt;
-        &lt;sales&gt;342197&lt;/sales&gt;
-        &lt;staffName&gt;staff 2&lt;/staffName&gt;
-    &lt;/record&gt;
-&lt;/report&gt;
-</code></pre><p>console:</p>
-<pre><code>Aug 26, 2015 8:15:40 PM org.springframework.batch.core.launch.support.SimpleJobLauncher$1 run
-INFO: Job: [FlowJob: [name=helloWorldJob]] launched with the following parameters: [{}]
-Aug 26, 2015 8:15:40 PM org.springframework.batch.core.job.SimpleStepHandler handleStep
-INFO: Executing step: [step1]
-Processing...Report [id=1001, sales=213100, qty=980, staffName=mkyong]
-Processing...Report [id=1002, sales=320200, qty=1080, staffName=staff 1]
-Processing...Report [id=1003, sales=342197, qty=1200, staffName=staff 2]
-Exit Status : COMPLETED
-Aug 26, 2015 8:15:40 PM org.springframework.batch.core.launch.support.SimpleJobLauncher$1 run
-Done
-INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following parameters: [{}] and the following status: [COMPLETED]
-</code></pre><h3 id="五、目录结构"><a href="#五、目录结构" class="headerlink" title="五、目录结构"></a>五、目录结构</h3><img src="/imgs/SpringBatchHelloWorld.png" width="300" height="500">
-<h3 id="六、主要领域对象"><a href="#六、主要领域对象" class="headerlink" title="六、主要领域对象"></a>六、主要领域对象</h3><table>
-<thead>
-<tr>
-<th>领域对象</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Job</td>
-<td style="text-align:left">Batch操作的基础单元</td>
-</tr>
-<tr>
-<td>Job Instance</td>
-<td style="text-align:left">每次job执行时，都会生成一个实例，存放在JobRepository。</td>
-</tr>
-<tr>
-<td>Job Parameters</td>
-<td style="text-align:left">不同的实例是通过job参数来区分的</td>
-</tr>
-<tr>
-<td>Job Execution</td>
-<td style="text-align:left">负责具体Job的执行，每次运行Job都会启动一个新的Job执行器</td>
-</tr>
-<tr>
-<td>Job Respository</td>
-<td style="text-align:left">负责存储Job执行过程中的状态数据及结果，为JobLaunter、Job、Step提供标准的CRUD实现。</td>
-</tr>
-<tr>
-<td>Job Launcher</td>
-<td style="text-align:left">根据给定的Jon Parameter执行Job</td>
-</tr>
-<tr>
-<td>Step</td>
-<td style="text-align:left">Job的一个执行环节，一个或多个step组装成Job，封装批处理任务中得一个独立连续阶段。</td>
-</tr>
-<tr>
-<td>Step Execution</td>
-<td style="text-align:left">每次运行Step都会启动一个新的Step执行器</td>
-</tr>
-<tr>
-<td>Tasklet</td>
-<td style="text-align:left">Step中具体执行的逻辑操作，可以重复执行，可以设置具体的同步、异步操作等。</td>
-</tr>
-<tr>
-<td>Execution Context</td>
-<td style="text-align:left">执行上下文，是一组框架持久化与控制的key/value对，能够让开发者在step Execution或Job Execution范畴保存需要进行持久化的状态。</td>
-</tr>
-<tr>
-<td>Item</td>
-<td style="text-align:left">条目，一条数据记录</td>
-</tr>
-<tr>
-<td>Chunk</td>
-<td style="text-align:left">Item集合，它给定数量Item的集合，可以定义对Chunk的读操作、处理操作、写操作、提交间隔等。</td>
-</tr>
-<tr>
-<td>Item Reader</td>
-<td style="text-align:left">条目读，其表示Step读数据，一次读取一条</td>
-</tr>
-<tr>
-<td>Item Processor</td>
-<td style="text-align:left">条目处理，用于表示item的业务处理</td>
-</tr>
-<tr>
-<td>Item Writer</td>
-<td style="text-align:left">条目写，用于表示Step输出数据，一次输出一批</td>
-</tr>
-</tbody>
-</table>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2390,7 +2044,7 @@ INFO: Job: [FlowJob: [name=helloWorldJob]] completed with the following paramete
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
