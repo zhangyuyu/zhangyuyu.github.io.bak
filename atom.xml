@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-12-03T03:32:03.000Z</updated>
+  <updated>2017-12-06T15:29:34.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,19 +16,140 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Docker Workshop（九）Docker日志、监控、Dashboard</title>
+    <link href="http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7Dashboard/"/>
+    <id>http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/</id>
+    <published>2017-12-04T06:12:36.000Z</published>
+    <updated>2017-12-06T15:29:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li><strong>日志、监控、Dashboard</strong></li>
+</ul>
+<h3 id="三、日志"><a href="#三、日志" class="headerlink" title="三、日志"></a>三、日志</h3><h4 id="1-docker-docker-compose日志"><a href="#1-docker-docker-compose日志" class="headerlink" title="1. docker docker-compose日志"></a>1. docker docker-compose日志</h4><p>容器日志的输出形式</p>
+<ul>
+<li>stdout 标准输出</li>
+<li>stderr 标准错误</li>
+<li>以json格式存放在容器对于到日志文件中</li>
+</ul>
+<p>docker日志内容类型</p>
+<ul>
+<li>docker自身运行时Daemon的日志内容</li>
+<li>docker容器的日志内容</li>
+</ul>
+<h4 id="2-痛点"><a href="#2-痛点" class="headerlink" title="2. 痛点"></a>2. 痛点</h4><h4 id="3-集中式日志聚合"><a href="#3-集中式日志聚合" class="headerlink" title="3. 集中式日志聚合"></a>3. 集中式日志聚合</h4><h3 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h3><h4 id="1-why？"><a href="#1-why？" class="headerlink" title="1. why？"></a>1. why？</h4><h4 id="2-监控什么？"><a href="#2-监控什么？" class="headerlink" title="2. 监控什么？"></a>2. 监控什么？</h4><h3 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h3><h4 id="1-why-可视化？"><a href="#1-why-可视化？" class="headerlink" title="1. why 可视化？"></a>1. why 可视化？</h4><h4 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h4><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<li><a href="https://yq.aliyun.com/articles/72700" target="_blank" rel="external">Docker日志收集最佳实践</a></li>
+<li><a href="http://dockone.io/article/2644" target="_blank" rel="external">Docker 日志的5个最佳实践</a></li>
+<li><a href="http://dockone.io/article/2252" target="_blank" rel="external">使用ELK处理Docker日志(一)</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;h3 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://yoursite.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
     <title>餐巾纸的背面（三）拓展创意</title>
     <link href="http://yoursite.com/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%B8%89%EF%BC%89%E6%8B%93%E5%B1%95%E5%88%9B%E6%84%8F/"/>
     <id>http://yoursite.com/2017/12/02/餐巾纸的背面（三）拓展创意/</id>
     <published>2017-12-02T07:26:07.000Z</published>
-    <updated>2017-12-03T03:32:03.000Z</updated>
+    <updated>2017-12-06T15:31:00.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面一篇对视觉化思考的四个步骤进行了详解，介绍了SQVID和六六法则。<br>原书《餐巾纸的背面》第三部分是结合MBA的案例进行实操演练，本文就不再赘述，有兴趣的读者可以自己参考。在本篇中，笔者将介绍自己认为常见的，几个可视化图形框架。</p>
-<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　互联网时代，信息泛滥，知识变得无处不在。鼠标轻轻一点，我们就坐拥一座巨型图书馆。然后我们并没有因此离真相更近，离真正的掌握更近。我们花费了大量的时间去获取信息，去浏览不同的网页，了解不同的案例，但是偶尔停下来，总结一下也许才能真正的理解与掌握。</p>
-<h2 id="三、几个常见的框架"><a href="#三、几个常见的框架" class="headerlink" title="三、几个常见的框架"></a>三、几个常见的框架</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2>]]></content>
+    <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面一<a href="http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/" target="_blank" rel="external">餐巾纸的背面（二）发现创意</a>对视觉化思考的四个步骤进行了详解，介绍了SQVID和六六法则。<br>　　原书《餐巾纸的背面》第三部分【拓展创意】是结合MBA的案例，对视觉化思考的六种方式进行实操演练，本文就不再赘述，有兴趣的读者可以自己参考。<br>　　在本文中，主要是看书过后的一些思考与对手绘视觉化的拓展，可能与《餐巾纸的背面》一书没太多强关联了，偏重点在于手绘导图的方式方法。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　当我们将脑海中想象出来的内容进行视觉化时候，有两种选择：软件绘制和手绘导图，机视觉笔记的两种载体。<br>　　软件绘制，可以借助很多工具进行精确、精美的绘制，如Microsoft办公软件系列，Google办公软件系列、WPS、Xmind等等；手绘导图，凭借自己的一双手、随时随地就可以开始作画。<br>　　虽然《餐巾纸的背面》一书中多次提到，我们有三个天生的视觉性工具————肉眼、内心的眼睛、手眼合作，拿起笔开始画图并不难。但是笔者还是会各种纠结到底如何画才好，有没有一些常见版式参考，或者小的tips。<br>　　带着这个问题，发现【视觉笔记】、【涂鸦笔记】这样的字眼频繁出现，而且与【视觉化思考】的实践联系颇多，故而，以此整理总结。</p>
+<h2 id="三、视觉笔记的要素"><a href="#三、视觉笔记的要素" class="headerlink" title="三、视觉笔记的要素"></a>三、视觉笔记的要素</h2><p>　　我们常见的前端网页，主要由html + css + javascript组成，用一扇门比喻三者间的关系，html是门的门板，css是门上的油漆或花纹，javascript是门的开关。换言之，其中几个要素则是结构与内容、样式、效果。<br>　　那么，同理可得：<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">一幅视觉笔记 </span>=<span class="string"> 结构 + 内容 + 样式 + 效果 。</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li>在结构上，涉及的是版式。</li>
+<li>在内容上，主要是由图和文字构成，那么涉及到的就是图形元素、文字等。</li>
+<li>在样式上，涉及的是配色。</li>
+<li>在效果上，涉及的是组合之后表达的信息。</li>
+</ul>
+<p>因此，视觉笔记的几大要素：结构版式、图形元素、文字、配色。</p>
+<h2 id="四、结构版式"><a href="#四、结构版式" class="headerlink" title="四、结构版式"></a>四、结构版式</h2><p>视觉笔记的结构版式有如下7种：</p>
+<ul>
+<li>线型</li>
+<li>放射型</li>
+<li>垂直型</li>
+<li>路径型</li>
+<li>模块型</li>
+<li>摩天大楼型</li>
+<li>爆米花型</li>
+</ul>
+<img src="/imgs/餐巾纸的背面-扩展创意-视觉笔记排版.jpg" width="800" height="450">
+<p align="center"> （图片来自<a href="http://www.jianshu.com/p/668c90a7e5a7" target="_blank" rel="external">视觉笔记与手帐</a>）</p>
+
+<h3 id="1-线型"><a href="#1-线型" class="headerlink" title="1. 线型"></a>1. 线型</h3><p>从上到下，从左到右<br>优点：人们比较习惯的模式、可以记录多页、便于阅读<br>缺点：信息流向上死板，布局有制约。</p>
+<h3 id="2-放射型"><a href="#2-放射型" class="headerlink" title="2. 放射型"></a>2. 放射型</h3><p>由一个主题发散出去，分为对称型和不对称型<br>优点：添加内容灵活<br>缺点：对于某些读者，由于排列非线形，阅读会比较困难。</p>
+<h3 id="3-垂直型"><a href="#3-垂直型" class="headerlink" title="3. 垂直型"></a>3. 垂直型</h3><p>从顶部至底部（只有一页）<br>优点：便于阅读<br>缺点：制约布局，长度受纸的制约</p>
+<h3 id="4-路径型"><a href="#4-路径型" class="headerlink" title="4. 路径型"></a>4. 路径型</h3><p>路径可以是Z、C、W等任何想到的形状。<br>适用于：时间上的先后、故事的发展、逻辑上的因果<br>缺点：需要规划，如果需要记录的内容超出预期，会空间不够。</p>
+<h3 id="5-模块型"><a href="#5-模块型" class="headerlink" title="5. 模块型"></a>5. 模块型</h3><p>将页面分为不同区域，分别放置不同信息。<br>优点：可以在有限空间内记录很多展示信息。<br>缺点：限制了信息数量，需要预先规划。</p>
+<h3 id="6-摩天大楼型"><a href="#6-摩天大楼型" class="headerlink" title="6. 摩天大楼型"></a>6. 摩天大楼型</h3><p>特殊的模块型。<br>适用于：圆桌讨论，多人在不同时间发言。<br>缺点：同模块型。</p>
+<h3 id="7-爆米花型"><a href="#7-爆米花型" class="headerlink" title="7. 爆米花型"></a>7. 爆米花型</h3><p>将标题和信息放在页面任意位置的版式。<br>优点：极其灵活。使人专注于获取信息，而不在意位置<br>缺点：信息摆放无序，难于理解。</p>
+<h3 id="五、图形元素"><a href="#五、图形元素" class="headerlink" title="五、图形元素"></a>五、图形元素</h3><p>常用的5种视觉元素：人物、小图标、箭头、对话框、图框。</p>
+<h4 id="1-人物"><a href="#1-人物" class="headerlink" title="1. 人物"></a>1. 人物</h4><p>人物的画法大致可以分为如下几种：</p>
+<ul>
+<li>火柴人</li>
+<li>进阶火柴人</li>
+<li>星形人</li>
+<li>格雷法</li>
+<li>others(自定义形式)</li>
+</ul>
+<img src="/imgs/餐巾纸的背面-扩展创意-人物的画法.jpg" width="800" height="450">
+<h5 id="1-火柴人"><a href="#1-火柴人" class="headerlink" title="1. 火柴人"></a>1. 火柴人</h5><img src="/imgs/餐巾纸的背面-扩展创意-火柴人.jpg" width="600" height="150">
+<h5 id="2-进阶火柴人"><a href="#2-进阶火柴人" class="headerlink" title="2. 进阶火柴人"></a>2. 进阶火柴人</h5><img src="/imgs/餐巾纸的背面-扩展创意-进阶火柴人.jpg" width="600" height="150">
+<p>【示例】<br><img src="/imgs/餐巾纸的背面-扩展创意-进阶火柴人示例.jpg" width="600" height="150"></p>
+<h5 id="3-星形人"><a href="#3-星形人" class="headerlink" title="3. 星形人"></a>3. 星形人</h5><img src="/imgs/餐巾纸的背面-扩展创意-星形人.jpg" width="600" height="150">
+<h5 id="4-格雷法"><a href="#4-格雷法" class="headerlink" title="4. 格雷法"></a>4. 格雷法</h5><img src="/imgs/餐巾纸的背面-扩展创意-格雷法.jpg" width="600" height="150">
+<p>【示例】<br><img src="/imgs/餐巾纸的背面-扩展创意-格雷法示例.jpg" width="400" height="150"></p>
+<h5 id="5-others"><a href="#5-others" class="headerlink" title="5. others"></a>5. others</h5><img src="/imgs/餐巾纸的背面-扩展创意-others.jpg" width="600" height="150">
+<h4 id="2-箭头"><a href="#2-箭头" class="headerlink" title="2. 箭头"></a>2. 箭头</h4><img src="/imgs/餐巾纸的背面-扩展创意-箭头.jpg" width="600" height="150">
+<h3 id="3-对话框"><a href="#3-对话框" class="headerlink" title="3. 对话框"></a>3. 对话框</h3><h4 id="4-图框"><a href="#4-图框" class="headerlink" title="4. 图框"></a>4. 图框</h4><img src="/imgs/餐巾纸的背面-扩展创意-图框.jpg" width="600" height="150">
+<h4 id="5-小图标"><a href="#5-小图标" class="headerlink" title="5. 小图标"></a>5. 小图标</h4><p>小图标有很多种，限于篇幅，下面只列举一些比较好画的项目符号：<br><img src="/imgs/餐巾纸的背面-扩展创意-项目符号.jpg" width="600" height="150"></p>
+<p>事物类的图标，这个很容易在网上就可以搜索到，文章末尾reference里面提供了几个icon的链接。</p>
+<h3 id="六、字体"><a href="#六、字体" class="headerlink" title="六、字体"></a>六、字体</h3><p>主要是样式、大小、间距，要点在于让人一眼望去，层次分明。</p>
+<h3 id="七、配色"><a href="#七、配色" class="headerlink" title="七、配色"></a>七、配色</h3><ol>
+<li><p>正文字体最好不要超过三种颜色，颜色太多显得杂乱，不要选择饱和度太高的颜色，就是鲜艳的颜色，太亮眼了，尽量用温和一些的深色系，如深灰或者黑色。</p>
+</li>
+<li><p>用一种颜色作为主色调，可以用在标题、重点内容、二维码、头像、顶部和底部的引导等。</p>
+</li>
+<li><p>金句或者突出的地方用黑色加粗，或者深色系的颜色即可。</p>
+</li>
+</ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://goo.gl/r3UQr" target="_blank" rel="external">The Sketchnote Handbook</a></li>
+<li><a href="http://sunnibrown.com/doodlerevolution/" target="_blank" rel="external">Doodle Revolution</a></li>
+<li><a href="http://sketchnotearmy.com/sketchnoters/" target="_blank" rel="external">视觉笔记</a></li>
+<li><a href="https://thenounproject.com/" target="_blank" rel="external">Icons for everything</a></li>
+<li><a href="http://iconfont.cn/" target="_blank" rel="external">iconfont</a></li>
+<li><a href="https://mp.weixin.qq.com/s/XqjA5Wwn7ql6rKOlyuLn-w" target="_blank" rel="external">从绘画小白到手绘达人</a></li>
+<li><a href="http://www.jianshu.com/p/bf2d287b4a4a?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="external">干货｜任何人都能做出好看的视觉笔记</a></li>
+<li><a href="http://www.jianshu.com/p/2dc6fea6a20f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="external">视觉笔记让你的学习更高效</a></li>
+<li><a href="http://www.jianshu.com/p/4596e168ec06" target="_blank" rel="external">视觉化你的行动力</a></li>
+<li><a href="http://www.jianshu.com/p/f70f8518bb03" target="_blank" rel="external">视觉笔记 | 几个国外视觉笔记博客介绍</a></li>
+<li><a href="http://www.jianshu.com/p/5b3658235333" target="_blank" rel="external">路乔手绘笔记系列</a></li>
+</ul>
+]]></content>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　前面一篇对视觉化思考的四个步骤进行了详解，介绍了SQVID和六六法则。&lt;br&gt;原书《餐巾纸的背面》第三部分是结合MBA的
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　前面一&lt;a href=&quot;http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%
     
     </summary>
     
@@ -44,10 +165,10 @@
     <link href="http://yoursite.com/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/"/>
     <id>http://yoursite.com/2017/12/02/餐巾纸的背面（二）发现创意/</id>
     <published>2017-12-02T06:52:04.000Z</published>
-    <updated>2017-12-03T03:29:39.000Z</updated>
+    <updated>2017-12-06T15:30:58.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。<br>　　前面一篇从整体上介绍了视觉化思考的几个重要部分：四个步骤、三个工具、六种方法。本篇将借助这三个工具、6种方法进行四个步骤的详解。<br><img src="/imgs/餐巾纸的背面-发现创意-大纲.jpg" width="600" height="400"></p>
-<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　看书、练习，在这个信息爆炸、碎片化的时代，也许是一种不错的学习方式。只有不停的练习、验证，才能逐步掌握“真正的知识”，而不是仅仅获取这些“网络上的信息”。</p>
+    <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。<br>　　前面一篇 <a href="">餐巾纸的背面（一）视觉化思考</a> 从整体上介绍了视觉化思考的几个重要部分：四个步骤、三个工具、六种方法。本篇将借助这三个工具、6种方法进行四个步骤的详解。<br><img src="/imgs/餐巾纸的背面-发现创意-大纲.jpg" width="600" height="400"></p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　互联网时代，信息泛滥，知识变得无处不在。鼠标轻轻一点，我们就坐拥一座巨型图书馆。然后我们并没有因此离真相更近，离真正的掌握更近。我们花费了大量的时间去获取信息，去浏览不同的网页，了解不同的案例。<br>　　看书、练习、总结，在这个信息爆炸、碎片化的时代，也许是一种不错的学习方式。只有不停的练习、验证，才能逐步掌握“真正的知识”，而不是仅仅获取这些“网络上的信息”。</p>
 <h2 id="三、看"><a href="#三、看" class="headerlink" title="三、看"></a>三、看</h2><p>　　我们睁开眼的每一秒，都有大量的视觉信号像光量子一样经视网膜转换成电子脉冲，然后通过视觉神经进入大脑的不同区域，这一过程中信号被分析、过滤、比较、分门别类、重组————这样才能成为我们大脑中形成的图像。<br>　　上述过程是无意识的，而我们谈起视觉化思考的时候，指的是有意识地使用上述内在观看系统。谈视觉化思考，首先得说说“主动地看”。</p>
 <h3 id="1-我们如何看"><a href="#1-我们如何看" class="headerlink" title="1. 我们如何看"></a>1. 我们如何看</h3><p>　　四项关键任务：定向、定位、识别、聚焦。我们的视觉系统在无意识情况下，就是通过完成这四项关键任务来为我们服务的。<br><img src="/imgs/餐巾纸的背面-发现创意-四项关键任务.jpg" width="600" height="150"></p>
 <h3 id="2-如何看得更真切"><a href="#2-如何看得更真切" class="headerlink" title="2. 如何看得更真切"></a>2. 如何看得更真切</h3><p>　　为了培养好的观看技巧，并且为视觉化打下好的基础，当我们看到新鲜事物时，需要遵从四个基本规则：</p>
@@ -177,7 +298,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。&lt;br&gt;　　前面一篇从整体上介绍了视觉化思考
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。&lt;br&gt;　　前面一篇 &lt;a href=&quot;&quot;&gt;
     
     </summary>
     
@@ -193,7 +314,7 @@
     <link href="http://yoursite.com/2017/11/30/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%B8%80%EF%BC%89%E8%A7%86%E8%A7%89%E5%8C%96%E6%80%9D%E8%80%83/"/>
     <id>http://yoursite.com/2017/11/30/餐巾纸的背面（一）视觉化思考/</id>
     <published>2017-11-30T13:34:55.000Z</published>
-    <updated>2017-12-02T07:15:32.000Z</updated>
+    <updated>2017-12-06T15:30:59.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　《餐巾纸的背面》不是告诉你如何成为一个画家，而是告诉你如何进行思考。将视觉化思考的观点，移植到你的工作、生活、交往、个人品牌规划以及你的一切中。学会用眼睛看待世界，用心思考世界，从而用笔与世界沟通。</p>
 <img src="/imgs/餐巾纸的背面-视觉化思考-大纲.jpg" width="500" height="800">
@@ -238,7 +359,7 @@
 <h2 id="八、六个方法"><a href="#八、六个方法" class="headerlink" title="八、六个方法"></a>八、六个方法</h2><p>　　6个方法对应于上面所提到的视觉化思考的6个要素，也对应到后面<a href="">餐巾纸的背面（二）发现创意</a>的<code>六六法则</code>。</p>
 <img src="/imgs/餐巾纸的背面-视觉化思考-6种方法.jpg" width="600" height="350">
 <h2 id="九、总结"><a href="#九、总结" class="headerlink" title="九、总结"></a>九、总结</h2><p>　<br><img src="/imgs/餐巾纸的背面-视觉化思考-导向绳.jpg" width="600" height="250"><br>上图是《餐巾纸的背面》一书的导向绳，顺应着该导向绳，进行视觉化思考的过程中，上述三个主题会频繁出现。</p>
-<p>　本篇的主要内容对应于《餐巾纸的背面》的导言一章，对视觉化思考涉及到的进行进行了归纳总结。至于四个步骤的详细做法可以阅读<a href="">餐巾纸的背面（二）发现创意</a>。</p>
+<p>　本篇的主要内容对应于《餐巾纸的背面》的导言一章，对视觉化思考涉及到的进行进行了归纳总结。至于四个步骤的详细做法可以阅读<a href="http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/" target="_blank" rel="external">餐巾纸的背面（二）发现创意</a>。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://www.jianshu.com/p/413c2acfe8b0" target="_blank" rel="external">关于视觉化思考的一些思考</a></li>
 <li><a href="http://www.jianshu.com/p/cb39a06d95c2" target="_blank" rel="external">视觉化思维练习总结</a></li>
@@ -2600,48 +2721,6 @@ Observable observable = Observable.from(parameters);
     
     
       <category term="微服务" scheme="http://yoursite.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>微服务-服务注册与发现</title>
-    <link href="http://yoursite.com/2016/04/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1-%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0/"/>
-    <id>http://yoursite.com/2016/04/18/微服务-服务注册与发现/</id>
-    <published>2016-04-18T11:14:52.000Z</published>
-    <updated>2016-04-18T11:42:41.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="为什么要使用服务发现？"><a href="#为什么要使用服务发现？" class="headerlink" title="为什么要使用服务发现？"></a>为什么要使用服务发现？</h3><p>　　我们可以想象一下，当我们需要远程的访问REST API或者Thrift API时，我们必须得知道服务的网络地址（IP Address和port）。传统的应用程序都是运行在固定的物理机器上，IP Address和端口号都是相对固定的。可以通过配置文件方式来实现不定期更新的Ip Address和端口号。但是，在基于云的微服务应用中，这是一个非常难以解决的问题。如下图所示：<br><img src="/imgs/theproblemofdiscovery.png" width="400" height="250"><br>　　在基于云的微服务应用中，服务实例的网络地址（IP Address和Port）是动态分配的，并且由于系统的auto-scaling, failures 和 upgrades等因数，一些服务运行的实例数量也是动态变化的。因此，客户端代码需要使用一个非常精细和准确的服务发现机制。<br>有两种主要的服务发现方式：客户端发现（<a href="http://microservices.io/patterns/client-side-discovery.html" target="_blank" rel="external">client-side discovery</a>）和服务器端发现（<a href="http://microservices.io/patterns/server-side-discovery.html" target="_blank" rel="external">server-side discovery</a>）。</p>
-<h3 id="客户端发现方式"><a href="#客户端发现方式" class="headerlink" title="客户端发现方式"></a>客户端发现方式</h3><p>　　在使用客户端发现方式时，客户端通过查询服务注册中心，获取可用的服务的实际网络地址（IP Adress 和 端口号）。然后通过负载均衡算法来选择一个可用的服务实例，并将请求发送至该服务。下图显示了客户端发现方式的结构图：<br><img src="/imgs/pattern_clientside.png" width="400" height="250"><br>　　在服务启动的时候，向服务注册中心注册服务；在服务停止的时候，向服务注册中心注销服务。服务注册的一个典型的实现方式就是通过heartbeat机制定时刷新。Netflix OSS 就是使用客户端发现方式的一个很好的例子。  Netflix Eureka是一个服务注册中心。它提供了一个管理和查询可用服务的 REST API。 负载均衡功能是通过Netflix Ribbon（是一个IPC客户端）和Eureka一起共同实现的。在文章的后面将深入的介绍Eureka。<br>　　客户端发现方式的优缺点。由于客户端知道所有可用的服务的实际网络地址，所以可以非常方便的实现负载均衡功能（比如：一致性哈希）。但是这种方式有一个非常明显的缺点就是具有非常强的耦合性。针对不同的语言，每个服务的客户端都得实现一套服务发现的功能。</p>
-<h3 id="服务端发现方式"><a href="#服务端发现方式" class="headerlink" title="服务端发现方式"></a>服务端发现方式</h3><p>　　另外一种服务发现的方式就是Server-Side Discovery Pattern，下图展示了这种方式的架构示例图：<br><img src="/imgs/pattern_serverside.png" width="400" height="250"><br>　　客户端向load balancer 发送请求。load balancer 查询服务注册中心找到可用的服务，然后转发请求到该服务上。和客户端发现一样，服务都要到注册中心进行服务注册和注销。AWS的弹性负载均衡（Elastic Load Balancer–ELB）就是服务端发现的一个例子。ELB通常是用于为外网服务提供负载平衡的。当然你也可以使用ELB为内部虚拟私有云（VPC）提供负载均衡服务。客户端通过使用DNS名称，发送HTTP或TCP请求到ELB。ELB为EC2或ECS集群提供负载均衡服务。AWS并没有提供单独的服务注册中心。而是通过ELB实现EC2实例和ECS容器的注册的。<br>　　NGINX不仅可以作为HTTP反向代理服务器和负载均衡器，也可以用来作为一个服务发现的负载均衡器。例如，这篇博客（<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx" target="_blank" rel="external">Scalable Architecture DR CoN: Docker, Registrator, Consul, Consul Template and Nginx</a>）介绍如何使用Consul Template 动态的配置NGINX功能。<br><a href="https://github.com/kubernetes/kubernetes/blob/master/docs/design/architecture.md" target="_blank" rel="external">Kubernetes</a> 和 <a href="https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html" target="_blank" rel="external">Marathon</a>是在通过集群中每个节点都运行一个代理来实现服务发现的功能的，代理的角色就是server-side discovery,客户端通过使用主机的IP Address和Port向Proxy发送请求，Proxy再将请求转发到集群中任何一个可用的服务上。<br>　　服务器端发现方式的优点是，服务的发现逻辑对客户端是透明的。客户只需简单的向load balancer发送请求就可以了。这就避免了为每种不同语言的客户端实现一套发现的逻辑。此外，许多软件都内置实现了这种功能。这种方式的一个最大的缺点是，你必须得关心该组件的高可用性。</p>
-<h3 id="服务注册中心"><a href="#服务注册中心" class="headerlink" title="服务注册中心"></a>服务注册中心</h3><p>　　服务注册中心是服务发现的核心。它保存了各个可用服务实例的网络地址（IP Address和Port）。服务注册中心必须要有高可用性和实时更新功能。<br>　　上面提到的 Netflix Eureka 就是一个服务注册中心。它提供了服务注册和查询服务信息的REST API。服务通过使用POST请求注册自己的IP Address和Port。每30秒发送一个PUT请求刷新注册信息。通过DELETE请求注销服务。客户端通过GET请求获取可用的服务实例信息。<br>Netflix的高可用（Netflix achieves high availability ）是通过在Amazon EC2运行多个实例来实现的,每一个Eureka服务都有一个弹性IP Address。当Eureka服务启动时，有DNS服务器动态的分配。Eureka客户端通过查询 DNS来获取Eureka的网络地址（IP Address和Port）。一般情况下，都是返回和客户端在同一个可用区Eureka服务器地址。<br>　　其他能够作为服务注册中心的有：<br>－　etcd —– 高可用，分布式，强一致性的，key-value，Kubernetes和Cloud Foundry都是使用了etcd。<br>－　consul —–一个用于discovering和 configuring的工具。它提供了允许客户端注册和发现服务的API。Consul可以进行服务健康检查，以确定服务的可用性。<br>－　zookeeper —— 在分布式应用中被广泛使用，高性能的协调服务。 Apache Zookeeper 最初为Hadoop的一个子项目，但现在是一个顶级项目。<br>　　我们已经了解了服务注册中心的概念，接下来我们看看服务是如果注册到注册中心的。有两种不同的方式来处理服务的注册和注销。一种是服务自己主动注册-自己注册（self-registration）。另一种是通过其他组件来管理服务的注册-第三方注册（third-party registration）。</p>
-<h3 id="Self-Registration"><a href="#Self-Registration" class="headerlink" title="Self-Registration"></a>Self-Registration</h3><p>　　使用Self-Registration的方式注册，服务实例必须自己主动的到注册中心注册和注销。比如可以使用heartbeat机制了实现。下图为这种方式的示意图：<br><img src="/imgs/pattern_selfregistration.png" width="400" height="250"><br>　　Netflix OSS Eureka client就是使用这种方式进行服务注册的。Eureka的客户端处理了服务注册和注销的所有工作。<br>　　Self-Registration方式的优缺点：一个明显的优点就是，非常简单，不需要任何其它辅助组件。而缺点也是比较明显的，使得各个服务和注册中心的耦合度比较高。服务的不同语言的客户端都得实现注册和注销的逻辑。另一种服务注册方式，可以达到解耦的功能，就是third-party registration方式。</p>
-<h3 id="Third-Party-Registration"><a href="#Third-Party-Registration" class="headerlink" title="Third-Party Registration"></a>Third-Party Registration</h3><p>　　使用Third-Party方式进行服务注册时，服务本身不必关心注册和注销功能。而是通过其他组件（service registrarhandles）来实现服务注册功能。可以通过如事件订阅等方式来监控服务的状态，如果发现一个新的服务实例运行，就向注册中心注册该服务，如果监控到某一服务停止了，就向注册中心注销该服务。下图显示了这种方式的结构图示意图：<br><img src="/imgs/pattern_thirdparties.png" width="400" height="250"><br>　　third-party Registration方式的优点是使服务和注册中心解耦，不用为每种语言实现服务注册的逻辑。这种方式的缺点就是必须得考虑该组件的高可用性。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　在微服务的应用系统中，服务实例的数量是动态变化。各服务实例动态分配网络地址（IP Address 和Port）。因此，为了为客户端能够访问到服务，就必须要有一种服务的发现机制。<br>服务发现的核心是服务注册中心。服务注册中心保存了各个服务可用的实例的相关信息。服务注册中心提供了管理API和查询API。使用管理API进行服务注册、注销。系统的其他组件可以通过查询API来获得当前可用的服务实例信息。<br>　　有两种主要的服务发现方式：客户端发现（client-side service discovery）和服务端发现（ server-side discovery）。在使用客户端服务发现的方式中，客户通过查询服务注册中心，选择一个可用的服务实例。在使用服务器端发现系统中，客户访问Router/load balancer，通过Router/load balancer查询服务注册中心，并将请求转发到一个可用服务实例上。<br>　　服务注册和注销的方式也有两种。一种是服务自己主动的将自己注册到服务注册中心，称为self-registration。另一种是通过其他组件来处理服务的注册和注销，称为third-party registration。<br>在有些环境中，服务发现功能需要自己通过服务注册中心（比如：Netflix Eureka, etcd, Apache Zookeeper）实现，而有些环境中，服务发现功能是内置的。例如，Kubernetes和Marathon。<br>Nginx可以作为HTTP反向代理和负载平衡器，也可以用来作为一个服务发现的负载均衡器。通过向nginx推送routing information来修改nginx的配置，比如使用：Consul Template动态修改NGINX的配置. NGINX Plus 也支持动态修改配置功能。<br>　　在今后的文章中，我们将继续深入分析微服务的其他方面的内容。</p>
-<blockquote>
-<p>MaxLeap翻译的中文版地址：<a href="https://blog.maxleap.cn/archives/524" target="_blank" rel="external">微服务系统中的服务发现机制</a></p>
-<p>原文作者发布的关于微服务系列文章的地址：</p>
-<ul>
-<li><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="external">Introduction to Microservices</a></li>
-<li><a href="https://www.nginx.com/blog/building-microservices-using-an-api-gateway/" target="_blank" rel="external">Building Microservices: Using an API Gateway</a></li>
-<li><a href="https://www.nginx.com/blog/building-microservices-inter-process-communication/" target="_blank" rel="external">Building Microservices: Inter-Process Communication in a Microservices Architecture</a></li>
-<li><a href="https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/" target="_blank" rel="external">Service Discovery in a Microservices Architecture</a></li>
-<li><a href="https://www.nginx.com/blog/event-driven-data-management-microservices/" target="_blank" rel="external">Event-Driven Data Management for Microservices</a></li>
-<li><a href="https://www.nginx.com/blog/deploying-microservices/" target="_blank" rel="external">Choosing a Microservices Deployment Strategy</a></li>
-<li><a href="https://www.nginx.com/blog/refactoring-a-monolith-into-microservices/" target="_blank" rel="external">Refactoring a Monolith into Microservices</a></li>
-</ul>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;为什么要使用服务发现？&quot;&gt;&lt;a href=&quot;#为什么要使用服务发现？&quot; class=&quot;headerlink&quot; title=&quot;为什么要使用服务发现？&quot;&gt;&lt;/a&gt;为什么要使用服务发现？&lt;/h3&gt;&lt;p&gt;　　我们可以想象一下，当我们需要远程的访问REST API或者Thr
-    
-    </summary>
-    
-      <category term="MicroServices" scheme="http://yoursite.com/categories/MicroServices/"/>
-    
-    
-      <category term="MicroServices monolithic" scheme="http://yoursite.com/tags/MicroServices-monolithic/"/>
     
   </entry>
   

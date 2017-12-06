@@ -184,6 +184,117 @@
           
           
             
+              <a class="post-title-link" href="/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/" itemprop="url">
+                Docker Workshop（九）Docker日志、监控、Dashboard
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2017-12-04T14:12:36+08:00" content="2017-12-04">
+            2017-12-04
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Docker/" itemprop="url" rel="index">
+                  <span itemprop="name">Docker</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li><strong>日志、监控、Dashboard</strong></li>
+</ul>
+<h3 id="三、日志"><a href="#三、日志" class="headerlink" title="三、日志"></a>三、日志</h3><h4 id="1-docker-docker-compose日志"><a href="#1-docker-docker-compose日志" class="headerlink" title="1. docker docker-compose日志"></a>1. docker docker-compose日志</h4><p>容器日志的输出形式</p>
+<ul>
+<li>stdout 标准输出</li>
+<li>stderr 标准错误</li>
+<li>以json格式存放在容器对于到日志文件中</li>
+</ul>
+<p>docker日志内容类型</p>
+<ul>
+<li>docker自身运行时Daemon的日志内容</li>
+<li>docker容器的日志内容</li>
+</ul>
+<h4 id="2-痛点"><a href="#2-痛点" class="headerlink" title="2. 痛点"></a>2. 痛点</h4><h4 id="3-集中式日志聚合"><a href="#3-集中式日志聚合" class="headerlink" title="3. 集中式日志聚合"></a>3. 集中式日志聚合</h4><h3 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h3><h4 id="1-why？"><a href="#1-why？" class="headerlink" title="1. why？"></a>1. why？</h4><h4 id="2-监控什么？"><a href="#2-监控什么？" class="headerlink" title="2. 监控什么？"></a>2. 监控什么？</h4><h3 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h3><h4 id="1-why-可视化？"><a href="#1-why-可视化？" class="headerlink" title="1. why 可视化？"></a>1. why 可视化？</h4><h4 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h4><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<li><a href="https://yq.aliyun.com/articles/72700" target="_blank" rel="external">Docker日志收集最佳实践</a></li>
+<li><a href="http://dockone.io/article/2644" target="_blank" rel="external">Docker 日志的5个最佳实践</a></li>
+<li><a href="http://dockone.io/article/2252" target="_blank" rel="external">使用ELK处理Docker日志(一)</a></li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/12/02/餐巾纸的背面（三）拓展创意/" itemprop="url">
                 餐巾纸的背面（三）拓展创意
               </a>
@@ -237,9 +348,80 @@
 
       
         
-          <span itemprop="articleBody"><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面一篇对视觉化思考的四个步骤进行了详解，介绍了SQVID和六六法则。<br>原书《餐巾纸的背面》第三部分是结合MBA的案例进行实操演练，本文就不再赘述，有兴趣的读者可以自己参考。在本篇中，笔者将介绍自己认为常见的，几个可视化图形框架。</p>
-<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　互联网时代，信息泛滥，知识变得无处不在。鼠标轻轻一点，我们就坐拥一座巨型图书馆。然后我们并没有因此离真相更近，离真正的掌握更近。我们花费了大量的时间去获取信息，去浏览不同的网页，了解不同的案例，但是偶尔停下来，总结一下也许才能真正的理解与掌握。</p>
-<h2 id="三、几个常见的框架"><a href="#三、几个常见的框架" class="headerlink" title="三、几个常见的框架"></a>三、几个常见的框架</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2></span>
+          <span itemprop="articleBody"><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面一<a href="http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/" target="_blank" rel="external">餐巾纸的背面（二）发现创意</a>对视觉化思考的四个步骤进行了详解，介绍了SQVID和六六法则。<br>　　原书《餐巾纸的背面》第三部分【拓展创意】是结合MBA的案例，对视觉化思考的六种方式进行实操演练，本文就不再赘述，有兴趣的读者可以自己参考。<br>　　在本文中，主要是看书过后的一些思考与对手绘视觉化的拓展，可能与《餐巾纸的背面》一书没太多强关联了，偏重点在于手绘导图的方式方法。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　当我们将脑海中想象出来的内容进行视觉化时候，有两种选择：软件绘制和手绘导图，机视觉笔记的两种载体。<br>　　软件绘制，可以借助很多工具进行精确、精美的绘制，如Microsoft办公软件系列，Google办公软件系列、WPS、Xmind等等；手绘导图，凭借自己的一双手、随时随地就可以开始作画。<br>　　虽然《餐巾纸的背面》一书中多次提到，我们有三个天生的视觉性工具————肉眼、内心的眼睛、手眼合作，拿起笔开始画图并不难。但是笔者还是会各种纠结到底如何画才好，有没有一些常见版式参考，或者小的tips。<br>　　带着这个问题，发现【视觉笔记】、【涂鸦笔记】这样的字眼频繁出现，而且与【视觉化思考】的实践联系颇多，故而，以此整理总结。</p>
+<h2 id="三、视觉笔记的要素"><a href="#三、视觉笔记的要素" class="headerlink" title="三、视觉笔记的要素"></a>三、视觉笔记的要素</h2><p>　　我们常见的前端网页，主要由html + css + javascript组成，用一扇门比喻三者间的关系，html是门的门板，css是门上的油漆或花纹，javascript是门的开关。换言之，其中几个要素则是结构与内容、样式、效果。<br>　　那么，同理可得：<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">一幅视觉笔记 </span>=<span class="string"> 结构 + 内容 + 样式 + 效果 。</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li>在结构上，涉及的是版式。</li>
+<li>在内容上，主要是由图和文字构成，那么涉及到的就是图形元素、文字等。</li>
+<li>在样式上，涉及的是配色。</li>
+<li>在效果上，涉及的是组合之后表达的信息。</li>
+</ul>
+<p>因此，视觉笔记的几大要素：结构版式、图形元素、文字、配色。</p>
+<h2 id="四、结构版式"><a href="#四、结构版式" class="headerlink" title="四、结构版式"></a>四、结构版式</h2><p>视觉笔记的结构版式有如下7种：</p>
+<ul>
+<li>线型</li>
+<li>放射型</li>
+<li>垂直型</li>
+<li>路径型</li>
+<li>模块型</li>
+<li>摩天大楼型</li>
+<li>爆米花型</li>
+</ul>
+<img src="/imgs/餐巾纸的背面-扩展创意-视觉笔记排版.jpg" width="800" height="450">
+<p align="center"> （图片来自<a href="http://www.jianshu.com/p/668c90a7e5a7" target="_blank" rel="external">视觉笔记与手帐</a>）</p>
+
+<h3 id="1-线型"><a href="#1-线型" class="headerlink" title="1. 线型"></a>1. 线型</h3><p>从上到下，从左到右<br>优点：人们比较习惯的模式、可以记录多页、便于阅读<br>缺点：信息流向上死板，布局有制约。</p>
+<h3 id="2-放射型"><a href="#2-放射型" class="headerlink" title="2. 放射型"></a>2. 放射型</h3><p>由一个主题发散出去，分为对称型和不对称型<br>优点：添加内容灵活<br>缺点：对于某些读者，由于排列非线形，阅读会比较困难。</p>
+<h3 id="3-垂直型"><a href="#3-垂直型" class="headerlink" title="3. 垂直型"></a>3. 垂直型</h3><p>从顶部至底部（只有一页）<br>优点：便于阅读<br>缺点：制约布局，长度受纸的制约</p>
+<h3 id="4-路径型"><a href="#4-路径型" class="headerlink" title="4. 路径型"></a>4. 路径型</h3><p>路径可以是Z、C、W等任何想到的形状。<br>适用于：时间上的先后、故事的发展、逻辑上的因果<br>缺点：需要规划，如果需要记录的内容超出预期，会空间不够。</p>
+<h3 id="5-模块型"><a href="#5-模块型" class="headerlink" title="5. 模块型"></a>5. 模块型</h3><p>将页面分为不同区域，分别放置不同信息。<br>优点：可以在有限空间内记录很多展示信息。<br>缺点：限制了信息数量，需要预先规划。</p>
+<h3 id="6-摩天大楼型"><a href="#6-摩天大楼型" class="headerlink" title="6. 摩天大楼型"></a>6. 摩天大楼型</h3><p>特殊的模块型。<br>适用于：圆桌讨论，多人在不同时间发言。<br>缺点：同模块型。</p>
+<h3 id="7-爆米花型"><a href="#7-爆米花型" class="headerlink" title="7. 爆米花型"></a>7. 爆米花型</h3><p>将标题和信息放在页面任意位置的版式。<br>优点：极其灵活。使人专注于获取信息，而不在意位置<br>缺点：信息摆放无序，难于理解。</p>
+<h3 id="五、图形元素"><a href="#五、图形元素" class="headerlink" title="五、图形元素"></a>五、图形元素</h3><p>常用的5种视觉元素：人物、小图标、箭头、对话框、图框。</p>
+<h4 id="1-人物"><a href="#1-人物" class="headerlink" title="1. 人物"></a>1. 人物</h4><p>人物的画法大致可以分为如下几种：</p>
+<ul>
+<li>火柴人</li>
+<li>进阶火柴人</li>
+<li>星形人</li>
+<li>格雷法</li>
+<li>others(自定义形式)</li>
+</ul>
+<img src="/imgs/餐巾纸的背面-扩展创意-人物的画法.jpg" width="800" height="450">
+<h5 id="1-火柴人"><a href="#1-火柴人" class="headerlink" title="1. 火柴人"></a>1. 火柴人</h5><img src="/imgs/餐巾纸的背面-扩展创意-火柴人.jpg" width="600" height="150">
+<h5 id="2-进阶火柴人"><a href="#2-进阶火柴人" class="headerlink" title="2. 进阶火柴人"></a>2. 进阶火柴人</h5><img src="/imgs/餐巾纸的背面-扩展创意-进阶火柴人.jpg" width="600" height="150">
+<p>【示例】<br><img src="/imgs/餐巾纸的背面-扩展创意-进阶火柴人示例.jpg" width="600" height="150"></p>
+<h5 id="3-星形人"><a href="#3-星形人" class="headerlink" title="3. 星形人"></a>3. 星形人</h5><img src="/imgs/餐巾纸的背面-扩展创意-星形人.jpg" width="600" height="150">
+<h5 id="4-格雷法"><a href="#4-格雷法" class="headerlink" title="4. 格雷法"></a>4. 格雷法</h5><img src="/imgs/餐巾纸的背面-扩展创意-格雷法.jpg" width="600" height="150">
+<p>【示例】<br><img src="/imgs/餐巾纸的背面-扩展创意-格雷法示例.jpg" width="400" height="150"></p>
+<h5 id="5-others"><a href="#5-others" class="headerlink" title="5. others"></a>5. others</h5><img src="/imgs/餐巾纸的背面-扩展创意-others.jpg" width="600" height="150">
+<h4 id="2-箭头"><a href="#2-箭头" class="headerlink" title="2. 箭头"></a>2. 箭头</h4><img src="/imgs/餐巾纸的背面-扩展创意-箭头.jpg" width="600" height="150">
+<h3 id="3-对话框"><a href="#3-对话框" class="headerlink" title="3. 对话框"></a>3. 对话框</h3><h4 id="4-图框"><a href="#4-图框" class="headerlink" title="4. 图框"></a>4. 图框</h4><img src="/imgs/餐巾纸的背面-扩展创意-图框.jpg" width="600" height="150">
+<h4 id="5-小图标"><a href="#5-小图标" class="headerlink" title="5. 小图标"></a>5. 小图标</h4><p>小图标有很多种，限于篇幅，下面只列举一些比较好画的项目符号：<br><img src="/imgs/餐巾纸的背面-扩展创意-项目符号.jpg" width="600" height="150"></p>
+<p>事物类的图标，这个很容易在网上就可以搜索到，文章末尾reference里面提供了几个icon的链接。</p>
+<h3 id="六、字体"><a href="#六、字体" class="headerlink" title="六、字体"></a>六、字体</h3><p>主要是样式、大小、间距，要点在于让人一眼望去，层次分明。</p>
+<h3 id="七、配色"><a href="#七、配色" class="headerlink" title="七、配色"></a>七、配色</h3><ol>
+<li><p>正文字体最好不要超过三种颜色，颜色太多显得杂乱，不要选择饱和度太高的颜色，就是鲜艳的颜色，太亮眼了，尽量用温和一些的深色系，如深灰或者黑色。</p>
+</li>
+<li><p>用一种颜色作为主色调，可以用在标题、重点内容、二维码、头像、顶部和底部的引导等。</p>
+</li>
+<li><p>金句或者突出的地方用黑色加粗，或者深色系的颜色即可。</p>
+</li>
+</ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://goo.gl/r3UQr" target="_blank" rel="external">The Sketchnote Handbook</a></li>
+<li><a href="http://sunnibrown.com/doodlerevolution/" target="_blank" rel="external">Doodle Revolution</a></li>
+<li><a href="http://sketchnotearmy.com/sketchnoters/" target="_blank" rel="external">视觉笔记</a></li>
+<li><a href="https://thenounproject.com/" target="_blank" rel="external">Icons for everything</a></li>
+<li><a href="http://iconfont.cn/" target="_blank" rel="external">iconfont</a></li>
+<li><a href="https://mp.weixin.qq.com/s/XqjA5Wwn7ql6rKOlyuLn-w" target="_blank" rel="external">从绘画小白到手绘达人</a></li>
+<li><a href="http://www.jianshu.com/p/bf2d287b4a4a?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="external">干货｜任何人都能做出好看的视觉笔记</a></li>
+<li><a href="http://www.jianshu.com/p/2dc6fea6a20f?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="external">视觉笔记让你的学习更高效</a></li>
+<li><a href="http://www.jianshu.com/p/4596e168ec06" target="_blank" rel="external">视觉化你的行动力</a></li>
+<li><a href="http://www.jianshu.com/p/f70f8518bb03" target="_blank" rel="external">视觉笔记 | 几个国外视觉笔记博客介绍</a></li>
+<li><a href="http://www.jianshu.com/p/5b3658235333" target="_blank" rel="external">路乔手绘笔记系列</a></li>
+</ul>
+</span>
         
       
     </div>
@@ -322,8 +504,8 @@
 
       
         
-          <span itemprop="articleBody"><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。<br>　　前面一篇从整体上介绍了视觉化思考的几个重要部分：四个步骤、三个工具、六种方法。本篇将借助这三个工具、6种方法进行四个步骤的详解。<br><img src="/imgs/餐巾纸的背面-发现创意-大纲.jpg" width="600" height="400"></p>
-<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　看书、练习，在这个信息爆炸、碎片化的时代，也许是一种不错的学习方式。只有不停的练习、验证，才能逐步掌握“真正的知识”，而不是仅仅获取这些“网络上的信息”。</p>
+          <span itemprop="articleBody"><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。<br>　　前面一篇 <a href="">餐巾纸的背面（一）视觉化思考</a> 从整体上介绍了视觉化思考的几个重要部分：四个步骤、三个工具、六种方法。本篇将借助这三个工具、6种方法进行四个步骤的详解。<br><img src="/imgs/餐巾纸的背面-发现创意-大纲.jpg" width="600" height="400"></p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　互联网时代，信息泛滥，知识变得无处不在。鼠标轻轻一点，我们就坐拥一座巨型图书馆。然后我们并没有因此离真相更近，离真正的掌握更近。我们花费了大量的时间去获取信息，去浏览不同的网页，了解不同的案例。<br>　　看书、练习、总结，在这个信息爆炸、碎片化的时代，也许是一种不错的学习方式。只有不停的练习、验证，才能逐步掌握“真正的知识”，而不是仅仅获取这些“网络上的信息”。</p>
 <h2 id="三、看"><a href="#三、看" class="headerlink" title="三、看"></a>三、看</h2><p>　　我们睁开眼的每一秒，都有大量的视觉信号像光量子一样经视网膜转换成电子脉冲，然后通过视觉神经进入大脑的不同区域，这一过程中信号被分析、过滤、比较、分门别类、重组————这样才能成为我们大脑中形成的图像。<br>　　上述过程是无意识的，而我们谈起视觉化思考的时候，指的是有意识地使用上述内在观看系统。谈视觉化思考，首先得说说“主动地看”。</p>
 <h3 id="1-我们如何看"><a href="#1-我们如何看" class="headerlink" title="1. 我们如何看"></a>1. 我们如何看</h3><p>　　四项关键任务：定向、定位、识别、聚焦。我们的视觉系统在无意识情况下，就是通过完成这四项关键任务来为我们服务的。<br><img src="/imgs/餐巾纸的背面-发现创意-四项关键任务.jpg" width="600" height="150"></p>
 <h3 id="2-如何看得更真切"><a href="#2-如何看得更真切" class="headerlink" title="2. 如何看得更真切"></a>2. 如何看得更真切</h3><p>　　为了培养好的观看技巧，并且为视觉化打下好的基础，当我们看到新鲜事物时，需要遵从四个基本规则：</p>
@@ -575,7 +757,7 @@
 <h2 id="八、六个方法"><a href="#八、六个方法" class="headerlink" title="八、六个方法"></a>八、六个方法</h2><p>　　6个方法对应于上面所提到的视觉化思考的6个要素，也对应到后面<a href="">餐巾纸的背面（二）发现创意</a>的<code>六六法则</code>。</p>
 <img src="/imgs/餐巾纸的背面-视觉化思考-6种方法.jpg" width="600" height="350">
 <h2 id="九、总结"><a href="#九、总结" class="headerlink" title="九、总结"></a>九、总结</h2><p>　<br><img src="/imgs/餐巾纸的背面-视觉化思考-导向绳.jpg" width="600" height="250"><br>上图是《餐巾纸的背面》一书的导向绳，顺应着该导向绳，进行视觉化思考的过程中，上述三个主题会频繁出现。</p>
-<p>　本篇的主要内容对应于《餐巾纸的背面》的导言一章，对视觉化思考涉及到的进行进行了归纳总结。至于四个步骤的详细做法可以阅读<a href="">餐巾纸的背面（二）发现创意</a>。</p>
+<p>　本篇的主要内容对应于《餐巾纸的背面》的导言一章，对视觉化思考涉及到的进行进行了归纳总结。至于四个步骤的详细做法可以阅读<a href="http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/" target="_blank" rel="external">餐巾纸的背面（二）发现创意</a>。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://www.jianshu.com/p/413c2acfe8b0" target="_blank" rel="external">关于视觉化思考的一些思考</a></li>
 <li><a href="http://www.jianshu.com/p/cb39a06d95c2" target="_blank" rel="external">视觉化思维练习总结</a></li>
@@ -2140,341 +2322,6 @@ test-dir/test.yml
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/07/11/Docker-workshop-3-Docker的基本操作/" itemprop="url">
-                Docker Workshop（三）Docker的基本操作
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2017-07-11T22:08:27+08:00" content="2017-07-11">
-            2017-07-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Docker/" itemprop="url" rel="index">
-                  <span itemprop="name">Docker</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/07/11/Docker-workshop-3-Docker的基本操作/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/11/Docker-workshop-3-Docker的基本操作/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
-<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
-<ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><strong>Docker的基本操作</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
-<li>多主机部署</li>
-<li>服务发现</li>
-<li>日志、跟踪、监控</li>
-</ul>
-<p>本章通过以下系列过程，来熟悉Docker的基本指令：</p>
-<ul>
-<li>构建镜像；</li>
-<li>搭建私有registry；</li>
-<li>上传镜像、获取镜像；</li>
-<li>创建容器、运行容器；</li>
-<li>连接容器</li>
-<li>使用Docker-compose工具</li>
-</ul>
-<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><h4 id="1-镜像是什么"><a href="#1-镜像是什么" class="headerlink" title="1. 镜像是什么"></a>1. 镜像是什么</h4><p>　　Docker镜像是一个特殊的<strong>文件系统</strong>，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
-<p>镜像通常包含：</p>
-<ul>
-<li>一个轻量级的操作系统发行版</li>
-<li>相关依赖</li>
-<li>单个应用或服务</li>
-</ul>
-<h4 id="2-镜像的分层存储"><a href="#2-镜像的分层存储" class="headerlink" title="2. 镜像的分层存储"></a>2. 镜像的分层存储</h4><p>　　传统的Linux加载bootfs时会先将rootfs设为read-only，然后在系统自检之后将rootfs从read-only改为read-write，然后我们就可以在rootfs上进行写和读的操作了。<br>　　但Docker的镜像却不是这样，它在bootfs自检完毕之后并不会把rootfs的read-only改为read-write。而是利用union mount（UnionFS的一种挂载机制）将一个或多个read-only的rootfs加载到之前的read-only的rootfs层之上。</p>
-<img src="/imgs/docker-image-layer1.png" width="400" height="250">
-<p>可以通过<code>docker info</code>查看宿主机上docker的文件系统方式：</p>
-<pre><code>$ docker info
-Containers: 3
-Images: 267
-Server Version: 1.9.1
-Storage Driver: aufs
- Root Dir: /var/lib/docker/aufs
- Backing Filesystem: extfs
- Dirs: 273
- Dirperm1 Supported: true
-Execution Driver: native-0.2
-Logging Driver: json-file
-Kernel Version: 3.19.0-32-generic
-Operating System: Ubuntu 14.04.3 LTS
-CPUs: 2
-Total Memory: 3.431 GiB
-Name: workshop
-id=: 27OE:SE73:WCPT:366X:CCGS:G2NQ:RB2A:UVJ2:A3OC:CZUJ:RYCB:XDDE
-WARNING: No swap limit support
-</code></pre><h4 id="3-练习构建镜像"><a href="#3-练习构建镜像" class="headerlink" title="3. 练习构建镜像"></a>3. 练习构建镜像</h4><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲到获取镜像有三种方式，其中自己从无到有地创建镜像，Docker有两种方式：</p>
-<ul>
-<li>创建一个容器，运行若干命令，再使用<code>docker commit</code>来生成一个新的镜像。以这种方式创建的镜像不具备再生产能力且无法实现版本控制性，因此绝对<strong>不值得提倡</strong>。</li>
-<li>创建一个<code>Dockerfile</code>然后再使用<code>docker build</code>来创建一个镜像。大多人会使用<code>Dockerfile</code>来创建镜像。</li>
-</ul>
-<h4 id="【练习1】通过Dockerfile构建镜像"><a href="#【练习1】通过Dockerfile构建镜像" class="headerlink" title="【练习1】通过Dockerfile构建镜像"></a>【练习1】通过Dockerfile构建镜像</h4><p>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
-<img src="/imgs/docker-image-layers-history.png" width="500" height="350">
-<p>2）生成镜像<br><code>docker build -t nginx-demo .</code>其中<code>.</code>是当前目录，包含<code>Dockerfile</code>文件</p>
-<pre><code>$ docker build -t nginx-demo .
-Sending build context to Docker daemon 7.168 kB
-Step 1 : FROM debian:8
-8: Pulling from library/debian
-aaec12cbddb4: Pull complete
-a4231e14d761: Pull complete
-Digest: sha256:64682f1a6d256b358b10dba3669b22f3594c69ec790548f5ba6362276ac9d4ca
-Status: Downloaded newer image for debian:8
- ---&gt; a4231e14d761
-Step 2 : MAINTAINER John Citizen
- ---&gt; Running in 35d7b813f3ec
- ---&gt; 3abd0b877321
-Removing intermediate container 35d7b813f3ec
-Step 3 : RUN apt-get update &amp;&amp; apt-get install -y nginx
- ---&gt; Running in f75d9c834ee9
- ---&gt; 352a72a3b8a8
-Removing intermediate container f75d9c834ee9
-Step 4 : EXPOSE 80
- ---&gt; Running in c9939361ce4d
- ---&gt; e55ea9a20dd4
-Removing intermediate container c9939361ce4d
-Step 5 : CMD nginx -g daemon off;
- ---&gt; Running in bdac893db4aa
- ---&gt; 7bd0c6e98644
-Removing intermediate container bdac893db4aa
-Successfully built 7bd0c6e98644
-</code></pre><p>可以看到Docker会创建（create -&gt; commit -&gt; destroy）一些临时的容器，如<code>Step 2</code>的<code>35d7b813f3ec</code>，生成的新的镜像作为中间镜像会被保存在cache中。可以通过下面两种方式查看该临时容器：</p>
-<pre><code>$ docker inspect 3abd0b877321
-$ docker images -a |grep 3abd0b877321
-</code></pre><p>3）查看所有镜像</p>
-<pre><code>$ docker images
-</code></pre><p>4）查看<code>nginx-demo</code>镜像信息</p>
-<pre><code>$ docker inspect nginx-demo
-$ docker inspect -f &apos;{{ .Config.ExposedPorts }}&apos; nginx-demo
-</code></pre><p>5) 查看创建镜像的历史</p>
-<pre><code>$ docker history nginx-demo:latest
-IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
-7bd0c6e98644        5 minutes ago       /bin/sh -c #(nop) CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon o   0 B
-e55ea9a20dd4        5 minutes ago       /bin/sh -c #(nop) EXPOSE 80/tcp                 0 B
-352a72a3b8a8        5 minutes ago       /bin/sh -c apt-get update &amp;&amp; apt-get install    71.8 MB
-3abd0b877321        6 minutes ago       /bin/sh -c #(nop) MAINTAINER John Citizen       0 B
-a4231e14d761        3 weeks ago         /bin/sh -c #(nop)  CMD [&quot;bash&quot;]                 0 B
-aaec12cbddb4        3 weeks ago         /bin/sh -c #(nop) ADD file:9c48682ff75c756544   123.5 MB
-</code></pre><ul>
-<li>容器镜像包括元数据和文件系统，其中文件系统是指对基础镜像的文件系统的修改，元数据不影响文件系统，只是会影响容器的配置;</li>
-<li>每个步骤都会生成一个新的镜像，新的镜像与上一次的镜像相比，要么元数据有了变化，要么文件系统有了变化而多加了一层;</li>
-<li>Docker在需要执行指令时通过创建临时镜像，运行指定的命令，再通过<code>docker commit</code>来生成新的镜像;</li>
-<li>Docker会将中间镜像都保存在缓存中，这样将来如果能直接使用的话就不需要再从头创建了。</li>
-<li>由于每一行指令，都会产生一个镜像，因此可以使用链式指令，有助于构建较小的镜像。(更多内容可以阅读《高性能Docker》)</li>
-</ul>
-<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><h4 id="【练习2】使用Docker-public仓库"><a href="#【练习2】使用Docker-public仓库" class="headerlink" title="【练习2】使用Docker public仓库"></a>【练习2】使用Docker public仓库</h4><pre><code>$ docker search busybox
-NAME                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
-busybox                         Busybox base image.                             1052      [OK]
-progrium/busybox                                                                65                   [OK]
-radial/busyboxplus              Full-chain, Internet enabled, busybox made...   13                   [OK]
-container4armhf/armhf-busybox   Automated build of Busybox for armhf devic...   8                    [OK]
-ofayau/busybox-jvm              Prepare busybox to install a 32 bits JVM.       2                    [OK]
-azukiapp/busybox                This image is meant to be used as the base...   2                    [OK]
-multiarch/busybox               multiarch ports of ubuntu-debootstrap           2                    [OK]
-ofayau/busybox-libc32           Busybox with 32 bits (and 64 bits) libs         1                    [OK]
-skomma/busybox-data             Docker image suitable for data volume cont...   1                    [OK]
-prom/busybox                    Prometheus Busybox Docker base images           1                    [OK]
-elektritter/busybox-teamspeak   Leightweight teamspeak3 container based on...   1                    [OK]
-clover/busybox                  BusyBox base image                              1                    [OK]
-getblank/busybox                Docker container busybox for Blank              1                    [OK]
-zanner/busybox                  https://github.com/sergej-kucharev/zanner-...   1                    [OK]
-cucy/busybox                    aouto  build busybox                            0                    [OK]
-adamant/busybox                 Busybox base image and debian package inst...   0                    [OK]
-sdurrheimer/prom-busybox        Moved to https://hub.docker.com/r/prom/bus...   0                    [OK]
-ggtools/busybox-ubuntu          Busybox ubuntu version with extra goodies       0                    [OK]
-ddn0/busybox                    fork of official busybox                        0                    [OK]
-hongtao12310/busybox            for busybox image based on the gcr.io/goog...   0                    [OK]
-freenas/busybox                 Simple Busybox interactive Linux container      0                    [OK]
-kakaximeng/busybox              busybox                                         0                    [OK]
-jahroots/busybox                Busybox containers                              0                    [OK]
-jiangshouzhuang/busybox         busybox                                         0                    [OK]
-stubbornrock/busybox            busybox:latest                                  0                    [OK]
-
-$ docker pull busybox
-</code></pre><h4 id="【练习3】搭建Docker-private仓库"><a href="#【练习3】搭建Docker-private仓库" class="headerlink" title="【练习3】搭建Docker private仓库"></a>【练习3】搭建Docker private仓库</h4><p>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
-<pre><code>docker run -d \
-  -p 5000:5000 \
-  --restart=always \
-  --name registry \
-  -v /home/vagrant/topics/tmp/registry-certs:/certs \
-  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry_hostname.crt \
-  -e REGISTRY_HTTP_TLS_KEY=/certs/registry_hostname.key \
-  registry:2
-</code></pre><p>2) 查看所有docker容器</p>
-<pre><code>$ docker ps -a
-</code></pre><p>3) 访问私有registry接口</p>
-<pre><code>$ sudo curl -is --cacert /etc/docker/certs.d/registry:5000/registry.crt https://registry:5000/v2/
-HTTP/1.1 200 OK
-Content-Length: 2
-Content-Type: application/json; charset=utf-8
-Docker-Distribution-Api-Version: registry/2.0
-Date: Wed, 12 Jul 2017 13:30:17 GMT
-HTTP/1.1 200 OK
-</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><h4 id="【练习4】上传镜像到registry"><a href="#【练习4】上传镜像到registry" class="headerlink" title="【练习4】上传镜像到registry"></a>【练习4】上传镜像到registry</h4><p>1）给镜像打标签</p>
-<pre><code>$ docker tag nginx-demo registry:5000/nginx-demo
-</code></pre><p>2) 查看所有镜像</p>
-<pre><code>$ docker images
-REPOSITORY                      TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
-nginx-demo                      latest              8ef43fa97b67        About a minute ago   195.3 MB
-registry:5000/nginx-demo        latest              8ef43fa97b67        About a minute ago   195.3 MB
-</code></pre><p>3）上传镜像</p>
-<pre><code>$ docker push registry:5000/nginx-demo
-The push refers to a repository [registry:5000/nginx-demo] (len: 1)
-8ef43fa97b67: Pushed
-5982f0a481be: Pushed
-c329ad2e9994: Pushed
-cdea4d036852: Pushed
-aaec12cbddb4: Pushed
-latest: digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b size: 8470
-</code></pre><p>4）访问registry接口查看镜像是否存在</p>
-<pre><code>$ export CERT_PATH=/etc/docker/certs.d/registry:5000/registry.crt
-$ sudo curl -s --cacert ${CERT_PATH} https://registry:5000/v2/_catalog
-{&quot;repositories&quot;:[&quot;nginx-demo&quot;]}
-</code></pre><p>5) 删除本地镜像</p>
-<pre><code>$ docker rmi nginx-demo
-Untagged: nginx-demo:latest
-Deleted: 7bd0c6e986444a5855665a4b746130088904bc5b7626d5bb5c0dc3ab52fc1142
-Deleted: e55ea9a20dd4b5d4ede4a4873e18e94f139df646085c79c83d12f71815559dda
-Deleted: 352a72a3b8a8ad51f8a84a357fcb3af0a127c8cefc34b6d5839fdcd8c06ececd
-Deleted: 3abd0b8773212881d3e73babe2304d5b760c0b156095bd9496ceb2fedf71fd62
-</code></pre><p>6）从私有registry上拉取镜像</p>
-<pre><code>$ docker pull registry:5000/nginx-demo
-Using default tag: latest
-latest: Pulling from nginx-demo
-31f1e1f22679: Pull complete
-51c8e8d08671: Pull complete
-04ec693a6b9c: Pull complete
-ae06ee9e3b16: Pull complete
-59c395799b5f: Pull complete
-26d4e0d847a6: Pull complete
-Digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b
-Status: Downloaded newer image for registry:5000/nginx-demo:latest
-</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><h4 id="【练习5】启动Docker容器"><a href="#【练习5】启动Docker容器" class="headerlink" title="【练习5】启动Docker容器"></a>【练习5】启动Docker容器</h4><p>1) 启动一个容器</p>
-<pre><code>$ docker run -d -p 80:80 --name nginx-app registry:5000/nginx-demo
-a56d494e8af22247eccbd7e99f108501684b52395a50f479cca09caa8ec18b19
-$ docker ps
-CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                    NAMES
-a56d494e8af2        registry:5000/nginx-demo   &quot;nginx -g &apos;daemon off&quot;   3 seconds ago       Up 2 seconds        0.0.0.0:80-&gt;80/tcp       nginx-app
-7d01136fd367        registry:2                 &quot;/bin/registry /etc/d&quot;   22 minutes ago      Up 22 minutes       0.0.0.0:5000-&gt;5000/tcp   registry
-</code></pre><p>此处用<code>docker run</code>是创建并启动，<code>docker create</code>是单纯创建容器。<br>2）查看容器log</p>
-<pre><code>$ docker logs nginx-app
-</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><h4 id="【练习6】连接多个Docker容器"><a href="#【练习6】连接多个Docker容器" class="headerlink" title="【练习6】连接多个Docker容器"></a>【练习6】连接多个Docker容器</h4><p>假设我们有如下三个应用，且都已经publish到了registry中：</p>
-<ul>
-<li>shop-app，需要连接review和catalogue</li>
-<li>review，微服务</li>
-<li>catalogue，微服务</li>
-</ul>
-<p>1）先启动<code>review</code>和<code>catalogue</code></p>
-<pre><code>$ docker run -d -p 8082:8082 --name review registry:5000/review
-$ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
-</code></pre><p>2）连接<code>shop-app</code>到<code>review</code>和<code>catalogue</code></p>
-<pre><code>$ docker run -d -p 8080:8080 --name shop-app --link review:review --link catalogue:catalogue registry:5000/shop-app
-</code></pre><p>3）查看<code>shop-app</code>容器</p>
-<pre><code>$ docker exec shop-app cat /etc/hosts
-</code></pre><p>4）确认<code>shop-app</code>可以连接到<code>review</code></p>
-<pre><code>$ docker exec -t shop-app ping review
-</code></pre><p>　　以下是Docker link的一些限制：</p>
-<ul>
-<li>Docker link 只在同一宿主机内可以使用</li>
-<li>重新创建容器将会移除之前的链接</li>
-<li>被连接的容器必须是一个已经启动的容器</li>
-</ul>
-<p>　　在Docker发布1.9版本的时候推荐使用<code>Docker Networks</code>代替<code>Docker link</code>，后面的<a href="">Docker Workshop（五）Docker网络</a>会讲到Docker Networks。</p>
-<h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><p>　　Compose是用于定义和运行复杂Docker应用的工具。你可以在一个文件中定义一个多容器的应用，然后使用一条命令来启动你的应用，然后所有相关的操作都会被自动完成。</p>
-<h4 id="【练习7】使用Docker-compose工具"><a href="#【练习7】使用Docker-compose工具" class="headerlink" title="【练习7】使用Docker compose工具"></a>【练习7】使用Docker compose工具</h4><p>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
-<p>2) 启动三个容器</p>
-<pre><code>$ docker-compose up
-</code></pre><p>3） 查看运行的容器</p>
-<pre><code>$ docker-compose ps
-</code></pre><p>3）查看log</p>
-<pre><code>$ docker-compose logs
-</code></pre><p><code>docker-compose</code>可以查看所有在<code>docker-compose.yml</code>中声明的容器的日志，不用切换tab查看单独的docker容器日志。</p>
-<h3 id="九、使用容器时要避免的做法"><a href="#九、使用容器时要避免的做法" class="headerlink" title="九、使用容器时要避免的做法"></a>九、使用容器时要避免的做法</h3><ul>
-<li>不要在容器中保存数据（Don’t store data in containers）</li>
-<li>将应用打包到镜像再部署而不是更新到已有容器（Don’t ship your application in two pieces）</li>
-<li>不要产生过大的镜像 （Don’t create large images）</li>
-<li>不要使用单层镜像 （Don’t use a single layer image）</li>
-<li>不要从运行着的容器上产生镜像 （Don’t create images from running containers ）</li>
-<li>不要只是使用 “latest”标签 （Don’t use only the “latest” tag）</li>
-<li>不要在容器内运行超过一个的进程 （Don’t run more than one process in a single container ）</li>
-<li>不要在容器内保存 credentials，而是要从外面通过环境变量传入 （ Don’t store credentials in the image. Use environment variables）</li>
-<li>不要使用 root 用户跑容器进程（Don’t run processes as a root user ）</li>
-<li>不要依赖于IP地址，而是要从外面通过环境变量传入 （Don’t rely on IP addresses ）</li>
-</ul>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是按照构建流程练习了docker的一些常见基本指令，指令并不全面，详细的指令可以参考<a href="https://docs.docker.com/engine/reference/commandline/docker/#parent-command" target="_blank" rel="external">官网</a>进行练习。<br>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的数据存储。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
-<li><a href="http://feisky.xyz/docker/index.html" target="_blank" rel="external">Docker笔记</a></li>
-<li><a href="https://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/" target="_blank" rel="external">10 things to avoid in docker containers</a></li>
-</ul>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2513,7 +2360,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>

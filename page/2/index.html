@@ -184,6 +184,341 @@
           
           
             
+              <a class="post-title-link" href="/2017/07/11/Docker-workshop-3-Docker的基本操作/" itemprop="url">
+                Docker Workshop（三）Docker的基本操作
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2017-07-11T22:08:27+08:00" content="2017-07-11">
+            2017-07-11
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/Docker/" itemprop="url" rel="index">
+                  <span itemprop="name">Docker</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2017/07/11/Docker-workshop-3-Docker的基本操作/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/11/Docker-workshop-3-Docker的基本操作/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><strong>Docker的基本操作</strong></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<p>本章通过以下系列过程，来熟悉Docker的基本指令：</p>
+<ul>
+<li>构建镜像；</li>
+<li>搭建私有registry；</li>
+<li>上传镜像、获取镜像；</li>
+<li>创建容器、运行容器；</li>
+<li>连接容器</li>
+<li>使用Docker-compose工具</li>
+</ul>
+<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><h4 id="1-镜像是什么"><a href="#1-镜像是什么" class="headerlink" title="1. 镜像是什么"></a>1. 镜像是什么</h4><p>　　Docker镜像是一个特殊的<strong>文件系统</strong>，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
+<p>镜像通常包含：</p>
+<ul>
+<li>一个轻量级的操作系统发行版</li>
+<li>相关依赖</li>
+<li>单个应用或服务</li>
+</ul>
+<h4 id="2-镜像的分层存储"><a href="#2-镜像的分层存储" class="headerlink" title="2. 镜像的分层存储"></a>2. 镜像的分层存储</h4><p>　　传统的Linux加载bootfs时会先将rootfs设为read-only，然后在系统自检之后将rootfs从read-only改为read-write，然后我们就可以在rootfs上进行写和读的操作了。<br>　　但Docker的镜像却不是这样，它在bootfs自检完毕之后并不会把rootfs的read-only改为read-write。而是利用union mount（UnionFS的一种挂载机制）将一个或多个read-only的rootfs加载到之前的read-only的rootfs层之上。</p>
+<img src="/imgs/docker-image-layer1.png" width="400" height="250">
+<p>可以通过<code>docker info</code>查看宿主机上docker的文件系统方式：</p>
+<pre><code>$ docker info
+Containers: 3
+Images: 267
+Server Version: 1.9.1
+Storage Driver: aufs
+ Root Dir: /var/lib/docker/aufs
+ Backing Filesystem: extfs
+ Dirs: 273
+ Dirperm1 Supported: true
+Execution Driver: native-0.2
+Logging Driver: json-file
+Kernel Version: 3.19.0-32-generic
+Operating System: Ubuntu 14.04.3 LTS
+CPUs: 2
+Total Memory: 3.431 GiB
+Name: workshop
+id=: 27OE:SE73:WCPT:366X:CCGS:G2NQ:RB2A:UVJ2:A3OC:CZUJ:RYCB:XDDE
+WARNING: No swap limit support
+</code></pre><h4 id="3-练习构建镜像"><a href="#3-练习构建镜像" class="headerlink" title="3. 练习构建镜像"></a>3. 练习构建镜像</h4><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲到获取镜像有三种方式，其中自己从无到有地创建镜像，Docker有两种方式：</p>
+<ul>
+<li>创建一个容器，运行若干命令，再使用<code>docker commit</code>来生成一个新的镜像。以这种方式创建的镜像不具备再生产能力且无法实现版本控制性，因此绝对<strong>不值得提倡</strong>。</li>
+<li>创建一个<code>Dockerfile</code>然后再使用<code>docker build</code>来创建一个镜像。大多人会使用<code>Dockerfile</code>来创建镜像。</li>
+</ul>
+<h4 id="【练习1】通过Dockerfile构建镜像"><a href="#【练习1】通过Dockerfile构建镜像" class="headerlink" title="【练习1】通过Dockerfile构建镜像"></a>【练习1】通过Dockerfile构建镜像</h4><p>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
+<img src="/imgs/docker-image-layers-history.png" width="500" height="350">
+<p>2）生成镜像<br><code>docker build -t nginx-demo .</code>其中<code>.</code>是当前目录，包含<code>Dockerfile</code>文件</p>
+<pre><code>$ docker build -t nginx-demo .
+Sending build context to Docker daemon 7.168 kB
+Step 1 : FROM debian:8
+8: Pulling from library/debian
+aaec12cbddb4: Pull complete
+a4231e14d761: Pull complete
+Digest: sha256:64682f1a6d256b358b10dba3669b22f3594c69ec790548f5ba6362276ac9d4ca
+Status: Downloaded newer image for debian:8
+ ---&gt; a4231e14d761
+Step 2 : MAINTAINER John Citizen
+ ---&gt; Running in 35d7b813f3ec
+ ---&gt; 3abd0b877321
+Removing intermediate container 35d7b813f3ec
+Step 3 : RUN apt-get update &amp;&amp; apt-get install -y nginx
+ ---&gt; Running in f75d9c834ee9
+ ---&gt; 352a72a3b8a8
+Removing intermediate container f75d9c834ee9
+Step 4 : EXPOSE 80
+ ---&gt; Running in c9939361ce4d
+ ---&gt; e55ea9a20dd4
+Removing intermediate container c9939361ce4d
+Step 5 : CMD nginx -g daemon off;
+ ---&gt; Running in bdac893db4aa
+ ---&gt; 7bd0c6e98644
+Removing intermediate container bdac893db4aa
+Successfully built 7bd0c6e98644
+</code></pre><p>可以看到Docker会创建（create -&gt; commit -&gt; destroy）一些临时的容器，如<code>Step 2</code>的<code>35d7b813f3ec</code>，生成的新的镜像作为中间镜像会被保存在cache中。可以通过下面两种方式查看该临时容器：</p>
+<pre><code>$ docker inspect 3abd0b877321
+$ docker images -a |grep 3abd0b877321
+</code></pre><p>3）查看所有镜像</p>
+<pre><code>$ docker images
+</code></pre><p>4）查看<code>nginx-demo</code>镜像信息</p>
+<pre><code>$ docker inspect nginx-demo
+$ docker inspect -f &apos;{{ .Config.ExposedPorts }}&apos; nginx-demo
+</code></pre><p>5) 查看创建镜像的历史</p>
+<pre><code>$ docker history nginx-demo:latest
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+7bd0c6e98644        5 minutes ago       /bin/sh -c #(nop) CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon o   0 B
+e55ea9a20dd4        5 minutes ago       /bin/sh -c #(nop) EXPOSE 80/tcp                 0 B
+352a72a3b8a8        5 minutes ago       /bin/sh -c apt-get update &amp;&amp; apt-get install    71.8 MB
+3abd0b877321        6 minutes ago       /bin/sh -c #(nop) MAINTAINER John Citizen       0 B
+a4231e14d761        3 weeks ago         /bin/sh -c #(nop)  CMD [&quot;bash&quot;]                 0 B
+aaec12cbddb4        3 weeks ago         /bin/sh -c #(nop) ADD file:9c48682ff75c756544   123.5 MB
+</code></pre><ul>
+<li>容器镜像包括元数据和文件系统，其中文件系统是指对基础镜像的文件系统的修改，元数据不影响文件系统，只是会影响容器的配置;</li>
+<li>每个步骤都会生成一个新的镜像，新的镜像与上一次的镜像相比，要么元数据有了变化，要么文件系统有了变化而多加了一层;</li>
+<li>Docker在需要执行指令时通过创建临时镜像，运行指定的命令，再通过<code>docker commit</code>来生成新的镜像;</li>
+<li>Docker会将中间镜像都保存在缓存中，这样将来如果能直接使用的话就不需要再从头创建了。</li>
+<li>由于每一行指令，都会产生一个镜像，因此可以使用链式指令，有助于构建较小的镜像。(更多内容可以阅读《高性能Docker》)</li>
+</ul>
+<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><h4 id="【练习2】使用Docker-public仓库"><a href="#【练习2】使用Docker-public仓库" class="headerlink" title="【练习2】使用Docker public仓库"></a>【练习2】使用Docker public仓库</h4><pre><code>$ docker search busybox
+NAME                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+busybox                         Busybox base image.                             1052      [OK]
+progrium/busybox                                                                65                   [OK]
+radial/busyboxplus              Full-chain, Internet enabled, busybox made...   13                   [OK]
+container4armhf/armhf-busybox   Automated build of Busybox for armhf devic...   8                    [OK]
+ofayau/busybox-jvm              Prepare busybox to install a 32 bits JVM.       2                    [OK]
+azukiapp/busybox                This image is meant to be used as the base...   2                    [OK]
+multiarch/busybox               multiarch ports of ubuntu-debootstrap           2                    [OK]
+ofayau/busybox-libc32           Busybox with 32 bits (and 64 bits) libs         1                    [OK]
+skomma/busybox-data             Docker image suitable for data volume cont...   1                    [OK]
+prom/busybox                    Prometheus Busybox Docker base images           1                    [OK]
+elektritter/busybox-teamspeak   Leightweight teamspeak3 container based on...   1                    [OK]
+clover/busybox                  BusyBox base image                              1                    [OK]
+getblank/busybox                Docker container busybox for Blank              1                    [OK]
+zanner/busybox                  https://github.com/sergej-kucharev/zanner-...   1                    [OK]
+cucy/busybox                    aouto  build busybox                            0                    [OK]
+adamant/busybox                 Busybox base image and debian package inst...   0                    [OK]
+sdurrheimer/prom-busybox        Moved to https://hub.docker.com/r/prom/bus...   0                    [OK]
+ggtools/busybox-ubuntu          Busybox ubuntu version with extra goodies       0                    [OK]
+ddn0/busybox                    fork of official busybox                        0                    [OK]
+hongtao12310/busybox            for busybox image based on the gcr.io/goog...   0                    [OK]
+freenas/busybox                 Simple Busybox interactive Linux container      0                    [OK]
+kakaximeng/busybox              busybox                                         0                    [OK]
+jahroots/busybox                Busybox containers                              0                    [OK]
+jiangshouzhuang/busybox         busybox                                         0                    [OK]
+stubbornrock/busybox            busybox:latest                                  0                    [OK]
+
+$ docker pull busybox
+</code></pre><h4 id="【练习3】搭建Docker-private仓库"><a href="#【练习3】搭建Docker-private仓库" class="headerlink" title="【练习3】搭建Docker private仓库"></a>【练习3】搭建Docker private仓库</h4><p>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
+<pre><code>docker run -d \
+  -p 5000:5000 \
+  --restart=always \
+  --name registry \
+  -v /home/vagrant/topics/tmp/registry-certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry_hostname.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/registry_hostname.key \
+  registry:2
+</code></pre><p>2) 查看所有docker容器</p>
+<pre><code>$ docker ps -a
+</code></pre><p>3) 访问私有registry接口</p>
+<pre><code>$ sudo curl -is --cacert /etc/docker/certs.d/registry:5000/registry.crt https://registry:5000/v2/
+HTTP/1.1 200 OK
+Content-Length: 2
+Content-Type: application/json; charset=utf-8
+Docker-Distribution-Api-Version: registry/2.0
+Date: Wed, 12 Jul 2017 13:30:17 GMT
+HTTP/1.1 200 OK
+</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><h4 id="【练习4】上传镜像到registry"><a href="#【练习4】上传镜像到registry" class="headerlink" title="【练习4】上传镜像到registry"></a>【练习4】上传镜像到registry</h4><p>1）给镜像打标签</p>
+<pre><code>$ docker tag nginx-demo registry:5000/nginx-demo
+</code></pre><p>2) 查看所有镜像</p>
+<pre><code>$ docker images
+REPOSITORY                      TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
+nginx-demo                      latest              8ef43fa97b67        About a minute ago   195.3 MB
+registry:5000/nginx-demo        latest              8ef43fa97b67        About a minute ago   195.3 MB
+</code></pre><p>3）上传镜像</p>
+<pre><code>$ docker push registry:5000/nginx-demo
+The push refers to a repository [registry:5000/nginx-demo] (len: 1)
+8ef43fa97b67: Pushed
+5982f0a481be: Pushed
+c329ad2e9994: Pushed
+cdea4d036852: Pushed
+aaec12cbddb4: Pushed
+latest: digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b size: 8470
+</code></pre><p>4）访问registry接口查看镜像是否存在</p>
+<pre><code>$ export CERT_PATH=/etc/docker/certs.d/registry:5000/registry.crt
+$ sudo curl -s --cacert ${CERT_PATH} https://registry:5000/v2/_catalog
+{&quot;repositories&quot;:[&quot;nginx-demo&quot;]}
+</code></pre><p>5) 删除本地镜像</p>
+<pre><code>$ docker rmi nginx-demo
+Untagged: nginx-demo:latest
+Deleted: 7bd0c6e986444a5855665a4b746130088904bc5b7626d5bb5c0dc3ab52fc1142
+Deleted: e55ea9a20dd4b5d4ede4a4873e18e94f139df646085c79c83d12f71815559dda
+Deleted: 352a72a3b8a8ad51f8a84a357fcb3af0a127c8cefc34b6d5839fdcd8c06ececd
+Deleted: 3abd0b8773212881d3e73babe2304d5b760c0b156095bd9496ceb2fedf71fd62
+</code></pre><p>6）从私有registry上拉取镜像</p>
+<pre><code>$ docker pull registry:5000/nginx-demo
+Using default tag: latest
+latest: Pulling from nginx-demo
+31f1e1f22679: Pull complete
+51c8e8d08671: Pull complete
+04ec693a6b9c: Pull complete
+ae06ee9e3b16: Pull complete
+59c395799b5f: Pull complete
+26d4e0d847a6: Pull complete
+Digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b
+Status: Downloaded newer image for registry:5000/nginx-demo:latest
+</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><h4 id="【练习5】启动Docker容器"><a href="#【练习5】启动Docker容器" class="headerlink" title="【练习5】启动Docker容器"></a>【练习5】启动Docker容器</h4><p>1) 启动一个容器</p>
+<pre><code>$ docker run -d -p 80:80 --name nginx-app registry:5000/nginx-demo
+a56d494e8af22247eccbd7e99f108501684b52395a50f479cca09caa8ec18b19
+$ docker ps
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                    NAMES
+a56d494e8af2        registry:5000/nginx-demo   &quot;nginx -g &apos;daemon off&quot;   3 seconds ago       Up 2 seconds        0.0.0.0:80-&gt;80/tcp       nginx-app
+7d01136fd367        registry:2                 &quot;/bin/registry /etc/d&quot;   22 minutes ago      Up 22 minutes       0.0.0.0:5000-&gt;5000/tcp   registry
+</code></pre><p>此处用<code>docker run</code>是创建并启动，<code>docker create</code>是单纯创建容器。<br>2）查看容器log</p>
+<pre><code>$ docker logs nginx-app
+</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><h4 id="【练习6】连接多个Docker容器"><a href="#【练习6】连接多个Docker容器" class="headerlink" title="【练习6】连接多个Docker容器"></a>【练习6】连接多个Docker容器</h4><p>假设我们有如下三个应用，且都已经publish到了registry中：</p>
+<ul>
+<li>shop-app，需要连接review和catalogue</li>
+<li>review，微服务</li>
+<li>catalogue，微服务</li>
+</ul>
+<p>1）先启动<code>review</code>和<code>catalogue</code></p>
+<pre><code>$ docker run -d -p 8082:8082 --name review registry:5000/review
+$ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
+</code></pre><p>2）连接<code>shop-app</code>到<code>review</code>和<code>catalogue</code></p>
+<pre><code>$ docker run -d -p 8080:8080 --name shop-app --link review:review --link catalogue:catalogue registry:5000/shop-app
+</code></pre><p>3）查看<code>shop-app</code>容器</p>
+<pre><code>$ docker exec shop-app cat /etc/hosts
+</code></pre><p>4）确认<code>shop-app</code>可以连接到<code>review</code></p>
+<pre><code>$ docker exec -t shop-app ping review
+</code></pre><p>　　以下是Docker link的一些限制：</p>
+<ul>
+<li>Docker link 只在同一宿主机内可以使用</li>
+<li>重新创建容器将会移除之前的链接</li>
+<li>被连接的容器必须是一个已经启动的容器</li>
+</ul>
+<p>　　在Docker发布1.9版本的时候推荐使用<code>Docker Networks</code>代替<code>Docker link</code>，后面的<a href="">Docker Workshop（五）Docker网络</a>会讲到Docker Networks。</p>
+<h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><p>　　Compose是用于定义和运行复杂Docker应用的工具。你可以在一个文件中定义一个多容器的应用，然后使用一条命令来启动你的应用，然后所有相关的操作都会被自动完成。</p>
+<h4 id="【练习7】使用Docker-compose工具"><a href="#【练习7】使用Docker-compose工具" class="headerlink" title="【练习7】使用Docker compose工具"></a>【练习7】使用Docker compose工具</h4><p>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
+<p>2) 启动三个容器</p>
+<pre><code>$ docker-compose up
+</code></pre><p>3） 查看运行的容器</p>
+<pre><code>$ docker-compose ps
+</code></pre><p>3）查看log</p>
+<pre><code>$ docker-compose logs
+</code></pre><p><code>docker-compose</code>可以查看所有在<code>docker-compose.yml</code>中声明的容器的日志，不用切换tab查看单独的docker容器日志。</p>
+<h3 id="九、使用容器时要避免的做法"><a href="#九、使用容器时要避免的做法" class="headerlink" title="九、使用容器时要避免的做法"></a>九、使用容器时要避免的做法</h3><ul>
+<li>不要在容器中保存数据（Don’t store data in containers）</li>
+<li>将应用打包到镜像再部署而不是更新到已有容器（Don’t ship your application in two pieces）</li>
+<li>不要产生过大的镜像 （Don’t create large images）</li>
+<li>不要使用单层镜像 （Don’t use a single layer image）</li>
+<li>不要从运行着的容器上产生镜像 （Don’t create images from running containers ）</li>
+<li>不要只是使用 “latest”标签 （Don’t use only the “latest” tag）</li>
+<li>不要在容器内运行超过一个的进程 （Don’t run more than one process in a single container ）</li>
+<li>不要在容器内保存 credentials，而是要从外面通过环境变量传入 （ Don’t store credentials in the image. Use environment variables）</li>
+<li>不要使用 root 用户跑容器进程（Don’t run processes as a root user ）</li>
+<li>不要依赖于IP地址，而是要从外面通过环境变量传入 （Don’t rely on IP addresses ）</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是按照构建流程练习了docker的一些常见基本指令，指令并不全面，详细的指令可以参考<a href="https://docs.docker.com/engine/reference/commandline/docker/#parent-command" target="_blank" rel="external">官网</a>进行练习。<br>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的数据存储。</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<li><a href="http://feisky.xyz/docker/index.html" target="_blank" rel="external">Docker笔记</a></li>
+<li><a href="https://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/" target="_blank" rel="external">10 things to avoid in docker containers</a></li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2017/07/10/Docker-workshop-2-Docker简介/" itemprop="url">
                 Docker Workshop（二）Docker简介
               </a>
@@ -1611,109 +1946,6 @@ Observable observable = Observable.from(parameters);
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/04/18/微服务-服务注册与发现/" itemprop="url">
-                微服务-服务注册与发现
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-04-18T19:14:52+08:00" content="2016-04-18">
-            2016-04-18
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/MicroServices/" itemprop="url" rel="index">
-                  <span itemprop="name">MicroServices</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/04/18/微服务-服务注册与发现/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/18/微服务-服务注册与发现/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><h3 id="为什么要使用服务发现？"><a href="#为什么要使用服务发现？" class="headerlink" title="为什么要使用服务发现？"></a>为什么要使用服务发现？</h3><p>　　我们可以想象一下，当我们需要远程的访问REST API或者Thrift API时，我们必须得知道服务的网络地址（IP Address和port）。传统的应用程序都是运行在固定的物理机器上，IP Address和端口号都是相对固定的。可以通过配置文件方式来实现不定期更新的Ip Address和端口号。但是，在基于云的微服务应用中，这是一个非常难以解决的问题。如下图所示：<br><img src="/imgs/theproblemofdiscovery.png" width="400" height="250"><br>　　在基于云的微服务应用中，服务实例的网络地址（IP Address和Port）是动态分配的，并且由于系统的auto-scaling, failures 和 upgrades等因数，一些服务运行的实例数量也是动态变化的。因此，客户端代码需要使用一个非常精细和准确的服务发现机制。<br>有两种主要的服务发现方式：客户端发现（<a href="http://microservices.io/patterns/client-side-discovery.html" target="_blank" rel="external">client-side discovery</a>）和服务器端发现（<a href="http://microservices.io/patterns/server-side-discovery.html" target="_blank" rel="external">server-side discovery</a>）。</p>
-<h3 id="客户端发现方式"><a href="#客户端发现方式" class="headerlink" title="客户端发现方式"></a>客户端发现方式</h3><p>　　在使用客户端发现方式时，客户端通过查询服务注册中心，获取可用的服务的实际网络地址（IP Adress 和 端口号）。然后通过负载均衡算法来选择一个可用的服务实例，并将请求发送至该服务。下图显示了客户端发现方式的结构图：<br><img src="/imgs/pattern_clientside.png" width="400" height="250"><br>　　在服务启动的时候，向服务注册中心注册服务；在服务停止的时候，向服务注册中心注销服务。服务注册的一个典型的实现方式就是通过heartbeat机制定时刷新。Netflix OSS 就是使用客户端发现方式的一个很好的例子。  Netflix Eureka是一个服务注册中心。它提供了一个管理和查询可用服务的 REST API。 负载均衡功能是通过Netflix Ribbon（是一个IPC客户端）和Eureka一起共同实现的。在文章的后面将深入的介绍Eureka。<br>　　客户端发现方式的优缺点。由于客户端知道所有可用的服务的实际网络地址，所以可以非常方便的实现负载均衡功能（比如：一致性哈希）。但是这种方式有一个非常明显的缺点就是具有非常强的耦合性。针对不同的语言，每个服务的客户端都得实现一套服务发现的功能。</p>
-<h3 id="服务端发现方式"><a href="#服务端发现方式" class="headerlink" title="服务端发现方式"></a>服务端发现方式</h3><p>　　另外一种服务发现的方式就是Server-Side Discovery Pattern，下图展示了这种方式的架构示例图：<br><img src="/imgs/pattern_serverside.png" width="400" height="250"><br>　　客户端向load balancer 发送请求。load balancer 查询服务注册中心找到可用的服务，然后转发请求到该服务上。和客户端发现一样，服务都要到注册中心进行服务注册和注销。AWS的弹性负载均衡（Elastic Load Balancer–ELB）就是服务端发现的一个例子。ELB通常是用于为外网服务提供负载平衡的。当然你也可以使用ELB为内部虚拟私有云（VPC）提供负载均衡服务。客户端通过使用DNS名称，发送HTTP或TCP请求到ELB。ELB为EC2或ECS集群提供负载均衡服务。AWS并没有提供单独的服务注册中心。而是通过ELB实现EC2实例和ECS容器的注册的。<br>　　NGINX不仅可以作为HTTP反向代理服务器和负载均衡器，也可以用来作为一个服务发现的负载均衡器。例如，这篇博客（<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx" target="_blank" rel="external">Scalable Architecture DR CoN: Docker, Registrator, Consul, Consul Template and Nginx</a>）介绍如何使用Consul Template 动态的配置NGINX功能。<br><a href="https://github.com/kubernetes/kubernetes/blob/master/docs/design/architecture.md" target="_blank" rel="external">Kubernetes</a> 和 <a href="https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html" target="_blank" rel="external">Marathon</a>是在通过集群中每个节点都运行一个代理来实现服务发现的功能的，代理的角色就是server-side discovery,客户端通过使用主机的IP Address和Port向Proxy发送请求，Proxy再将请求转发到集群中任何一个可用的服务上。<br>　　服务器端发现方式的优点是，服务的发现逻辑对客户端是透明的。客户只需简单的向load balancer发送请求就可以了。这就避免了为每种不同语言的客户端实现一套发现的逻辑。此外，许多软件都内置实现了这种功能。这种方式的一个最大的缺点是，你必须得关心该组件的高可用性。</p>
-<h3 id="服务注册中心"><a href="#服务注册中心" class="headerlink" title="服务注册中心"></a>服务注册中心</h3><p>　　服务注册中心是服务发现的核心。它保存了各个可用服务实例的网络地址（IP Address和Port）。服务注册中心必须要有高可用性和实时更新功能。<br>　　上面提到的 Netflix Eureka 就是一个服务注册中心。它提供了服务注册和查询服务信息的REST API。服务通过使用POST请求注册自己的IP Address和Port。每30秒发送一个PUT请求刷新注册信息。通过DELETE请求注销服务。客户端通过GET请求获取可用的服务实例信息。<br>Netflix的高可用（Netflix achieves high availability ）是通过在Amazon EC2运行多个实例来实现的,每一个Eureka服务都有一个弹性IP Address。当Eureka服务启动时，有DNS服务器动态的分配。Eureka客户端通过查询 DNS来获取Eureka的网络地址（IP Address和Port）。一般情况下，都是返回和客户端在同一个可用区Eureka服务器地址。<br>　　其他能够作为服务注册中心的有：<br>－　etcd —– 高可用，分布式，强一致性的，key-value，Kubernetes和Cloud Foundry都是使用了etcd。<br>－　consul —–一个用于discovering和 configuring的工具。它提供了允许客户端注册和发现服务的API。Consul可以进行服务健康检查，以确定服务的可用性。<br>－　zookeeper —— 在分布式应用中被广泛使用，高性能的协调服务。 Apache Zookeeper 最初为Hadoop的一个子项目，但现在是一个顶级项目。<br>　　我们已经了解了服务注册中心的概念，接下来我们看看服务是如果注册到注册中心的。有两种不同的方式来处理服务的注册和注销。一种是服务自己主动注册-自己注册（self-registration）。另一种是通过其他组件来管理服务的注册-第三方注册（third-party registration）。</p>
-<h3 id="Self-Registration"><a href="#Self-Registration" class="headerlink" title="Self-Registration"></a>Self-Registration</h3><p>　　使用Self-Registration的方式注册，服务实例必须自己主动的到注册中心注册和注销。比如可以使用heartbeat机制了实现。下图为这种方式的示意图：<br><img src="/imgs/pattern_selfregistration.png" width="400" height="250"><br>　　Netflix OSS Eureka client就是使用这种方式进行服务注册的。Eureka的客户端处理了服务注册和注销的所有工作。<br>　　Self-Registration方式的优缺点：一个明显的优点就是，非常简单，不需要任何其它辅助组件。而缺点也是比较明显的，使得各个服务和注册中心的耦合度比较高。服务的不同语言的客户端都得实现注册和注销的逻辑。另一种服务注册方式，可以达到解耦的功能，就是third-party registration方式。</p>
-<h3 id="Third-Party-Registration"><a href="#Third-Party-Registration" class="headerlink" title="Third-Party Registration"></a>Third-Party Registration</h3><p>　　使用Third-Party方式进行服务注册时，服务本身不必关心注册和注销功能。而是通过其他组件（service registrarhandles）来实现服务注册功能。可以通过如事件订阅等方式来监控服务的状态，如果发现一个新的服务实例运行，就向注册中心注册该服务，如果监控到某一服务停止了，就向注册中心注销该服务。下图显示了这种方式的结构图示意图：<br><img src="/imgs/pattern_thirdparties.png" width="400" height="250"><br>　　third-party Registration方式的优点是使服务和注册中心解耦，不用为每种语言实现服务注册的逻辑。这种方式的缺点就是必须得考虑该组件的高可用性。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　在微服务的应用系统中，服务实例的数量是动态变化。各服务实例动态分配网络地址（IP Address 和Port）。因此，为了为客户端能够访问到服务，就必须要有一种服务的发现机制。<br>服务发现的核心是服务注册中心。服务注册中心保存了各个服务可用的实例的相关信息。服务注册中心提供了管理API和查询API。使用管理API进行服务注册、注销。系统的其他组件可以通过查询API来获得当前可用的服务实例信息。<br>　　有两种主要的服务发现方式：客户端发现（client-side service discovery）和服务端发现（ server-side discovery）。在使用客户端服务发现的方式中，客户通过查询服务注册中心，选择一个可用的服务实例。在使用服务器端发现系统中，客户访问Router/load balancer，通过Router/load balancer查询服务注册中心，并将请求转发到一个可用服务实例上。<br>　　服务注册和注销的方式也有两种。一种是服务自己主动的将自己注册到服务注册中心，称为self-registration。另一种是通过其他组件来处理服务的注册和注销，称为third-party registration。<br>在有些环境中，服务发现功能需要自己通过服务注册中心（比如：Netflix Eureka, etcd, Apache Zookeeper）实现，而有些环境中，服务发现功能是内置的。例如，Kubernetes和Marathon。<br>Nginx可以作为HTTP反向代理和负载平衡器，也可以用来作为一个服务发现的负载均衡器。通过向nginx推送routing information来修改nginx的配置，比如使用：Consul Template动态修改NGINX的配置. NGINX Plus 也支持动态修改配置功能。<br>　　在今后的文章中，我们将继续深入分析微服务的其他方面的内容。</p>
-<blockquote>
-<p>MaxLeap翻译的中文版地址：<a href="https://blog.maxleap.cn/archives/524" target="_blank" rel="external">微服务系统中的服务发现机制</a></p>
-<p>原文作者发布的关于微服务系列文章的地址：</p>
-<ul>
-<li><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="external">Introduction to Microservices</a></li>
-<li><a href="https://www.nginx.com/blog/building-microservices-using-an-api-gateway/" target="_blank" rel="external">Building Microservices: Using an API Gateway</a></li>
-<li><a href="https://www.nginx.com/blog/building-microservices-inter-process-communication/" target="_blank" rel="external">Building Microservices: Inter-Process Communication in a Microservices Architecture</a></li>
-<li><a href="https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/" target="_blank" rel="external">Service Discovery in a Microservices Architecture</a></li>
-<li><a href="https://www.nginx.com/blog/event-driven-data-management-microservices/" target="_blank" rel="external">Event-Driven Data Management for Microservices</a></li>
-<li><a href="https://www.nginx.com/blog/deploying-microservices/" target="_blank" rel="external">Choosing a Microservices Deployment Strategy</a></li>
-<li><a href="https://www.nginx.com/blog/refactoring-a-monolith-into-microservices/" target="_blank" rel="external">Refactoring a Monolith into Microservices</a></li>
-</ul>
-</blockquote>
-</span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1752,7 +1984,7 @@ Observable observable = Observable.from(parameters);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-count">47</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
