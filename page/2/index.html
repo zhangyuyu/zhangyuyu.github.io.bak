@@ -1,11 +1,23 @@
-<!doctype html>
-<html class="theme-next use-motion ">
-<head>
+<!DOCTYPE html>
+
+
+
   
 
-<meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
 
 
 <meta http-equiv="Cache-Control" content="no-transform" />
@@ -16,21 +28,49 @@
 
 
 
-  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
 
 
 
-  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-
-
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
-
-
-    <meta name="description" content="行是知之始，知是行之成" />
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
 
 
 
@@ -38,7 +78,7 @@
 
 
 
-  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
 
 
 <meta name="description" content="行是知之始，知是行之成">
@@ -52,112 +92,145 @@
 <meta name="twitter:description" content="行是知之始，知是行之成">
 
 
-<script type="text/javascript" id="hexo.configuration">
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: '',
-    sidebar: 'post'
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
   };
 </script>
 
+
+
+  <link rel="canonical" href="http://yoursite.com/page/2/"/>
+
+
+
+
+
+  <title>若见喻笺</title>
   
 
-  <div style="display: none;">
-    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
-  </div>
 
 
 
-  <title> 若见喻笺 </title>
+
+
+
+
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  <!--[if lte IE 8]>
-  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
-    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
-           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
-           style='margin-left:auto;margin-right:auto;display: block;'/>
-    </a>
-  </div>
-<![endif]-->
+  
+  
+    
   
 
-
-
-  <div class="container one-column 
-   page-home 
-">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><h1 class="site-meta">
-  <span class="logo-line-before"><i></i></span>
-  <a href="/" class="brand" rel="start">
-      <span class="logo">
-        <i class="icon-next-logo"></i>
-      </span>
-      <span class="site-title">若见喻笺</span>
-  </a>
-  <span class="logo-line-after"><i></i></span>
-</h1>
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">若见喻笺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
 <nav class="site-nav">
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            <i class="menu-item-icon icon-next-home"></i> <br />
-            首頁
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            <i class="menu-item-icon icon-next-categories"></i> <br />
-            分類
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
           </a>
         </li>
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            <i class="menu-item-icon icon-next-archives"></i> <br />
-            歸檔
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            <i class="menu-item-icon icon-next-tags"></i> <br />
-            標籤
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-guestbook">
-          <a href="/guestbook" rel="section">
-            <i class="menu-item-icon icon-next-guestbook"></i> <br />
-            留言
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
 
-      
       
     </ul>
   
@@ -165,79 +238,284 @@
   
 </nav>
 
+
+
  </div>
     </header>
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content"> 
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/07/11/Docker-workshop-3-Docker的基本操作/" itemprop="url">
-                Docker Workshop（三）Docker的基本操作
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2017-07-11T22:08:27+08:00" content="2017-07-11">
-            2017-07-11
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/13/Docker-workshop-4-Docker数据存储/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Docker/" itemprop="url" rel="index">
-                  <span itemprop="name">Docker</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/13/Docker-workshop-4-Docker数据存储/" itemprop="url">Docker Workshop（四）Docker数据存储</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-13T08:18:24+08:00">
+                2017-07-13
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/07/11/Docker-workshop-3-Docker的基本操作/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/11/Docker-workshop-3-Docker的基本操作/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
+          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><strong>Docker数据存储</strong></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<p>本章主要通过练习<code>数据卷</code>和<code>数据卷容器</code>来理解Docker的数据管理。</p>
+<h2 id="三、Docker的存储方式"><a href="#三、Docker的存储方式" class="headerlink" title="三、Docker的存储方式"></a>三、Docker的存储方式</h2>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/13/Docker-workshop-4-Docker数据存储/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/11/Docker-workshop-3-Docker的基本操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/11/Docker-workshop-3-Docker的基本操作/" itemprop="url">Docker Workshop（三）Docker的基本操作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-11T22:08:27+08:00">
+                2017-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
 <li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
@@ -259,242 +537,30 @@
 <li>连接容器</li>
 <li>使用Docker-compose工具</li>
 </ul>
-<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><h4 id="1-镜像是什么"><a href="#1-镜像是什么" class="headerlink" title="1. 镜像是什么"></a>1. 镜像是什么</h4><p>　　Docker镜像是一个特殊的<strong>文件系统</strong>，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
-<p>镜像通常包含：</p>
-<ul>
-<li>一个轻量级的操作系统发行版</li>
-<li>相关依赖</li>
-<li>单个应用或服务</li>
-</ul>
-<h4 id="2-镜像的分层存储"><a href="#2-镜像的分层存储" class="headerlink" title="2. 镜像的分层存储"></a>2. 镜像的分层存储</h4><p>　　传统的Linux加载bootfs时会先将rootfs设为read-only，然后在系统自检之后将rootfs从read-only改为read-write，然后我们就可以在rootfs上进行写和读的操作了。<br>　　但Docker的镜像却不是这样，它在bootfs自检完毕之后并不会把rootfs的read-only改为read-write。而是利用union mount（UnionFS的一种挂载机制）将一个或多个read-only的rootfs加载到之前的read-only的rootfs层之上。</p>
-<img src="/imgs/docker-image-layer1.png" width="400" height="250">
-<p>可以通过<code>docker info</code>查看宿主机上docker的文件系统方式：</p>
-<pre><code>$ docker info
-Containers: 3
-Images: 267
-Server Version: 1.9.1
-Storage Driver: aufs
- Root Dir: /var/lib/docker/aufs
- Backing Filesystem: extfs
- Dirs: 273
- Dirperm1 Supported: true
-Execution Driver: native-0.2
-Logging Driver: json-file
-Kernel Version: 3.19.0-32-generic
-Operating System: Ubuntu 14.04.3 LTS
-CPUs: 2
-Total Memory: 3.431 GiB
-Name: workshop
-id=: 27OE:SE73:WCPT:366X:CCGS:G2NQ:RB2A:UVJ2:A3OC:CZUJ:RYCB:XDDE
-WARNING: No swap limit support
-</code></pre><h4 id="3-练习构建镜像"><a href="#3-练习构建镜像" class="headerlink" title="3. 练习构建镜像"></a>3. 练习构建镜像</h4><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲到获取镜像有三种方式，其中自己从无到有地创建镜像，Docker有两种方式：</p>
-<ul>
-<li>创建一个容器，运行若干命令，再使用<code>docker commit</code>来生成一个新的镜像。以这种方式创建的镜像不具备再生产能力且无法实现版本控制性，因此绝对<strong>不值得提倡</strong>。</li>
-<li>创建一个<code>Dockerfile</code>然后再使用<code>docker build</code>来创建一个镜像。大多人会使用<code>Dockerfile</code>来创建镜像。</li>
-</ul>
-<h4 id="【练习1】通过Dockerfile构建镜像"><a href="#【练习1】通过Dockerfile构建镜像" class="headerlink" title="【练习1】通过Dockerfile构建镜像"></a>【练习1】通过Dockerfile构建镜像</h4><p>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
-<img src="/imgs/docker-image-layers-history.png" width="500" height="350">
-<p>2）生成镜像<br><code>docker build -t nginx-demo .</code>其中<code>.</code>是当前目录，包含<code>Dockerfile</code>文件</p>
-<pre><code>$ docker build -t nginx-demo .
-Sending build context to Docker daemon 7.168 kB
-Step 1 : FROM debian:8
-8: Pulling from library/debian
-aaec12cbddb4: Pull complete
-a4231e14d761: Pull complete
-Digest: sha256:64682f1a6d256b358b10dba3669b22f3594c69ec790548f5ba6362276ac9d4ca
-Status: Downloaded newer image for debian:8
- ---&gt; a4231e14d761
-Step 2 : MAINTAINER John Citizen
- ---&gt; Running in 35d7b813f3ec
- ---&gt; 3abd0b877321
-Removing intermediate container 35d7b813f3ec
-Step 3 : RUN apt-get update &amp;&amp; apt-get install -y nginx
- ---&gt; Running in f75d9c834ee9
- ---&gt; 352a72a3b8a8
-Removing intermediate container f75d9c834ee9
-Step 4 : EXPOSE 80
- ---&gt; Running in c9939361ce4d
- ---&gt; e55ea9a20dd4
-Removing intermediate container c9939361ce4d
-Step 5 : CMD nginx -g daemon off;
- ---&gt; Running in bdac893db4aa
- ---&gt; 7bd0c6e98644
-Removing intermediate container bdac893db4aa
-Successfully built 7bd0c6e98644
-</code></pre><p>可以看到Docker会创建（create -&gt; commit -&gt; destroy）一些临时的容器，如<code>Step 2</code>的<code>35d7b813f3ec</code>，生成的新的镜像作为中间镜像会被保存在cache中。可以通过下面两种方式查看该临时容器：</p>
-<pre><code>$ docker inspect 3abd0b877321
-$ docker images -a |grep 3abd0b877321
-</code></pre><p>3）查看所有镜像</p>
-<pre><code>$ docker images
-</code></pre><p>4）查看<code>nginx-demo</code>镜像信息</p>
-<pre><code>$ docker inspect nginx-demo
-$ docker inspect -f &apos;{{ .Config.ExposedPorts }}&apos; nginx-demo
-</code></pre><p>5) 查看创建镜像的历史</p>
-<pre><code>$ docker history nginx-demo:latest
-IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
-7bd0c6e98644        5 minutes ago       /bin/sh -c #(nop) CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon o   0 B
-e55ea9a20dd4        5 minutes ago       /bin/sh -c #(nop) EXPOSE 80/tcp                 0 B
-352a72a3b8a8        5 minutes ago       /bin/sh -c apt-get update &amp;&amp; apt-get install    71.8 MB
-3abd0b877321        6 minutes ago       /bin/sh -c #(nop) MAINTAINER John Citizen       0 B
-a4231e14d761        3 weeks ago         /bin/sh -c #(nop)  CMD [&quot;bash&quot;]                 0 B
-aaec12cbddb4        3 weeks ago         /bin/sh -c #(nop) ADD file:9c48682ff75c756544   123.5 MB
-</code></pre><ul>
-<li>容器镜像包括元数据和文件系统，其中文件系统是指对基础镜像的文件系统的修改，元数据不影响文件系统，只是会影响容器的配置;</li>
-<li>每个步骤都会生成一个新的镜像，新的镜像与上一次的镜像相比，要么元数据有了变化，要么文件系统有了变化而多加了一层;</li>
-<li>Docker在需要执行指令时通过创建临时镜像，运行指定的命令，再通过<code>docker commit</code>来生成新的镜像;</li>
-<li>Docker会将中间镜像都保存在缓存中，这样将来如果能直接使用的话就不需要再从头创建了。</li>
-<li>由于每一行指令，都会产生一个镜像，因此可以使用链式指令，有助于构建较小的镜像。(更多内容可以阅读《高性能Docker》)</li>
-</ul>
-<h3 id="四、Docker仓库"><a href="#四、Docker仓库" class="headerlink" title="四、Docker仓库"></a>四、Docker仓库</h3><h4 id="【练习2】使用Docker-public仓库"><a href="#【练习2】使用Docker-public仓库" class="headerlink" title="【练习2】使用Docker public仓库"></a>【练习2】使用Docker public仓库</h4><pre><code>$ docker search busybox
-NAME                            DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
-busybox                         Busybox base image.                             1052      [OK]
-progrium/busybox                                                                65                   [OK]
-radial/busyboxplus              Full-chain, Internet enabled, busybox made...   13                   [OK]
-container4armhf/armhf-busybox   Automated build of Busybox for armhf devic...   8                    [OK]
-ofayau/busybox-jvm              Prepare busybox to install a 32 bits JVM.       2                    [OK]
-azukiapp/busybox                This image is meant to be used as the base...   2                    [OK]
-multiarch/busybox               multiarch ports of ubuntu-debootstrap           2                    [OK]
-ofayau/busybox-libc32           Busybox with 32 bits (and 64 bits) libs         1                    [OK]
-skomma/busybox-data             Docker image suitable for data volume cont...   1                    [OK]
-prom/busybox                    Prometheus Busybox Docker base images           1                    [OK]
-elektritter/busybox-teamspeak   Leightweight teamspeak3 container based on...   1                    [OK]
-clover/busybox                  BusyBox base image                              1                    [OK]
-getblank/busybox                Docker container busybox for Blank              1                    [OK]
-zanner/busybox                  https://github.com/sergej-kucharev/zanner-...   1                    [OK]
-cucy/busybox                    aouto  build busybox                            0                    [OK]
-adamant/busybox                 Busybox base image and debian package inst...   0                    [OK]
-sdurrheimer/prom-busybox        Moved to https://hub.docker.com/r/prom/bus...   0                    [OK]
-ggtools/busybox-ubuntu          Busybox ubuntu version with extra goodies       0                    [OK]
-ddn0/busybox                    fork of official busybox                        0                    [OK]
-hongtao12310/busybox            for busybox image based on the gcr.io/goog...   0                    [OK]
-freenas/busybox                 Simple Busybox interactive Linux container      0                    [OK]
-kakaximeng/busybox              busybox                                         0                    [OK]
-jahroots/busybox                Busybox containers                              0                    [OK]
-jiangshouzhuang/busybox         busybox                                         0                    [OK]
-stubbornrock/busybox            busybox:latest                                  0                    [OK]
-
-$ docker pull busybox
-</code></pre><h4 id="【练习3】搭建Docker-private仓库"><a href="#【练习3】搭建Docker-private仓库" class="headerlink" title="【练习3】搭建Docker private仓库"></a>【练习3】搭建Docker private仓库</h4><p>1) 需要提前创建证书文件cert，并放到相应的地方。<br>通过<code>registry:2</code>镜像运行起了一个私有registry如下：</p>
-<pre><code>docker run -d \
-  -p 5000:5000 \
-  --restart=always \
-  --name registry \
-  -v /home/vagrant/topics/tmp/registry-certs:/certs \
-  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry_hostname.crt \
-  -e REGISTRY_HTTP_TLS_KEY=/certs/registry_hostname.key \
-  registry:2
-</code></pre><p>2) 查看所有docker容器</p>
-<pre><code>$ docker ps -a
-</code></pre><p>3) 访问私有registry接口</p>
-<pre><code>$ sudo curl -is --cacert /etc/docker/certs.d/registry:5000/registry.crt https://registry:5000/v2/
-HTTP/1.1 200 OK
-Content-Length: 2
-Content-Type: application/json; charset=utf-8
-Docker-Distribution-Api-Version: registry/2.0
-Date: Wed, 12 Jul 2017 13:30:17 GMT
-HTTP/1.1 200 OK
-</code></pre><h3 id="五、发布镜像到仓库"><a href="#五、发布镜像到仓库" class="headerlink" title="五、发布镜像到仓库"></a>五、发布镜像到仓库</h3><h4 id="【练习4】上传镜像到registry"><a href="#【练习4】上传镜像到registry" class="headerlink" title="【练习4】上传镜像到registry"></a>【练习4】上传镜像到registry</h4><p>1）给镜像打标签</p>
-<pre><code>$ docker tag nginx-demo registry:5000/nginx-demo
-</code></pre><p>2) 查看所有镜像</p>
-<pre><code>$ docker images
-REPOSITORY                      TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
-nginx-demo                      latest              8ef43fa97b67        About a minute ago   195.3 MB
-registry:5000/nginx-demo        latest              8ef43fa97b67        About a minute ago   195.3 MB
-</code></pre><p>3）上传镜像</p>
-<pre><code>$ docker push registry:5000/nginx-demo
-The push refers to a repository [registry:5000/nginx-demo] (len: 1)
-8ef43fa97b67: Pushed
-5982f0a481be: Pushed
-c329ad2e9994: Pushed
-cdea4d036852: Pushed
-aaec12cbddb4: Pushed
-latest: digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b size: 8470
-</code></pre><p>4）访问registry接口查看镜像是否存在</p>
-<pre><code>$ export CERT_PATH=/etc/docker/certs.d/registry:5000/registry.crt
-$ sudo curl -s --cacert ${CERT_PATH} https://registry:5000/v2/_catalog
-{&quot;repositories&quot;:[&quot;nginx-demo&quot;]}
-</code></pre><p>5) 删除本地镜像</p>
-<pre><code>$ docker rmi nginx-demo
-Untagged: nginx-demo:latest
-Deleted: 7bd0c6e986444a5855665a4b746130088904bc5b7626d5bb5c0dc3ab52fc1142
-Deleted: e55ea9a20dd4b5d4ede4a4873e18e94f139df646085c79c83d12f71815559dda
-Deleted: 352a72a3b8a8ad51f8a84a357fcb3af0a127c8cefc34b6d5839fdcd8c06ececd
-Deleted: 3abd0b8773212881d3e73babe2304d5b760c0b156095bd9496ceb2fedf71fd62
-</code></pre><p>6）从私有registry上拉取镜像</p>
-<pre><code>$ docker pull registry:5000/nginx-demo
-Using default tag: latest
-latest: Pulling from nginx-demo
-31f1e1f22679: Pull complete
-51c8e8d08671: Pull complete
-04ec693a6b9c: Pull complete
-ae06ee9e3b16: Pull complete
-59c395799b5f: Pull complete
-26d4e0d847a6: Pull complete
-Digest: sha256:399e271209f61771afc03896bea5cd107d2da64985b7bea6733b9380b181b31b
-Status: Downloaded newer image for registry:5000/nginx-demo:latest
-</code></pre><h3 id="六、启动Docker容器"><a href="#六、启动Docker容器" class="headerlink" title="六、启动Docker容器"></a>六、启动Docker容器</h3><h4 id="【练习5】启动Docker容器"><a href="#【练习5】启动Docker容器" class="headerlink" title="【练习5】启动Docker容器"></a>【练习5】启动Docker容器</h4><p>1) 启动一个容器</p>
-<pre><code>$ docker run -d -p 80:80 --name nginx-app registry:5000/nginx-demo
-a56d494e8af22247eccbd7e99f108501684b52395a50f479cca09caa8ec18b19
-$ docker ps
-CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                    NAMES
-a56d494e8af2        registry:5000/nginx-demo   &quot;nginx -g &apos;daemon off&quot;   3 seconds ago       Up 2 seconds        0.0.0.0:80-&gt;80/tcp       nginx-app
-7d01136fd367        registry:2                 &quot;/bin/registry /etc/d&quot;   22 minutes ago      Up 22 minutes       0.0.0.0:5000-&gt;5000/tcp   registry
-</code></pre><p>此处用<code>docker run</code>是创建并启动，<code>docker create</code>是单纯创建容器。<br>2）查看容器log</p>
-<pre><code>$ docker logs nginx-app
-</code></pre><h3 id="七、连接Docker容器"><a href="#七、连接Docker容器" class="headerlink" title="七、连接Docker容器"></a>七、连接Docker容器</h3><h4 id="【练习6】连接多个Docker容器"><a href="#【练习6】连接多个Docker容器" class="headerlink" title="【练习6】连接多个Docker容器"></a>【练习6】连接多个Docker容器</h4><p>假设我们有如下三个应用，且都已经publish到了registry中：</p>
-<ul>
-<li>shop-app，需要连接review和catalogue</li>
-<li>review，微服务</li>
-<li>catalogue，微服务</li>
-</ul>
-<p>1）先启动<code>review</code>和<code>catalogue</code></p>
-<pre><code>$ docker run -d -p 8082:8082 --name review registry:5000/review
-$ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
-</code></pre><p>2）连接<code>shop-app</code>到<code>review</code>和<code>catalogue</code></p>
-<pre><code>$ docker run -d -p 8080:8080 --name shop-app --link review:review --link catalogue:catalogue registry:5000/shop-app
-</code></pre><p>3）查看<code>shop-app</code>容器</p>
-<pre><code>$ docker exec shop-app cat /etc/hosts
-</code></pre><p>4）确认<code>shop-app</code>可以连接到<code>review</code></p>
-<pre><code>$ docker exec -t shop-app ping review
-</code></pre><p>　　以下是Docker link的一些限制：</p>
-<ul>
-<li>Docker link 只在同一宿主机内可以使用</li>
-<li>重新创建容器将会移除之前的链接</li>
-<li>被连接的容器必须是一个已经启动的容器</li>
-</ul>
-<p>　　在Docker发布1.9版本的时候推荐使用<code>Docker Networks</code>代替<code>Docker link</code>，后面的<a href="">Docker Workshop（五）Docker网络</a>会讲到Docker Networks。</p>
-<h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><p>　　Compose是用于定义和运行复杂Docker应用的工具。你可以在一个文件中定义一个多容器的应用，然后使用一条命令来启动你的应用，然后所有相关的操作都会被自动完成。</p>
-<h4 id="【练习7】使用Docker-compose工具"><a href="#【练习7】使用Docker-compose工具" class="headerlink" title="【练习7】使用Docker compose工具"></a>【练习7】使用Docker compose工具</h4><p>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
-<p>2) 启动三个容器</p>
-<pre><code>$ docker-compose up
-</code></pre><p>3） 查看运行的容器</p>
-<pre><code>$ docker-compose ps
-</code></pre><p>3）查看log</p>
-<pre><code>$ docker-compose logs
-</code></pre><p><code>docker-compose</code>可以查看所有在<code>docker-compose.yml</code>中声明的容器的日志，不用切换tab查看单独的docker容器日志。</p>
-<h3 id="九、使用容器时要避免的做法"><a href="#九、使用容器时要避免的做法" class="headerlink" title="九、使用容器时要避免的做法"></a>九、使用容器时要避免的做法</h3><ul>
-<li>不要在容器中保存数据（Don’t store data in containers）</li>
-<li>将应用打包到镜像再部署而不是更新到已有容器（Don’t ship your application in two pieces）</li>
-<li>不要产生过大的镜像 （Don’t create large images）</li>
-<li>不要使用单层镜像 （Don’t use a single layer image）</li>
-<li>不要从运行着的容器上产生镜像 （Don’t create images from running containers ）</li>
-<li>不要只是使用 “latest”标签 （Don’t use only the “latest” tag）</li>
-<li>不要在容器内运行超过一个的进程 （Don’t run more than one process in a single container ）</li>
-<li>不要在容器内保存 credentials，而是要从外面通过环境变量传入 （ Don’t store credentials in the image. Use environment variables）</li>
-<li>不要使用 root 用户跑容器进程（Don’t run processes as a root user ）</li>
-<li>不要依赖于IP地址，而是要从外面通过环境变量传入 （Don’t rely on IP addresses ）</li>
-</ul>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是按照构建流程练习了docker的一些常见基本指令，指令并不全面，详细的指令可以参考<a href="https://docs.docker.com/engine/reference/commandline/docker/#parent-command" target="_blank" rel="external">官网</a>进行练习。<br>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的数据存储。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
-<li><a href="http://feisky.xyz/docker/index.html" target="_blank" rel="external">Docker笔记</a></li>
-<li><a href="https://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/" target="_blank" rel="external">10 things to avoid in docker containers</a></li>
-</ul>
-</span>
+<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/11/Docker-workshop-3-Docker的基本操作/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -504,75 +570,120 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/07/10/Docker-workshop-2-Docker简介/" itemprop="url">
-                Docker Workshop（二）Docker简介
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2017-07-10T08:59:59+08:00" content="2017-07-10">
-            2017-07-10
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/Docker-workshop-2-Docker简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Docker/" itemprop="url" rel="index">
-                  <span itemprop="name">Docker</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/10/Docker-workshop-2-Docker简介/" itemprop="url">Docker Workshop（二）Docker简介</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T08:59:59+08:00">
+                2017-07-10
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/07/10/Docker-workshop-2-Docker简介/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/10/Docker-workshop-2-Docker简介/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
+          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
 <li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
@@ -585,200 +696,30 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
 </ul>
-<h3 id="三、从Linux容器到Docker"><a href="#三、从Linux容器到Docker" class="headerlink" title="三、从Linux容器到Docker"></a>三、从Linux容器到Docker</h3><blockquote>
-<p>尽管有着光辉的历史，容器仍未得到广泛的认可。一个很重要的原因就是容器技术的复杂性：容器本身就比较复杂，不易安装 管理和自动化也很困难。而Docker就是为了改变这一切而生 ——《第一本Docker书》</p>
-</blockquote>
-<p>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8/" target="_blank" rel="external">上一篇</a>练习里，我们可以明显感受到，LXC存在的问题是难以移动——难以通过标准化的模板制作、重建、复制和移动container。</p>
-<p>　　在LXC的基础上，Docker进一步优化了容器的使用体验。Docker提供了各种容器管理工具（如：<strong>分发、版本、移植</strong>等）让用户无需关注底层的操作，可以更简单的管理和使用容器。</p>
-<p>　　早期的Docker代码实现是直接基于LXC的。自0.9版本开始，Docker开发了libcontainer项目，作为更广泛的容器驱动实现，从而替换掉了LXC的实现。</p>
-<blockquote>
-<p>Docker官网上对于<a href="https://docs.docker.com/engine/faq/#what-open-source-license-are-you-using" target="_blank" rel="external">Docker在单纯的LXC之上做了哪些事情</a>的解释：</p>
-<ul>
-<li>Portable deployment across machines(跨主机可移植性部署)</li>
-<li>Application-centric(以应用为中心)</li>
-<li>Automatic build(自动构建)</li>
-<li>Versioning(版本)</li>
-<li>Component re-use(组件重用)</li>
-<li>Sharing(共享)</li>
-<li>Tool ecosystem(工具生态系统)</li>
-</ul>
-</blockquote>
-<h3 id="四、Docker是什么？"><a href="#四、Docker是什么？" class="headerlink" title="四、Docker是什么？"></a>四、Docker是什么？</h3><p>　　Docker是一个开源的引擎，可以轻松的为任何应用创建一个<strong>轻量级的、可移植的、自给自足的</strong>容器。</p>
-<p>　　Docker可以让你将所有应用软件以及它的依赖打包成软件开发的标准化单元。</p>
-<p>　　Docker容器将软件以及它运行安装所需的一切文件（代码、运行时、系统工具、系统库）打包到一起，这就保证了不管是在什么样的运行环境，总是能以相同的方式运行。就好像 Java 虚拟机一样，“一次编写，到处运行（Write once, run anywhere）”，而 Docker 是“一次构建，到处运行（Build once，run anywhere）”。</p>
-<h3 id="五、Docker与Microservices的关系"><a href="#五、Docker与Microservices的关系" class="headerlink" title="五、Docker与Microservices的关系"></a>五、Docker与Microservices的关系</h3><p>　　Microservices（微服务）依赖于“基础设施自动化”，而Docker正是“基础设施自动化”的利器。可以说Docker的火爆，一定程度上也带动了微服务架构的兴起，而微服务的广泛应用也促进了Docker 繁荣，可以说两者相辅相成。</p>
-<h3 id="六、为什么使用Docker？"><a href="#六、为什么使用Docker？" class="headerlink" title="六、为什么使用Docker？"></a>六、为什么使用Docker？</h3><h4 id="1-Why-Docker"><a href="#1-Why-Docker" class="headerlink" title="1. Why Docker?"></a>1. Why Docker?</h4><p>　　按照当前官网<a href="https://docs.docker.com/engine/#why-docker" target="_blank" rel="external">Why Docker?</a>的解释，主要有四个方面：</p>
-<h5 id="1-1更快速的交付应用（Faster-delivery-of-your-applications）"><a href="#1-1更快速的交付应用（Faster-delivery-of-your-applications）" class="headerlink" title="1.1更快速的交付应用（Faster delivery of your applications）"></a>1.1更快速的交付应用（Faster delivery of your applications）</h5><ul>
-<li>借助于Docker容器，程序开发员，系统管理员甚至QA和版本控制工程师都可以进行协同工作。Docker创建了一套标准的容器数据格式，在这套标准数据格式基础上，当系统管理员管理操作容器时，程序开发员不需要关心容器的变化，这样就可以更专心的关注自己的应用代码。而这种管理和开发的任务隔离，大大的简化了开发和部署的成本。</li>
-<li>Docker容器的创建非常容易，这样应用程序就可以进行快速迭代开发，从而缩短产品的上市周期。</li>
-<li>Docker的容器属于轻量级的容器，因此启动和停止都特别快。容器启动只需要毫秒级的时间，因此在进行开发、测试和部署各个环境之间切换时几乎感受不到时间的流失。</li>
-</ul>
-<h5 id="1-2-更轻松的部署和扩展（Deploy-and-scale-more-easily）"><a href="#1-2-更轻松的部署和扩展（Deploy-and-scale-more-easily）" class="headerlink" title="1.2 更轻松的部署和扩展（Deploy and scale more easily）"></a>1.2 更轻松的部署和扩展（Deploy and scale more easily）</h5><ul>
-<li>Docker容器几乎可以在任何地方执行，至少在理论层面是可以再任意地方执行。Dokcer可以在桌面操作系统，物理服务器，虚拟机，数据中心或者共有/私有云上面执行。</li>
-<li>因为Docker容器可以在各种环境下运行，因此容器之间的迁移也非常方便。你可以非常方便的将容器从测试环境迁移到云环境中。</li>
-</ul>
-<h5 id="1-3-更多的工作负载（Get-higher-density-and-run-more-workloads）"><a href="#1-3-更多的工作负载（Get-higher-density-and-run-more-workloads）" class="headerlink" title="1.3 更多的工作负载（Get higher density and run more workloads）"></a>1.3 更多的工作负载（Get higher density and run more workloads）</h5><ul>
-<li>Docker的容器本身不需要额外创建虚拟机管理系统，因此你可以启动多套Docker容器，这样就可以充分发挥主机服务器的物理资源，也可以降低因为采购服务器licenses而带来的额外成本。</li>
-</ul>
-<h5 id="1-4-更简单的管理（Faster-deployment-makes-for-easier-management）"><a href="#1-4-更简单的管理（Faster-deployment-makes-for-easier-management）" class="headerlink" title="1.4 更简单的管理（Faster deployment makes for easier management）"></a>1.4 更简单的管理（Faster deployment makes for easier management）</h5><ul>
-<li>Docker快速部署和轻量级的特性，可以使应用快速迭代。同时所有的修改都以增量的方式被分发和更新，从而实现自动化并且高效的管理。</li>
-</ul>
-<h4 id="2-Docker的使用场景"><a href="#2-Docker的使用场景" class="headerlink" title="2. Docker的使用场景"></a>2. Docker的使用场景</h4><ul>
-<li>简化配置</li>
-<li>代码流水线（Code Pipeline）管理</li>
-<li>提高开发效率</li>
-<li>隔离应用</li>
-<li>整合服务器</li>
-<li>调适能力</li>
-<li>多租户环境</li>
-<li>快速部署</li>
-</ul>
-<h3 id="七、Docker的组件"><a href="#七、Docker的组件" class="headerlink" title="七、Docker的组件"></a>七、Docker的组件</h3><p>Docker主要包括两个大组件：</p>
-<ul>
-<li><p>The Docker Engine<br>　　Docker Engine是基于虚拟化技术的一个轻量级的并且功能非常强大的开源容器管理工具。它可以将不同的work flow组合起来，然后构建或者管理你的容器。</p>
-</li>
-<li><p>Docker Hub<br>　　一个分享和管理你所创建的image的SAAS（Software-as-a-Service）平台。</p>
-</li>
-</ul>
-<h3 id="八、Docker的架构"><a href="#八、Docker的架构" class="headerlink" title="八、Docker的架构"></a>八、Docker的架构</h3><p>　　Docker 采用的是 Client/Server 架构。客户端向服务器发送请求，服务器负责构建、运行和分发容器。客户端和服务器可以运行在同一个 Host 上，客户端也可以通过 socket 或 REST API 与远程的服务器通信。</p>
-<img src="/imgs/docker-architecture.svg" width="500" height="400">
-<p>　　Docker的核心组件：</p>
-<ul>
-<li>Docker 客户端 - Client</li>
-<li>Docker 服务器 - Docker daemon</li>
-<li>Docker 镜像 - Image</li>
-<li>Docker 容器 - Container</li>
-<li>Registry</li>
-</ul>
-<h4 id="1-Docker-客户端"><a href="#1-Docker-客户端" class="headerlink" title="1. Docker 客户端"></a>1. Docker 客户端</h4><p>　　最常用的 Docker 客户端是 docker 命令。通过 docker 我们可以方便地在 Host 上构建和运行容器。<br>　　除了 docker 命令行工具，用户也可以通过 REST API 与服务器通信。</p>
-<h4 id="2-Docker-服务器"><a href="#2-Docker-服务器" class="headerlink" title="2. Docker 服务器"></a>2. Docker 服务器</h4><p>　　Docker daemon 是服务器组件，以 Linux 后台服务的方式运行，所谓“运行 docker”，指的就是运行 Docker daemon。<br>　　Docker daemon 运行在 Docker host 上，负责创建、运行、监控容器，构建、存储镜像。</p>
-<h4 id="3-Docker镜像"><a href="#3-Docker镜像" class="headerlink" title="3.Docker镜像"></a>3.Docker镜像</h4><p>　　可将 Docker 镜像看着只读模板，通过它可以创建 Docker 容器。<br>镜像有多种生成方法：</p>
-<ul>
-<li>可以从无到有开始创建镜像</li>
-<li>也可以下载并使用别人创建好的现成的镜像</li>
-<li>还可以在现有镜像上创建新的镜像</li>
-</ul>
-<p>在<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇 Docker的基本操作</a>里会有对镜像的详细介绍。</p>
-<h4 id="4-Docker容器"><a href="#4-Docker容器" class="headerlink" title="4. Docker容器"></a>4. Docker容器</h4><p>　　Docker 容器就是 Docker 镜像的运行实例。用户可以通过 CLI（docker）或是 API 启动、停止、移动或删除容器。可以这么认为，对于应用软件，镜像是软件生命周期的构建和打包阶段，而容器则是启动和运行阶段。<br>　　总结起来，Docker容器就是：</p>
-<ul>
-<li>一个镜像格式</li>
-<li>一系列标准的操作</li>
-<li>一个执行环境</li>
-</ul>
-<h4 id="5-Registry"><a href="#5-Registry" class="headerlink" title="5.Registry"></a>5.Registry</h4><p>　　Docker用Registry保存用户构建的镜像。<br>Registry 分私有和公有两种：</p>
-<ul>
-<li><a href="https://hub.docker.com/" target="_blank" rel="external">Docker Hub</a>是默认的 Registry，由 Docker公司维护，上面有数以万计的镜像，用户可以自由下载和使用。</li>
-<li>出于对速度或安全的考虑，用户也可以创建自己的私有Registry</li>
-</ul>
-<h3 id="九、Docker核心技术"><a href="#九、Docker核心技术" class="headerlink" title="九、Docker核心技术"></a>九、Docker核心技术</h3><img src="/imgs/docker-core-tech.png" width="300" height="150">
-<p>　　Docker核心是一个操作系统级虚拟化方法, 理解起来可能并不像VM那样直观。我们从虚拟化方法的四个方面：隔离性、可配额/可度量、便携性、安全性来详细介绍Docker的技术细节。</p>
-<img src="/imgs/docker-core-engine.png" width="300" height="150">
-<h4 id="1-隔离性-namespace资源隔离"><a href="#1-隔离性-namespace资源隔离" class="headerlink" title="1. 隔离性: namespace资源隔离"></a>1. 隔离性: namespace资源隔离</h4><ul>
-<li>pid：每个容器都运行在自己的进程环境中；</li>
-<li>user：在container内部用container内部的用户执行程序而非Host上的用户。</li>
-<li>net：容器间的虚拟网络接口和IP地址都是分开的；</li>
-<li>mnt：允许不同namespace的进程看到的文件结构不同；</li>
-<li>uts：UNIX Time-sharing System,使其在网络上可以被视作一个独立的节点而非Host上的一个进程；</li>
-<li>ipc：进程间交互；</li>
-</ul>
-<p>　　例如：在主机和docker容器里，都可以拥有自己的init进程（PID=1），init进程是所有其他进程的祖先进程，docker容器其实是主机里的一个进程。<br><img src="/imgs/docker-namespace-pid.png" width="300" height="150"></p>
-<h4 id="2-可配额-可度量：cgroups资源限制"><a href="#2-可配额-可度量：cgroups资源限制" class="headerlink" title="2. 可配额/可度量：cgroups资源限制"></a>2. 可配额/可度量：cgroups资源限制</h4><p>　　cgroups是Linux内核提供的一种机制，用来限制、控制与分离一个进程组群的资源（如CPU、Memory、IO等）</p>
-<p>主要提供了如下功能:</p>
-<ul>
-<li>资源限制：限制任务使用的资源总额，并在超过这个配额时发出提示</li>
-<li>优先级分配：分配CPU时间片数量及磁盘IO带宽大小、控制任务运行的优先级</li>
-<li>资源统计：统计系统资源使用量，如CPU使用时长、内存用量等</li>
-<li>任务控制：对任务执行挂起、恢复等操作</li>
-</ul>
-<p>　　在实践中，系统管理员一般会利用cgroup做下面这些事（有点像为某个虚拟机分配资源似的）：</p>
-<ul>
-<li>隔离一个进程集合（比如：nginx的所有进程），并限制他们所消费的资源，比如绑定CPU的核。</li>
-<li>为这组进程分配其足够使用的内存</li>
-<li>为这组进程分配相应的网络带宽和磁盘存储限制</li>
-<li>限制访问某些设备（通过设置设备的白名单)</li>
-</ul>
-<h4 id="3-便携性-文件系统"><a href="#3-便携性-文件系统" class="headerlink" title="3. 便携性: 文件系统"></a>3. 便携性: 文件系统</h4><p>　　最初docker仅能在支持Aufs文件系统的Linux发行版上运行，但是由于Aufs未能加入linux内核，为了寻求兼容性、扩展性，Docker在内部通过graphdriver机制这种可扩展的方式来实现对不同文件系统的支持。目前，Docker支持Aufs，Devicemapper，Btrfs和Vfs四种文件系统。</p>
-<p>　　典型的Linux文件系统由bootfs和rootfs两部分组成，bootfs(boot file system)主要包含 bootloader和kernel，bootloader主要是引导加载kernel，当kernel被加载到内存中后 bootfs就被umount了。 rootfs (root file system) 包含的就是典型 Linux 系统中的/dev，/proc，/bin，/etc等标准目录和文件。<br><img src="/imgs/docker-aufs1.png" width="300" height="150"></p>
-<p>　　对于不同的linux发行版，bootfs基本是一致的，但rootfs会有差别，因此不同的发行版可以公用bootfs:<br><img src="/imgs/docker-aufs2.png" width="300" height="150"></p>
-<h4 id="4-安全性-AppArmor-SELinux-GRSEC"><a href="#4-安全性-AppArmor-SELinux-GRSEC" class="headerlink" title="4. 安全性: AppArmor, SELinux, GRSEC"></a>4. 安全性: AppArmor, SELinux, GRSEC</h4><p>　　安全永远是相对的，这里有三个方面可以考虑Docker的安全特性:</p>
-<ul>
-<li>由kernel namespaces和cgroups实现的Linux系统固有的安全标准;</li>
-<li>Docker Deamon的安全接口;</li>
-<li>Linux本身的安全加固解决方案,类如AppArmor, SELinux;</li>
-</ul>
-<h3 id="十、内核机制的练习"><a href="#十、内核机制的练习" class="headerlink" title="十、内核机制的练习"></a>十、内核机制的练习</h3><h4 id="【练习1】命名空间的练习"><a href="#【练习1】命名空间的练习" class="headerlink" title="【练习1】命名空间的练习"></a>【练习1】命名空间的练习</h4><pre><code># 创建一个Docker容器
-$ docker run -it --rm busybox
-
-# 列出所有的namespace
-$ ls -l /proc/$$/ns
-lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 ipc -&gt; ipc:[4026531839]
-lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 mnt -&gt; mnt:[4026531840]
-lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 net -&gt; net:[4026531957]
-lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 pid -&gt; pid:[4026531836]
-lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 user -&gt; user:[4026531837]
-lrwxrwxrwx 1 vagrant vagrant 0 Jul 11 13:04 uts -&gt; uts:[4026531838]
-
-# 查看 pid namespace:
-$ ps aux
-
-# 查看 mnt namespace:
-$ cat /proc/mounts
-
-# 查看 uts namespace
-$ hostname
-
-# 查看 ipc namespace
-$ ipcs
-
-# 在宿主机里使用ipcmk -Q命令创建一个message queue
-$ ipcmk -Q
-Message queue id: 0
-
-# 再次查看宿主机ipc namespace
-$ ipcs
-
-# 在容器里查看ipc namespace
-$ ipcs
-</code></pre><p>退出容器，按<code>ctrl + d</code></p>
-<h4 id="【练习2】cgroup的练习"><a href="#【练习2】cgroup的练习" class="headerlink" title="【练习2】cgroup的练习"></a>【练习2】cgroup的练习</h4><pre><code># 列出所有的subsystem
-$ ls /sys/fs/cgroup/ -l
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 blkio
-drwxr-xr-x 2 root root 60 Jul 11 12:47 cgmanager
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 cpu
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 cpuacct
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 cpuset
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 devices
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 freezer
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 hugetlb
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 memory
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 net_cls
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 net_prio
-dr-xr-xr-x 4 root root  0 Jul 11 12:47 perf_event
-dr-xr-xr-x 3 root root  0 Jul 11 12:47 systemd
-</code></pre><p>　　默认情况下，Docker 启动一个容器后，会在<code>/sys/fs/cgroup</code>目录下的各个资源目录下生成以容器ID为名字的目录（group）:</p>
-<pre><code>$ ls /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171fd871cc8d5692e356
-cgroup.clone_children  cpu.cfs_period_us  cpu.shares  notify_on_release
-cgroup.procs           cpu.cfs_quota_us   cpu.stat    tasks
-$ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171fd871cc8d5692e356/cpu.cfs_quota_us
--1
-</code></pre><p>　　此时 cpu.cfs_quota_us 的内容为-1，表示默认情况下并没有限制容器的CPU使用。在容器被 stopped 后，该目录被删除。</p>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是涉及docker的基础理论知识，讲述了docker的出现，docker与LXC以及Microservice的关系，同时从what, why上理解了docker，最后涉及了cgroup和namespaces两个Linux内核机制。</p>
-<p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的基本操作。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
-<li><a href="https://docs.docker.com/engine/faq/#what-does-docker-technology-add-to-just-plain-lxc" target="_blank" rel="external">what-does-docker-technology-add-to-just-plain-lxc</a></li>
-<li><a href="https://waylau.com/ahout-docker/" target="_blank" rel="external">简述Docker</a></li>
-<li><a href="https://www.qcloud.com/community/article/597293" target="_blank" rel="external">什么是Docker</a></li>
-<li><a href="http://dockone.io/article/126" target="_blank" rel="external">八个Docker的真实应用场景</a></li>
-<li><a href="https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux-namespaces" target="_blank" rel="external">Namespace isolation</a></li>
-<li><a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation" target="_blank" rel="external">Docker背后的内核知识——cgroups资源限制</a></li>
-<li><a href="http://blog.opskumu.com/docker.html#16-资源配额cgroups" target="_blank" rel="external">Docker资源配额</a></li>
-</ul>
-</span>
+<h3 id="三、从Linux容器到Docker"><a href="#三、从Linux容器到Docker" class="headerlink" title="三、从Linux容器到Docker"></a>三、从Linux容器到Docker</h3>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/10/Docker-workshop-2-Docker简介/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -788,75 +729,120 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/07/09/Docker-workshop-1-容器简介/" itemprop="url">
-                Docker Workshop（一）容器简介
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2017-07-09T18:25:04+08:00" content="2017-07-09">
-            2017-07-09
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/09/Docker-workshop-1-容器简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Docker/" itemprop="url" rel="index">
-                  <span itemprop="name">Docker</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/09/Docker-workshop-1-容器简介/" itemprop="url">Docker Workshop（一）容器简介</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T18:25:04+08:00">
+                2017-07-09
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/07/09/Docker-workshop-1-容器简介/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/09/Docker-workshop-1-容器简介/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。<br>　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
+          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。<br>　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
 <li><strong>容器简介</strong></li>
@@ -870,119 +856,30 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
 <li>日志、跟踪、监控</li>
 </ul>
 <p>　　本篇主要讲述容器相关的知识，比较容器和虚拟机，练习LXC容器的相关指令，最后引出Docker。</p>
-<h3 id="三、容器的定义"><a href="#三、容器的定义" class="headerlink" title="三、容器的定义"></a>三、容器的定义</h3><p>　　容器是一种轻量级、可移植、自包含的软件打包技术，使应用程序可以在几乎任何地方以相同的方式运行。开发人员在自己笔记本上创建并测试好的容器，无需任何修改就能够在生产系统的虚拟机、物理服务器或公有云主机上运行。</p>
-<img src="/imgs/container-structure.png" width="400" height="250">
-<p>　　容器是轻量级的操作系统级虚拟化，可以让我们在一个资源隔离的进程中运行应用及其依赖项。运行应用程序所必需的组件都将打包成一个镜像并可以复用。执行镜像时，它运行在一个隔离环境中，并且不会共享宿主机的内存、CPU 以及磁盘，这就保证了容器内进程不能监控容器外的任何进程。</p>
-<h3 id="四、容器解决的问题"><a href="#四、容器解决的问题" class="headerlink" title="四、容器解决的问题"></a>四、容器解决的问题</h3><p>　　为什么需要容器？容器到底解决的是什么问题？<br>　　一句话回答是：容器使软件具备了超强的可移植能力。</p>
-<h4 id="1-从运输行业的集装箱说起"><a href="#1-从运输行业的集装箱说起" class="headerlink" title="1. 从运输行业的集装箱说起"></a>1. 从运输行业的集装箱说起</h4><p>　　20世纪60年代以前，运输行业几乎所有的货物都是以<em>散件</em>方式运输。</p>
-<p>　　每一次运输，一方面货主与承运方会担心因货物类型的不同而导致损失，如几个铁桶压在了一堆香蕉上。另外一方面，运输过程中需要使用不同的交通工具严重浪费了大量的时间和精力，如货物先搬上车，到了码头由码头工人卸货，然后装上船，到岸之后卸下船，再装上火车，到达目的地，最后卸货……中间可能还有更多种类的交通工具，涉及到更多次的装、卸货、转移过程。</p>
-<img src="/imgs/container-in-transportation1.png" width="400" height="250">
-<p>　　幸运的是，集装箱的发现解决了这个难题。</p>
-<img src="/imgs/container-in-transportation2.png" width="400" height="250">
-<p>　　无论货物的体积、形状差异有多大，最终都被装载进集装箱里。由于要实现标准尺寸集装箱的运输，堆场、码头、起吊、船舶、汽车乃至公路桥梁、隧道等，都必须适应它在全球范围内的应用而逐渐加以标准化，形成影响国际贸易的全球物流系统。由此带来的是系统效率大幅度提升，运输费大幅度下降，地球上任何一个地方生产的产品都可以快速而低廉地运送到有需求的地方。</p>
-<table>
-<thead>
-<tr>
-<th>比较</th>
-<th style="text-align:right">散货运输</th>
-<th style="text-align:center">集装箱运输</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>货物装卸时间</td>
-<td style="text-align:right">几天到一个星期，分拣、合并、装卸过程繁琐</td>
-<td style="text-align:center">几个小时</td>
-</tr>
-<tr>
-<td>货物装卸时间占整个运输过程的比例</td>
-<td style="text-align:right">&gt;50%</td>
-<td style="text-align:center">&lt;10%</td>
-</tr>
-<tr>
-<td>所需劳动力</td>
-<td style="text-align:right">大量的码头工人</td>
-<td style="text-align:center">少数的码头工人和起重机操作员</td>
-</tr>
-<tr>
-<td>自动化程度</td>
-<td style="text-align:right">低</td>
-<td style="text-align:center">高</td>
-</tr>
-<tr>
-<td>安全性</td>
-<td style="text-align:right">低，装卸时常有物品损毁和盗窃</td>
-<td style="text-align:center">高，货物被隔离在封闭的集装箱内</td>
-</tr>
-<tr>
-<td>成本</td>
-<td style="text-align:right">货物越多，成本越高，耗时越长</td>
-<td style="text-align:center">前期固定成本投入较高，随着集装箱规模、运货量的增加，分摊到运送每个集装箱的成本极低，总成本几乎不变</td>
-</tr>
-</tbody>
-</table>
-<h4 id="2-应用程序中的容器"><a href="#2-应用程序中的容器" class="headerlink" title="2. 应用程序中的容器"></a>2. 应用程序中的容器</h4><p>　　同样，我们看看今天的软件开发面临的挑战。</p>
-<p>　　以前几乎所有的应用都采用三层架构（Presentation/Appliation/Data），系统部署到有限的几台物理服务器上。如今，开发人员通常使用多种服务（如MQ、cache、DB）构建和组装应用，此外应用很可能部署到不同的环境（如虚拟服务器、私有云和公有云）。一方面应用包含多种服务，这些服务有自己所依赖的库和软件包；另一方面存在多种部署环境，服务在运行时可能需要动态迁移到不同的环境中。如何让每种服务能够在所有的部署环境中顺利运行？<br>　　“服务”和“应用环境”对应到前面运输行业的“货物类型”和“运输工具”，容器则对应“集装箱”。<br><img src="/imgs/container-in-application.png" width="400" height="250"></p>
-<h3 id="五、为什么容器技术如此诱人？"><a href="#五、为什么容器技术如此诱人？" class="headerlink" title="五、为什么容器技术如此诱人？"></a>五、为什么容器技术如此诱人？</h3><h4 id="1-封装、隔离"><a href="#1-封装、隔离" class="headerlink" title="1. 封装、隔离"></a>1. 封装、隔离</h4><p>　　各个容器之间，资源独立、隔离，不同的应用以container为单位进行部署，环境互不影响。</p>
-<h4 id="2-轻量、可移植"><a href="#2-轻量、可移植" class="headerlink" title="2. 轻量、可移植"></a>2. 轻量、可移植</h4><p>　　相比于传统的虚拟化技术，容器在cpu、memory、network IO上的性能损耗都有同样水平甚至更优，容器的创建、启动、销毁都很快。</p>
-<h4 id="3-标准化、run-on-any-hardware"><a href="#3-标准化、run-on-any-hardware" class="headerlink" title="3. 标准化、run on any hardware"></a>3. 标准化、run on any hardware</h4><p>　　开发人员只需为按照一定的标准为应用创建一次运行环境，然后打包成容器便可在其他机器上运行。</p>
-<h4 id="4-一致性、可重复性"><a href="#4-一致性、可重复性" class="headerlink" title="4. 一致性、可重复性"></a>4. 一致性、可重复性</h4><p>　　标准化的容器消除了开发、测试、生产环境的不一致性。</p>
-<h3 id="六、容器与虚拟机"><a href="#六、容器与虚拟机" class="headerlink" title="六、容器与虚拟机"></a>六、容器与虚拟机</h3><p>　　谈到容器，就不得不将它与虚拟机进行对比，因为两者都是为应用提供封装和隔离。<br>　　一句话解释区别：容器能做的事少得多并且使用起来相当廉价。而虚拟机提供整个虚拟化硬件层，可以做更多的事情但是使用成本显著。</p>
-<img src="/imgs/container-vs-vms.png" width="400" height="250">
-<p>主要区别如下：</p>
-<ol>
-<li>容器实例与主机共享操作系统内核，通过内核提供的运行时隔离能力为服务提供独立的用户域、文件系统、网络以及进程运行空间。<br>虚拟机的每个实例自带操作系统，因而是一种硬件级的虚拟化隔离。</li>
-<li>容器通常是专用于运行特定服务的，它的镜像通常只包含运行该服务所需的上下文内容，许多广泛使用的镜像都只有几十MB，甚至几MB大小。<br>虚拟机则需要提供包括内核在内的通用进程运行环境，它的镜像偏向于大而完整的全功能集合，即使一个最小的精简镜像的体积也有几百MB。</li>
-<li>容器的使用方式倾向于开箱即用，镜像提供的是一个『不可变的基础设施环境』。<br>虚拟机则倾向于让用户根据所用的系统，自定义初始化操作，使用Ansible、Puppet这样的配置工具来进行基础设施的管理</li>
-<li>容器在启动速度和运行性能上更有优势，虚拟机在安全性上更有优势。</li>
-</ol>
-<h3 id="七、容器的分类"><a href="#七、容器的分类" class="headerlink" title="七、容器的分类"></a>七、容器的分类</h3><h4 id="1-操作系统容器"><a href="#1-操作系统容器" class="headerlink" title="1. 操作系统容器"></a>1. 操作系统容器</h4><p>　　操作系统层虚拟化是一种计算机虚拟化技术，这种技术将操作系统内核虚拟化，可以允许多个独立用户空间的存在，而不是只有一个。这些实例有时会被称为容器、虚拟引擎、虚拟专用服务器或是 jails（FreeBSD jail 或者 chroot jail）。从运行在容器中的程序角度来看，这些实例就如同真正的计算机。</p>
-<p>　　容器技术如 LXC，OpenVZ，Linux VServer，BSD Jails 和 Solaris 区域就是操作系统容器。</p>
-<h4 id="2-应用容器"><a href="#2-应用容器" class="headerlink" title="2. 应用容器"></a>2. 应用容器</h4><p>　　应用程序虚拟化是从其所执行的底层操作系统封装计算机程序的软件技术。一个完全虚拟化的应用，尽管仍像原来一样执行，但是并不会进行传统意义上的安装。应用在运行时的行为就像它直接与原始操作系统以及操作系统所管理的所有资源进行交互一样，但可以实现不同程度的隔离或者沙盒化。</p>
-<p>　　容器技术如 Docker 和 Rocket 就是应用程序容器的示例。</p>
-<h3 id="八、LXC的练习"><a href="#八、LXC的练习" class="headerlink" title="八、LXC的练习"></a>八、LXC的练习</h3><p>　　LXC是Linux containers的简称，是一种基于容器的操作系统层级的虚拟化技术。</p>
-<p>　　LXC 与虚拟机的不同之处在于，它是一个操作系统级别的虚拟化环境，而不是硬件虚拟化环境。他们都做同样的事情，但 LXC 是操作系统级别的虚拟化环境，虚拟环境有它自己的进程和网络空间，而不是创建一个完整成熟的虚拟机。因此，一个 LXC 虚拟操作系统具有最小的资源需求，并启动只需几秒钟。</p>
-<h4 id="【练习1】创建LXC容器"><a href="#【练习1】创建LXC容器" class="headerlink" title="【练习1】创建LXC容器"></a>【练习1】创建LXC容器</h4><ol>
-<li>Ubuntu系统上安装好lxc</li>
-<li><p>宿主机上操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 启动一个后台运行的容器demo-container:</span></div><div class="line">sudo lxc-start --name demo-container --daemon</div><div class="line"><span class="meta">#</span><span class="bash"> 查看运行的容器的相关信息:</span></div><div class="line">sudo lxc-info --name demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 进入到容器:</span></div><div class="line">sudo lxc-console -n demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></div><div class="line">Username: ubuntu</div><div class="line">Password: ubuntu</div></pre></td></tr></table></figure>
-</li>
-<li><p>LXC容器中操作</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># 查看容器的hostname</span></div><div class="line">hostname</div><div class="line"><span class="meta"># 在容器中创建一个文件</span></div><div class="line">echo <span class="string">"hello"</span> &gt; my_text.txt</div><div class="line">cat my_text.txt</div></pre></td></tr></table></figure>
-</li>
-<li><p>退出容器<br>先按下<code>ctrl+a</code>，然后再按<code>q</code>。</p>
-</li>
-</ol>
-<h4 id="【练习2】克隆LXC容器"><a href="#【练习2】克隆LXC容器" class="headerlink" title="【练习2】克隆LXC容器"></a>【练习2】克隆LXC容器</h4><ol>
-<li><p>宿主机上操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 冻结运行的容器</span></div><div class="line">sudo lxc-freeze -n demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 克隆容器之前，必须要先停止容器</span></div><div class="line">sudo lxc-stop --name demo-container</div><div class="line">sudo lxc-clone -o demo-container -n cloned-container</div><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 启动复制的容器</span></div><div class="line">sudo lxc-start --name cloned-container --daemon</div><div class="line"><span class="meta">#</span><span class="bash"> 进入到复制的容器:</span></div><div class="line">sudo lxc-console -n cloned-container</div><div class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></div><div class="line">Username: ubuntu</div><div class="line">Password: ubuntu</div></pre></td></tr></table></figure>
-</li>
-<li><p>克隆的容器中操作</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看克隆的容器是否也一起克隆了之前创建的文件</span></div><div class="line"><span class="keyword">ls</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>退出容器<br>先按下<code>ctrl+a</code>，然后再按<code>q</code>。</p>
-</li>
-<li><p>停止克隆的容器</p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lxc-<span class="keyword">stop</span> --<span class="keyword">name</span> cloned-container</div></pre></td></tr></table></figure>
-</li>
-<li><p>销毁克隆的容器</p>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lxc-destroy <span class="comment">--name cloned-container</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是涉及容器，从what, why, how上讲述了容器的相关知识。<br>至于容器的历史，有兴趣的读者可以自己查看一下相关资料。<br><a href="http://www.dockone.io/article/1522" target="_blank" rel="external">容器简史：从20世纪70年代的chroot到2016的Docker</a>以及<a href="http://www.alauda.cn/2016/01/18/container-history/" target="_blank" rel="external">【容器那些事儿】容器技术的前世今生</a><br>　　下一篇将讲述Docker的出现以及相关的基本理论知识。</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
-<li><a href="http://dockone.io/article/803" target="_blank" rel="external">为什么容器技术将主宰世界？</a></li>
-<li><a href="http://dockone.io/article/2442" target="_blank" rel="external">容器技术概览</a></li>
-<li><a href="https://www.ibm.com/developerworks/community/blogs/132cfa78-44b0-4376-85d0-d3096cd30d3f/entry/%E5%AE%B9%E5%99%A8_What_Why_How_%E6%AF%8F%E5%A4%A95%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%AC%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF_6?lang=zh" target="_blank" rel="external">容器What, Why, How - 每天5分钟玩转容器技术 - IBM</a></li>
-<li><a href="https://www.ibm.com/developerworks/cn/linux/l-lxc-containers/" target="_blank" rel="external">LXC：Linux 容器工具</a></li>
-<li><a href="http://17173ops.com/2013/11/14/linux-lxc-install-guide.shtml#toc2" target="_blank" rel="external">LXC基础学习教程</a></li>
-</ul>
-</span>
+<h3 id="三、容器的定义"><a href="#三、容器的定义" class="headerlink" title="三、容器的定义"></a>三、容器的定义</h3>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/09/Docker-workshop-1-容器简介/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -992,75 +889,121 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/01/14/基于RabbitMQ topic的消息发送与接收/" itemprop="url">
-                基于RabbitMQ topic的消息发送与接收
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2017-01-14T16:19:46+08:00" content="2017-01-14">
-            2017-01-14
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/14/基于RabbitMQ topic的消息发送与接收/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Message/" itemprop="url" rel="index">
-                  <span itemprop="name">Message</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/14/基于RabbitMQ topic的消息发送与接收/" itemprop="url">基于RabbitMQ topic的消息发送与接收</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-14T16:19:46+08:00">
+                2017-01-14
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/01/14/基于RabbitMQ topic的消息发送与接收/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/14/基于RabbitMQ topic的消息发送与接收/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Message/" itemprop="url" rel="index">
+                    <span itemprop="name">Message</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><h4 id="1-项目结构："><a href="#1-项目结构：" class="headerlink" title="1.项目结构："></a>1.项目结构：</h4><img src="/imgs/rabbit-1.png" width="400" height="250">
+          
+            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><h4 id="1-项目结构："><a href="#1-项目结构：" class="headerlink" title="1.项目结构："></a>1.项目结构：</h4><img src="/imgs/rabbit-1.png" width="400" height="250">
 <p>A是消息的生产者，B、C则是消息的consumer。A会通过queue（不关心其产品类型）发送消息给B、C。</p>
 <h4 id="2-需求"><a href="#2-需求" class="headerlink" title="2.需求"></a>2.需求</h4><p>近期项目上，新增的D应用程序需要监听原有A应用程序的消息。按照以往的做法，我需要做如下两件事：</p>
 <ul>
@@ -1097,12 +1040,24 @@ $ vagrant init yungsang/coreos
 <li>AMQP只有队列(Queues)，队列的消息只能被单个接受者消费，发送者并不直接把消息发送到队列中，而是发送到Exchange中，该Exchage会与一个或多个队列绑定，能够实现与JMS队列和主题同样的功能。</li>
 </ul>
 <h3 id="四、结语"><a href="#四、结语" class="headerlink" title="四、结语"></a>四、结语</h3><p>本文只是针对其中的一点，进行了可行性的spike，但是实际应用中往往还涉及到很多复杂因素，比如技术上消息的事务处理和消息负载，另外还有项目进度、人员安排以及后续维护等问题。笔者不再过多阐述，谨以此文的小demo探究一些不一样的架构。</p>
-</span>
+
+          
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -1112,75 +1067,121 @@ $ vagrant init yungsang/coreos
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2017/01/14/RabbitMQ初探/" itemprop="url">
-                RabbitMQ初探
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2017-01-14T10:19:46+08:00" content="2017-01-14">
-            2017-01-14
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/14/RabbitMQ初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Message/" itemprop="url" rel="index">
-                  <span itemprop="name">Message</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/14/RabbitMQ初探/" itemprop="url">RabbitMQ初探</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-14T10:19:46+08:00">
+                2017-01-14
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/01/14/RabbitMQ初探/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/14/RabbitMQ初探/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Message/" itemprop="url" rel="index">
+                    <span itemprop="name">Message</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>在准备<code>基于RabbitMQ topic的消息发送与接收</code>的时候，顺便开始了这篇RabbitMQ初探。<br>安装过程这里就不再赘述，本博客主要记录一些初探过程。</p>
+          
+            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>在准备<code>基于RabbitMQ topic的消息发送与接收</code>的时候，顺便开始了这篇RabbitMQ初探。<br>安装过程这里就不再赘述，本博客主要记录一些初探过程。</p>
 <h3 id="二、简介"><a href="#二、简介" class="headerlink" title="二、简介"></a>二、简介</h3><p>AMQP，即Advanced Message Queuing Protocol，高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计。消息中间件主要用于组件之间的解耦，消息的发送者无需知道消息使用者的存在，反之亦然。<br>AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。<br>RabbitMQ是一个开源的AMQP实现，服务器端用Erlang语言编写，支持多种客户端，如：Python、Ruby、.NET、Java、JMS、C、PHP、ActionScript、XMPP、STOMP等，支持AJAX。用于在分布式系统中存储转发消息，在易用性、扩展性、高可用性等方面表现不俗。</p>
 <h3 id="三、几种模式"><a href="#三、几种模式" class="headerlink" title="三、几种模式"></a>三、几种模式</h3><p>Rabbit MQ<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="external">官网教程</a>上，从六个方面给出了讲解和demo。但是这些demo都是从最基础的层面进行编写，所以我自己尝试时候用了spring boot的相关支持，简化了很多代码。同时在尝试之后，我大概将其分为三类：</p>
 <ul>
@@ -1248,12 +1249,24 @@ $ vagrant init yungsang/coreos
 <li>客户端使用routing key，在exchange和queue之间建立好绑定关系。</li>
 <li>客户端投递消息到exchange。</li>
 </ul>
-</span>
+
+          
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -1263,75 +1276,121 @@ $ vagrant init yungsang/coreos
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/12/函数式编程初探2/" itemprop="url">
-                函数式编程初探（二）
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-12T19:35:10+08:00" content="2016-11-12">
-            2016-11-12
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/12/函数式编程初探2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                  <span itemprop="name">函数式编程</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/12/函数式编程初探2/" itemprop="url">函数式编程初探（二）</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-12T19:35:10+08:00">
+                2016-11-12
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/12/函数式编程初探2/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探2/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
+          
+            <p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
 <h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
 <p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
 <p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight flix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">volume</span> </span>= &#123;h, w, l -&gt; h * w * l&#125;</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">area</span> </span>= volume.curry(<span class="number">1</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthPA</span> </span>= volume.curry(<span class="number">1</span>, <span class="number">1</span>)         <span class="comment">// &lt;1&gt;</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthC</span> </span>= volume.curry(<span class="number">1</span>).curry(<span class="number">1</span>)    <span class="comment">// &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
@@ -1360,12 +1419,24 @@ $ vagrant init yungsang/coreos
 <p>自然数分类规则：<br>完美数： 真约数之和 = 数本身<br>过剩数： 真约数之和 &gt; 数本身<br>不足数： 真约数之和 &lt; 数本身<br>真约数和：除了数本身之外，其余正约数的和。</p>
 </blockquote>
 <p>代码比较长，可以直接查看《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/" target="_blank" rel="external">github</a>总结如下：<br>1.完美数的命令式解法<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java</a><br>2.稍向函数式靠拢的完美数分类实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java</a><br>3.完美数分类的Java8实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java</a><br><span id="完美数的手工缓存实现">4.完美数的手工缓存实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy</a><br><span id="完美数的记忆实现">5.完美数的记忆实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy</a></p>
-</span>
+
+          
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -1375,75 +1446,121 @@ $ vagrant init yungsang/coreos
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/12/函数式编程初探1/" itemprop="url">
-                函数式编程初探（一）
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-12T17:35:13+08:00" content="2016-11-12">
-            2016-11-12
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/12/函数式编程初探1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                  <span itemprop="name">函数式编程</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/12/函数式编程初探1/" itemprop="url">函数式编程初探（一）</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-12T17:35:13+08:00">
+                2016-11-12
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/12/函数式编程初探1/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/12/函数式编程初探1/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
+          
+            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
 <h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
 <h3 id="三、背景"><a href="#三、背景" class="headerlink" title="三、背景"></a>三、背景</h3><p>函数式编程（Functional Programming）其实相对于计算机的历史而言是一个非常古老的概念，甚至早于第一台计算机的诞生。函数式编程的基础模型来源于 λ 演算，而 λ 演算并非设计于在计算机上执行，它是由 Alonzo Church 和 Stephen Cole Kleene 在 20 世纪三十年代引入的一套用于研究函数定义、函数应用和递归的形式系统。</p>
 <h3 id="四、为什么？"><a href="#四、为什么？" class="headerlink" title="四、为什么？"></a>四、为什么？</h3><p>在《函数式编程思维》这本书中，多处指出<code>函数式编程思维</code>的好处之一,是能够将低层次细节的控制权移交给运行时,从而消弭了一大批注定会发生的程序错误。这使得程序员得以在更高的抽象层次上工作，同时运行时也有了执行复杂优化的自由空间。</p>
@@ -1499,12 +1616,24 @@ $ vagrant init yungsang/coreos
 </ol>
 <p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
 <p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
-</span>
+
+          
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -1514,75 +1643,121 @@ $ vagrant init yungsang/coreos
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/11/01/RxJava/" itemprop="url">
-                RxJava
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-11-01T22:19:46+08:00" content="2016-11-01">
-            2016-11-01
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/01/RxJava/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/RxJava/" itemprop="url" rel="index">
-                  <span itemprop="name">RxJava</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/01/RxJava/" itemprop="url">RxJava</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-01T22:19:46+08:00">
+                2016-11-01
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/11/01/RxJava/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/01/RxJava/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RxJava/" itemprop="url" rel="index">
+                    <span itemprop="name">RxJava</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
+          
+            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
 <h3 id="二、响应式编程"><a href="#二、响应式编程" class="headerlink" title="二、响应式编程"></a>二、响应式编程</h3><p>响应式编程是一种面向数据流和变化传播的编程范式，数据更新是相关联的。<br>在交互式编程中，A = B + C这样的表达式意味着将B与C之和赋给A，而此后B与C的改变都与A无关。<br>而在响应式编程中，A会去“响应”B或C的变化，即一旦B或C改变之后，A的值也会随之变化。</p>
 <h3 id="三、定义"><a href="#三、定义" class="headerlink" title="三、定义"></a>三、定义</h3><p>我的理解是，RxJava本质上是一个异步操作库，是一个能让你用极其简洁的逻辑去处理繁琐复杂任务的异步事件库。（其实初学者把握两点就好了：观察者模式和异步）</p>
 <h3 id="四、背景"><a href="#四、背景" class="headerlink" title="四、背景"></a>四、背景</h3><p>Rx的全称是Reactive Extensions。直译过来就是响应式扩展。<br>Rx基于观察者模式，是一种编程模型。其目标是提供一致的编程接口，帮助开发者更方便的处理异步数据流。<br>Rx最初是LINQ的一个扩展，由微软的架构师Erik Meijer领导的团队开发，在2012年11月开源。<br>Rx的大部分语言库由ReactiveX这个组织负责维护，比较流行的有RxJava/RxJS/Rx.NET，社区网站是 reactivex.io。<br>RxJava是 ReactiveX 在JVM上的一个实现。</p>
@@ -1704,12 +1879,24 @@ Observable observable = Observable.from(parameters);
 <li>布尔类操作符<br>includes、some等等</li>
 </ul>
 <p>对于这些操作符的调用分析，读者可以自己查看源代码。<br>对于操作符的用法，可以参考<a href="https://github.com/zhangyuyu/learnrxjava" target="_blank" rel="external">Github TDD 练习</a>。<br>对于操作符形象化的理解，可以参考一个交互式的动画网站<a href="http://rxmarbles.com/" target="_blank" rel="external">http://rxmarbles.com/</a></p>
-</span>
+
+          
         
       
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -1719,75 +1906,121 @@ Observable observable = Observable.from(parameters);
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
       
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/04/27/微服务-consul架构/" itemprop="url">
-                Consul架构
-              </a>
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-04-27T19:10:52+08:00" content="2016-04-27">
-            2016-04-27
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/27/微服务-consul架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/MicroServices/" itemprop="url" rel="index">
-                  <span itemprop="name">MicroServices</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/27/微服务-consul架构/" itemprop="url">Consul架构</a></h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-27T19:10:52+08:00">
+                2016-04-27
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/04/27/微服务-consul架构/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/27/微服务-consul架构/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MicroServices/" itemprop="url" rel="index">
+                    <span itemprop="name">MicroServices</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="articleBody"><h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
+          
+            <h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
 <li><a href="#agent">Agent</a></li>
 <li><a href="#client">Client</a></li>
 <li><a href="#server">Server</a></li>
@@ -1817,122 +2050,24 @@ Observable observable = Observable.from(parameters);
 <p>Consul官网对于Consul架构的解释:<br><br><a href="https://www.consul.io/docs/internals/architecture.html" target="_blank" rel="external">CONSUL ARCHITECTURE</a><br></p>
 <p>Amazon官网上的博客:<br><br><a href="https://aws.amazon.com/blogs/compute/service-discovery-via-consul-with-amazon-ecs/" target="_blank" rel="external">Service Discovery via Consul with Amazon ECS</a><br><br>翻译的中文版地址:<br><br><a href="http://yaowenjie.github.io/cloud/service-discovery-via-consul-with-amazon-ecs" target="_blank" rel="external">在ECS上使用Consul实现服务发现</a></p>
 </blockquote>
-</span>
+
+          
         
       
     </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
+    
+    
+    
 
     
-      
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/" itemprop="url">
-                微服务-服务发现工具：ZooKeeper vs etcd vs Consul
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2016-04-23T11:15:05+08:00" content="2016-04-23">
-            2016-04-23
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/MicroServices/" itemprop="url" rel="index">
-                  <span itemprop="name">MicroServices</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody"><p>　　为了能够定位服务，我们需要至少接下来的两个有用的步骤。</p>
-<ul>
-<li>服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息</li>
-<li>服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。</li>
-</ul>
-<p>　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？所有这些问题都与注册和发现阶段紧密关联。现在，我们限定只在服务发现的范围里（常见的名字，围绕上述步骤）以及用于服务发现任务的工具，它们中的大多数采用了高可用的分布式键/值存储。</p>
-<h3 id="服务发现工具"><a href="#服务发现工具" class="headerlink" title="服务发现工具"></a>服务发现工具</h3><p>　　服务发现工具的主要目标是用来服务查找和相互对话，为此该工具需要知道每个服务，这不是一个新概念，在Docker之前就已经存在很多类似的工具了，然而，容器带给了这些工具一个全新水平的需求。<br>　　服务发现背后的基本思想是对于服务的每一个新实例（或应用程序），能够识别当前环境和存储相关信息。存储的注册表信息本身通常采用键/值对的格式，由于服务发现经常用于分布式系统，所以要求这些信息可伸缩、支持容错和分布式集群中的所有节点。这种存储的主要用途是给所有感兴趣的各方提供最起码诸如服务IP地址和端口这样的信息，用于它们之间的相互通讯，这些数据还经常扩展到其它类型的信息服务发现工具倾向于提供某种形式的API，用于服务自身的注册以及服务信息的查找。<br>　　比方说我们有两个服务，一个是提供方，另一个是第一个服务的消费者，一旦部署了服务提供方，就需要在服务发现注册表中存储其信息。接着，当消费者试图访问服务提供者时，它首先查询服务注册表，使用获取到的IP地址和端口来调用服务提供者。为了与注册表中的服务提供方的具体实现解耦，我们常常采用某种代理服务。这样消费者总是向固定IP地址的代理请求信息，代理再依次使用服务发现来查找服务提供方信息并重定向请求，在本文中我们稍后通过反向代理来实现。现在重要的是要理解基于三种角色（服务消费者、提供者和代理）的服务发现流程。<br>　　服务发现工具要查找的是数据，至少我们应该能够找出服务在哪里？服务是否健康和可用？配置是什么样的？既然我们正在多台服务器上构建一个分布式系统，那么该工具需要足够健壮，保证其中一个节点的宕机不会危及数据，同时，每个节点应该有完全相同的数据副本，进一步地，我们希望能够以任何顺序启动服务、杀死服务或者替换服务的新版本，我们还应该能够重新配置服务并且查看到数据相应的变化。</p>
-<p>　　让我们看一下一些常用的选项来完成我们上面设定的目标。
-　　</p>
-<h3 id="手动配置"><a href="#手动配置" class="headerlink" title="手动配置"></a>手动配置</h3><p>　　大多数服务仍然是需要手动管理的，我们预先决定在何处部署服务、如何配置和希望不管什么原因，服务都将继续正常工作，直到天荒地老。这样的目标不是可以轻易达到的。部署第二个服务实例意味着我们需要启动全程的手动处理，我们需要引入一台新的服务器，或者找出哪一台服务器资源利用率较低，然后创建一个新的配置集并启动服务。情况或许会变得越来越复杂，比方说，硬件故障导致的手动管理下的反应时间变得很慢。可见性是另外一个痛点，我们知道什么是静态配置，毕竟是我们预先准备好的，然而，大多数的服务有很多动态生成的信息，这些信息不是轻易可见的，也没有一个单独的地方供我们在需要时参考这些数据。<br>　　反应时间会不可避免的变慢，鉴于存在许多需要手动处理的移动组件，故障恢复和监控也会变得非常难以管理。<br>　　尽管在过去或者当服务/服务器数量很少的时候有借口不做这项工作，随着服务发现工具的出现，这个借口已经不存在了。</p>
-<h3 id="1-ZooKeeper"><a href="#1-ZooKeeper" class="headerlink" title="1. ZooKeeper"></a>1. ZooKeeper</h3><p>　　ZooKeeper是这种类型的项目中历史最悠久的之一，它起源于Hadoop，帮助在Hadoop集群中维护各种组件。它非常成熟、可靠，被许多大公司（YouTube、eBay、雅虎等）使用。其数据存储的格式类似于文件系统，如果运行在一个服务器集群中，Zookeper将跨所有节点共享配置状态，每个集群选举一个领袖，客户端可以连接到任何一台服务器获取数据。<br>　　ZooKeeper的主要优势是其成熟、健壮以及丰富的特性，然而，它也有自己的缺点，其中采用Java开发以及复杂性是罪魁祸首。尽管Java在许多方面非常伟大，然后对于这种类型的工作还是太沉重了，ZooKeeper使用Java以及相当数量的依赖使其对于资源竞争非常饥渴。因为上述的这些问题，ZooKeeper变得非常复杂，维护它需要比我们期望从这种类型的应用程序中获得的收益更多的知识。这部分地是由于丰富的特性反而将其从优势转变为累赘。应用程序的特性功能越多，就会有越大的可能性不需要这些特性，因此，我们最终将会为这些不需要的特性付出复杂度方面的代价。<br>　　ZooKeeper为其他项目相当大的改进铺平了道路，“大数据玩家“在使用它，因为没有更好的选择。今天，ZooKeeper已经老态龙钟了，我们有了更好的选择。</p>
-<h3 id="2-etcd"><a href="#2-etcd" class="headerlink" title="2. etcd"></a>2. etcd</h3><p>　　etcd是一个采用HTTP协议的健/值对存储系统，它是一个分布式和功能层次配置系统，可用于构建服务发现系统。其很容易部署、安装和使用，提供了可靠的数据持久化特性。它是安全的并且文档也十分齐全。<br>　　etcd比ZooKeeper是比更好的选择，因为它很简单，然而，它需要搭配一些第三方工具才可以提供服务发现功能。<br><img src="/imgs/etcd.png" width="600" height="300"><br>　　现在，我们有一个地方来存储服务相关信息，我们还需要一个工具可以自动发送信息给etcd。但在这之后，为什么我们还需要手动把数据发送给etcd呢？即使我们希望手动将信息发送给etcd，我们通常情况下也不会知道是什么信息。记住这一点，服务可能会被部署到一台运行最少数量容器的服务器上，并且随机分配一个端口。理想情况下，这个工具应该监视所有节点上的Docker容器，并且每当有新容器运行或者现有的一个容器停止的时候更新etcd，其中的一个可以帮助我们达成目标的工具就是Registrator。</p>
-<h4 id="2-1-Registrator"><a href="#2-1-Registrator" class="headerlink" title="2.1 Registrator"></a>2.1 Registrator</h4><p>　　Registrator通过检查容器在线或者停止运行状态自动注册和去注册服务，它目前支持etcd、Consul和SkyDNS 2。<br>　　Registrator与etcd是一个简单但是功能强大的组合，可以运行很多先进的技术。每当我们打开一个容器，所有数据将被存储在etcd并传播到集群中的所有节点。我们将决定什么信息是我们的。<br><img src="/imgs/etcd-registrator.png" width="600" height="300"><br>上述的拼图游戏还缺少一块，我们需要一种方法来创建配置文件，与数据都存储在etcd，通过运行一些命令来创建这些配置文件。</p>
-<h4 id="2-2-Confd"><a href="#2-2-Confd" class="headerlink" title="2.2 Confd"></a>2.2 Confd</h4><p>　　Confd是一个轻量级的配置管理工具，常见的用法是通过使用存储在etcd、consul和其他一些数据登记处的数据保持配置文件的最新状态，它也可以用来在配置文件改变时重新600 300加载应用程序。换句话说，我们可以用存储在etcd（或者其他注册中心）的信息来重新配置所有服务。<br><img src="/imgs/etcd-confud.png" width="600" height="300"></p>
-<h4 id="2-3-对于etcd、Registrator和Confd组合的最后的思考"><a href="#2-3-对于etcd、Registrator和Confd组合的最后的思考" class="headerlink" title="2.3 对于etcd、Registrator和Confd组合的最后的思考"></a>2.3 对于etcd、Registrator和Confd组合的最后的思考</h4><p>　　当etcd、Registrator和Confd结合时，可以获得一个简单而强大的方法来自动化操作我们所有的服务发现和需要的配置。这个组合还展示了“小”工具正确组合的有效性，这三个小东西可以如我们所愿正好完成我们需要达到的目标，若范围稍微小一些，我们将无法完成我们面前的目标，而另一方面如果他们设计时考虑到更大的范围，我们将引入不必要的复杂性和服务器资源开销。<br>　　在我们做出最后的判决之前，让我们看看另一个有相同目标的工具组合，毕竟，我们不应该满足于一些没有可替代方案的选择。</p>
-<h3 id="3-Consul"><a href="#3-Consul" class="headerlink" title="3. Consul"></a>3. Consul</h3><p>　　Consul是强一致性的数据存储，使用gossip形成动态集群。它提供分级键/值存储方式，不仅可以存储数据，而且可以用于注册器件事各种任务，从发送数据改变通知到运行健康检查和自定义命令，具体如何取决于它们的输出。<br>　　与ZooKeeper和etcd不一样，Consul内嵌实现了服务发现系统，所以这样就不需要构建自己的系统或使用第三方系统。这一发现系统除了上述提到的特性之外，还包括节点健康检查和运行在其上的服务。<br>　　ZooKeeper和etcd只提供原始的键/值队存储，要求应用程序开发人员构建他们自己的系统提供服务发现功能。而Consul提供了一个内置的服务发现的框架。客户只需要注册服务并通过DNS或HTTP接口执行服务发现。其他两个工具需要一个亲手制作的解决方案或借助于第三方工具。<br>　　Consul为多种数据中心提供了开箱即用的原生支持，其中的gossip系统不仅可以工作在同一集群内部的各个节点，而且还可以跨数据中心工作。<br><img src="/imgs/consul.png" width="600" height="300"><br>　　Consul还有另一个不错的区别于其他工具的功能，它不仅可以用来发现已部署的服务以及其驻留的节点信息，还通过HTTP请求、TTLs（time-to-live）和自定义命令提供了易于扩展的健康检查特性。</p>
-<h4 id="3-1-Registrator"><a href="#3-1-Registrator" class="headerlink" title="3.1 Registrator"></a>3.1 Registrator</h4><p>　　Registrator有两个Consul协议，其中consulkv协议产生类似于etcd协议的结果。<br>　　除了通常的IP和端口存储在etcd或consulkv协议中之外，Registrator consul协议存储了更多的信息，我们可以得到服务运行节点的信息，以及服务ID和名称。我们也可以借助于一些额外的环境变量按照一定的标记存储额外的信息。<br><img src="/imgs/consul-registrator.png" width="600" height="300"></p>
-<h4 id="3-2-Consul-template"><a href="#3-2-Consul-template" class="headerlink" title="3.2 Consul-template"></a>3.2 Consul-template</h4><p>　　confd可以像和etce搭配一样用于Consul，不过Consul有自己的模板服务，其更适配Consul。<br>　　通过从Consul获得的信息，Consul-template是一个非常方便的创建文件的途径，还有一个额外的好处就是在文件更新后可以运行任意命令，正如confd，Consul-template也可以使用Go模板格式。<br><img src="/imgs/consul-template.png" width="600" height="300">
-　　</p>
-<h4 id="3-3-Consul健康检查、Web界面和数据中心"><a href="#3-3-Consul健康检查、Web界面和数据中心" class="headerlink" title="3.3 Consul健康检查、Web界面和数据中心"></a>3.3 Consul健康检查、Web界面和数据中心</h4><p>　　监控集群节点和服务的健康状态与测试和部署它们一样的重要。虽然我们应该向着拥有从来没有故障的稳定的环境努力，但我们也应该承认，随时会有意想不到的故障发生，时刻准备着采取相应的措施。例如我们可以监控内存使用情况，如果达到一定的阈值，那么迁移一些服务到集群中的另外一个节点，这将是在发生“灾难”前执行的一个预防措施。另一方面，并不是所有潜在的故障都可以被及时检测到并采取措施。单个服务可能会齿白，一个完整的节点也可能由于硬件故障而停止工作。在这种情况下我们应该准备尽快行动，例如一个节点替换为一个新的并迁移失败的服务。Consul有一个简单的、优雅的但功能强大的方式进行健康检查，当健康阀值达到一定数目时，帮助用户定义应该执行的操作。<br>　　如果用户Google搜索“etcd ui”或者“etec dashboard”时，用户可能看到只有几个可用的解决方案，可能会问为什么我们还没有介绍给用户，这个原因很简单，etcd只是键/值对存储，仅此而已。通过一个UI呈现数据没有太多的用处，因为我们可以很容易地通过etcdctl获得这些数据。这并不意味着etcd UI是无用的，但鉴于其有限的使用范围，它不会产生多大影响。<br>　　Consu不仅仅是一个简单的键/值对存储，正如我们已经看到的，除了存储简单的键/值对，它还有一个服务的概念以及所属的数据。它还可以执行健康检查，因此成为一个好的候选dashboard，在上面可以看到我们的节点的状态和运行的服务。最后，它支持了多数据中心的概念。所有这些特性的结合让我们从不同的角度看到引入dashboard的必要性。<br>通过Consul Web界面，用户可以查看所有的服务和节点、监控健康检查状态以及通过切换数据中心读取设置键/值对数据。<br><img src="/imgs/consul-web-ui.png" width="600" height="300"></p>
-<h4 id="3-4-对于Consul、Registrator、Template、健康检查和Web-UI的最终思考"><a href="#3-4-对于Consul、Registrator、Template、健康检查和Web-UI的最终思考" class="headerlink" title="3.4 对于Consul、Registrator、Template、健康检查和Web UI的最终思考"></a>3.4 对于Consul、Registrator、Template、健康检查和Web UI的最终思考</h4><p>　　Consul以及上述我们一起探讨的工具在很多情况下提供了比etcd更好的解决方案。这是从内心深处为了服务架构和发现而设计的方案，简单而强大。它提供了一个完整的同时不失简洁的解决方案，在许多情况下，这是最佳的服务发现以及满足健康检查需求的工具。</p>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>　　所有这些工具都是基于相似的原则和架构，它们在节点上运行，需要仲裁来运行，并且都是强一致性的，都提供某种形式的键/值对存储。<br>　　ZooKeeper是其中最老态龙钟的一个，使用年限显示出了其复杂性、资源利用和尽力达成的目标，它是为了与我们评估的其他工具所处的不同时代而设计的（即使它不是老得太多）。<br>　　etcd、Registrator和Confd是一个非常简单但非常强大的组合，可以解决大部分问题，如果不是全部满足服务发现需要的话。它还展示了我们可以通过组合非常简单和特定的工具来获得强大的服务发现能力，它们中的每一个都执行一个非常具体的任务，通过精心设计的API进行通讯，具备相对自治工作的能力，从架构和功能途径方面都是微服务方式。<br>　　Consul的不同之处在于无需第三方工具就可以原生支持多数据中心和健康检查，这并不意味着使用第三方工具不好。实际上，在这篇博客里我们通过选择那些表现更佳同时不会引入不必要的功能的的工具，尽力组合不同的工具。使用正确的工具可以获得最好的结果。如果工具引入了工作不需要的特性，那么工作效率反而会下降，另一方面，如果工具没有提供工作所需要的特性也是没有用的。Consul很好地权衡了权重，用尽量少的东西很好的达成了目标。<br>　　Consul使用gossip来传播集群信息的方式，使其比etcd更易于搭建，特别是对于大的数据中心。将存储数据作为服务的能力使其比etcd仅仅只有健/值对存储的特性更加完整、更有用（即使Consul也有该选项）。虽然我们可以在etcd中通过插入多个键来达成相同的目标，Consul的服务实现了一个更紧凑的结果，通常只需要一次查询就可以获得与服务相关的所有数据。除此之外，Registrator很好地实现了Consul的两个协议，使其合二为一，特别是添加Consul-template到了拼图中。Consul的Web UI更是锦上添花般地提供了服务和健康检查的可视化途径。<br>　　我不能说Consul是一个明确的赢家，而是与etcd相比其有一个轻微的优势。服务发现作为一个概念，以及作为工具都很新，我们可以期待在这一领域会有许多的变化。秉承开放的心态，大家可以对本文的建议持保留态度，尝试不同的工具然后做出自己的结论。
-　　</p>
-<blockquote>
-<p>完整中文版地址:<a href="http://dockone.io/article/667" target="_blank" rel="external">服务发现：ZooKeeper vs etcd vs Consul</a></p>
-<p>完整原文链接：<a href="https://technologyconversations.com/2015/09/08/service-discovery-ZooKeeper-vs-etcd-vs-consul/" target="_blank" rel="external">Service Discovery: ZooKeeper vs etcd vs Consul</a></p>
-</blockquote>
-</span>
-        
-      
-    </div>
+    
 
     <footer class="post-footer">
+      
+
       
 
       
@@ -1942,6 +2077,10 @@ Observable observable = Observable.from(parameters);
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
@@ -1950,17 +2089,20 @@ Observable observable = Observable.from(parameters);
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&laquo;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">&raquo;</a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
- </div>
 
+
+          </div>
+          
+
+
+          
+
+        </div>
         
-
-        
-      </div>
-
-      
+          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -1971,61 +2113,83 @@ Observable observable = Observable.from(parameters);
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
-      <section class="site-overview">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/imgs/figure.jpg" alt="Zhang Yu" itemprop="image"/>
-          <p class="site-author-name" itemprop="name">Zhang Yu</p>
-        </div>
-        <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">47</span>
-              <span class="site-state-item-name">文章</span>
-            </a>
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Zhang Yu</p>
+              <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
           </div>
 
-          <div class="site-state-item site-state-categories">
-            <a href="/categories">
-              <span class="site-state-item-count">13</span>
-              <span class="site-state-item-name">分類</span>
-              </a>
-          </div>
+          <nav class="site-state motion-element">
 
-          <div class="site-state-item site-state-tags">
-            <a href="/tags">
-              <span class="site-state-item-count">20</span>
-              <span class="site-state-item-name">標籤</span>
-              </a>
-          </div>
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
 
-        </nav>
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="menu-item-icon icon-next-feed"></i>
-              RSS
-            </a>
-          </div>
-        
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
 
-        <div class="links-of-author motion-element">
+          </nav>
+
           
-        </div>
-
-        
-        
-
-        <div class="links-of-author motion-element">
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
-        </div>
 
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
       </section>
+
+      
 
       
 
@@ -2033,114 +2197,227 @@ Observable observable = Observable.from(parameters);
   </aside>
 
 
+        
+      </div>
     </main>
 
     <footer id="footer" class="footer">
-      <div class="footer-inner"> <div class="copyright" >
-  
-  &copy; &nbsp; 
-  <span itemprop="copyrightYear">2017</span>
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
-    <i class="icon-next-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
-</div>
+  
+   <span style="margin-left:8px;">
+   <script src="http://s6.cnzz.com/stat.php?id=1263347220&web_id=1263347220" type="text/javascript"></script>
+   </span>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
-</div>
 
-<div class="theme-info">
-  主題 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT
-  </a>
+  
 </div>
 
 
- </div>
-    </footer>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
-    <div class="back-to-top"></div>
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
   </div>
 
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
-  
-  
-  
-    
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhangyuyu"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-    
-     
-  	<script src="/js/ua-parser.min.js"></script>
-  	<script src="/js/hook-duoshuo.js"></script>
-  
+        
+      </div>
+    </footer>
 
     
-  
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
 
+    
 
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
-  
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
-
-
-
-
-  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  </div>
 
   
 
-  <script type="text/javascript">
-    $(document).ready(function () {
-      if (CONFIG.sidebar === 'always') {
-        displaySidebar();
-      }
-      if (isMobile()) {
-        FastClick.attach(document.body);
-      }
-    });
-  </script>
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
 
   
 
   
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
   
 
   
-  <script type="text/javascript" src="/js/lazyload.js"></script>
-  <script type="text/javascript">
-    $(function () {
-      $("#posts").find('img').lazyload({
-        placeholder: "/images/loading.gif",
-        effect: "fadeIn"
-      });
-    });
-  </script>
-<a href="https://github.com/zhangyuyu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+
 </body>
 </html>

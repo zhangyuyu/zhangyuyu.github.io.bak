@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-12-06T15:29:34.000Z</updated>
+  <updated>2017-12-27T07:12:09.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,13 +16,85 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Mongo-记一次安装启动异常</title>
+    <link href="http://yoursite.com/2017/12/27/Mongo-%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8%E9%94%99%E8%AF%AF/"/>
+    <id>http://yoursite.com/2017/12/27/Mongo-记一次安装启动错误/</id>
+    <published>2017-12-27T03:35:21.000Z</published>
+    <updated>2017-12-27T07:12:09.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>　　笔者最近换了电脑，从MacBook Pro 13”换成了MacBook Pro 15”，相关的工具软件全部得重新装。<br>再重新装Mongo的时候遇到了一些问题，特此记录。</p>
+<h2 id="二、安装异常"><a href="#二、安装异常" class="headerlink" title="二、安装异常"></a>二、安装异常</h2><h3 id="1-错误描述"><a href="#1-错误描述" class="headerlink" title="1. 错误描述"></a>1. 错误描述</h3><a id="more"></a>
+<p>　　用<code>brew install mongodb</code>安装了最新的mongodb(3.6)之后，启动本地的java spring boot应用，报错如下：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">com.mongodb.MongoCommandException</span>: Command failed with error 9: 'The 'cursor' option is required, except for aggregate with the explain argument' on server localhost:27017. The full response is &#123; "ok" : 0.0, "errmsg" : "The 'cursor' option is required, except for aggregate with the explain argument", "code" : 9, "codeName" : "FailedToParse" &#125;</div><div class="line"></div><div class="line"><span class="stylus">        at com<span class="selector-class">.mongodb</span><span class="selector-class">.CommandResult</span><span class="selector-class">.getException</span>(CommandResult<span class="selector-class">.java</span>:<span class="number">80</span>)</span></div><div class="line"></div><div class="line">        at com<span class="selector-class">.mongodb</span><span class="selector-class">.CommandResult</span><span class="selector-class">.throwOnError</span>(CommandResult<span class="selector-class">.java</span>:<span class="number">94</span>)</div><div class="line"></div><div class="line">        at org<span class="selector-class">.springframework</span><span class="selector-class">.data</span><span class="selector-class">.mongodb</span><span class="selector-class">.core</span><span class="selector-class">.MongoTemplate</span><span class="selector-class">.handleCommandError</span>(MongoTemplate<span class="selector-class">.java</span>:<span class="number">2097</span>)</div><div class="line"></div><div class="line">        ... <span class="number">119</span> common frames omitted</div></pre></td></tr></table></figure>
+<h3 id="2-错误原因"><a href="#2-错误原因" class="headerlink" title="2. 错误原因"></a>2. 错误原因</h3><p>　　MongoDB 3.6的Document，对于aggregation cursor的描述如下:</p>
+<blockquote>
+<pre><code>Specify a document that contains options that control the creation of the cursor object.
+
+Changed in version 3.6: MongoDB 3.6 removes the use of aggregate command without the cursor
+option unless the command includes the explain option. Unless you include the explain option,
+you must specify the cursor option.
+
+To indicate a cursor with the default batch size, specify cursor: {}.
+
+To indicate a cursor with a non-default batch size, use cursor: { batchSize: &lt;num&gt; }.
+</code></pre></blockquote>
+<p>　　MongoDB在3.6里面改变了aggregation指令的工作方式，现在aggregation需要cursor了。</p>
+<h3 id="3-解决办法"><a href="#3-解决办法" class="headerlink" title="3. 解决办法"></a>3. 解决办法</h3><p>　　对本地的mongodb降级。</p>
+<h4 id="1）先用brew-search查看支持的mongo版本"><a href="#1）先用brew-search查看支持的mongo版本" class="headerlink" title="1）先用brew search查看支持的mongo版本"></a>1）先用brew search查看支持的mongo版本</h4><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ brew search mongo</div><div class="line">=<span class="ruby">=&gt; Searching local taps...</span></div><div class="line">mongodb@3.4 ✔                          mongo-cxx-driver                       mongodb                                mongodb@3.2                            percona-server-mongodb</div><div class="line">mongo-c-driver                         mongo-orchestration                    mongodb@3.0                            mongoose</div><div class="line">=<span class="ruby">=&gt; Searching taps on GitHub...</span></div><div class="line">caskroom/cask/mongo-management-studio  homebrew/php/php53-mongo               homebrew/php/php54-mongo               homebrew/php/php55-mongo               homebrew/php/php56-mongo</div><div class="line">=<span class="ruby">=&gt; Searching blacklisted, migrated and deleted formulae...</span></div></pre></td></tr></table></figure>
+<h4 id="2）再brew安装mongodb-3-4"><a href="#2）再brew安装mongodb-3-4" class="headerlink" title="2）再brew安装mongodb 3.4"></a>2）再brew安装mongodb 3.4</h4><p><code>brew install mongodb@3.4</code></p>
+<h2 id="三、启动异常"><a href="#三、启动异常" class="headerlink" title="三、启动异常"></a>三、启动异常</h2><h3 id="1-错误描述-1"><a href="#1-错误描述-1" class="headerlink" title="1. 错误描述"></a>1. 错误描述</h3><p>　　安装完成mongodb3.4之后，mongo服务启动异常。</p>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ mongo</div><div class="line">MongoDB shell version v3.<span class="number">4.10</span></div><div class="line">connecting <span class="keyword">to</span>: mongodb://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">27017</span></div><div class="line"><span class="number">2017</span>-<span class="number">12</span>-<span class="number">27</span>T11:<span class="number">13</span>:<span class="number">37.713</span>+<span class="number">0800</span> W NETWORK  [thread1] Failed <span class="keyword">to</span> connect <span class="keyword">to</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">27017</span>, <span class="keyword">in</span>(checking socket <span class="keyword">for</span> <span class="literal">error</span> <span class="keyword">after</span> poll), reason: Connection refused</div><div class="line"><span class="number">2017</span>-<span class="number">12</span>-<span class="number">27</span>T11:<span class="number">13</span>:<span class="number">37.715</span>+<span class="number">0800</span> E QUERY    [thread1] <span class="literal">Error</span>: couldn<span class="symbol">'t</span> connect <span class="keyword">to</span> server <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">27017</span>, connection attempt failed :</div><div class="line">connect@src/mongo/shell/mongo.js:<span class="number">237</span>:<span class="number">13</span></div><div class="line">@(connect):<span class="number">1</span>:<span class="number">6</span></div><div class="line">exception: connect failed</div></pre></td></tr></table></figure>
+<h3 id="2-错误原因-1"><a href="#2-错误原因-1" class="headerlink" title="2. 错误原因"></a>2. 错误原因</h3><p>　　mongodb的服务没有启动。</p>
+<h3 id="3-解决办法-1"><a href="#3-解决办法-1" class="headerlink" title="3. 解决办法"></a>3. 解决办法</h3><h4 id="探索过程："><a href="#探索过程：" class="headerlink" title="探索过程："></a>探索过程：</h4><h5 id="1）用brew-services启动mongo不work"><a href="#1）用brew-services启动mongo不work" class="headerlink" title="1）用brew services启动mongo不work"></a>1）用brew services启动mongo不work</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ brew services start mongodb@3.4</div><div class="line">==&gt; Successfully started `mongodb@3.4` (label: homebrew.mxcl.mongodb@3.4)</div><div class="line">$ brew services list</div><div class="line">Name        Status <span class="built_in"> User </span>   Plist</div><div class="line">mongodb@3.4 started yuzhang /Users/yuzhang/Library/LaunchAgents/homebrew.mxcl.mongodb@3.4.plist</div></pre></td></tr></table></figure>
+<p>　　上述操作之后，似乎mongo已经启动了，但是问题依旧复现，可能是brew services不再有人维护的原因（<a href="https://github.com/Homebrew/legacy-homebrew/issues/32006" target="_blank" rel="external">brew services is unsupported and will be removed soon</a>）。</p>
+<h5 id="2）用mongod启动mongo报错"><a href="#2）用mongod启动mongo报错" class="headerlink" title="2）用mongod启动mongo报错"></a>2）用mongod启动mongo报错</h5><figure class="highlight subunit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ mongod</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.980<span class="string">+0800</span> I CONTROL  [initandlisten] MongoDB starting : pid=8655 port=27017 dbpath=/data/db 64-bit host=CNyuzhang<span class="string">-2</span>.local</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] db version v3.4.10</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] git version: 078f28920cb24de0dd479b5ea6c66c644f6326e9</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.2n  7 Dec 2017</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] allocator: system</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] modules: none</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] build environment:</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten]     distarch: x86_64</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten]     target_arch: x86_64</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] options: &#123;&#125;</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I STORAGE  [initandlisten] exception in initAndListen: 29 Data directory /data/db not found., terminating</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I NETWORK  [initandlisten] shutdown: going to close listening sockets...</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I NETWORK  [initandlisten] shutdown: going to flush diaglog...</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] now exiting</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:11:28.981<span class="string">+0800</span> I CONTROL  [initandlisten] shutting down with code:100</div></pre></td></tr></table></figure>
+<p>　　上述错误信息里，明确指出<code>/data/db not found</code>，因此是在启动的时候没有找到db的地址。为了确认是这个问题，尝试使用如下指令：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">mongo -nodb</span></div></pre></td></tr></table></figure>
+<p>　　然后，发现可以直接进入mongo了。</p>
+<h5 id="3）创建-data-db"><a href="#3）创建-data-db" class="headerlink" title="3）创建/data/db"></a>3）创建/data/db</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$mkdir</span> -<span class="selector-tag">p</span> /data/db</div></pre></td></tr></table></figure>
+<p>　　再次启动mongodb:</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.679<span class="string">+0800</span> I CONTROL  [initandlisten] MongoDB starting : pid=8510 port=27017 dbpath=/data/db 64-bit host=CNyuzhang<span class="string">-2</span>.local</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten] db version v3.4.10</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten] git version: 078f28920cb24de0dd479b5ea6c66c644f6326e9</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.2n  7 Dec 2017</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten] allocator: system</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten] modules: none</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten] build environment:</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten]     distarch: x86_64</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten]     target_arch: x86_64</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.680<span class="string">+0800</span> I CONTROL  [initandlisten] options: &#123;&#125;</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.681<span class="string">+0800</span> I STORAGE  [initandlisten] exception in initAndListen: 20 Attempted to create a lock file on a read-only directory: /data/db, terminating</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.681<span class="string">+0800</span> I NETWORK  [initandlisten] shutdown: going to close listening sockets...</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.681<span class="string">+0800</span> I NETWORK  [initandlisten] shutdown: going to flush diaglog...</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.681<span class="string">+0800</span> I CONTROL  [initandlisten] now exiting</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:02.681<span class="string">+0800</span> I CONTROL  [initandlisten] shutting down with code:100</div></pre></td></tr></table></figure>
+<p>　　可以看出是对<code>/data/db</code>没有权限。</p>
+<h5 id="4）用sudo执行mongod"><a href="#4）用sudo执行mongod" class="headerlink" title="4）用sudo执行mongod"></a>4）用sudo执行mongod</h5><figure class="highlight subunit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">$ sudo mongod</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] MongoDB starting : pid=8521 port=27017 dbpath=/data/db 64-bit host=CNyuzhang<span class="string">-2</span>.local</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] db version v3.4.10</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] git version: 078f28920cb24de0dd479b5ea6c66c644f6326e9</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.2n  7 Dec 2017</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] allocator: system</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] modules: none</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] build environment:</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten]     distarch: x86_64</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten]     target_arch: x86_64</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.167<span class="string">+0800</span> I CONTROL  [initandlisten] options: &#123;&#125;</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.170<span class="string">+0800</span> I -        [initandlisten] Detected data files in /data/db created by the 'wiredTiger' storage engine, so setting the active storage engine to 'wiredTiger'.</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.170<span class="string">+0800</span> I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=7680M,session_max=20000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.781<span class="string">+0800</span> I CONTROL  [initandlisten]</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.781<span class="string">+0800</span> I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.781<span class="string">+0800</span> I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.781<span class="string">+0800</span> I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.781<span class="string">+0800</span> I CONTROL  [initandlisten]</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.822<span class="string">+0800</span> I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:08.823<span class="string">+0800</span> I NETWORK  [thread1] waiting for connections on port 27017</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:11.182<span class="string">+0800</span> I NETWORK  [thread1] connection accepted from 127.0.0.1:52959 #1 (1 connection now open)</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:11.182<span class="string">+0800</span> I NETWORK  [thread1] connection accepted from 127.0.0.1:52960 #2 (2 connections now open)</div><div class="line">2017<span class="string">-12</span><span class="string">-27</span>T11:10:11.182<span class="string">+0800</span> I NETWORK  [thread1] connection accepted from 127.0.0.1:52961 #3 (3 connections now open)</div></pre></td></tr></table></figure>
+<h4 id="解决方法小结"><a href="#解决方法小结" class="headerlink" title="解决方法小结"></a>解决方法小结</h4><ol>
+<li>创建<code>/data/db</code>，因为mongodb默认的db地址是<code>/data/db</code></li>
+<li>用sudo执行mongod</li>
+</ol>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">mkdir</span> -p /<span class="class"><span class="keyword">data</span>/db</span></div><div class="line"><span class="title">sudo</span> mongod</div></pre></td></tr></table></figure>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><ol>
+<li>问题1是新版本3.6的mongodb做了一些改动造成的不兼容</li>
+<li>问题2是brew services不再维护造成的启动异常</li>
+</ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://stackoverflow.com/questions/29630399/mongo-connection-refused-osx" target="_blank" rel="external">Stackoverflow - Mongo connection refused osx</a></li>
+<li><a href="https://stackoverflow.com/questions/23439343/cannot-connect-to-mongodb-errno61" target="_blank" rel="external">Stackoverflow - Cannot connect to MongoDB errno:61</a></li>
+<li><a href="http://hcysun.me/2015/11/21/Mac下使用brew安装mongodb/" target="_blank" rel="external">Mac下使用brew安装mongodb</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、背景&quot;&gt;&lt;a href=&quot;#一、背景&quot; class=&quot;headerlink&quot; title=&quot;一、背景&quot;&gt;&lt;/a&gt;一、背景&lt;/h2&gt;&lt;p&gt;　　笔者最近换了电脑，从MacBook Pro 13”换成了MacBook Pro 15”，相关的工具软件全部得重新装。&lt;br&gt;再重新装Mongo的时候遇到了一些问题，特此记录。&lt;/p&gt;
+&lt;h2 id=&quot;二、安装异常&quot;&gt;&lt;a href=&quot;#二、安装异常&quot; class=&quot;headerlink&quot; title=&quot;二、安装异常&quot;&gt;&lt;/a&gt;二、安装异常&lt;/h2&gt;&lt;h3 id=&quot;1-错误描述&quot;&gt;&lt;a href=&quot;#1-错误描述&quot; class=&quot;headerlink&quot; title=&quot;1. 错误描述&quot;&gt;&lt;/a&gt;1. 错误描述&lt;/h3&gt;
+    
+    </summary>
+    
+      <category term="Mongo" scheme="http://yoursite.com/categories/Mongo/"/>
+    
+    
+      <category term="Mongo" scheme="http://yoursite.com/tags/Mongo/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker Workshop（九）Docker日志、监控、Dashboard</title>
     <link href="http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7Dashboard/"/>
     <id>http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/</id>
     <published>2017-12-04T06:12:36.000Z</published>
-    <updated>2017-12-06T15:29:34.000Z</updated>
+    <updated>2017-12-27T07:14:05.000Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+    <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="https://www.bagevent.com/event/828605" target="_blank" rel="external">《Docker in Production》 workshop</a>于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。<br>直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
 <li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
@@ -34,27 +106,136 @@
 <li>服务发现</li>
 <li><strong>日志、监控、Dashboard</strong></li>
 </ul>
-<h3 id="三、日志"><a href="#三、日志" class="headerlink" title="三、日志"></a>三、日志</h3><h4 id="1-docker-docker-compose日志"><a href="#1-docker-docker-compose日志" class="headerlink" title="1. docker docker-compose日志"></a>1. docker docker-compose日志</h4><p>容器日志的输出形式</p>
+<h2 id="三、日志"><a href="#三、日志" class="headerlink" title="三、日志"></a>三、日志</h2><a id="more"></a>
+<h3 id="1-传统日志处理"><a href="#1-传统日志处理" class="headerlink" title="1. 传统日志处理"></a>1. 传统日志处理</h3><p>说到日志，我们以前处理日志的方式如下：</p>
+<p>日志写到本机磁盘上<br>通常仅用于排查线上问题，很少用于数据分析<br>需要时登录到机器上，用grep、awk等工具分析<br>那么，这种方式有什么缺点呢？</p>
+<p>第一，它的效率非常低，因为每一次要排查问题的时候都要登到机器上去，当有几十台或者是上百台机器的时候，每一台机器去登陆这是一个没办法接受的事情，可能一台机器浪费两分钟，整个几小时就过去了。</p>
+<p>第二，如果要进行一些比较复杂的分析，像grep、awk两个简单的命令不能够满足需求时，就需要运行一些比较复杂的程序进行分析。</p>
+<p>第三，日志本身它的价值不光在于排查一些系统问题上面，可能在一些数据的分析上，可能利用日志来做一些用户的决策，这也是它的价值，如果不能把它利用起来，价值就不能充分的发挥出来。</p>
+<h3 id="2-docker日志处理"><a href="#2-docker日志处理" class="headerlink" title="2. docker日志处理"></a>2. docker日志处理</h3><p>与Docker相关的日志主要有两部分：</p>
 <ul>
-<li>stdout 标准输出</li>
-<li>stderr 标准错误</li>
-<li>以json格式存放在容器对于到日志文件中</li>
+<li>Docker Daemon日志，即Docker自身运行产生的日志。</li>
+<li>Docker Container日志，即Docker容器应用产生的日志。</li>
 </ul>
+<p>容器日志的两种输出形式:</p>
+<ul>
+<li>stdout、stderr 标准输出</li>
+<li>日志文件记录</li>
+</ul>
+<p>标准输出日志的原理在于，当在启动进程的时候，进程之间有一个父子关系，父进程可以拿到子进程的标准输出。拿到子进程标准输出的后，父进程可以对标准输出做所有希望的处理。</p>
+<p>LogDriver就是Docker用来处理容器标准输出的一个模块。 Docker支持很多种不同的处理方式，比如你的标准输出之后，在某一种情况下会把它写到一个日志里面，Docker默认的JSON File日志，除此之外，Docker还可以把它发送到syslog里面，或者是发送到journald里面去，或者是gelf的一个系统。</p>
+<p>logger drive</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Driver</th>
+<th style="text-align:center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">none</td>
+<td style="text-align:center">丢弃容器输出，docker logs命令也看不到任何内容</td>
+</tr>
+<tr>
+<td style="text-align:center">json-file</td>
+<td style="text-align:center">默认驱动，使用json文件保存日志</td>
+</tr>
+<tr>
+<td style="text-align:center">syslog</td>
+<td style="text-align:center">将日志写入syslog里，syslog必须在机器上启动</td>
+</tr>
+<tr>
+<td style="text-align:center">journald</td>
+<td style="text-align:center">将日志发送到journald（systemd）,journald必须在机器上启动</td>
+</tr>
+<tr>
+<td style="text-align:center">gelf</td>
+<td style="text-align:center">将日志发送到GELF端点，如Graylog或Logstash</td>
+</tr>
+<tr>
+<td style="text-align:center">fluentd</td>
+<td style="text-align:center">将日志发送给fluentd，fluentd必须在机器上启动</td>
+</tr>
+<tr>
+<td style="text-align:center">awslogs</td>
+<td style="text-align:center">将日志发送给Amazon Cloudwatch</td>
+</tr>
+<tr>
+<td style="text-align:center">splunk</td>
+<td style="text-align:center">将日志发送到splunk</td>
+</tr>
+<tr>
+<td style="text-align:center">etwlogs</td>
+<td style="text-align:center">将日志发送给Event Tracing for Windows。仅在windows平台可用</td>
+</tr>
+<tr>
+<td style="text-align:center">gcplogs</td>
+<td style="text-align:center">将日志发送给Google日志系统</td>
+</tr>
+<tr>
+<td style="text-align:center">nats</td>
+<td style="text-align:center">将日志发送给NATS服务</td>
+</tr>
+</tbody>
+</table>
+<p>json-file<br>The default logging we’ve just looked at.<br>syslog<br>The syslog driver, which we’ll look at shortly.<br>journald<br>The driver for the systemd journal.<br>gelf<br>The Graylog Extended Log Format (GELF) driver.<br>fluentd<br>Forwards log messages to fluentd.<br>none<br>Turns off logging.</p>
 <p>docker日志内容类型</p>
 <ul>
 <li>docker自身运行时Daemon的日志内容</li>
 <li>docker容器的日志内容</li>
 </ul>
-<h4 id="2-痛点"><a href="#2-痛点" class="headerlink" title="2. 痛点"></a>2. 痛点</h4><h4 id="3-集中式日志聚合"><a href="#3-集中式日志聚合" class="headerlink" title="3. 集中式日志聚合"></a>3. 集中式日志聚合</h4><h3 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h3><h4 id="1-why？"><a href="#1-why？" class="headerlink" title="1. why？"></a>1. why？</h4><h4 id="2-监控什么？"><a href="#2-监控什么？" class="headerlink" title="2. 监控什么？"></a>2. 监控什么？</h4><h3 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h3><h4 id="1-why-可视化？"><a href="#1-why-可视化？" class="headerlink" title="1. why 可视化？"></a>1. why 可视化？</h4><h4 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h4><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<h3 id="3-集中式日志聚合"><a href="#3-集中式日志聚合" class="headerlink" title="3. 集中式日志聚合"></a>3. 集中式日志聚合</h3><ul>
+<li>在所有的容器里运行一个辅助进程，该进程充当agent并将日志发到我们的聚合service里。</li>
+<li>在主机上或者是在一个单独的容器里，收集日志并转发到聚合service里。</li>
+</ul>
+<p>第一种方式经常用到，但是它可能会让镜像变大，并且必要地增加了运行的进程数量。</p>
+<ul>
+<li>使用Docker API动态的获取日志</li>
+<li>使用syslog driver</li>
+<li>直接访问Docker目录下的日志文件</li>
+</ul>
+<p>这个方案非常简单，但是其实会有很多的缺点：</p>
+<p>第一，因为每个容器都有一个日志的进程，意味着你的机器上面有100个容器，就需要启动一百个日志设备的程序，资源的浪费非常厉害。</p>
+<p>第二，在做镜像的时候，需要把容器里面日志采集程序做到镜像里面去，对你的镜像其实是有入侵的，为了日志采集，不得不把自己的日志程序再做个新镜像，然后把东西放进去，所以对你的镜像过程是有入侵性的。</p>
+<p>第三，当一个容器里面好多个进程的时候，对于容器的资源管理，会干扰你对容器的资源使用的判断，包括对于在做资源分配和监控的时候，都会有一些这样的干扰。</p>
+<h3 id="4-out-of-scope"><a href="#4-out-of-scope" class="headerlink" title="4. out of scope"></a>4. out of scope</h3><p>那么，我们怎么样去收集日志、存储日志，用什么样的系统，日志的源头和写日志我们又该怎么来做，有这样几个建议：</p>
+<ol>
+<li><p>选择合适的日志框架，不要直接print；</p>
+</li>
+<li><p>为每一条日志选择正确的level，该debug的不要用info；</p>
+</li>
+<li><p>附加更多的上下文信息；</p>
+</li>
+<li><p>使用json、csv等日志格式，方便工具解析；</p>
+</li>
+<li><p>尽量不要使用多行日志(Java Exception Stack)。</p>
+</li>
+</ol>
+<h2 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h2><h3 id="1-why？"><a href="#1-why？" class="headerlink" title="1. why？"></a>1. why？</h3><h3 id="2-监控什么？"><a href="#2-监控什么？" class="headerlink" title="2. 监控什么？"></a>2. 监控什么？</h3><h2 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h2><h3 id="1-why-可视化？"><a href="#1-why-可视化？" class="headerlink" title="1. why 可视化？"></a>1. why 可视化？</h3><h3 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h3><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="https://yq.aliyun.com/articles/72700" target="_blank" rel="external">Docker日志收集最佳实践</a></li>
 <li><a href="http://dockone.io/article/2644" target="_blank" rel="external">Docker 日志的5个最佳实践</a></li>
 <li><a href="http://dockone.io/article/2252" target="_blank" rel="external">使用ELK处理Docker日志(一)</a></li>
+<li><a href="http://blog.cloud66.com/9-crtitical-decisions-needed-to-run-docker-in-production/" target="_blank" rel="external">9 Critical Decisions for Running Docker in Production</a></li>
 </ul>
 ]]></content>
     
     <summary type="html">
     
-      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;h3 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　&lt;a href=&quot;https://www.bagevent.com/event/828605&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;《Docker in Production》 workshop&lt;/a&gt;于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。&lt;br&gt;直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。&lt;/p&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;　　该系列《Docker in Prodcution》内容包含如下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;容器简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker的基本操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker数据存储&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker网络&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker安全&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;多主机部署&lt;/li&gt;
+&lt;li&gt;服务发现&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;日志、监控、Dashboard&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;三、日志&quot;&gt;&lt;a href=&quot;#三、日志&quot; class=&quot;headerlink&quot; title=&quot;三、日志&quot;&gt;&lt;/a&gt;三、日志&lt;/h2&gt;
     
     </summary>
     
@@ -70,11 +251,12 @@
     <link href="http://yoursite.com/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%B8%89%EF%BC%89%E6%8B%93%E5%B1%95%E5%88%9B%E6%84%8F/"/>
     <id>http://yoursite.com/2017/12/02/餐巾纸的背面（三）拓展创意/</id>
     <published>2017-12-02T07:26:07.000Z</published>
-    <updated>2017-12-07T08:54:11.000Z</updated>
+    <updated>2017-12-27T07:14:47.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面一<a href="http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/" target="_blank" rel="external">餐巾纸的背面（二）发现创意</a>对视觉化思考的四个步骤进行了详解，介绍了SQVID和六六法则。<br>　　原书《餐巾纸的背面》第三部分【拓展创意】是结合MBA的案例，对视觉化思考的六种方式进行实操演练，本文就不再赘述，有兴趣的读者可以自己参考。<br>　　在本文中，主要是看书过后的一些思考与对手绘视觉化的拓展，可能与《餐巾纸的背面》一书没太多强关联了，偏重点在于手绘导图的方式方法。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　当我们将脑海中想象出来的内容进行视觉化时候，有两种选择：软件绘制和手绘导图，机视觉笔记的两种载体。<br>　　软件绘制，可以借助很多工具进行精确、精美的绘制，如Microsoft办公软件系列，Google办公软件系列、WPS、Xmind等等；手绘导图，凭借自己的一双手、随时随地就可以开始作画。<br>　　虽然《餐巾纸的背面》一书中多次提到，我们有三个天生的视觉性工具————肉眼、内心的眼睛、手眼合作，拿起笔开始画图并不难。但是笔者还是会各种纠结到底如何画才好，有没有一些常见版式参考，或者小的tips。<br>　　带着这个问题，发现【视觉笔记】、【涂鸦笔记】这样的字眼频繁出现，而且与【视觉化思考】的实践联系颇多，故而，以此整理总结。</p>
-<h2 id="三、视觉笔记的要素"><a href="#三、视觉笔记的要素" class="headerlink" title="三、视觉笔记的要素"></a>三、视觉笔记的要素</h2><p>　　我们常见的前端网页，主要由html + css + javascript组成，用一扇门比喻三者间的关系，html是门的门板，css是门上的油漆或花纹，javascript是门的开关。换言之，其中几个要素则是结构与内容、样式、效果。<br>　　那么，同理可得：<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">一幅视觉笔记 </span>=<span class="string"> 结构 + 内容 + 样式 + 效果 。</span></div></pre></td></tr></table></figure></p>
+<h2 id="三、视觉笔记的要素"><a href="#三、视觉笔记的要素" class="headerlink" title="三、视觉笔记的要素"></a>三、视觉笔记的要素</h2><a id="more"></a>
+<p>　　我们常见的前端网页，主要由html + css + javascript组成，用一扇门比喻三者间的关系，html是门的门板，css是门上的油漆或花纹，javascript是门的开关。换言之，其中几个要素则是结构与内容、样式、效果。<br>　　那么，同理可得：<br><figure class="highlight fix"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">一幅视觉笔记 </span>=<span class="string"> 结构 + 内容 + 样式 + 效果 。</span></div></pre></td></tr></table></figure></p>
 <ul>
 <li>在结构上，涉及的是版式。</li>
 <li>在内容上，主要是由图和文字构成，那么涉及到的就是图形元素、文字等。</li>
@@ -163,7 +345,9 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　前面一&lt;a href=&quot;http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　前面一&lt;a href=&quot;http://zhangyuyu.github.io/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;餐巾纸的背面（二）发现创意&lt;/a&gt;对视觉化思考的四个步骤进行了详解，介绍了SQVID和六六法则。&lt;br&gt;　　原书《餐巾纸的背面》第三部分【拓展创意】是结合MBA的案例，对视觉化思考的六种方式进行实操演练，本文就不再赘述，有兴趣的读者可以自己参考。&lt;br&gt;　　在本文中，主要是看书过后的一些思考与对手绘视觉化的拓展，可能与《餐巾纸的背面》一书没太多强关联了，偏重点在于手绘导图的方式方法。&lt;/p&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;　　当我们将脑海中想象出来的内容进行视觉化时候，有两种选择：软件绘制和手绘导图，机视觉笔记的两种载体。&lt;br&gt;　　软件绘制，可以借助很多工具进行精确、精美的绘制，如Microsoft办公软件系列，Google办公软件系列、WPS、Xmind等等；手绘导图，凭借自己的一双手、随时随地就可以开始作画。&lt;br&gt;　　虽然《餐巾纸的背面》一书中多次提到，我们有三个天生的视觉性工具————肉眼、内心的眼睛、手眼合作，拿起笔开始画图并不难。但是笔者还是会各种纠结到底如何画才好，有没有一些常见版式参考，或者小的tips。&lt;br&gt;　　带着这个问题，发现【视觉笔记】、【涂鸦笔记】这样的字眼频繁出现，而且与【视觉化思考】的实践联系颇多，故而，以此整理总结。&lt;/p&gt;
+&lt;h2 id=&quot;三、视觉笔记的要素&quot;&gt;&lt;a href=&quot;#三、视觉笔记的要素&quot; class=&quot;headerlink&quot; title=&quot;三、视觉笔记的要素&quot;&gt;&lt;/a&gt;三、视觉笔记的要素&lt;/h2&gt;
     
     </summary>
     
@@ -179,11 +363,12 @@
     <link href="http://yoursite.com/2017/12/02/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%91%E7%8E%B0%E5%88%9B%E6%84%8F/"/>
     <id>http://yoursite.com/2017/12/02/餐巾纸的背面（二）发现创意/</id>
     <published>2017-12-02T06:52:04.000Z</published>
-    <updated>2017-12-07T07:09:31.000Z</updated>
+    <updated>2017-12-27T07:15:01.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。<br>　　前面一篇 <a href="http://zhangyuyu.github.io/2017/11/30/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%B8%80%EF%BC%89%E8%A7%86%E8%A7%89%E5%8C%96%E6%80%9D%E8%80%83/" target="_blank" rel="external">餐巾纸的背面（一）视觉化思考</a> 从整体上介绍了视觉化思考的几个重要部分：四个步骤、三个工具、六种方法。本篇将借助这三个工具、6种方法进行四个步骤的详解。<br><img src="/imgs/餐巾纸的背面-发现创意-大纲.jpg" width="600" height="400"></p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　互联网时代，信息泛滥，知识变得无处不在。鼠标轻轻一点，我们就坐拥一座巨型图书馆。然后我们并没有因此离真相更近，离真正的掌握更近。我们花费了大量的时间去获取信息，去浏览不同的网页，了解不同的案例。<br>　　看书、练习、总结，在这个信息爆炸、碎片化的时代，也许是一种不错的学习方式。只有不停的练习、验证，才能逐步掌握“真正的知识”，而不是仅仅获取这些“网络上的信息”。</p>
-<h2 id="三、看"><a href="#三、看" class="headerlink" title="三、看"></a>三、看</h2><p>　　我们睁开眼的每一秒，都有大量的视觉信号像光量子一样经视网膜转换成电子脉冲，然后通过视觉神经进入大脑的不同区域，这一过程中信号被分析、过滤、比较、分门别类、重组————这样才能成为我们大脑中形成的图像。<br>　　上述过程是无意识的，而我们谈起视觉化思考的时候，指的是有意识地使用上述内在观看系统。谈视觉化思考，首先得说说“主动地看”。</p>
+<h2 id="三、看"><a href="#三、看" class="headerlink" title="三、看"></a>三、看</h2><a id="more"></a>
+<p>　　我们睁开眼的每一秒，都有大量的视觉信号像光量子一样经视网膜转换成电子脉冲，然后通过视觉神经进入大脑的不同区域，这一过程中信号被分析、过滤、比较、分门别类、重组————这样才能成为我们大脑中形成的图像。<br>　　上述过程是无意识的，而我们谈起视觉化思考的时候，指的是有意识地使用上述内在观看系统。谈视觉化思考，首先得说说“主动地看”。</p>
 <h3 id="1-我们如何看"><a href="#1-我们如何看" class="headerlink" title="1. 我们如何看"></a>1. 我们如何看</h3><p>　　四项关键任务：定向、定位、识别、聚焦。我们的视觉系统在无意识情况下，就是通过完成这四项关键任务来为我们服务的。<br><img src="/imgs/餐巾纸的背面-发现创意-四项关键任务.jpg" width="600" height="150"></p>
 <h3 id="2-如何看得更真切"><a href="#2-如何看得更真切" class="headerlink" title="2. 如何看得更真切"></a>2. 如何看得更真切</h3><p>　　为了培养好的观看技巧，并且为视觉化打下好的基础，当我们看到新鲜事物时，需要遵从四个基本规则：</p>
 <p>1). 收集我们能够看到的东西————越多越好（至少在开始是这样）</p>
@@ -312,7 +497,9 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。&lt;br&gt;　　前面一篇 &lt;a href=&quot;ht
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　看的更真切、目光更敏锐、想象更丰富————这才是视觉化思考的最佳工具和准则。&lt;br&gt;　　前面一篇 &lt;a href=&quot;http://zhangyuyu.github.io/2017/11/30/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%B8%80%EF%BC%89%E8%A7%86%E8%A7%89%E5%8C%96%E6%80%9D%E8%80%83/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;餐巾纸的背面（一）视觉化思考&lt;/a&gt; 从整体上介绍了视觉化思考的几个重要部分：四个步骤、三个工具、六种方法。本篇将借助这三个工具、6种方法进行四个步骤的详解。&lt;br&gt;&lt;img src=&quot;/imgs/餐巾纸的背面-发现创意-大纲.jpg&quot; width=&quot;600&quot; height=&quot;400&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;　　互联网时代，信息泛滥，知识变得无处不在。鼠标轻轻一点，我们就坐拥一座巨型图书馆。然后我们并没有因此离真相更近，离真正的掌握更近。我们花费了大量的时间去获取信息，去浏览不同的网页，了解不同的案例。&lt;br&gt;　　看书、练习、总结，在这个信息爆炸、碎片化的时代，也许是一种不错的学习方式。只有不停的练习、验证，才能逐步掌握“真正的知识”，而不是仅仅获取这些“网络上的信息”。&lt;/p&gt;
+&lt;h2 id=&quot;三、看&quot;&gt;&lt;a href=&quot;#三、看&quot; class=&quot;headerlink&quot; title=&quot;三、看&quot;&gt;&lt;/a&gt;三、看&lt;/h2&gt;
     
     </summary>
     
@@ -328,12 +515,13 @@
     <link href="http://yoursite.com/2017/11/30/%E9%A4%90%E5%B7%BE%E7%BA%B8%E7%9A%84%E8%83%8C%E9%9D%A2%EF%BC%88%E4%B8%80%EF%BC%89%E8%A7%86%E8%A7%89%E5%8C%96%E6%80%9D%E8%80%83/"/>
     <id>http://yoursite.com/2017/11/30/餐巾纸的背面（一）视觉化思考/</id>
     <published>2017-11-30T13:34:55.000Z</published>
-    <updated>2017-12-06T15:30:59.000Z</updated>
+    <updated>2017-12-27T07:14:40.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　《餐巾纸的背面》不是告诉你如何成为一个画家，而是告诉你如何进行思考。将视觉化思考的观点，移植到你的工作、生活、交往、个人品牌规划以及你的一切中。学会用眼睛看待世界，用心思考世界，从而用笔与世界沟通。</p>
 <img src="/imgs/餐巾纸的背面-视觉化思考-大纲.jpg" width="500" height="800">
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　转眼已经2017年的年底了，回顾这一年虽然看了不少书，但是却是边看边忘，边焦虑边放松，似乎每次都能给自己找到足够的借口来“堕落”，继而冠冕堂皇的继续“优雅地享受生活”。<br>　　上次的《Buddy Workshop》，顿似醍醐灌顶，让人不容小觑<code>输出</code>的重要性；<br>　　邮件里面看到的《21天写工作坊》，蓦地振聋发聩，让人歆羡<code>坚持</code>的点滴沉淀；<br>　　考虑年底的training budget的书籍，忽地豁然开朗，让人开始沉静下来总结些许。</p>
-<h2 id="三、什么是视觉化思考"><a href="#三、什么是视觉化思考" class="headerlink" title="三、什么是视觉化思考"></a>三、什么是视觉化思考</h2><p>　　视觉化思考是运用我们天生的观察力————包括肉眼与“内心的眼睛”————来发现那些平时意想不到的创意和想法，并且以一种简单易懂的方式将其表达出来。</p>
+<h2 id="三、什么是视觉化思考"><a href="#三、什么是视觉化思考" class="headerlink" title="三、什么是视觉化思考"></a>三、什么是视觉化思考</h2><a id="more"></a>
+<p>　　视觉化思考是运用我们天生的观察力————包括肉眼与“内心的眼睛”————来发现那些平时意想不到的创意和想法，并且以一种简单易懂的方式将其表达出来。</p>
 <p>　　无论是职场新兵，还是驰骋多年的老将，学会图形化思考将会让你在信息碎片化的时代更好的把握战场的敌情、地形、优劣势分析、制高点把握以及任务完成的关键。</p>
 <h2 id="四、为什么视觉化如此神奇？"><a href="#四、为什么视觉化如此神奇？" class="headerlink" title="四、为什么视觉化如此神奇？"></a>四、为什么视觉化如此神奇？</h2><img src="/imgs/餐巾纸的背面-视觉化思考-为什么.jpg" width="400" height="250">
 <p>1.更直观，视觉记忆更深刻。<br>　　文字比图更容易传承，图比文字更容易比解析。</p>
@@ -383,7 +571,10 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　《餐巾纸的背面》不是告诉你如何成为一个画家，而是告诉你如何进行思考。将视觉化思考的观点，移植到你的工作、生活、交往、个人
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　《餐巾纸的背面》不是告诉你如何成为一个画家，而是告诉你如何进行思考。将视觉化思考的观点，移植到你的工作、生活、交往、个人品牌规划以及你的一切中。学会用眼睛看待世界，用心思考世界，从而用笔与世界沟通。&lt;/p&gt;
+&lt;img src=&quot;/imgs/餐巾纸的背面-视觉化思考-大纲.jpg&quot; width=&quot;500&quot; height=&quot;800&quot;&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;　　转眼已经2017年的年底了，回顾这一年虽然看了不少书，但是却是边看边忘，边焦虑边放松，似乎每次都能给自己找到足够的借口来“堕落”，继而冠冕堂皇的继续“优雅地享受生活”。&lt;br&gt;　　上次的《Buddy Workshop》，顿似醍醐灌顶，让人不容小觑&lt;code&gt;输出&lt;/code&gt;的重要性；&lt;br&gt;　　邮件里面看到的《21天写工作坊》，蓦地振聋发聩，让人歆羡&lt;code&gt;坚持&lt;/code&gt;的点滴沉淀；&lt;br&gt;　　考虑年底的training budget的书籍，忽地豁然开朗，让人开始沉静下来总结些许。&lt;/p&gt;
+&lt;h2 id=&quot;三、什么是视觉化思考&quot;&gt;&lt;a href=&quot;#三、什么是视觉化思考&quot; class=&quot;headerlink&quot; title=&quot;三、什么是视觉化思考&quot;&gt;&lt;/a&gt;三、什么是视觉化思考&lt;/h2&gt;
     
     </summary>
     
@@ -399,7 +590,7 @@
     <link href="http://yoursite.com/2017/09/14/Buddy-workshop/"/>
     <id>http://yoursite.com/2017/09/14/Buddy-workshop/</id>
     <published>2017-09-14T14:02:53.000Z</published>
-    <updated>2017-09-27T01:31:12.000Z</updated>
+    <updated>2017-12-27T07:15:36.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>每个职场新人，初入职场时候，或多或少遇到了很多需要帮助的地方，有技术上的，有情绪上的，有环境上的，我们盼望着有一个“导师”能够引导、指导我们度过最开始的那段迷茫期。<br>抑或是，当换到一个新环境，开始一个崭新的工作，很多流程、机制、文化都难以快速适应，这时候如果有一个“老司机”带我们轻松度过最开始的那段适应期，真真是极好的。</p>
 <p>每个人都曾度过这个阶段，每个人都有过期盼，那么如果你作为一个“导师”，你会怎么做呢？</p>
@@ -414,7 +605,8 @@
 <li>如何培养？</li>
 <li>面对的挑战</li>
 <li>构建完善的培养体系</li>
-<li>练习</li>
+<li>练习<a id="more"></a>
+</li>
 </ul>
 <h2 id="三、为什么要带人"><a href="#三、为什么要带人" class="headerlink" title="三、为什么要带人"></a>三、为什么要带人</h2><h3 id="1-提升自己的能力"><a href="#1-提升自己的能力" class="headerlink" title="1. 提升自己的能力"></a>1. 提升自己的能力</h3><p>正如Cone of experience（学习金字塔）里面告诉我们的，我们是通过“教“的过程才真正学会，而不是学好了才能去教。<br><img src="/imgs/buddy-cone-of-experience.png" width="500" height="250"></p>
 <p>Teaching is Learning，这一点在费曼技巧里面也有一些体现。把教别人的过程作为帮助自己学习的过程。表面看起来是知识输出，但实际上这个过程还有额外的三个价值：</p>
@@ -542,7 +734,20 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;每个职场新人，初入职场时候，或多或少遇到了很多需要帮助的地方，有技术上的，有情绪上的，有环境上的，我们盼望着有一个“导师”能
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;每个职场新人，初入职场时候，或多或少遇到了很多需要帮助的地方，有技术上的，有情绪上的，有环境上的，我们盼望着有一个“导师”能够引导、指导我们度过最开始的那段迷茫期。&lt;br&gt;抑或是，当换到一个新环境，开始一个崭新的工作，很多流程、机制、文化都难以快速适应，这时候如果有一个“老司机”带我们轻松度过最开始的那段适应期，真真是极好的。&lt;/p&gt;
+&lt;p&gt;每个人都曾度过这个阶段，每个人都有过期盼，那么如果你作为一个“导师”，你会怎么做呢？&lt;/p&gt;
+&lt;p&gt;本篇文章，不是从“职场小白”或“新入职同事”的角度出发，而是从“带人（Buddy）”的角度出发，了解一些“培养人这件事”中，可能需要知道的理论知识。&lt;/p&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;在ThoughtWorks已经两年了，这中间虽然自己有在带新人，包括应届毕业生，社招进来的同事，但是一直没有系统的梳理过这中间需要的软技能，只是用以自己被带过的感受在努力带好新人，给他们营造良好的氛围、帮助他们更快的适应环境、督促或者指引他们持续学习、不断进步。&lt;/p&gt;
+&lt;p&gt;最近，参加了公司举办的一次Buddy Workshop，系统的梳理了Buddy应知应会的一些内容。&lt;/p&gt;
+&lt;p&gt;培训是让人快速完成一些重要理论知识从0到1的过程，而真正的从1到100的过程，还需要在未来的实践中不断前行。有些理论可能当下并没有那么深刻的感触，在以后的道路上才会感触颇多，因此以此博文记录一下要点，方便以后再次回忆。&lt;/p&gt;
+&lt;p&gt;具体内容分为以下几个方面：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为什么要带人？&lt;/li&gt;
+&lt;li&gt;培养成什么样的人？&lt;/li&gt;
+&lt;li&gt;如何培养？&lt;/li&gt;
+&lt;li&gt;面对的挑战&lt;/li&gt;
+&lt;li&gt;构建完善的培养体系&lt;/li&gt;
+&lt;li&gt;练习
     
     </summary>
     
@@ -558,7 +763,7 @@
     <link href="http://yoursite.com/2017/08/17/Log-Slf4j%20MDC%20%E4%BD%BF%E7%94%A8%E5%92%8C%E5%9F%BA%E4%BA%8E%20Logback%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
     <id>http://yoursite.com/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/</id>
     <published>2017-08-17T06:01:52.000Z</published>
-    <updated>2017-08-30T08:53:37.000Z</updated>
+    <updated>2017-12-27T07:15:59.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　上一篇<a href="http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/" target="_blank" rel="external">Java日志管理</a>里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。</p>
 <ul>
@@ -567,6 +772,7 @@
 </ul>
 <p>本篇将介绍Slf4j + LogBack的组合方式，介绍MDC的使用，并结合源码对实现原理进行分析。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　起源于最近看到项目使用了MDC，好奇这是个什么东西的情况下，系统的了解了Java的日志管理，并借此机会分析其实现原理，记录下来，理清思路。</p>
+<a id="more"></a>
 <h3 id="三、Slf4j-MDC-介绍"><a href="#三、Slf4j-MDC-介绍" class="headerlink" title="三、Slf4j MDC 介绍"></a>三、Slf4j MDC 介绍</h3><p>　　介绍Slf4j和MDC的由来，可以参考上一篇<a href="http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/" target="_blank" rel="external">Java日志管理</a>。</p>
 <h4 id="1-Slf4j是什么？"><a href="#1-Slf4j是什么？" class="headerlink" title="1. Slf4j是什么？"></a>1. Slf4j是什么？</h4><p>　　Slf4j全称为Simple Logging Facade for Java (简单日志门面)，作为各种日志框架的简单门面或者抽象，包括JUL，Log4j，Logback。SLF4J允许用户在部署期间加入自己希望使用的日志系统。其实Slf4j与Log4j, Logback都是同一作者。</p>
 <h4 id="2-MDC是什么"><a href="#2-MDC是什么" class="headerlink" title="2. MDC是什么?"></a>2. MDC是什么?</h4><p>　　MDC全称为Mapped Diagnostic Context（映射调试上下文）是 log4j 和 logback 提供的一种方便在多线程条件下记录日志的功能。<br>　　典型的例子是 Web 应用服务器。当用户访问某个页面时，应用服务器可能会创建一个新的线程来处理该请求，也可能从线程池中复用已有的线程。在一个用户的会话存续期间，可能有多个线程处理过该用户的请求。这使得比较难以区分不同用户所对应的日志。当需要追踪某个用户在系统中的相关日志记录时，就会变得很麻烦。</p>
@@ -646,7 +852,13 @@
     
     <summary type="html">
     
-      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　上一篇&lt;a href=&quot;http://zhangyuyu.github.io/2017/08/17/Log-Java%E
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　上一篇&lt;a href=&quot;http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Java日志管理&lt;/a&gt;里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用日志门面，开发者只需要针对门面接口开发，而调用组件的应用程序则可以搭配自己喜好的日志实现工具，目前来看Slf4j + LogBack组合方式是比较通用的方式。&lt;/li&gt;
+&lt;li&gt;对于web应用而言，多线程的调用是很常见的，我们可能需要对一个用户的操作流程进行归类标记，用来区分哪个行为和哪个日志事件有关，MDC则很好的处理这个需求。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本篇将介绍Slf4j + LogBack的组合方式，介绍MDC的使用，并结合源码对实现原理进行分析。&lt;/p&gt;
+&lt;h3 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h3&gt;&lt;p&gt;　　起源于最近看到项目使用了MDC，好奇这是个什么东西的情况下，系统的了解了Java的日志管理，并借此机会分析其实现原理，记录下来，理清思路。&lt;/p&gt;
     
     </summary>
     
@@ -662,7 +874,7 @@
     <link href="http://yoursite.com/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/"/>
     <id>http://yoursite.com/2017/08/17/Log-Java日志管理/</id>
     <published>2017-08-17T05:53:47.000Z</published>
-    <updated>2017-08-30T08:52:56.000Z</updated>
+    <updated>2017-12-27T07:16:03.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。</p>
 <ul>
@@ -679,6 +891,7 @@
 <li>日志框架(Implement)：日志系统是日志的具体实现。如Log4j、java.util.Logging、Logback、Log4j2。</li>
 <li>日志门面（Facade）：为了解决多个日志系统的兼容问题，日志门面应运而生。如Commons logging和Slf4j。</li>
 </ul>
+<a id="more"></a>
 <h3 id="三、Java常见日志库的历史"><a href="#三、Java常见日志库的历史" class="headerlink" title="三、Java常见日志库的历史"></a>三、Java常见日志库的历史</h3><p>Logging frameworks出现之前（Java 1.3及以前），Java打日志依赖System.out.println()，System.err.println()或者e.printStackTrace()。Debug日志被写入STDOUT流,错误日志被写入STDERR流。</p>
 <p>Logging frameworks的出现：<br>先来一幅图从整体上看一下Java常见日志库的时间先后顺序：<br><img src="/imgs/java-log-history.png" width="500" height="350"></p>
 <h4 id="1-Log4j"><a href="#1-Log4j" class="headerlink" title="1. Log4j"></a>1. Log4j</h4><p>Log4j可以说是一个里程碑式的框架，它提出的一些基本理念，深深地影响了后来者，直至今天，这些理念也依然在被广泛使用：</p>
@@ -802,7 +1015,21 @@
     
     <summary type="html">
     
-      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。&lt;/li&gt;
+&lt;li&gt;问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。&lt;/li&gt;
+&lt;li&gt;业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。&lt;/li&gt;
+&lt;li&gt;数据恢复－－通过反向执行过程日志，可以将数据可以会滚到之前的状态。&lt;/li&gt;
+&lt;li&gt;健康检查以及系统优化－－通过查看系统日志，确定程序运行的健康状况，调节系统参数，优化程序性能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h3&gt;&lt;p&gt;猛地发现自己一直错误地把Sl4j和java.util.logging、Logback、Log4j理解为同一层次的概念。&lt;br&gt;继而查了相关的资料，站在更高一层，理解一下Java的日志管理相关的框架————Log4j、JUL、JCL、Slf4j、Logback 、Log4j2。&lt;/p&gt;
+&lt;img src=&quot;/imgs/java-log-frameworks.png&quot; width=&quot;500&quot; height=&quot;350&quot;&gt;
+&lt;p&gt;分为两个层次的概念：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;日志框架(Implement)：日志系统是日志的具体实现。如Log4j、java.util.Logging、Logback、Log4j2。&lt;/li&gt;
+&lt;li&gt;日志门面（Facade）：为了解决多个日志系统的兼容问题，日志门面应运而生。如Commons logging和Slf4j。&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
@@ -818,7 +1045,7 @@
     <link href="http://yoursite.com/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/"/>
     <id>http://yoursite.com/2017/07/20/Docker-workshop-6-Docker安全/</id>
     <published>2017-07-20T00:49:15.000Z</published>
-    <updated>2017-09-14T13:54:56.000Z</updated>
+    <updated>2017-12-27T07:13:07.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">上一篇 Docker网络</a>主要讲述了网络模型、网络模式。<br>本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -833,7 +1060,7 @@
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
 </ul>
-<h2 id="三、Docker访问主机系统"><a href="#三、Docker访问主机系统" class="headerlink" title="三、Docker访问主机系统"></a>三、Docker访问主机系统</h2><p>很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。</p>
+<h2 id="三、Docker访问主机系统"><a href="#三、Docker访问主机系统" class="headerlink" title="三、Docker访问主机系统"></a>三、Docker访问主机系统</h2><p>很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。<br><a id="more"></a></p>
 <h3 id="【练习】访问主机系统"><a href="#【练习】访问主机系统" class="headerlink" title="【练习】访问主机系统"></a>【练习】访问主机系统</h3><p>1）主机上访问文件系统</p>
 <figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/shadow  # 使用普通用户访问</div><div class="line">cat: /etc/shadow: Permission denied</div><div class="line">$ who am i<span class="comment">; groups;  # 查看当前的用户和组</span></div><div class="line">vagrant  pts/<span class="number">0</span>        <span class="number">2017-09-14</span> <span class="number">08</span>:<span class="number">08</span> (<span class="number">10.0.2.2</span>)</div><div class="line">vagrant docker</div><div class="line">$ sudo cat /etc/shadow  # 使用root用户访问</div><div class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">...</div></pre></td></tr></table></figure>
 <p>2) Docker容器里访问文件系统</p>
@@ -910,7 +1137,20 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上一篇 Docker网络&lt;/a&gt;主要讲述了网络模型、网络模式。&lt;br&gt;本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。&lt;/p&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;　　该系列《Docker in Prodcution》内容包含如下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;容器简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker的基本操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker数据存储&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker网络&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Docker安全&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;多主机部署&lt;/li&gt;
+&lt;li&gt;服务发现&lt;/li&gt;
+&lt;li&gt;日志、跟踪、监控&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;三、Docker访问主机系统&quot;&gt;&lt;a href=&quot;#三、Docker访问主机系统&quot; class=&quot;headerlink&quot; title=&quot;三、Docker访问主机系统&quot;&gt;&lt;/a&gt;三、Docker访问主机系统&lt;/h2&gt;&lt;p&gt;很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。&lt;br&gt;
     
     </summary>
     
@@ -926,7 +1166,7 @@
     <link href="http://yoursite.com/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/"/>
     <id>http://yoursite.com/2017/07/17/Docker-workshop-5-Docker网络/</id>
     <published>2017-07-17T08:50:23.000Z</published>
-    <updated>2017-09-21T12:31:07.000Z</updated>
+    <updated>2017-12-27T07:13:02.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">上一篇 Docker的数据存储</a>主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。<br>本篇主要讲述网络的实现、网络模型、网络模式等相关知识。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -941,7 +1181,7 @@
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
 </ul>
-<h2 id="三、网络的实现"><a href="#三、网络的实现" class="headerlink" title="三、网络的实现"></a>三、网络的实现</h2><p>　　Docker现有的网络模型主要是通过使用Network namespace、Linux Bridge、Iptables、veth pair等技术实现的。</p>
+<h2 id="三、网络的实现"><a href="#三、网络的实现" class="headerlink" title="三、网络的实现"></a>三、网络的实现</h2><p>　　Docker现有的网络模型主要是通过使用Network namespace、Linux Bridge、Iptables、veth pair等技术实现的。<br><a id="more"></a></p>
 <ul>
 <li>Network namespace（网络命名空间）<br>　　Network namespace主要提供了关于网络资源的隔离，包括网络设备、IPv4和IPv6协议栈、IP路由表、防火墙、/proc/net目录、/sys/class/net目录、端口（socket）等。</li>
 <li>Linux Bridge<br>　　功能相当于物理交换机，为连在其上的设备（容器）转发数据帧。如docker0网桥。</li>
@@ -1329,7 +1569,20 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-worksh
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上一篇 Docker的数据存储&lt;/a&gt;主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。&lt;br&gt;本篇主要讲述网络的实现、网络模型、网络模式等相关知识。&lt;/p&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;　　该系列《Docker in Prodcution》内容包含如下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;容器简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker的基本操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker数据存储&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Docker网络&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker安全&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;多主机部署&lt;/li&gt;
+&lt;li&gt;服务发现&lt;/li&gt;
+&lt;li&gt;日志、跟踪、监控&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;三、网络的实现&quot;&gt;&lt;a href=&quot;#三、网络的实现&quot; class=&quot;headerlink&quot; title=&quot;三、网络的实现&quot;&gt;&lt;/a&gt;三、网络的实现&lt;/h2&gt;&lt;p&gt;　　Docker现有的网络模型主要是通过使用Network namespace、Linux Bridge、Iptables、veth pair等技术实现的。&lt;br&gt;
     
     </summary>
     
@@ -1345,7 +1598,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
     <link href="http://yoursite.com/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/"/>
     <id>http://yoursite.com/2017/07/13/Docker-workshop-4-Docker数据存储/</id>
     <published>2017-07-13T00:18:24.000Z</published>
-    <updated>2017-09-14T13:57:04.000Z</updated>
+    <updated>2017-12-27T07:12:53.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -1361,7 +1614,8 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
 <li>日志、跟踪、监控</li>
 </ul>
 <p>本章主要通过练习<code>数据卷</code>和<code>数据卷容器</code>来理解Docker的数据管理。</p>
-<h2 id="三、Docker的存储方式"><a href="#三、Docker的存储方式" class="headerlink" title="三、Docker的存储方式"></a>三、Docker的存储方式</h2><p>　　Docker存储驱动包含：AUFS、Device mapper、OverlayFS、Btrfs、ZF，它们提供了接口支持<strong>镜像分层</strong>与<strong>写时复制机制Cow</strong>，这两种技术满足了容器的核心价值，即极快的创建速度，极小的存储资源消耗以及容器迁移的便捷性。<br>容器的Root Image存储分为以下三类：</p>
+<h2 id="三、Docker的存储方式"><a href="#三、Docker的存储方式" class="headerlink" title="三、Docker的存储方式"></a>三、Docker的存储方式</h2><a id="more"></a>
+<p>　　Docker存储驱动包含：AUFS、Device mapper、OverlayFS、Btrfs、ZF，它们提供了接口支持<strong>镜像分层</strong>与<strong>写时复制机制Cow</strong>，这两种技术满足了容器的核心价值，即极快的创建速度，极小的存储资源消耗以及容器迁移的便捷性。<br>容器的Root Image存储分为以下三类：</p>
 <ul>
 <li>AUFS，Overlay : 联合文件系统。</li>
 <li>DeviceMapper：CoW块存储。</li>
@@ -1557,7 +1811,21 @@ test-dir/test.yml
     
     <summary type="html">
     
-      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-worksh
+      &lt;h2 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h2&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上一篇 Docker的基本操作&lt;/a&gt;按照构建流程练习了docker的一些常见基本指令。&lt;br&gt;本篇主要讲述Docker数据管理相关的内容。&lt;/p&gt;
+&lt;h2 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h2&gt;&lt;p&gt;　　该系列《Docker in Prodcution》内容包含如下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;容器简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker的基本操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Docker数据存储&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker网络&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker安全&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;多主机部署&lt;/li&gt;
+&lt;li&gt;服务发现&lt;/li&gt;
+&lt;li&gt;日志、跟踪、监控&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本章主要通过练习&lt;code&gt;数据卷&lt;/code&gt;和&lt;code&gt;数据卷容器&lt;/code&gt;来理解Docker的数据管理。&lt;/p&gt;
+&lt;h2 id=&quot;三、Docker的存储方式&quot;&gt;&lt;a href=&quot;#三、Docker的存储方式&quot; class=&quot;headerlink&quot; title=&quot;三、Docker的存储方式&quot;&gt;&lt;/a&gt;三、Docker的存储方式&lt;/h2&gt;
     
     </summary>
     
@@ -1573,7 +1841,7 @@ test-dir/test.yml
     <link href="http://yoursite.com/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"/>
     <id>http://yoursite.com/2017/07/11/Docker-workshop-3-Docker的基本操作/</id>
     <published>2017-07-11T14:08:27.000Z</published>
-    <updated>2017-09-14T13:57:26.000Z</updated>
+    <updated>2017-12-27T07:12:49.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -1597,7 +1865,8 @@ test-dir/test.yml
 <li>连接容器</li>
 <li>使用Docker-compose工具</li>
 </ul>
-<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><h4 id="1-镜像是什么"><a href="#1-镜像是什么" class="headerlink" title="1. 镜像是什么"></a>1. 镜像是什么</h4><p>　　Docker镜像是一个特殊的<strong>文件系统</strong>，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
+<h3 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h3><a id="more"></a>
+<h4 id="1-镜像是什么"><a href="#1-镜像是什么" class="headerlink" title="1. 镜像是什么"></a>1. 镜像是什么</h4><p>　　Docker镜像是一个特殊的<strong>文件系统</strong>，除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
 <p>镜像通常包含：</p>
 <ul>
 <li>一个轻量级的操作系统发行版</li>
@@ -1831,7 +2100,29 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
     
     <summary type="html">
     
-      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-worksh
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上一篇 Docker简介&lt;/a&gt;讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。&lt;br&gt;　　本篇将开始实际动手操作，熟悉docker基本的指令。&lt;/p&gt;
+&lt;h3 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h3&gt;&lt;p&gt;　　该系列《Docker in Prodcution》内容包含如下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;容器简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Docker的基本操作&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker数据存储&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker网络&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker安全&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;多主机部署&lt;/li&gt;
+&lt;li&gt;服务发现&lt;/li&gt;
+&lt;li&gt;日志、跟踪、监控&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本章通过以下系列过程，来熟悉Docker的基本指令：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;构建镜像；&lt;/li&gt;
+&lt;li&gt;搭建私有registry；&lt;/li&gt;
+&lt;li&gt;上传镜像、获取镜像；&lt;/li&gt;
+&lt;li&gt;创建容器、运行容器；&lt;/li&gt;
+&lt;li&gt;连接容器&lt;/li&gt;
+&lt;li&gt;使用Docker-compose工具&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;三、Docker镜像&quot;&gt;&lt;a href=&quot;#三、Docker镜像&quot; class=&quot;headerlink&quot; title=&quot;三、Docker镜像&quot;&gt;&lt;/a&gt;三、Docker镜像&lt;/h3&gt;
     
     </summary>
     
@@ -1847,7 +2138,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
     <link href="http://yoursite.com/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/"/>
     <id>http://yoursite.com/2017/07/10/Docker-workshop-2-Docker简介/</id>
     <published>2017-07-10T00:59:59.000Z</published>
-    <updated>2017-09-22T11:28:50.000Z</updated>
+    <updated>2017-12-27T07:12:45.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -1862,7 +2153,8 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
 </ul>
-<h3 id="三、从Linux容器到Docker"><a href="#三、从Linux容器到Docker" class="headerlink" title="三、从Linux容器到Docker"></a>三、从Linux容器到Docker</h3><blockquote>
+<h3 id="三、从Linux容器到Docker"><a href="#三、从Linux容器到Docker" class="headerlink" title="三、从Linux容器到Docker"></a>三、从Linux容器到Docker</h3><a id="more"></a>
+<blockquote>
 <p>尽管有着光辉的历史，容器仍未得到广泛的认可。一个很重要的原因就是容器技术的复杂性：容器本身就比较复杂，不易安装 管理和自动化也很困难。而Docker就是为了改变这一切而生 ——《第一本Docker书》</p>
 </blockquote>
 <p>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8/" target="_blank" rel="external">上一篇</a>练习里，我们可以明显感受到，LXC存在的问题是难以移动——难以通过标准化的模板制作、重建、复制和移动container。</p>
@@ -2054,7 +2346,20 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
     
     <summary type="html">
     
-      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Doc
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？&lt;br&gt;　　&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;上一篇&lt;/a&gt;讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。&lt;/p&gt;
+&lt;h3 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h3&gt;&lt;p&gt;　　该系列《Docker in Prodcution》内容包含如下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;容器简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Docker简介&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker的基本操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker数据存储&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker网络&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker安全&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;多主机部署&lt;/li&gt;
+&lt;li&gt;服务发现&lt;/li&gt;
+&lt;li&gt;日志、跟踪、监控&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;三、从Linux容器到Docker&quot;&gt;&lt;a href=&quot;#三、从Linux容器到Docker&quot; class=&quot;headerlink&quot; title=&quot;三、从Linux容器到Docker&quot;&gt;&lt;/a&gt;三、从Linux容器到Docker&lt;/h3&gt;
     
     </summary>
     
@@ -2070,7 +2375,7 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
     <link href="http://yoursite.com/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/"/>
     <id>http://yoursite.com/2017/07/09/Docker-workshop-1-容器简介/</id>
     <published>2017-07-09T10:25:04.000Z</published>
-    <updated>2017-09-14T13:57:20.000Z</updated>
+    <updated>2017-12-27T07:12:38.000Z</updated>
     
     <content type="html"><![CDATA[<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。<br>　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
@@ -2086,7 +2391,8 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
 <li>日志、跟踪、监控</li>
 </ul>
 <p>　　本篇主要讲述容器相关的知识，比较容器和虚拟机，练习LXC容器的相关指令，最后引出Docker。</p>
-<h3 id="三、容器的定义"><a href="#三、容器的定义" class="headerlink" title="三、容器的定义"></a>三、容器的定义</h3><p>　　容器是一种轻量级、可移植、自包含的软件打包技术，使应用程序可以在几乎任何地方以相同的方式运行。开发人员在自己笔记本上创建并测试好的容器，无需任何修改就能够在生产系统的虚拟机、物理服务器或公有云主机上运行。</p>
+<h3 id="三、容器的定义"><a href="#三、容器的定义" class="headerlink" title="三、容器的定义"></a>三、容器的定义</h3><a id="more"></a>
+<p>　　容器是一种轻量级、可移植、自包含的软件打包技术，使应用程序可以在几乎任何地方以相同的方式运行。开发人员在自己笔记本上创建并测试好的容器，无需任何修改就能够在生产系统的虚拟机、物理服务器或公有云主机上运行。</p>
 <img src="/imgs/container-structure.png" width="400" height="250">
 <p>　　容器是轻量级的操作系统级虚拟化，可以让我们在一个资源隔离的进程中运行应用及其依赖项。运行应用程序所必需的组件都将打包成一个镜像并可以复用。执行镜像时，它运行在一个隔离环境中，并且不会共享宿主机的内存、CPU 以及磁盘，这就保证了容器内进程不能监控容器外的任何进程。</p>
 <h3 id="四、容器解决的问题"><a href="#四、容器解决的问题" class="headerlink" title="四、容器解决的问题"></a>四、容器解决的问题</h3><p>　　为什么需要容器？容器到底解决的是什么问题？<br>　　一句话回答是：容器使软件具备了超强的可移植能力。</p>
@@ -2197,7 +2503,21 @@ $ cat /sys/fs/cgroup/cpu/docker/654bd6413abb005ccb2e93e096151650e022132b7186171f
     
     <summary type="html">
     
-      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker
+      &lt;h3 id=&quot;一、前言&quot;&gt;&lt;a href=&quot;#一、前言&quot; class=&quot;headerlink&quot; title=&quot;一、前言&quot;&gt;&lt;/a&gt;一、前言&lt;/h3&gt;&lt;p&gt;　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。&lt;br&gt;　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。&lt;/p&gt;
+&lt;h3 id=&quot;二、背景&quot;&gt;&lt;a href=&quot;#二、背景&quot; class=&quot;headerlink&quot; title=&quot;二、背景&quot;&gt;&lt;/a&gt;二、背景&lt;/h3&gt;&lt;p&gt;　　该系列《Docker in Prodcution》内容包含如下部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;容器简介&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker的基本操作&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker数据存储&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker网络&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker安全&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;多主机部署&lt;/li&gt;
+&lt;li&gt;服务发现&lt;/li&gt;
+&lt;li&gt;日志、跟踪、监控&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　本篇主要讲述容器相关的知识，比较容器和虚拟机，练习LXC容器的相关指令，最后引出Docker。&lt;/p&gt;
+&lt;h3 id=&quot;三、容器的定义&quot;&gt;&lt;a href=&quot;#三、容器的定义&quot; class=&quot;headerlink&quot; title=&quot;三、容器的定义&quot;&gt;&lt;/a&gt;三、容器的定义&lt;/h3&gt;
     
     </summary>
     
@@ -2681,60 +3001,6 @@ Observable observable = Observable.from(parameters);
     
     
       <category term="MicroServices Consul" scheme="http://yoursite.com/tags/MicroServices-Consul/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>微服务-服务发现工具：ZooKeeper vs etcd vs Consul</title>
-    <link href="http://yoursite.com/2016/04/23/%E5%BE%AE%E6%9C%8D%E5%8A%A1-%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E5%B7%A5%E5%85%B7%EF%BC%9AZookeeper-vs-etcd-vs-Consul/"/>
-    <id>http://yoursite.com/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/</id>
-    <published>2016-04-23T03:15:05.000Z</published>
-    <updated>2016-04-24T10:46:19.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>　　为了能够定位服务，我们需要至少接下来的两个有用的步骤。</p>
-<ul>
-<li>服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息</li>
-<li>服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。</li>
-</ul>
-<p>　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？所有这些问题都与注册和发现阶段紧密关联。现在，我们限定只在服务发现的范围里（常见的名字，围绕上述步骤）以及用于服务发现任务的工具，它们中的大多数采用了高可用的分布式键/值存储。</p>
-<h3 id="服务发现工具"><a href="#服务发现工具" class="headerlink" title="服务发现工具"></a>服务发现工具</h3><p>　　服务发现工具的主要目标是用来服务查找和相互对话，为此该工具需要知道每个服务，这不是一个新概念，在Docker之前就已经存在很多类似的工具了，然而，容器带给了这些工具一个全新水平的需求。<br>　　服务发现背后的基本思想是对于服务的每一个新实例（或应用程序），能够识别当前环境和存储相关信息。存储的注册表信息本身通常采用键/值对的格式，由于服务发现经常用于分布式系统，所以要求这些信息可伸缩、支持容错和分布式集群中的所有节点。这种存储的主要用途是给所有感兴趣的各方提供最起码诸如服务IP地址和端口这样的信息，用于它们之间的相互通讯，这些数据还经常扩展到其它类型的信息服务发现工具倾向于提供某种形式的API，用于服务自身的注册以及服务信息的查找。<br>　　比方说我们有两个服务，一个是提供方，另一个是第一个服务的消费者，一旦部署了服务提供方，就需要在服务发现注册表中存储其信息。接着，当消费者试图访问服务提供者时，它首先查询服务注册表，使用获取到的IP地址和端口来调用服务提供者。为了与注册表中的服务提供方的具体实现解耦，我们常常采用某种代理服务。这样消费者总是向固定IP地址的代理请求信息，代理再依次使用服务发现来查找服务提供方信息并重定向请求，在本文中我们稍后通过反向代理来实现。现在重要的是要理解基于三种角色（服务消费者、提供者和代理）的服务发现流程。<br>　　服务发现工具要查找的是数据，至少我们应该能够找出服务在哪里？服务是否健康和可用？配置是什么样的？既然我们正在多台服务器上构建一个分布式系统，那么该工具需要足够健壮，保证其中一个节点的宕机不会危及数据，同时，每个节点应该有完全相同的数据副本，进一步地，我们希望能够以任何顺序启动服务、杀死服务或者替换服务的新版本，我们还应该能够重新配置服务并且查看到数据相应的变化。</p>
-<p>　　让我们看一下一些常用的选项来完成我们上面设定的目标。
-　　</p>
-<h3 id="手动配置"><a href="#手动配置" class="headerlink" title="手动配置"></a>手动配置</h3><p>　　大多数服务仍然是需要手动管理的，我们预先决定在何处部署服务、如何配置和希望不管什么原因，服务都将继续正常工作，直到天荒地老。这样的目标不是可以轻易达到的。部署第二个服务实例意味着我们需要启动全程的手动处理，我们需要引入一台新的服务器，或者找出哪一台服务器资源利用率较低，然后创建一个新的配置集并启动服务。情况或许会变得越来越复杂，比方说，硬件故障导致的手动管理下的反应时间变得很慢。可见性是另外一个痛点，我们知道什么是静态配置，毕竟是我们预先准备好的，然而，大多数的服务有很多动态生成的信息，这些信息不是轻易可见的，也没有一个单独的地方供我们在需要时参考这些数据。<br>　　反应时间会不可避免的变慢，鉴于存在许多需要手动处理的移动组件，故障恢复和监控也会变得非常难以管理。<br>　　尽管在过去或者当服务/服务器数量很少的时候有借口不做这项工作，随着服务发现工具的出现，这个借口已经不存在了。</p>
-<h3 id="1-ZooKeeper"><a href="#1-ZooKeeper" class="headerlink" title="1. ZooKeeper"></a>1. ZooKeeper</h3><p>　　ZooKeeper是这种类型的项目中历史最悠久的之一，它起源于Hadoop，帮助在Hadoop集群中维护各种组件。它非常成熟、可靠，被许多大公司（YouTube、eBay、雅虎等）使用。其数据存储的格式类似于文件系统，如果运行在一个服务器集群中，Zookeper将跨所有节点共享配置状态，每个集群选举一个领袖，客户端可以连接到任何一台服务器获取数据。<br>　　ZooKeeper的主要优势是其成熟、健壮以及丰富的特性，然而，它也有自己的缺点，其中采用Java开发以及复杂性是罪魁祸首。尽管Java在许多方面非常伟大，然后对于这种类型的工作还是太沉重了，ZooKeeper使用Java以及相当数量的依赖使其对于资源竞争非常饥渴。因为上述的这些问题，ZooKeeper变得非常复杂，维护它需要比我们期望从这种类型的应用程序中获得的收益更多的知识。这部分地是由于丰富的特性反而将其从优势转变为累赘。应用程序的特性功能越多，就会有越大的可能性不需要这些特性，因此，我们最终将会为这些不需要的特性付出复杂度方面的代价。<br>　　ZooKeeper为其他项目相当大的改进铺平了道路，“大数据玩家“在使用它，因为没有更好的选择。今天，ZooKeeper已经老态龙钟了，我们有了更好的选择。</p>
-<h3 id="2-etcd"><a href="#2-etcd" class="headerlink" title="2. etcd"></a>2. etcd</h3><p>　　etcd是一个采用HTTP协议的健/值对存储系统，它是一个分布式和功能层次配置系统，可用于构建服务发现系统。其很容易部署、安装和使用，提供了可靠的数据持久化特性。它是安全的并且文档也十分齐全。<br>　　etcd比ZooKeeper是比更好的选择，因为它很简单，然而，它需要搭配一些第三方工具才可以提供服务发现功能。<br><img src="/imgs/etcd.png" width="600" height="300"><br>　　现在，我们有一个地方来存储服务相关信息，我们还需要一个工具可以自动发送信息给etcd。但在这之后，为什么我们还需要手动把数据发送给etcd呢？即使我们希望手动将信息发送给etcd，我们通常情况下也不会知道是什么信息。记住这一点，服务可能会被部署到一台运行最少数量容器的服务器上，并且随机分配一个端口。理想情况下，这个工具应该监视所有节点上的Docker容器，并且每当有新容器运行或者现有的一个容器停止的时候更新etcd，其中的一个可以帮助我们达成目标的工具就是Registrator。</p>
-<h4 id="2-1-Registrator"><a href="#2-1-Registrator" class="headerlink" title="2.1 Registrator"></a>2.1 Registrator</h4><p>　　Registrator通过检查容器在线或者停止运行状态自动注册和去注册服务，它目前支持etcd、Consul和SkyDNS 2。<br>　　Registrator与etcd是一个简单但是功能强大的组合，可以运行很多先进的技术。每当我们打开一个容器，所有数据将被存储在etcd并传播到集群中的所有节点。我们将决定什么信息是我们的。<br><img src="/imgs/etcd-registrator.png" width="600" height="300"><br>上述的拼图游戏还缺少一块，我们需要一种方法来创建配置文件，与数据都存储在etcd，通过运行一些命令来创建这些配置文件。</p>
-<h4 id="2-2-Confd"><a href="#2-2-Confd" class="headerlink" title="2.2 Confd"></a>2.2 Confd</h4><p>　　Confd是一个轻量级的配置管理工具，常见的用法是通过使用存储在etcd、consul和其他一些数据登记处的数据保持配置文件的最新状态，它也可以用来在配置文件改变时重新600 300加载应用程序。换句话说，我们可以用存储在etcd（或者其他注册中心）的信息来重新配置所有服务。<br><img src="/imgs/etcd-confud.png" width="600" height="300"></p>
-<h4 id="2-3-对于etcd、Registrator和Confd组合的最后的思考"><a href="#2-3-对于etcd、Registrator和Confd组合的最后的思考" class="headerlink" title="2.3 对于etcd、Registrator和Confd组合的最后的思考"></a>2.3 对于etcd、Registrator和Confd组合的最后的思考</h4><p>　　当etcd、Registrator和Confd结合时，可以获得一个简单而强大的方法来自动化操作我们所有的服务发现和需要的配置。这个组合还展示了“小”工具正确组合的有效性，这三个小东西可以如我们所愿正好完成我们需要达到的目标，若范围稍微小一些，我们将无法完成我们面前的目标，而另一方面如果他们设计时考虑到更大的范围，我们将引入不必要的复杂性和服务器资源开销。<br>　　在我们做出最后的判决之前，让我们看看另一个有相同目标的工具组合，毕竟，我们不应该满足于一些没有可替代方案的选择。</p>
-<h3 id="3-Consul"><a href="#3-Consul" class="headerlink" title="3. Consul"></a>3. Consul</h3><p>　　Consul是强一致性的数据存储，使用gossip形成动态集群。它提供分级键/值存储方式，不仅可以存储数据，而且可以用于注册器件事各种任务，从发送数据改变通知到运行健康检查和自定义命令，具体如何取决于它们的输出。<br>　　与ZooKeeper和etcd不一样，Consul内嵌实现了服务发现系统，所以这样就不需要构建自己的系统或使用第三方系统。这一发现系统除了上述提到的特性之外，还包括节点健康检查和运行在其上的服务。<br>　　ZooKeeper和etcd只提供原始的键/值队存储，要求应用程序开发人员构建他们自己的系统提供服务发现功能。而Consul提供了一个内置的服务发现的框架。客户只需要注册服务并通过DNS或HTTP接口执行服务发现。其他两个工具需要一个亲手制作的解决方案或借助于第三方工具。<br>　　Consul为多种数据中心提供了开箱即用的原生支持，其中的gossip系统不仅可以工作在同一集群内部的各个节点，而且还可以跨数据中心工作。<br><img src="/imgs/consul.png" width="600" height="300"><br>　　Consul还有另一个不错的区别于其他工具的功能，它不仅可以用来发现已部署的服务以及其驻留的节点信息，还通过HTTP请求、TTLs（time-to-live）和自定义命令提供了易于扩展的健康检查特性。</p>
-<h4 id="3-1-Registrator"><a href="#3-1-Registrator" class="headerlink" title="3.1 Registrator"></a>3.1 Registrator</h4><p>　　Registrator有两个Consul协议，其中consulkv协议产生类似于etcd协议的结果。<br>　　除了通常的IP和端口存储在etcd或consulkv协议中之外，Registrator consul协议存储了更多的信息，我们可以得到服务运行节点的信息，以及服务ID和名称。我们也可以借助于一些额外的环境变量按照一定的标记存储额外的信息。<br><img src="/imgs/consul-registrator.png" width="600" height="300"></p>
-<h4 id="3-2-Consul-template"><a href="#3-2-Consul-template" class="headerlink" title="3.2 Consul-template"></a>3.2 Consul-template</h4><p>　　confd可以像和etce搭配一样用于Consul，不过Consul有自己的模板服务，其更适配Consul。<br>　　通过从Consul获得的信息，Consul-template是一个非常方便的创建文件的途径，还有一个额外的好处就是在文件更新后可以运行任意命令，正如confd，Consul-template也可以使用Go模板格式。<br><img src="/imgs/consul-template.png" width="600" height="300">
-　　</p>
-<h4 id="3-3-Consul健康检查、Web界面和数据中心"><a href="#3-3-Consul健康检查、Web界面和数据中心" class="headerlink" title="3.3 Consul健康检查、Web界面和数据中心"></a>3.3 Consul健康检查、Web界面和数据中心</h4><p>　　监控集群节点和服务的健康状态与测试和部署它们一样的重要。虽然我们应该向着拥有从来没有故障的稳定的环境努力，但我们也应该承认，随时会有意想不到的故障发生，时刻准备着采取相应的措施。例如我们可以监控内存使用情况，如果达到一定的阈值，那么迁移一些服务到集群中的另外一个节点，这将是在发生“灾难”前执行的一个预防措施。另一方面，并不是所有潜在的故障都可以被及时检测到并采取措施。单个服务可能会齿白，一个完整的节点也可能由于硬件故障而停止工作。在这种情况下我们应该准备尽快行动，例如一个节点替换为一个新的并迁移失败的服务。Consul有一个简单的、优雅的但功能强大的方式进行健康检查，当健康阀值达到一定数目时，帮助用户定义应该执行的操作。<br>　　如果用户Google搜索“etcd ui”或者“etec dashboard”时，用户可能看到只有几个可用的解决方案，可能会问为什么我们还没有介绍给用户，这个原因很简单，etcd只是键/值对存储，仅此而已。通过一个UI呈现数据没有太多的用处，因为我们可以很容易地通过etcdctl获得这些数据。这并不意味着etcd UI是无用的，但鉴于其有限的使用范围，它不会产生多大影响。<br>　　Consu不仅仅是一个简单的键/值对存储，正如我们已经看到的，除了存储简单的键/值对，它还有一个服务的概念以及所属的数据。它还可以执行健康检查，因此成为一个好的候选dashboard，在上面可以看到我们的节点的状态和运行的服务。最后，它支持了多数据中心的概念。所有这些特性的结合让我们从不同的角度看到引入dashboard的必要性。<br>通过Consul Web界面，用户可以查看所有的服务和节点、监控健康检查状态以及通过切换数据中心读取设置键/值对数据。<br><img src="/imgs/consul-web-ui.png" width="600" height="300"></p>
-<h4 id="3-4-对于Consul、Registrator、Template、健康检查和Web-UI的最终思考"><a href="#3-4-对于Consul、Registrator、Template、健康检查和Web-UI的最终思考" class="headerlink" title="3.4 对于Consul、Registrator、Template、健康检查和Web UI的最终思考"></a>3.4 对于Consul、Registrator、Template、健康检查和Web UI的最终思考</h4><p>　　Consul以及上述我们一起探讨的工具在很多情况下提供了比etcd更好的解决方案。这是从内心深处为了服务架构和发现而设计的方案，简单而强大。它提供了一个完整的同时不失简洁的解决方案，在许多情况下，这是最佳的服务发现以及满足健康检查需求的工具。</p>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>　　所有这些工具都是基于相似的原则和架构，它们在节点上运行，需要仲裁来运行，并且都是强一致性的，都提供某种形式的键/值对存储。<br>　　ZooKeeper是其中最老态龙钟的一个，使用年限显示出了其复杂性、资源利用和尽力达成的目标，它是为了与我们评估的其他工具所处的不同时代而设计的（即使它不是老得太多）。<br>　　etcd、Registrator和Confd是一个非常简单但非常强大的组合，可以解决大部分问题，如果不是全部满足服务发现需要的话。它还展示了我们可以通过组合非常简单和特定的工具来获得强大的服务发现能力，它们中的每一个都执行一个非常具体的任务，通过精心设计的API进行通讯，具备相对自治工作的能力，从架构和功能途径方面都是微服务方式。<br>　　Consul的不同之处在于无需第三方工具就可以原生支持多数据中心和健康检查，这并不意味着使用第三方工具不好。实际上，在这篇博客里我们通过选择那些表现更佳同时不会引入不必要的功能的的工具，尽力组合不同的工具。使用正确的工具可以获得最好的结果。如果工具引入了工作不需要的特性，那么工作效率反而会下降，另一方面，如果工具没有提供工作所需要的特性也是没有用的。Consul很好地权衡了权重，用尽量少的东西很好的达成了目标。<br>　　Consul使用gossip来传播集群信息的方式，使其比etcd更易于搭建，特别是对于大的数据中心。将存储数据作为服务的能力使其比etcd仅仅只有健/值对存储的特性更加完整、更有用（即使Consul也有该选项）。虽然我们可以在etcd中通过插入多个键来达成相同的目标，Consul的服务实现了一个更紧凑的结果，通常只需要一次查询就可以获得与服务相关的所有数据。除此之外，Registrator很好地实现了Consul的两个协议，使其合二为一，特别是添加Consul-template到了拼图中。Consul的Web UI更是锦上添花般地提供了服务和健康检查的可视化途径。<br>　　我不能说Consul是一个明确的赢家，而是与etcd相比其有一个轻微的优势。服务发现作为一个概念，以及作为工具都很新，我们可以期待在这一领域会有许多的变化。秉承开放的心态，大家可以对本文的建议持保留态度，尝试不同的工具然后做出自己的结论。
-　　</p>
-<blockquote>
-<p>完整中文版地址:<a href="http://dockone.io/article/667" target="_blank" rel="external">服务发现：ZooKeeper vs etcd vs Consul</a></p>
-<p>完整原文链接：<a href="https://technologyconversations.com/2015/09/08/service-discovery-ZooKeeper-vs-etcd-vs-consul/" target="_blank" rel="external">Service Discovery: ZooKeeper vs etcd vs Consul</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;　　为了能够定位服务，我们需要至少接下来的两个有用的步骤。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息&lt;/li&gt;
-&lt;li&gt;服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;　　除了
-    
-    </summary>
-    
-      <category term="MicroServices" scheme="http://yoursite.com/categories/MicroServices/"/>
-    
-    
-      <category term="微服务" scheme="http://yoursite.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
     
   </entry>
   

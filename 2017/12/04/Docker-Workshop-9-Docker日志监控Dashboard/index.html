@@ -1,11 +1,23 @@
-<!doctype html>
-<html class="theme-next use-motion ">
-<head>
+<!DOCTYPE html>
+
+
+
   
 
-<meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
 
 
 <meta http-equiv="Cache-Control" content="no-transform" />
@@ -16,17 +28,43 @@
 
 
 
-  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
 
 
 
-  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
 
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
 
 
-    <meta name="description" content="行是知之始，知是行之成" />
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
 
 
 
@@ -34,130 +72,166 @@
 
 
 
+
+
   <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
 
 
 
-  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一、前言二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、监控、Dashboard  三、日志1. docker docker-compose日志容器日志的输出形式  stdout 标准输出 stderr 标准错误 以json格">
+
+<meta name="description" content="一、前言　　《Docker in Production》 workshop于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。 二、背景　　该系列《Do">
 <meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker Workshop（九）Docker日志、监控、Dashboard">
 <meta property="og:url" content="http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、前言二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、监控、Dashboard  三、日志1. docker docker-compose日志容器日志的输出形式  stdout 标准输出 stderr 标准错误 以json格">
-<meta property="og:updated_time" content="2017-12-06T15:29:34.000Z">
+<meta property="og:description" content="一、前言　　《Docker in Production》 workshop于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。 二、背景　　该系列《Do">
+<meta property="og:updated_time" content="2017-12-27T07:14:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（九）Docker日志、监控、Dashboard">
-<meta name="twitter:description" content="一、前言二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、监控、Dashboard  三、日志1. docker docker-compose日志容器日志的输出形式  stdout 标准输出 stderr 标准错误 以json格">
+<meta name="twitter:description" content="一、前言　　《Docker in Production》 workshop于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。 二、背景　　该系列《Do">
 
 
-<script type="text/javascript" id="hexo.configuration">
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: '',
-    sidebar: 'post'
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
   };
 </script>
 
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/"/>
+
+
+
+
+
+  <title>Docker Workshop（九）Docker日志、监控、Dashboard | 若见喻笺</title>
   
 
-  <div style="display: none;">
-    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
-  </div>
 
 
 
-  <title> Docker Workshop（九）Docker日志、监控、Dashboard | 若见喻笺 </title>
+
+
+
+
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  <!--[if lte IE 8]>
-  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
-    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
-           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
-           style='margin-left:auto;margin-right:auto;display: block;'/>
-    </a>
-  </div>
-<![endif]-->
+  
+  
+    
   
 
-
-
-  <div class="container one-column page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><h1 class="site-meta">
-  <span class="logo-line-before"><i></i></span>
-  <a href="/" class="brand" rel="start">
-      <span class="logo">
-        <i class="icon-next-logo"></i>
-      </span>
-      <span class="site-title">若见喻笺</span>
-  </a>
-  <span class="logo-line-after"><i></i></span>
-</h1>
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">若见喻笺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
 <nav class="site-nav">
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            <i class="menu-item-icon icon-next-home"></i> <br />
-            首頁
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            <i class="menu-item-icon icon-next-categories"></i> <br />
-            分類
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
           </a>
         </li>
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            <i class="menu-item-icon icon-next-archives"></i> <br />
-            歸檔
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            <i class="menu-item-icon icon-next-tags"></i> <br />
-            標籤
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
           </a>
         </li>
       
         
-        <li class="menu-item menu-item-guestbook">
-          <a href="/guestbook" rel="section">
-            <i class="menu-item-icon icon-next-guestbook"></i> <br />
-            留言
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
 
-      
       
     </ul>
   
@@ -165,76 +239,122 @@
   
 </nav>
 
+
+
  </div>
     </header>
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content"> 
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
     
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              Docker Workshop（九）Docker日志、监控、Dashboard
-            
-          
-        </h1>
-      
+  
+  
+  
 
-      <div class="post-meta">
-        <span class="post-time">
-          發表於
-          <time itemprop="dateCreated" datetime="2017-12-04T14:12:36+08:00" content="2017-12-04">
-            2017-12-04
-          </time>
-        </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分類於
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/Docker/" itemprop="url" rel="index">
-                  <span itemprop="name">Docker</span>
-                </a>
-              </span>
+        
+          <h1 class="post-title" itemprop="name headline">Docker Workshop（九）Docker日志、监控、Dashboard</h1>
+        
 
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
+                <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-04T14:12:36+08:00">
+                2017-12-04
+              </time>
+            
+
+            
 
             
           </span>
-        
 
-        
           
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/" itemprop="commentsCount"></span>
-              </a>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
             </span>
           
-        
-      </div>
-    </header>
 
-    <div class="post-body">
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
-        <span itemprop="articleBody"><h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="https://www.bagevent.com/event/828605" target="_blank" rel="external">《Docker in Production》 workshop</a>于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。<br>直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
 <li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
 <li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
@@ -246,44 +366,169 @@
 <li>服务发现</li>
 <li><strong>日志、监控、Dashboard</strong></li>
 </ul>
-<h3 id="三、日志"><a href="#三、日志" class="headerlink" title="三、日志"></a>三、日志</h3><h4 id="1-docker-docker-compose日志"><a href="#1-docker-docker-compose日志" class="headerlink" title="1. docker docker-compose日志"></a>1. docker docker-compose日志</h4><p>容器日志的输出形式</p>
+<h2 id="三、日志"><a href="#三、日志" class="headerlink" title="三、日志"></a>三、日志</h2><a id="more"></a>
+<h3 id="1-传统日志处理"><a href="#1-传统日志处理" class="headerlink" title="1. 传统日志处理"></a>1. 传统日志处理</h3><p>说到日志，我们以前处理日志的方式如下：</p>
+<p>日志写到本机磁盘上<br>通常仅用于排查线上问题，很少用于数据分析<br>需要时登录到机器上，用grep、awk等工具分析<br>那么，这种方式有什么缺点呢？</p>
+<p>第一，它的效率非常低，因为每一次要排查问题的时候都要登到机器上去，当有几十台或者是上百台机器的时候，每一台机器去登陆这是一个没办法接受的事情，可能一台机器浪费两分钟，整个几小时就过去了。</p>
+<p>第二，如果要进行一些比较复杂的分析，像grep、awk两个简单的命令不能够满足需求时，就需要运行一些比较复杂的程序进行分析。</p>
+<p>第三，日志本身它的价值不光在于排查一些系统问题上面，可能在一些数据的分析上，可能利用日志来做一些用户的决策，这也是它的价值，如果不能把它利用起来，价值就不能充分的发挥出来。</p>
+<h3 id="2-docker日志处理"><a href="#2-docker日志处理" class="headerlink" title="2. docker日志处理"></a>2. docker日志处理</h3><p>与Docker相关的日志主要有两部分：</p>
 <ul>
-<li>stdout 标准输出</li>
-<li>stderr 标准错误</li>
-<li>以json格式存放在容器对于到日志文件中</li>
+<li>Docker Daemon日志，即Docker自身运行产生的日志。</li>
+<li>Docker Container日志，即Docker容器应用产生的日志。</li>
 </ul>
+<p>容器日志的两种输出形式:</p>
+<ul>
+<li>stdout、stderr 标准输出</li>
+<li>日志文件记录</li>
+</ul>
+<p>标准输出日志的原理在于，当在启动进程的时候，进程之间有一个父子关系，父进程可以拿到子进程的标准输出。拿到子进程标准输出的后，父进程可以对标准输出做所有希望的处理。</p>
+<p>LogDriver就是Docker用来处理容器标准输出的一个模块。 Docker支持很多种不同的处理方式，比如你的标准输出之后，在某一种情况下会把它写到一个日志里面，Docker默认的JSON File日志，除此之外，Docker还可以把它发送到syslog里面，或者是发送到journald里面去，或者是gelf的一个系统。</p>
+<p>logger drive</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Driver</th>
+<th style="text-align:center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">none</td>
+<td style="text-align:center">丢弃容器输出，docker logs命令也看不到任何内容</td>
+</tr>
+<tr>
+<td style="text-align:center">json-file</td>
+<td style="text-align:center">默认驱动，使用json文件保存日志</td>
+</tr>
+<tr>
+<td style="text-align:center">syslog</td>
+<td style="text-align:center">将日志写入syslog里，syslog必须在机器上启动</td>
+</tr>
+<tr>
+<td style="text-align:center">journald</td>
+<td style="text-align:center">将日志发送到journald（systemd）,journald必须在机器上启动</td>
+</tr>
+<tr>
+<td style="text-align:center">gelf</td>
+<td style="text-align:center">将日志发送到GELF端点，如Graylog或Logstash</td>
+</tr>
+<tr>
+<td style="text-align:center">fluentd</td>
+<td style="text-align:center">将日志发送给fluentd，fluentd必须在机器上启动</td>
+</tr>
+<tr>
+<td style="text-align:center">awslogs</td>
+<td style="text-align:center">将日志发送给Amazon Cloudwatch</td>
+</tr>
+<tr>
+<td style="text-align:center">splunk</td>
+<td style="text-align:center">将日志发送到splunk</td>
+</tr>
+<tr>
+<td style="text-align:center">etwlogs</td>
+<td style="text-align:center">将日志发送给Event Tracing for Windows。仅在windows平台可用</td>
+</tr>
+<tr>
+<td style="text-align:center">gcplogs</td>
+<td style="text-align:center">将日志发送给Google日志系统</td>
+</tr>
+<tr>
+<td style="text-align:center">nats</td>
+<td style="text-align:center">将日志发送给NATS服务</td>
+</tr>
+</tbody>
+</table>
+<p>json-file<br>The default logging we’ve just looked at.<br>syslog<br>The syslog driver, which we’ll look at shortly.<br>journald<br>The driver for the systemd journal.<br>gelf<br>The Graylog Extended Log Format (GELF) driver.<br>fluentd<br>Forwards log messages to fluentd.<br>none<br>Turns off logging.</p>
 <p>docker日志内容类型</p>
 <ul>
 <li>docker自身运行时Daemon的日志内容</li>
 <li>docker容器的日志内容</li>
 </ul>
-<h4 id="2-痛点"><a href="#2-痛点" class="headerlink" title="2. 痛点"></a>2. 痛点</h4><h4 id="3-集中式日志聚合"><a href="#3-集中式日志聚合" class="headerlink" title="3. 集中式日志聚合"></a>3. 集中式日志聚合</h4><h3 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h3><h4 id="1-why？"><a href="#1-why？" class="headerlink" title="1. why？"></a>1. why？</h4><h4 id="2-监控什么？"><a href="#2-监控什么？" class="headerlink" title="2. 监控什么？"></a>2. 监控什么？</h4><h3 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h3><h4 id="1-why-可视化？"><a href="#1-why-可视化？" class="headerlink" title="1. why 可视化？"></a>1. why 可视化？</h4><h4 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h4><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<h3 id="3-集中式日志聚合"><a href="#3-集中式日志聚合" class="headerlink" title="3. 集中式日志聚合"></a>3. 集中式日志聚合</h3><ul>
+<li>在所有的容器里运行一个辅助进程，该进程充当agent并将日志发到我们的聚合service里。</li>
+<li>在主机上或者是在一个单独的容器里，收集日志并转发到聚合service里。</li>
+</ul>
+<p>第一种方式经常用到，但是它可能会让镜像变大，并且必要地增加了运行的进程数量。</p>
+<ul>
+<li>使用Docker API动态的获取日志</li>
+<li>使用syslog driver</li>
+<li>直接访问Docker目录下的日志文件</li>
+</ul>
+<p>这个方案非常简单，但是其实会有很多的缺点：</p>
+<p>第一，因为每个容器都有一个日志的进程，意味着你的机器上面有100个容器，就需要启动一百个日志设备的程序，资源的浪费非常厉害。</p>
+<p>第二，在做镜像的时候，需要把容器里面日志采集程序做到镜像里面去，对你的镜像其实是有入侵的，为了日志采集，不得不把自己的日志程序再做个新镜像，然后把东西放进去，所以对你的镜像过程是有入侵性的。</p>
+<p>第三，当一个容器里面好多个进程的时候，对于容器的资源管理，会干扰你对容器的资源使用的判断，包括对于在做资源分配和监控的时候，都会有一些这样的干扰。</p>
+<h3 id="4-out-of-scope"><a href="#4-out-of-scope" class="headerlink" title="4. out of scope"></a>4. out of scope</h3><p>那么，我们怎么样去收集日志、存储日志，用什么样的系统，日志的源头和写日志我们又该怎么来做，有这样几个建议：</p>
+<ol>
+<li><p>选择合适的日志框架，不要直接print；</p>
+</li>
+<li><p>为每一条日志选择正确的level，该debug的不要用info；</p>
+</li>
+<li><p>附加更多的上下文信息；</p>
+</li>
+<li><p>使用json、csv等日志格式，方便工具解析；</p>
+</li>
+<li><p>尽量不要使用多行日志(Java Exception Stack)。</p>
+</li>
+</ol>
+<h2 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h2><h3 id="1-why？"><a href="#1-why？" class="headerlink" title="1. why？"></a>1. why？</h3><h3 id="2-监控什么？"><a href="#2-监控什么？" class="headerlink" title="2. 监控什么？"></a>2. 监控什么？</h3><h2 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h2><h3 id="1-why-可视化？"><a href="#1-why-可视化？" class="headerlink" title="1. why 可视化？"></a>1. why 可视化？</h3><h3 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h3><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="https://yq.aliyun.com/articles/72700" target="_blank" rel="external">Docker日志收集最佳实践</a></li>
 <li><a href="http://dockone.io/article/2644" target="_blank" rel="external">Docker 日志的5个最佳实践</a></li>
 <li><a href="http://dockone.io/article/2252" target="_blank" rel="external">使用ELK处理Docker日志(一)</a></li>
+<li><a href="http://blog.cloud66.com/9-crtitical-decisions-needed-to-run-docker-in-production/" target="_blank" rel="external">9 Critical Decisions for Running Docker in Production</a></li>
 </ul>
-</span>
+
       
     </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/imgs/qr-code.png" alt="Zhang Yu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫一扫，用手机访问本站</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/Docker/" rel="tag">#Docker</a>
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
           
         </div>
       
 
       
+      
+      
+
+      
         <div class="post-nav">
-          <div class="post-nav-prev post-nav-item">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/02/餐巾纸的背面（三）拓展创意/" rel="next" title="餐巾纸的背面（三）拓展创意">
+                <i class="fa fa-chevron-left"></i> 餐巾纸的背面（三）拓展创意
+              </a>
             
           </div>
 
-          <div class="post-nav-next post-nav-item">
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/02/餐巾纸的背面（三）拓展创意/" rel="next">餐巾纸的背面（三）拓展创意</a>
+              <a href="/2017/12/27/Mongo-记一次安装启动错误/" rel="prev" title="Mongo-记一次安装启动异常">
+                Mongo-记一次安装启动异常 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -292,6 +537,10 @@
       
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
@@ -301,22 +550,20 @@
     </div>
   </div>
 
- </div>
 
-        
-
-        
-          <div class="comments" id="comments">
-            
-              <div class="ds-thread" data-thread-key="2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/"
-                   data-title="Docker Workshop（九）Docker日志、监控、Dashboard" data-url="http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/">
-              </div>
-            
           </div>
-        
-      </div>
+          
 
-      
+
+          
+
+  
+
+
+
+        </div>
+        
+          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -327,355 +574,340 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
+
+      
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目錄
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            本站概覽
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
           </li>
         </ul>
       
 
-      <section class="site-overview">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/imgs/figure.jpg" alt="Zhang Yu" itemprop="image"/>
-          <p class="site-author-name" itemprop="name">Zhang Yu</p>
-        </div>
-        <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">47</span>
-              <span class="site-state-item-name">文章</span>
-            </a>
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Zhang Yu</p>
+              <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
           </div>
 
-          <div class="site-state-item site-state-categories">
-            <a href="/categories">
-              <span class="site-state-item-count">13</span>
-              <span class="site-state-item-name">分類</span>
-              </a>
-          </div>
+          <nav class="site-state motion-element">
 
-          <div class="site-state-item site-state-tags">
-            <a href="/tags">
-              <span class="site-state-item-count">20</span>
-              <span class="site-state-item-name">標籤</span>
-              </a>
-          </div>
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
 
-        </nav>
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="menu-item-icon icon-next-feed"></i>
-              RSS
-            </a>
-          </div>
-        
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
 
-        <div class="links-of-author motion-element">
+          </nav>
+
           
-        </div>
-
-        
-        
-
-        <div class="links-of-author motion-element">
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
-        </div>
 
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
       </section>
 
       
-        <section class="post-toc-wrap sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator"></div>
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
+
             
+              
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、日志"><span class="nav-number">3.</span> <span class="nav-text">三、日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-docker-docker-compose日志"><span class="nav-number">3.1.</span> <span class="nav-text">1. docker docker-compose日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-痛点"><span class="nav-number">3.2.</span> <span class="nav-text">2. 痛点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-集中式日志聚合"><span class="nav-number">3.3.</span> <span class="nav-text">3. 集中式日志聚合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、监控"><span class="nav-number">4.</span> <span class="nav-text">四、监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-why？"><span class="nav-number">4.1.</span> <span class="nav-text">1. why？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-监控什么？"><span class="nav-number">4.2.</span> <span class="nav-text">2. 监控什么？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Dashboard"><span class="nav-number">5.</span> <span class="nav-text">五、Dashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-why-可视化？"><span class="nav-number">5.1.</span> <span class="nav-text">1. why 可视化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-可视化哪些信息？"><span class="nav-number">5.2.</span> <span class="nav-text">2. 可视化哪些信息？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
+
             
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、日志"><span class="nav-number">3.</span> <span class="nav-text">三、日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-传统日志处理"><span class="nav-number">3.1.</span> <span class="nav-text">1. 传统日志处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-docker日志处理"><span class="nav-number">3.2.</span> <span class="nav-text">2. docker日志处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-集中式日志聚合"><span class="nav-number">3.3.</span> <span class="nav-text">3. 集中式日志聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-out-of-scope"><span class="nav-number">3.4.</span> <span class="nav-text">4. out of scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、监控"><span class="nav-number">4.</span> <span class="nav-text">四、监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-why？"><span class="nav-number">4.1.</span> <span class="nav-text">1. why？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-监控什么？"><span class="nav-number">4.2.</span> <span class="nav-text">2. 监控什么？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Dashboard"><span class="nav-number">5.</span> <span class="nav-text">五、Dashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-why-可视化？"><span class="nav-number">5.1.</span> <span class="nav-text">1. why 可视化？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-可视化哪些信息？"><span class="nav-number">5.2.</span> <span class="nav-text">2. 可视化哪些信息？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
           </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
         </section>
+      <!--/noindex-->
+      
+
       
 
     </div>
   </aside>
 
 
+        
+      </div>
     </main>
 
     <footer id="footer" class="footer">
-      <div class="footer-inner"> <div class="copyright" >
-  
-  &copy; &nbsp; 
-  <span itemprop="copyrightYear">2017</span>
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
-    <i class="icon-next-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
-</div>
+  
+   <span style="margin-left:8px;">
+   <script src="http://s6.cnzz.com/stat.php?id=1263347220&web_id=1263347220" type="text/javascript"></script>
+   </span>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
-</div>
 
-<div class="theme-info">
-  主題 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT
-  </a>
+  
 </div>
 
 
- </div>
-    </footer>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
-    <div class="back-to-top"></div>
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
   </div>
 
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
-  
-  
-  
-    
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhangyuyu"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-    
-     
-  	<script src="/js/ua-parser.min.js"></script>
-  	<script src="/js/hook-duoshuo.js"></script>
-  
+        
+      </div>
+    </footer>
 
     
-  
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
 
+    
 
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
-  
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
-
-
-
-
-  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  </div>
 
   
-  
-<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
 
-
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 0.4 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    var $tocContent = $('.post-toc-content');
-    if (isDesktop() && CONFIG.sidebar === 'post') {
-      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-        displaySidebar();
-      }
-    }
-  });
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
 
 
-  <script type="text/javascript">
-    $(document).ready(function () {
-      if (CONFIG.sidebar === 'always') {
-        displaySidebar();
-      }
-      if (isMobile()) {
-        FastClick.attach(document.body);
-      }
-    });
-  </script>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
 
   
 
   
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
   
 
   
-  <script type="text/javascript" src="/js/lazyload.js"></script>
-  <script type="text/javascript">
-    $(function () {
-      $("#posts").find('img').lazyload({
-        placeholder: "/images/loading.gif",
-        effect: "fadeIn"
-      });
-    });
-  </script>
-<a href="https://github.com/zhangyuyu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-
+
+  
+
+  
+
+
 </body>
 </html>
