@@ -87,6 +87,7 @@
 <meta property="og:url" content="http://yoursite.com/page/5/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="行是知之始，知是行之成">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="若见喻笺">
 <meta name="twitter:description" content="行是知之始，知是行之成">
@@ -263,6 +264,683 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/29/Gradle-java-plugin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/29/Gradle-java-plugin/" itemprop="url">Gradle-java-plugin</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-29T19:42:22+08:00">
+                2015-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>　　java plugin给项目添加了java编译，测试和捆绑的能力，是很多其他gradle plugin的基础。<br>在build.gradle中加入<code>apply plugin: &#39;java&#39;</code>，即可使用java plugin。</p>
+<h3 id="一、java-Plugin引入的主要Task"><a href="#一、java-Plugin引入的主要Task" class="headerlink" title="一、java Plugin引入的主要Task"></a>一、java Plugin引入的主要Task</h3><p>执行“gradle build”，我们已经可以看到java Plugin所引入的主要Task：</p>
+<blockquote>
+<p>:compileJava<br>:processResources<br>:classes<br>:jar<br>:assemble<br>:compileTestJava<br>:processTestResources<br>:testClasses<br>:test<br>:check<br>:build</p>
+</blockquote>
+<p>　　build也是java Plugin所引入的一个Task，它依赖于其他Task，其他Task又依赖于另外的Task，所以有了以上Task执行列表。以上Task执行列表基本上描述了java Plugin向项目中所引入的构建生命周期概念。<br>　　除了定义众多的Task外，java Plugin还向Project中加入了一些额外的Property。比如，sourceCompatibility用于指定在编译Java源文件时所使用的Java版本，archivesBaseName用于指定打包成Jar文件时的文件名称。
+　　</p>
+<h3 id="二、Source-sets"><a href="#二、Source-sets" class="headerlink" title="二、Source sets"></a>二、Source sets</h3><p>　　source set是一组编译和执行的源文件，和编译路径与执行路径有联系。Gradle的每个source set都包含有一个名字，并且包含有一个名为java的Property和一个名为resources的Property，他们分别用于表示该source set所包含的Java源文件集合和资源文件集合。</p>
+<pre><code>sourceSets {
+    main {
+        java {
+            srcDir &apos;src/java&apos;
+        }
+        resources {
+            srcDir &apos;src/resources&apos;
+        }
+    }
+}
+</code></pre><p>　　Gradle会自动地为每一个新创建的source set创建相应的Task。对于名为mySourceSet的source set，Gradle将为其创建compile<mysourceset>Java、process<mysourceset>Resources和<mysourceset>Classes这3个Task。对于这里api而言，Gradle会为其创建名为compileApiJava、processApiResource和apiClasses Task。我们可以在命令行中执行”gradle apiClasses”。<br></mysourceset></mysourceset></mysourceset></p>
+<blockquote>
+<p>注意，对于main而言，Gradle并没有相应的compileMainJava，原因在于：由于main是Gradle默认创建的source set，并且又是及其重要的source set，Gradle便省略掉了其中的“Main”，而是直接使用了compileJava作为main的编译Task。对于test来说，Gradle依然采用了compileTestJava。</p>
+</blockquote>
+<p>　　通常的情况是，我们自己创建的名为api的source set会被其他source set所依赖，比如main中的类需要实现api中的某个接口等。此时我们需要做两件事情。<br>　　<em> 第一，我们需要在编译main之前对api进行编译，即编译main中Java源文件的Task应该依赖于api中的Task：<code>classes.dependsOn apiClasses</code>
+　　</em> 第二，在编译main时，我们需要将api编译生成的class文件放在main的classpath下。此时，我们可以对main和test做以下配置：</p>
+<pre><code>sourceSets {
+  main {
+     compileClasspath = compileClasspath + files(api.output.classesDir)
+  }
+  test {
+     runtimeClasspath = runtimeClasspath + files(api.output.classesDir)
+  }
+}
+</code></pre><h3 id="三、依赖管理"><a href="#三、依赖管理" class="headerlink" title="三、依赖管理"></a>三、依赖管理</h3><h4 id="1、repositories"><a href="#1、repositories" class="headerlink" title="1、repositories"></a>1、repositories</h4><p>　　在声明对第三方类库的依赖时，我们需要告诉Gradle在什么地方去获取这些依赖，即配置Gradle的Repository。在配置好依赖之后，Gradle会自动地下载这些依赖到本地。Gradle可以使用Maven和Ivy的Repository，同时它还可以使用本地文件系统作为Repository。<br>配置Maven的Repository如下：</p>
+<pre><code>repositories {
+  mavenCentral()
+}
+</code></pre><h4 id="2、configurations"><a href="#2、configurations" class="headerlink" title="2、configurations"></a>2、configurations</h4><p>　　Gradle将对依赖进行分组，每一组依赖称为一个Configuration，在声明依赖时，我们实际上是在设置不同的Configuration。</p>
+<h5 id="1）定义一个Configuration："><a href="#1）定义一个Configuration：" class="headerlink" title="(1）定义一个Configuration："></a>(1）定义一个Configuration：</h5><pre><code>configurations {
+  myDependency
+}
+</code></pre><h5 id="2-加入实际的依赖项："><a href="#2-加入实际的依赖项：" class="headerlink" title="(2) 加入实际的依赖项："></a>(2) 加入实际的依赖项：</h5><pre><code>dependencies {
+  myDependency &apos;org.apache.commons:commons-lang3:3.0&apos;
+}
+</code></pre><blockquote>
+<p>java Plugin定义了compile和testCompile这两个Configuration，分别用于编译Java源文件和编译Java测试源文件。也定义了runtime和testRuntime，分别用于在程序运行和测试运行时加入所配置的依赖。</p>
+</blockquote>
+<p>　　因此，下述声明依赖时，可以直接使用dependencies：</p>
+<pre><code>dependencies {
+    compile group: &apos;commons-collections&apos;, name: &apos;commons-collections&apos;, version: &apos;3.2&apos;
+    testCompile group: &apos;junit&apos;, name: &apos;junit&apos;, version: &apos;4.+&apos;
+}
+</code></pre><h5 id="3）获取classpath"><a href="#3）获取classpath" class="headerlink" title="(3）获取classpath"></a>(3）获取classpath</h5><pre><code>task showMyDependency &lt;&lt; {
+  println configurations.myDependency.asPath
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/29/Gradle-property/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/29/Gradle-property/" itemprop="url">Gradle-property</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-29T10:38:22+08:00">
+                2015-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>　　很多Plugin都会向Project中加入额外的Property，在使用这些Plugin时，我们需要对这些Property进行赋值。<br>　　Gradle在默认情况下已经为Project定义了很多Property，其中比较常用的有：</p>
+<blockquote>
+<p>project：Project本身<br>name：Project的名字<br>path：Project的绝对路径<br>description：Project的描述信息<br>buildDir：Project构建结果存放目录<br>version：Project的版本号</p>
+</blockquote>
+<h3 id="一、project属性配置"><a href="#一、project属性配置" class="headerlink" title="一、project属性配置"></a>一、project属性配置</h3><pre><code>version = &apos;this is the project version&apos;
+description = &apos;this is the project description&apos;
+task showProjectProperties &lt;&lt; {
+  println version
+  println project.description
+}
+</code></pre><p>　　注意，在打印description时，我们使用了project.description，而不是直接使用description。原因在于，Project和Task都拥有description属性，而定义Task的闭包将delegate设置成了当前的Task，故如果直接使用description，此时打印的是showProjectProperties的description，而不是Project的，所以我们需要显式地指明project。</p>
+<h3 id="二、Task属性配置"><a href="#二、Task属性配置" class="headerlink" title="二、Task属性配置"></a>二、Task属性配置</h3><h4 id="1、对desctiption属性的配置"><a href="#1、对desctiption属性的配置" class="headerlink" title="1、对desctiption属性的配置"></a>1、对desctiption属性的配置</h4><h5 id="（1）定义时候对description属性的配置"><a href="#（1）定义时候对description属性的配置" class="headerlink" title="（1）定义时候对description属性的配置"></a>（1）定义时候对description属性的配置</h5><p>build.gradle:</p>
+<pre><code>task myTask &lt;&lt; {
+  description = &quot;this is myProperty&quot;
+  println description
+}
+</code></pre><h5 id="（2）myTask-description"><a href="#（2）myTask-description" class="headerlink" title="（2）myTask.description"></a>（2）myTask.description</h5><pre><code>task myTask &lt;&lt; {
+      println description
+}
+myTask.description = &quot;this is myProperty&quot;
+</code></pre><h5 id="3-同名的方法中设置description"><a href="#3-同名的方法中设置description" class="headerlink" title="(3) 同名的方法中设置description"></a>(3) 同名的方法中设置description</h5><pre><code>task myTask &lt;&lt; {
+      println description
+}
+myTask{
+      description = &quot;this is myProperty&quot;
+}
+</code></pre><h5 id="4）调用Task的configure-方法-配置description属性"><a href="#4）调用Task的configure-方法-配置description属性" class="headerlink" title="(4）调用Task的configure()方法,配置description属性"></a>(4）调用Task的configure()方法,配置description属性</h5><p>build.gradle</p>
+<pre><code>task myTask &lt;&lt; {
+  println description
+}
+myTask.configure {
+  description = &quot;this is myProperty&quot;
+}
+</code></pre><p>运行，结果：</p>
+<pre><code>$ gradle -q myTask
+this is myProperty
+</code></pre><h4 id="2、自定义属性的配置"><a href="#2、自定义属性的配置" class="headerlink" title="2、自定义属性的配置"></a>2、自定义属性的配置</h4><h5 id="1-额外自定义属性的配置"><a href="#1-额外自定义属性的配置" class="headerlink" title="(1) 额外自定义属性的配置"></a>(1) 额外自定义属性的配置</h5><p>build.gradle:</p>
+<pre><code>task myTask {
+    ext.myProperty = &quot;this is myProperty&quot;
+}
+
+task printTaskProperties &lt;&lt; {
+    println myTask.myProperty
+}
+</code></pre><p>也可以使用闭包的方式：</p>
+<pre><code>ext { myProperty = &quot;this is myProperty&quot;}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q printTaskProperties
+this is myProperty
+</code></pre><h5 id="2-通过命令行参数自定义Property"><a href="#2-通过命令行参数自定义Property" class="headerlink" title="(2) 通过命令行参数自定义Property"></a>(2) 通过命令行参数自定义Property</h5><p>build.gradle</p>
+<pre><code>task myTask &lt;&lt; {
+      println myProperty
+}
+</code></pre><p>此时，会报错：</p>
+<pre><code>* What went wrong:
+Execution failed for task &apos;:myTask&apos;.
+&gt; Could not find property &apos;myProperty&apos; on task &apos;:myTask&apos;.
+</code></pre><p>　　表示myProperty并没有被定义，在调用gradle命令时，通过-P参数传入该Property：</p>
+<pre><code>$ gradle -PmyProperty=&quot;this is myProperty&quot; myTask                  
+:myTask
+this is myProperty
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/29/Gradle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/29/Gradle/" itemprop="url">Gradle</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-29T00:01:59+08:00">
+                2015-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>　　每个Gradle build由一个或多个projects组成，一个project代表用gradle做了什么，比如可能代表了一个JAR库或者一个网页应用程序。<br>　　一个project由一个或多个tasks组成，一个Task表示一个逻辑上较为独立的执行过程，比如编译Java源代码，拷贝文件，打包Jar文件，甚至可以是执行一个系统命令或者调用Ant。另外，一个Task可以读取和设置Project的Property以完成特定的操作。<br>　　gradle命令在当前路径下寻找一个叫build.gradle的文件夹，也叫做build script,严格来说build configuration script，它定义了project和其tasks.</p>
+<h3 id="一、HelloWorld"><a href="#一、HelloWorld" class="headerlink" title="一、HelloWorld"></a>一、HelloWorld</h3><h4 id="1、调用Project的task-方法"><a href="#1、调用Project的task-方法" class="headerlink" title="1、调用Project的task()方法"></a>1、调用Project的task()方法</h4><p>在build.gradle中</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
+}
+</code></pre><p>　　其中<code>&lt;&lt;</code>表示向hello中加入执行代码。大括号之间的内容则表示传递给task()方法的一个闭包。</p>
+<h4 id="2、使用doLast加入执行过程"><a href="#2、使用doLast加入执行过程" class="headerlink" title="2、使用doLast加入执行过程"></a>2、使用doLast加入执行过程</h4><pre><code>task hello {
+        doLast {
+            println &apos;Hello world!&apos;
+        }
+    }    
+</code></pre><h4 id="3、create方式"><a href="#3、create方式" class="headerlink" title="3、create方式"></a>3、create方式</h4><pre><code>tasks.create(name: &apos;hello&apos;) &lt;&lt; {
+   println &apos;Hello world!&apos;
+}
+</code></pre><h4 id="4、运行，结果"><a href="#4、运行，结果" class="headerlink" title="4、运行，结果"></a>4、运行，结果</h4><p>　　在terminal中输入<code>gradle -q hello</code><br>　　其中，<code>-q</code>作用是隐藏了日志信息，使其只显示tasks的输出，可以选择使用。</p>
+<pre><code>$ gradle -q hello
+Hello world!
+</code></pre><p>　　</p>
+<h3 id="二、使用Grovvy"><a href="#二、使用Grovvy" class="headerlink" title="二、使用Grovvy"></a>二、使用Grovvy</h3><h4 id="eg1"><a href="#eg1" class="headerlink" title="eg1:"></a>eg1:</h4><p>build.gradle:</p>
+<pre><code>task upper &lt;&lt; {
+    String someString = &apos;mY_nAmE&apos;
+    println &quot;Original: &quot; + someString 
+    println &quot;Upper case: &quot; + someString.toUpperCase()
+}
+</code></pre><p>Terminal：</p>
+<pre><code>$ gradle -q upper
+Original: mY_nAmE
+Upper case: MY_NAME
+</code></pre><h4 id="eg2"><a href="#eg2" class="headerlink" title="eg2:"></a>eg2:</h4><p>build.gradle:</p>
+<pre><code>task count &lt;&lt; {
+    4.times { print &quot;$it &quot; }
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q count
+0 1 2 3 
+</code></pre><h3 id="三、task依赖"><a href="#三、task依赖" class="headerlink" title="三、task依赖"></a>三、task依赖</h3><p>　　taskA依赖于taskB，那么在执行taskA时，Gradle会先执行taskB，然后再执行taskA。</p>
+<h4 id="1、声明Task依赖关系的一种方式是在定义一个Task的时候："><a href="#1、声明Task依赖关系的一种方式是在定义一个Task的时候：" class="headerlink" title="1、声明Task依赖关系的一种方式是在定义一个Task的时候："></a>1、声明Task依赖关系的一种方式是在定义一个Task的时候：</h4><p>build.gradle:</p>
+<pre><code>task taskX &lt;&lt; {
+    println &apos;taskY!&apos;
+}
+task taskY(dependsOn: taskX){
+    println &quot;taskX!&quot;
+}
+</code></pre><p>Terminal:</p>
+<pre><code>&gt; gradle -q taskY
+taskX
+taskY
+</code></pre><h4 id="2、被依赖的Task还不存在的时候"><a href="#2、被依赖的Task还不存在的时候" class="headerlink" title="2、被依赖的Task还不存在的时候"></a>2、被依赖的Task还不存在的时候</h4><p>在写depondsOn时候，对被依赖的task加上引号<code>&#39;task&#39;</code><br>build.gradle:</p>
+<pre><code>task taskX(dependsOn: &apos;taskY&apos;) &lt;&lt; {
+    println &apos;taskX&apos;
+}
+task taskY &lt;&lt; {
+    println &apos;taskY&apos;    
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q taskX
+taskY
+taskX    
+</code></pre><h4 id="3、Example"><a href="#3、Example" class="headerlink" title="3、Example"></a>3、Example</h4><p>gradle.build</p>
+<pre><code>task branch &lt;&lt; {
+    println &quot;use version=$version&quot;
+}
+
+task myTask(dependsOn: &apos;mybranch&apos;) &lt;&lt; {
+    println &apos;this is my task!&apos;
+}
+
+gradle.taskGraph.whenReady {taskGraph -&gt;
+    if (taskGraph.hasTask(myTask)) {
+        version = &apos;1.0&apos;
+    } else {
+        version = &apos;2.0&apos;
+    }
+}    
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q branch  
+use version=2.0
+$ gradle -q myTask
+use version=1.0
+this is my task!
+</code></pre><h3 id="四、动态task"><a href="#四、动态task" class="headerlink" title="四、动态task"></a>四、动态task</h3><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
+    }
+}
+</code></pre><p>Ternimal:</p>
+<pre><code>$ gradle -q task1
+I&apos;m task number 1
+</code></pre><p>　　注意，task是从0开始的，即此处存在task0、task1、task2、task3。可输入<code>gradle tasks</code>查看所有task。</p>
+<h3 id="五、操控现有task"><a href="#五、操控现有task" class="headerlink" title="五、操控现有task"></a>五、操控现有task</h3><h4 id="1、添加依赖"><a href="#1、添加依赖" class="headerlink" title="1、添加依赖"></a>1、添加依赖</h4><p>build.gradle:</p>
+<pre><code>4.times { counter -&gt;
+    task &quot;task$counter&quot; &lt;&lt; {
+        println &quot;I&apos;m task number $counter&quot;
+    }
+}
+task0.dependsOn task2, task3
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q task0
+I&apos;m task number 2
+I&apos;m task number 3
+I&apos;m task number 0
+</code></pre><h4 id="2、添加行为"><a href="#2、添加行为" class="headerlink" title="2、添加行为"></a>2、添加行为</h4><p>build.gradle:</p>
+<pre><code>task hello &lt;&lt; {
+    println &apos;Hello world!&apos;
+}
+hello.doFirst {
+    println &apos;Hello first&apos;
+}
+hello.doLast {
+    println &apos;Hello last&apos;
+}
+hello &lt;&lt; {
+    println &apos;Hello hello!&apos;
+}
+</code></pre><p>Treminal:</p>
+<pre><code>$ gradle -q hello
+Hello first
+Hello world!
+Hello last
+Hello hello!
+</code></pre><h3 id="六、默认task"><a href="#六、默认task" class="headerlink" title="六、默认task"></a>六、默认task</h3><p>build.gradle:</p>
+<pre><code>defaultTasks &apos;clean&apos;, &apos;run&apos;
+
+task clean &lt;&lt; {
+    println &apos;Default Cleaning!&apos;
+}
+
+task run &lt;&lt; {
+    println &apos;Default Running!&apos;
+}
+
+task other &lt;&lt; {
+    println &quot;I&apos;m not a default task!&quot;
+}
+</code></pre><p>Terminal:</p>
+<pre><code>$ gradle -q
+Default Cleaning!
+Default Running!
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -396,7 +1074,7 @@ jettyRunWar{
 :classes
 :jettyRun
 Building 75% &gt; :jettyRun &gt; Running at http://localhost:8080/spring4
-</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="external">http://localhost:8080/spring4，可以看到页面。</a></p>
+</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="noopener">http://localhost:8080/spring4，可以看到页面。</a></p>
 <h3 id="四、目录结构"><a href="#四、目录结构" class="headerlink" title="四、目录结构"></a>四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
 
           
@@ -2258,139 +2936,11 @@ public class App
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/15/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/15/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-15T18:33:28+08:00">
-                2015-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2436,7 +2986,7 @@ public class App
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2447,7 +2997,7 @@ public class App
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2458,7 +3008,7 @@ public class App
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2504,7 +3054,7 @@ public class App
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

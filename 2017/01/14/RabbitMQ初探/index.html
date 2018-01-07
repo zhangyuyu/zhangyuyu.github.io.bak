@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/01/14/RabbitMQ初探/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言在准备基于RabbitMQ topic的消息发送与接收的时候，顺便开始了这篇RabbitMQ初探。安装过程这里就不再赘述，本博客主要记录一些初探过程。 二、简介AMQP，即Advanced Message Queuing Protocol，高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计。消息中间件主要用于组件之间的解耦，消息的发送者无需知道消息使用者的存在，反之亦然。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/rabbitmq-hello-world.png">
 <meta property="og:image" content="http://yoursite.com/imgs/rabbitmq-work-queues.png">
 <meta property="og:image" content="http://yoursite.com/imgs/rabbitmq-exchanges.png">
@@ -360,22 +361,22 @@
       
         <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>在准备<code>基于RabbitMQ topic的消息发送与接收</code>的时候，顺便开始了这篇RabbitMQ初探。<br>安装过程这里就不再赘述，本博客主要记录一些初探过程。</p>
 <h3 id="二、简介"><a href="#二、简介" class="headerlink" title="二、简介"></a>二、简介</h3><p>AMQP，即Advanced Message Queuing Protocol，高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计。消息中间件主要用于组件之间的解耦，消息的发送者无需知道消息使用者的存在，反之亦然。<br>AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。<br>RabbitMQ是一个开源的AMQP实现，服务器端用Erlang语言编写，支持多种客户端，如：Python、Ruby、.NET、Java、JMS、C、PHP、ActionScript、XMPP、STOMP等，支持AJAX。用于在分布式系统中存储转发消息，在易用性、扩展性、高可用性等方面表现不俗。</p>
-<h3 id="三、几种模式"><a href="#三、几种模式" class="headerlink" title="三、几种模式"></a>三、几种模式</h3><p>Rabbit MQ<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="external">官网教程</a>上，从六个方面给出了讲解和demo。但是这些demo都是从最基础的层面进行编写，所以我自己尝试时候用了spring boot的相关支持，简化了很多代码。同时在尝试之后，我大概将其分为三类：</p>
+<h3 id="三、几种模式"><a href="#三、几种模式" class="headerlink" title="三、几种模式"></a>三、几种模式</h3><p>Rabbit MQ<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener">官网教程</a>上，从六个方面给出了讲解和demo。但是这些demo都是从最基础的层面进行编写，所以我自己尝试时候用了spring boot的相关支持，简化了很多代码。同时在尝试之后，我大概将其分为三类：</p>
 <ul>
 <li>Hello World(Queue)</li>
 <li>Publish/Subscribe(Exchange)</li>
 <li>RPC</li>
 </ul>
 <p>下面分别回顾一下上述三类情况：</p>
-<h4 id="1-Hello-World"><a href="#1-Hello-World" class="headerlink" title="1.Hello World"></a>1.Hello World</h4><p>我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-one-java.html" target="_blank" rel="external">Hello World</a>和<a href="https://www.rabbitmq.com/tutorials/tutorial-two-java.html" target="_blank" rel="external">Work Queues</a>归到这一类。结构如下：</p>
+<h4 id="1-Hello-World"><a href="#1-Hello-World" class="headerlink" title="1.Hello World"></a>1.Hello World</h4><p>我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-one-java.html" target="_blank" rel="noopener">Hello World</a>和<a href="https://www.rabbitmq.com/tutorials/tutorial-two-java.html" target="_blank" rel="noopener">Work Queues</a>归到这一类。结构如下：</p>
 <img src="/imgs/rabbitmq-hello-world.png" width="400" height="250">
 <p align="center">Hello World</p>
 
 <img src="/imgs/rabbitmq-work-queues.png" width="400" height="250">
 <p align="center">Work Queues</p>
 
-<p>它们都属于直接把消息发送给一个queue，然后consumers会与queue相连接。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的第一次、第二次提交。</p>
-<h4 id="2-Publish-Subscribe-Exchange"><a href="#2-Publish-Subscribe-Exchange" class="headerlink" title="2.Publish/Subscribe(Exchange)"></a>2.Publish/Subscribe(Exchange)</h4><p>这种模式使用了Exchange，可以把它理解为消息交换机，它指定消息按什么规则，路由到哪个队列。<br>因此我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-three-java.html" target="_blank" rel="external">Publish/Subscribe</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-four-java.html" target="_blank" rel="external">Routing</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-five-java.html" target="_blank" rel="external">Topics</a>放到这一类中。</p>
+<p>它们都属于直接把消息发送给一个queue，然后consumers会与queue相连接。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的第一次、第二次提交。</p>
+<h4 id="2-Publish-Subscribe-Exchange"><a href="#2-Publish-Subscribe-Exchange" class="headerlink" title="2.Publish/Subscribe(Exchange)"></a>2.Publish/Subscribe(Exchange)</h4><p>这种模式使用了Exchange，可以把它理解为消息交换机，它指定消息按什么规则，路由到哪个队列。<br>因此我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-three-java.html" target="_blank" rel="noopener">Publish/Subscribe</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-four-java.html" target="_blank" rel="noopener">Routing</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-five-java.html" target="_blank" rel="noopener">Topics</a>放到这一类中。</p>
 <img src="/imgs/rabbitmq-exchanges.png" width="400" height="250">
 <p>根据Exchange的类型，可以分为四类：</p>
 <ul>
@@ -384,17 +385,17 @@
 <li>Topic</li>
 <li>Headers</li>
 </ul>
-<h5 id="Fanout-Exchange"><a href="#Fanout-Exchange" class="headerlink" title="Fanout Exchange"></a>Fanout Exchange</h5><p>该类型路由规则非常简单，会把所有发送到该Exchange的消息路由到所有与它绑定的Queue中，相当于广播功能<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Fanout Exchange。</p>
-<h5 id="Direct-Exchange"><a href="#Direct-Exchange" class="headerlink" title="Direct Exchange"></a>Direct Exchange</h5><p>该类型路由规则，会把消息路由到那些binding key与routing key完全匹配的Queue中。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Direct Exchange。</p>
+<h5 id="Fanout-Exchange"><a href="#Fanout-Exchange" class="headerlink" title="Fanout Exchange"></a>Fanout Exchange</h5><p>该类型路由规则非常简单，会把所有发送到该Exchange的消息路由到所有与它绑定的Queue中，相当于广播功能<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Fanout Exchange。</p>
+<h5 id="Direct-Exchange"><a href="#Direct-Exchange" class="headerlink" title="Direct Exchange"></a>Direct Exchange</h5><p>该类型路由规则，会把消息路由到那些binding key与routing key完全匹配的Queue中。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Direct Exchange。</p>
 <h5 id="Topic-Exchange"><a href="#Topic-Exchange" class="headerlink" title="Topic Exchange"></a>Topic Exchange</h5><p>该类型路由规则与上述Direct Exchange规则类似，只是在binding key与routing key的匹配规则上进行了扩展，它约定：</p>
 <ul>
 <li>routing key为一个句点号“. ”分隔的字符串（我们将被句点号“. ”分隔开的每一段独立的字符串称为一个单词），如“routing.key.for.fist.queue”</li>
 <li>binding key与routing key一样也是句点号“. ”分隔的字符串</li>
 <li>binding key中可以存在两种特殊字符“*”与“#”，用于做模糊匹配，其中“”用于匹配一个单词，“#”用于匹配多个单词（可以是零个）。</li>
 </ul>
-<p>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Topic Exchange。</p>
-<h5 id="Headers-Exchange"><a href="#Headers-Exchange" class="headerlink" title="Headers Exchange"></a>Headers Exchange</h5><p>headers类型的Exchange不依赖于routing key与binding key的匹配规则来路由消息，而是根据发送的消息内容中的headers属性进行匹配。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Headers Exchange。</p>
-<h4 id="3-RPC"><a href="#3-RPC" class="headerlink" title="3.RPC"></a>3.RPC</h4><p>MQ本身是基于异步的消息处理，前面的示例中所有的生产者（P）将消息发送到RabbitMQ后不会知道消费者（C）处理成功或者失败（甚至连有没有消费者来处理这条消息都不知道）。<br>但实际的应用场景中，我们很可能需要一些同步处理，需要同步等待服务端将我的消息处理完成后再进行下一步处理。这相当于RPC（Remote Procedure Call，远程过程调用），可直接参考<a href="https://www.rabbitmq.com/tutorials/tutorial-six-java.html" target="_blank" rel="external">官方教程</a>。</p>
+<p>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Topic Exchange。</p>
+<h5 id="Headers-Exchange"><a href="#Headers-Exchange" class="headerlink" title="Headers Exchange"></a>Headers Exchange</h5><p>headers类型的Exchange不依赖于routing key与binding key的匹配规则来路由消息，而是根据发送的消息内容中的headers属性进行匹配。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Headers Exchange。</p>
+<h4 id="3-RPC"><a href="#3-RPC" class="headerlink" title="3.RPC"></a>3.RPC</h4><p>MQ本身是基于异步的消息处理，前面的示例中所有的生产者（P）将消息发送到RabbitMQ后不会知道消费者（C）处理成功或者失败（甚至连有没有消费者来处理这条消息都不知道）。<br>但实际的应用场景中，我们很可能需要一些同步处理，需要同步等待服务端将我的消息处理完成后再进行下一步处理。这相当于RPC（Remote Procedure Call，远程过程调用），可直接参考<a href="https://www.rabbitmq.com/tutorials/tutorial-six-java.html" target="_blank" rel="noopener">官方教程</a>。</p>
 <p>RabbitMQ中实现RPC的机制是：</p>
 <ul>
 <li>客户端发送请求（消息）时，在消息的属性（MessageProperties，在AMQP协议中定义了14中properties，这些属性会随着消息一起发送）中设置两个值replyTo（一个Queue名称，用于告诉服务器处理完成后将通知我的消息发送到这个Queue中）和correlationId（此次请求的标识号，服务器处理完成后需要将此属性返还，客户端将根据这个id了解哪条请求被成功执行了或执行失败）</li>
@@ -553,7 +554,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -564,7 +565,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -575,7 +576,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -637,7 +638,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

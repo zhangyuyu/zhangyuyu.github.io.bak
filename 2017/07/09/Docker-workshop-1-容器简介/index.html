@@ -88,12 +88,13 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/09/Docker-workshop-1-容器简介/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/container-structure.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-in-transportation1.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-in-transportation2.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-in-application.png">
 <meta property="og:image" content="http://yoursite.com/imgs/container-vs-vms.png">
-<meta property="og:updated_time" content="2017-12-27T07:12:38.000Z">
+<meta property="og:updated_time" content="2018-01-07T08:56:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（一）容器简介">
 <meta name="twitter:description" content="一、前言　　“不想在自己电脑上装一堆东西，恩，弄个docker容器，随便安装，随便破坏，随便试验的玩吧！”，这是笔者了解docker的初衷。　　后来回到武汉弄起了《Docker in Production》的workshop，正好项目也用到了docker，这才有股动力push我系统的了解一下docker。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介">
@@ -322,8 +323,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -363,11 +364,11 @@
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
 <li><strong>容器简介</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -449,37 +450,37 @@
 <h4 id="【练习1】创建LXC容器"><a href="#【练习1】创建LXC容器" class="headerlink" title="【练习1】创建LXC容器"></a>【练习1】创建LXC容器</h4><ol>
 <li>Ubuntu系统上安装好lxc</li>
 <li><p>宿主机上操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 启动一个后台运行的容器demo-container:</span></div><div class="line">sudo lxc-start --name demo-container --daemon</div><div class="line"><span class="meta">#</span><span class="bash"> 查看运行的容器的相关信息:</span></div><div class="line">sudo lxc-info --name demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 进入到容器:</span></div><div class="line">sudo lxc-console -n demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></div><div class="line">Username: ubuntu</div><div class="line">Password: ubuntu</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></span><br><span class="line">sudo lxc-ls --fancy</span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动一个后台运行的容器demo-container:</span></span><br><span class="line">sudo lxc-start --name demo-container --daemon</span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看运行的容器的相关信息:</span></span><br><span class="line">sudo lxc-info --name demo-container</span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入到容器:</span></span><br><span class="line">sudo lxc-console -n demo-container</span><br><span class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></span><br><span class="line">Username: ubuntu</span><br><span class="line">Password: ubuntu</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>LXC容器中操作</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># 查看容器的hostname</span></div><div class="line">hostname</div><div class="line"><span class="meta"># 在容器中创建一个文件</span></div><div class="line">echo <span class="string">"hello"</span> &gt; my_text.txt</div><div class="line">cat my_text.txt</div></pre></td></tr></table></figure>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 查看容器的hostname</span></span><br><span class="line">hostname</span><br><span class="line"><span class="meta"># 在容器中创建一个文件</span></span><br><span class="line">echo <span class="string">"hello"</span> &gt; my_text.txt</span><br><span class="line">cat my_text.txt</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>退出容器<br>先按下<code>ctrl+a</code>，然后再按<code>q</code>。</p>
 </li>
 </ol>
 <h4 id="【练习2】克隆LXC容器"><a href="#【练习2】克隆LXC容器" class="headerlink" title="【练习2】克隆LXC容器"></a>【练习2】克隆LXC容器</h4><ol>
 <li><p>宿主机上操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 冻结运行的容器</span></div><div class="line">sudo lxc-freeze -n demo-container</div><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 克隆容器之前，必须要先停止容器</span></div><div class="line">sudo lxc-stop --name demo-container</div><div class="line">sudo lxc-clone -o demo-container -n cloned-container</div><div class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></div><div class="line">sudo lxc-ls --fancy</div><div class="line"><span class="meta">#</span><span class="bash"> 启动复制的容器</span></div><div class="line">sudo lxc-start --name cloned-container --daemon</div><div class="line"><span class="meta">#</span><span class="bash"> 进入到复制的容器:</span></div><div class="line">sudo lxc-console -n cloned-container</div><div class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></div><div class="line">Username: ubuntu</div><div class="line">Password: ubuntu</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 冻结运行的容器</span></span><br><span class="line">sudo lxc-freeze -n demo-container</span><br><span class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></span><br><span class="line">sudo lxc-ls --fancy</span><br><span class="line"><span class="meta">#</span><span class="bash"> 克隆容器之前，必须要先停止容器</span></span><br><span class="line">sudo lxc-stop --name demo-container</span><br><span class="line">sudo lxc-clone -o demo-container -n cloned-container</span><br><span class="line"><span class="meta">#</span><span class="bash"> 列出所有的容器:</span></span><br><span class="line">sudo lxc-ls --fancy</span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动复制的容器</span></span><br><span class="line">sudo lxc-start --name cloned-container --daemon</span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入到复制的容器:</span></span><br><span class="line">sudo lxc-console -n cloned-container</span><br><span class="line"><span class="meta">#</span><span class="bash"> 登陆时候输入:</span></span><br><span class="line">Username: ubuntu</span><br><span class="line">Password: ubuntu</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>克隆的容器中操作</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看克隆的容器是否也一起克隆了之前创建的文件</span></div><div class="line"><span class="keyword">ls</span></div></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看克隆的容器是否也一起克隆了之前创建的文件</span></span><br><span class="line"><span class="keyword">ls</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>退出容器<br>先按下<code>ctrl+a</code>，然后再按<code>q</code>。</p>
 </li>
 <li><p>停止克隆的容器</p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lxc-<span class="keyword">stop</span> --<span class="keyword">name</span> cloned-container</div></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lxc-<span class="keyword">stop</span> --<span class="keyword">name</span> cloned-container</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>销毁克隆的容器</p>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo lxc-destroy <span class="comment">--name cloned-container</span></div></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lxc-destroy <span class="comment">--name cloned-container</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是涉及容器，从what, why, how上讲述了容器的相关知识。<br>至于容器的历史，有兴趣的读者可以自己查看一下相关资料。<br><a href="http://www.dockone.io/article/1522" target="_blank" rel="external">容器简史：从20世纪70年代的chroot到2016的Docker</a>以及<a href="http://www.alauda.cn/2016/01/18/container-history/" target="_blank" rel="external">【容器那些事儿】容器技术的前世今生</a><br>　　下一篇将讲述Docker的出现以及相关的基本理论知识。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是涉及容器，从what, why, how上讲述了容器的相关知识。<br>至于容器的历史，有兴趣的读者可以自己查看一下相关资料。<br><a href="http://www.dockone.io/article/1522" target="_blank" rel="noopener">容器简史：从20世纪70年代的chroot到2016的Docker</a>以及<a href="http://www.alauda.cn/2016/01/18/container-history/" target="_blank" rel="noopener">【容器那些事儿】容器技术的前世今生</a><br>　　下一篇将讲述Docker的出现以及相关的基本理论知识。</p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
-<li><a href="http://dockone.io/article/803" target="_blank" rel="external">为什么容器技术将主宰世界？</a></li>
-<li><a href="http://dockone.io/article/2442" target="_blank" rel="external">容器技术概览</a></li>
-<li><a href="https://www.ibm.com/developerworks/community/blogs/132cfa78-44b0-4376-85d0-d3096cd30d3f/entry/%E5%AE%B9%E5%99%A8_What_Why_How_%E6%AF%8F%E5%A4%A95%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%AC%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF_6?lang=zh" target="_blank" rel="external">容器What, Why, How - 每天5分钟玩转容器技术 - IBM</a></li>
-<li><a href="https://www.ibm.com/developerworks/cn/linux/l-lxc-containers/" target="_blank" rel="external">LXC：Linux 容器工具</a></li>
-<li><a href="http://17173ops.com/2013/11/14/linux-lxc-install-guide.shtml#toc2" target="_blank" rel="external">LXC基础学习教程</a></li>
+<li><a href="http://dockone.io/article/803" target="_blank" rel="noopener">为什么容器技术将主宰世界？</a></li>
+<li><a href="http://dockone.io/article/2442" target="_blank" rel="noopener">容器技术概览</a></li>
+<li><a href="https://www.ibm.com/developerworks/community/blogs/132cfa78-44b0-4376-85d0-d3096cd30d3f/entry/%E5%AE%B9%E5%99%A8_What_Why_How_%E6%AF%8F%E5%A4%A95%E5%88%86%E9%92%9F%E7%8E%A9%E8%BD%AC%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF_6?lang=zh" target="_blank" rel="noopener">容器What, Why, How - 每天5分钟玩转容器技术 - IBM</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/l-lxc-containers/" target="_blank" rel="noopener">LXC：Linux 容器工具</a></li>
+<li><a href="http://17173ops.com/2013/11/14/linux-lxc-install-guide.shtml#toc2" target="_blank" rel="noopener">LXC基础学习教程</a></li>
 </ul>
 
       
@@ -608,7 +609,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -619,7 +620,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -630,7 +631,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -692,7 +693,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

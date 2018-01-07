@@ -88,9 +88,10 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/11/Docker-workshop-3-Docker的基本操作/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　上一篇 Docker简介讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。　　本篇将开始实际动手操作，熟悉docker基本的指令。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-image-layer1.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-image-layers-history.png">
-<meta property="og:updated_time" content="2017-12-27T07:12:49.000Z">
+<meta property="og:updated_time" content="2018-01-07T08:56:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（三）Docker的基本操作">
 <meta name="twitter:description" content="一、前言　　上一篇 Docker简介讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。　　本篇将开始实际动手操作，熟悉docker基本的指令。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全">
@@ -319,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -356,15 +357,15 @@
       
 
       
-        <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
+        <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
 <li><strong>Docker的基本操作</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -407,12 +408,12 @@ Total Memory: 3.431 GiB
 Name: workshop
 id=: 27OE:SE73:WCPT:366X:CCGS:G2NQ:RB2A:UVJ2:A3OC:CZUJ:RYCB:XDDE
 WARNING: No swap limit support
-</code></pre><h4 id="3-练习构建镜像"><a href="#3-练习构建镜像" class="headerlink" title="3. 练习构建镜像"></a>3. 练习构建镜像</h4><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲到获取镜像有三种方式，其中自己从无到有地创建镜像，Docker有两种方式：</p>
+</code></pre><h4 id="3-练习构建镜像"><a href="#3-练习构建镜像" class="headerlink" title="3. 练习构建镜像"></a>3. 练习构建镜像</h4><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">上一篇</a>讲到获取镜像有三种方式，其中自己从无到有地创建镜像，Docker有两种方式：</p>
 <ul>
 <li>创建一个容器，运行若干命令，再使用<code>docker commit</code>来生成一个新的镜像。以这种方式创建的镜像不具备再生产能力且无法实现版本控制性，因此绝对<strong>不值得提倡</strong>。</li>
 <li>创建一个<code>Dockerfile</code>然后再使用<code>docker build</code>来创建一个镜像。大多人会使用<code>Dockerfile</code>来创建镜像。</li>
 </ul>
-<h4 id="【练习1】通过Dockerfile构建镜像"><a href="#【练习1】通过Dockerfile构建镜像" class="headerlink" title="【练习1】通过Dockerfile构建镜像"></a>【练习1】通过Dockerfile构建镜像</h4><p>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></div><div class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></div><div class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></div><div class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></div><div class="line"><span class="string">EXPOSE</span> <span class="number">80</span></div><div class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></div></pre></td></tr></table></figure></p>
+<h4 id="【练习1】通过Dockerfile构建镜像"><a href="#【练习1】通过Dockerfile构建镜像" class="headerlink" title="【练习1】通过Dockerfile构建镜像"></a>【练习1】通过Dockerfile构建镜像</h4><p>1）创建一个Dockerfile<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="attr">debian:8</span></span><br><span class="line"><span class="string">MAINTAINER</span> <span class="string">John</span> <span class="string">Citizen</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">apt-get</span> <span class="string">update</span> <span class="string">&amp;&amp;</span> <span class="string">\</span></span><br><span class="line"><span class="string">apt-get</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">nginx</span></span><br><span class="line"><span class="string">EXPOSE</span> <span class="number">80</span></span><br><span class="line"><span class="string">CMD</span> <span class="string">["nginx",</span> <span class="string">"-g"</span><span class="string">,</span> <span class="string">"daemon off;"</span><span class="string">]</span></span><br></pre></td></tr></table></figure></p>
 <img src="/imgs/docker-image-layers-history.png" width="500" height="350">
 <p>2）生成镜像<br><code>docker build -t nginx-demo .</code>其中<code>.</code>是当前目录，包含<code>Dockerfile</code>文件</p>
 <pre><code>$ docker build -t nginx-demo .
@@ -584,7 +585,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 </ul>
 <p>　　在Docker发布1.9版本的时候推荐使用<code>Docker Networks</code>代替<code>Docker link</code>，后面的<a href="">Docker Workshop（五）Docker网络</a>会讲到Docker Networks。</p>
 <h3 id="八、使用Docker-Compose"><a href="#八、使用Docker-Compose" class="headerlink" title="八、使用Docker Compose"></a>八、使用Docker Compose</h3><p>　　Compose是用于定义和运行复杂Docker应用的工具。你可以在一个文件中定义一个多容器的应用，然后使用一条命令来启动你的应用，然后所有相关的操作都会被自动完成。</p>
-<h4 id="【练习7】使用Docker-compose工具"><a href="#【练习7】使用Docker-compose工具" class="headerlink" title="【练习7】使用Docker compose工具"></a>【练习7】使用Docker compose工具</h4><p>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attr">shop-app:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></div><div class="line"><span class="attr">  ports:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></div><div class="line"><span class="attr">  links:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">review</span></div><div class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></div><div class="line"></div><div class="line"><span class="attr">review:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></div><div class="line"></div><div class="line"><span class="attr">catalogue:</span></div><div class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></div></pre></td></tr></table></figure></p>
+<h4 id="【练习7】使用Docker-compose工具"><a href="#【练习7】使用Docker-compose工具" class="headerlink" title="【练习7】使用Docker compose工具"></a>【练习7】使用Docker compose工具</h4><p>1）创建一个<code>docker-compose.yml</code>文件<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">shop-app:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/shop-app</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"8080:8080"</span></span><br><span class="line"><span class="attr">  links:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">review</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">catalogue</span></span><br><span class="line"></span><br><span class="line"><span class="attr">review:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/review</span></span><br><span class="line"></span><br><span class="line"><span class="attr">catalogue:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">registry:5000/catalogue</span></span><br></pre></td></tr></table></figure></p>
 <p>2) 启动三个容器</p>
 <pre><code>$ docker-compose up
 </code></pre><p>3） 查看运行的容器</p>
@@ -604,10 +605,10 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 <li>不要使用 root 用户跑容器进程（Don’t run processes as a root user ）</li>
 <li>不要依赖于IP地址，而是要从外面通过环境变量传入 （Don’t rely on IP addresses ）</li>
 </ul>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是按照构建流程练习了docker的一些常见基本指令，指令并不全面，详细的指令可以参考<a href="https://docs.docker.com/engine/reference/commandline/docker/#parent-command" target="_blank" rel="external">官网</a>进行练习。<br>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的数据存储。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章主要是按照构建流程练习了docker的一些常见基本指令，指令并不全面，详细的指令可以参考<a href="https://docs.docker.com/engine/reference/commandline/docker/#parent-command" target="_blank" rel="noopener">官网</a>进行练习。<br>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">下一篇</a>将讲述Docker的数据存储。</p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
-<li><a href="http://feisky.xyz/docker/index.html" target="_blank" rel="external">Docker笔记</a></li>
-<li><a href="https://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/" target="_blank" rel="external">10 things to avoid in docker containers</a></li>
+<li><a href="http://feisky.xyz/docker/index.html" target="_blank" rel="noopener">Docker笔记</a></li>
+<li><a href="https://developers.redhat.com/blog/2016/02/24/10-things-to-avoid-in-docker-containers/" target="_blank" rel="noopener">10 things to avoid in docker containers</a></li>
 </ul>
 
       
@@ -736,7 +737,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -747,7 +748,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -758,7 +759,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -820,7 +821,7 @@ $ docker run -d -p 8084:8084 --name catalogue registry:5000/catalogue
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -87,6 +87,7 @@
 <meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="行是知之始，知是行之成">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="若见喻笺">
 <meta name="twitter:description" content="行是知之始，知是行之成">
@@ -263,6 +264,484 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/17/Log-Java日志管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/17/Log-Java日志管理/" itemprop="url">Java日志管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T13:53:47+08:00">
+                2017-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/日志/" itemprop="url" rel="index">
+                    <span itemprop="name">日志</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。</p>
+<ul>
+<li>过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。</li>
+<li>问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。</li>
+<li>业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。</li>
+<li>数据恢复－－通过反向执行过程日志，可以将数据可以会滚到之前的状态。</li>
+<li>健康检查以及系统优化－－通过查看系统日志，确定程序运行的健康状况，调节系统参数，优化程序性能。</li>
+</ul>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>猛地发现自己一直错误地把Sl4j和java.util.logging、Logback、Log4j理解为同一层次的概念。<br>继而查了相关的资料，站在更高一层，理解一下Java的日志管理相关的框架————Log4j、JUL、JCL、Slf4j、Logback 、Log4j2。</p>
+<img src="/imgs/java-log-frameworks.png" width="500" height="350">
+<p>分为两个层次的概念：</p>
+<ul>
+<li>日志框架(Implement)：日志系统是日志的具体实现。如Log4j、java.util.Logging、Logback、Log4j2。</li>
+<li>日志门面（Facade）：为了解决多个日志系统的兼容问题，日志门面应运而生。如Commons logging和Slf4j。</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/17/Log-Java日志管理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/Docker-workshop-6-Docker安全/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/20/Docker-workshop-6-Docker安全/" itemprop="url">Docker Workshop（六）Docker安全</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T08:49:15+08:00">
+                2017-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">上一篇 Docker网络</a>主要讲述了网络模型、网络模式。<br>本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><strong>Docker安全</strong></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<h2 id="三、Docker访问主机系统"><a href="#三、Docker访问主机系统" class="headerlink" title="三、Docker访问主机系统"></a>三、Docker访问主机系统</h2><p>很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/20/Docker-workshop-6-Docker安全/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/17/Docker-workshop-5-Docker网络/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/17/Docker-workshop-5-Docker网络/" itemprop="url">Docker Workshop（五）Docker网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T16:50:23+08:00">
+                2017-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">上一篇 Docker的数据存储</a>主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。<br>本篇主要讲述网络的实现、网络模型、网络模式等相关知识。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><strong>Docker网络</strong></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<h2 id="三、网络的实现"><a href="#三、网络的实现" class="headerlink" title="三、网络的实现"></a>三、网络的实现</h2><p>　　Docker现有的网络模型主要是通过使用Network namespace、Linux Bridge、Iptables、veth pair等技术实现的。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/17/Docker-workshop-5-Docker网络/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/13/Docker-workshop-4-Docker数据存储/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -317,8 +796,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -355,15 +834,15 @@
 
       
         
-          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
+          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
 <li><strong>Docker数据存储</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -477,8 +956,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -515,15 +994,15 @@
 
       
         
-          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
+          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　<a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">上一篇 Docker简介</a>讲述了Docker相关的理论知识，了解了Docker的场景及优势，练习了内核的namespace以及cgroup。<br>　　本篇将开始实际动手操作，熟悉docker基本的指令。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
 <li><strong>Docker的基本操作</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -645,8 +1124,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -683,15 +1162,15 @@
 
       
         
-          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
+          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　容器技术已经出现了相当一段时间了，例如LXC, BSD Jails, Solaris Zones… 那为什么出现了Docker，中间缺失了什么呢？<br>　　<a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">上一篇</a>讲述了容器相关的知识，练习了LXC容器的相关指令，本篇接着讲述Docker的出现以及Docker相关的理论基础。</p>
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
 <li><strong>Docker简介</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -804,8 +1283,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -846,11 +1325,11 @@
 <h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
 <li><strong>容器简介</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -1032,8 +1511,8 @@ $ vagrant init yungsang/coreos
 </code></pre><p>然后注意取消注释<code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;</code></p>
 <h4 id="2-登陆到虚拟机"><a href="#2-登陆到虚拟机" class="headerlink" title="2.登陆到虚拟机"></a>2.登陆到虚拟机</h4><pre><code>vagrant ssh
 </code></pre><h4 id="3-外部访问rabbitmq的管理页面"><a href="#3-外部访问rabbitmq的管理页面" class="headerlink" title="3.外部访问rabbitmq的管理页面"></a>3.外部访问rabbitmq的管理页面</h4><p>URL：<code>http://192.168.33.10:15672/#/</code><br>用户名：<code>guest</code><br>密码：<code>guest</code></p>
-<h3 id="三、Spike"><a href="#三、Spike" class="headerlink" title="三、Spike"></a>三、Spike</h3><p>在编写本文时候，笔者顺便了解了一下Rabbit MQ的相关基础模式与用法，可以参见上一篇文章<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="external">RabbitMQ初探</a></p>
-<p>再回过头来看这个spike，发现其实本文要实现的就是<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="external">RabbitMQ初探</a>中的Topic Exchange模式。</p>
+<h3 id="三、Spike"><a href="#三、Spike" class="headerlink" title="三、Spike"></a>三、Spike</h3><p>在编写本文时候，笔者顺便了解了一下Rabbit MQ的相关基础模式与用法，可以参见上一篇文章<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="noopener">RabbitMQ初探</a></p>
+<p>再回过头来看这个spike，发现其实本文要实现的就是<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="noopener">RabbitMQ初探</a>中的Topic Exchange模式。</p>
 <p>其实说起来，就是JMS和AMQP的一个较大的区别：</p>
 <ul>
 <li>JMS有队列(Queues)和主题(Topics)两种形式，发送到JMS队列的消息最多只能被一个Client消费，发送到JMS主题的消息可能会被多个Clients消费；</li>
@@ -1183,22 +1662,22 @@ $ vagrant init yungsang/coreos
           
             <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>在准备<code>基于RabbitMQ topic的消息发送与接收</code>的时候，顺便开始了这篇RabbitMQ初探。<br>安装过程这里就不再赘述，本博客主要记录一些初探过程。</p>
 <h3 id="二、简介"><a href="#二、简介" class="headerlink" title="二、简介"></a>二、简介</h3><p>AMQP，即Advanced Message Queuing Protocol，高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计。消息中间件主要用于组件之间的解耦，消息的发送者无需知道消息使用者的存在，反之亦然。<br>AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。<br>RabbitMQ是一个开源的AMQP实现，服务器端用Erlang语言编写，支持多种客户端，如：Python、Ruby、.NET、Java、JMS、C、PHP、ActionScript、XMPP、STOMP等，支持AJAX。用于在分布式系统中存储转发消息，在易用性、扩展性、高可用性等方面表现不俗。</p>
-<h3 id="三、几种模式"><a href="#三、几种模式" class="headerlink" title="三、几种模式"></a>三、几种模式</h3><p>Rabbit MQ<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="external">官网教程</a>上，从六个方面给出了讲解和demo。但是这些demo都是从最基础的层面进行编写，所以我自己尝试时候用了spring boot的相关支持，简化了很多代码。同时在尝试之后，我大概将其分为三类：</p>
+<h3 id="三、几种模式"><a href="#三、几种模式" class="headerlink" title="三、几种模式"></a>三、几种模式</h3><p>Rabbit MQ<a href="https://www.rabbitmq.com/getstarted.html" target="_blank" rel="noopener">官网教程</a>上，从六个方面给出了讲解和demo。但是这些demo都是从最基础的层面进行编写，所以我自己尝试时候用了spring boot的相关支持，简化了很多代码。同时在尝试之后，我大概将其分为三类：</p>
 <ul>
 <li>Hello World(Queue)</li>
 <li>Publish/Subscribe(Exchange)</li>
 <li>RPC</li>
 </ul>
 <p>下面分别回顾一下上述三类情况：</p>
-<h4 id="1-Hello-World"><a href="#1-Hello-World" class="headerlink" title="1.Hello World"></a>1.Hello World</h4><p>我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-one-java.html" target="_blank" rel="external">Hello World</a>和<a href="https://www.rabbitmq.com/tutorials/tutorial-two-java.html" target="_blank" rel="external">Work Queues</a>归到这一类。结构如下：</p>
+<h4 id="1-Hello-World"><a href="#1-Hello-World" class="headerlink" title="1.Hello World"></a>1.Hello World</h4><p>我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-one-java.html" target="_blank" rel="noopener">Hello World</a>和<a href="https://www.rabbitmq.com/tutorials/tutorial-two-java.html" target="_blank" rel="noopener">Work Queues</a>归到这一类。结构如下：</p>
 <img src="/imgs/rabbitmq-hello-world.png" width="400" height="250">
 <p align="center">Hello World</p>
 
 <img src="/imgs/rabbitmq-work-queues.png" width="400" height="250">
 <p align="center">Work Queues</p>
 
-<p>它们都属于直接把消息发送给一个queue，然后consumers会与queue相连接。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的第一次、第二次提交。</p>
-<h4 id="2-Publish-Subscribe-Exchange"><a href="#2-Publish-Subscribe-Exchange" class="headerlink" title="2.Publish/Subscribe(Exchange)"></a>2.Publish/Subscribe(Exchange)</h4><p>这种模式使用了Exchange，可以把它理解为消息交换机，它指定消息按什么规则，路由到哪个队列。<br>因此我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-three-java.html" target="_blank" rel="external">Publish/Subscribe</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-four-java.html" target="_blank" rel="external">Routing</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-five-java.html" target="_blank" rel="external">Topics</a>放到这一类中。</p>
+<p>它们都属于直接把消息发送给一个queue，然后consumers会与queue相连接。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的第一次、第二次提交。</p>
+<h4 id="2-Publish-Subscribe-Exchange"><a href="#2-Publish-Subscribe-Exchange" class="headerlink" title="2.Publish/Subscribe(Exchange)"></a>2.Publish/Subscribe(Exchange)</h4><p>这种模式使用了Exchange，可以把它理解为消息交换机，它指定消息按什么规则，路由到哪个队列。<br>因此我把官网上的<a href="https://www.rabbitmq.com/tutorials/tutorial-three-java.html" target="_blank" rel="noopener">Publish/Subscribe</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-four-java.html" target="_blank" rel="noopener">Routing</a>、<a href="https://www.rabbitmq.com/tutorials/tutorial-five-java.html" target="_blank" rel="noopener">Topics</a>放到这一类中。</p>
 <img src="/imgs/rabbitmq-exchanges.png" width="400" height="250">
 <p>根据Exchange的类型，可以分为四类：</p>
 <ul>
@@ -1207,17 +1686,17 @@ $ vagrant init yungsang/coreos
 <li>Topic</li>
 <li>Headers</li>
 </ul>
-<h5 id="Fanout-Exchange"><a href="#Fanout-Exchange" class="headerlink" title="Fanout Exchange"></a>Fanout Exchange</h5><p>该类型路由规则非常简单，会把所有发送到该Exchange的消息路由到所有与它绑定的Queue中，相当于广播功能<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Fanout Exchange。</p>
-<h5 id="Direct-Exchange"><a href="#Direct-Exchange" class="headerlink" title="Direct Exchange"></a>Direct Exchange</h5><p>该类型路由规则，会把消息路由到那些binding key与routing key完全匹配的Queue中。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Direct Exchange。</p>
+<h5 id="Fanout-Exchange"><a href="#Fanout-Exchange" class="headerlink" title="Fanout Exchange"></a>Fanout Exchange</h5><p>该类型路由规则非常简单，会把所有发送到该Exchange的消息路由到所有与它绑定的Queue中，相当于广播功能<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Fanout Exchange。</p>
+<h5 id="Direct-Exchange"><a href="#Direct-Exchange" class="headerlink" title="Direct Exchange"></a>Direct Exchange</h5><p>该类型路由规则，会把消息路由到那些binding key与routing key完全匹配的Queue中。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Direct Exchange。</p>
 <h5 id="Topic-Exchange"><a href="#Topic-Exchange" class="headerlink" title="Topic Exchange"></a>Topic Exchange</h5><p>该类型路由规则与上述Direct Exchange规则类似，只是在binding key与routing key的匹配规则上进行了扩展，它约定：</p>
 <ul>
 <li>routing key为一个句点号“. ”分隔的字符串（我们将被句点号“. ”分隔开的每一段独立的字符串称为一个单词），如“routing.key.for.fist.queue”</li>
 <li>binding key与routing key一样也是句点号“. ”分隔的字符串</li>
 <li>binding key中可以存在两种特殊字符“*”与“#”，用于做模糊匹配，其中“”用于匹配一个单词，“#”用于匹配多个单词（可以是零个）。</li>
 </ul>
-<p>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Topic Exchange。</p>
-<h5 id="Headers-Exchange"><a href="#Headers-Exchange" class="headerlink" title="Headers Exchange"></a>Headers Exchange</h5><p>headers类型的Exchange不依赖于routing key与binding key的匹配规则来路由消息，而是根据发送的消息内容中的headers属性进行匹配。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="external">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Headers Exchange。</p>
-<h4 id="3-RPC"><a href="#3-RPC" class="headerlink" title="3.RPC"></a>3.RPC</h4><p>MQ本身是基于异步的消息处理，前面的示例中所有的生产者（P）将消息发送到RabbitMQ后不会知道消费者（C）处理成功或者失败（甚至连有没有消费者来处理这条消息都不知道）。<br>但实际的应用场景中，我们很可能需要一些同步处理，需要同步等待服务端将我的消息处理完成后再进行下一步处理。这相当于RPC（Remote Procedure Call，远程过程调用），可直接参考<a href="https://www.rabbitmq.com/tutorials/tutorial-six-java.html" target="_blank" rel="external">官方教程</a>。</p>
+<p>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Topic Exchange。</p>
+<h5 id="Headers-Exchange"><a href="#Headers-Exchange" class="headerlink" title="Headers Exchange"></a>Headers Exchange</h5><p>headers类型的Exchange不依赖于routing key与binding key的匹配规则来路由消息，而是根据发送的消息内容中的headers属性进行匹配。<br>相关代码可参考：<a href="https://github.com/zhangyuyu/learnrabbitmq/commits/master" target="_blank" rel="noopener">https://github.com/zhangyuyu/learnrabbitmq/commits/master</a> 的Rabbitmq Headers Exchange。</p>
+<h4 id="3-RPC"><a href="#3-RPC" class="headerlink" title="3.RPC"></a>3.RPC</h4><p>MQ本身是基于异步的消息处理，前面的示例中所有的生产者（P）将消息发送到RabbitMQ后不会知道消费者（C）处理成功或者失败（甚至连有没有消费者来处理这条消息都不知道）。<br>但实际的应用场景中，我们很可能需要一些同步处理，需要同步等待服务端将我的消息处理完成后再进行下一步处理。这相当于RPC（Remote Procedure Call，远程过程调用），可直接参考<a href="https://www.rabbitmq.com/tutorials/tutorial-six-java.html" target="_blank" rel="noopener">官方教程</a>。</p>
 <p>RabbitMQ中实现RPC的机制是：</p>
 <ul>
 <li>客户端发送请求（消息）时，在消息的属性（MessageProperties，在AMQP协议中定义了14中properties，这些属性会随着消息一起发送）中设置两个值replyTo（一个Queue名称，用于告诉服务器处理完成后将通知我的消息发送到这个Queue中）和correlationId（此次请求的标识号，服务器处理完成后需要将此属性返还，客户端将根据这个id了解哪条请求被成功执行了或执行失败）</li>
@@ -1390,11 +1869,11 @@ $ vagrant init yungsang/coreos
       
         
           
-            <p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="external">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
+            <p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="noopener">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
 <h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
 <p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
-<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight flix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">volume</span> </span>= &#123;h, w, l -&gt; h * w * l&#125;</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">area</span> </span>= volume.curry(<span class="number">1</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthPA</span> </span>= volume.curry(<span class="number">1</span>, <span class="number">1</span>)         <span class="comment">// &lt;1&gt;</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthC</span> </span>= volume.curry(<span class="number">1</span>).curry(<span class="number">1</span>)    <span class="comment">// &lt;2&gt;</span></div><div class="line"></div><div class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></div><div class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></div><div class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></div></pre></td></tr></table></figure></p>
-<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/currying.groovy" target="_blank" rel="external">github</a><br>柯里化常见的应用场景：函数工厂、模板方法模式、隐藏参数。</p>
+<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight flix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">volume</span> </span>= &#123;h, w, l -&gt; h * w * l&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">area</span> </span>= volume.curry(<span class="number">1</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthPA</span> </span>= volume.curry(<span class="number">1</span>, <span class="number">1</span>)         <span class="comment">// &lt;1&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthC</span> </span>= volume.curry(<span class="number">1</span>).curry(<span class="number">1</span>)    <span class="comment">// &lt;2&gt;</span></span><br><span class="line"></span><br><span class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></span><br><span class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></span><br><span class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></span><br></pre></td></tr></table></figure></p>
+<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/currying.groovy" target="_blank" rel="noopener">github</a><br>柯里化常见的应用场景：函数工厂、模板方法模式、隐藏参数。</p>
 <h3 id="二、缓存"><a href="#二、缓存" class="headerlink" title="二、缓存"></a>二、缓存</h3><p>缓存是很常见的一种需求（同时也是制造隐晦错误的源头）。缓存有两种实现方式：一种是手工进行状态管理，另一种是采用记忆机制。</p>
 <h4 id="手工进行状态管理"><a href="#手工进行状态管理" class="headerlink" title="手工进行状态管理"></a>手工进行状态管理</h4><p>在代码里面增加一个filed，每次计算之前之前先去检查是否存在于缓存中。但是当我们将缓存的取值范围增大时，可能报出OutOfMemoryError的错误。</p>
 <p>缓存可以提高性能，但是缓存有代价：它提高了代码的非本质复杂性和维护负担。同时，编写缓存的代码还要兼顾执行的环境（比如缓存范围）。<br>代码示例参考下文<a href="#完美数的手工缓存实现">完美数的手工缓存实现</a></p>
@@ -1410,646 +1889,15 @@ $ vagrant init yungsang/coreos
 <li>按缓求值的方式来使用映射、筛选等函数式概念，可以产生更高效的代码。</li>
 </ul>
 <p>例如：<code>print length([2+1, 3*2, 1/0, 5-4])</code><br>对于严格求值的编程语言，执行（甚至编译）时，会发生<code>被零除</code>的异常；<br>对于非严格（也叫缓求值）的里，则会得出<code>4</code>的结果。</p>
-<p>缓求值在Groovy中的应用：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def prepend(val, closure) &#123; new LazyList(val, closure) &#125;</div><div class="line">def integers(n) &#123; prepend(n, &#123; integers(n + <span class="number">1</span>) &#125;) &#125;</div><div class="line"></div><div class="line">@Test</div><div class="line">public void lazy_list_acts_like_a_list() &#123;</div><div class="line">    def naturalNumbers = integers(<span class="number">1</span>)</div><div class="line">    assertEquals('<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>', naturalNumbers.getHead(<span class="number">10</span>).join(' '))</div><div class="line">    def evenNumbers = naturalNumbers.filter &#123; it % <span class="number">2</span> == <span class="number">0</span> &#125;</div><div class="line">    assertEquals('<span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span> <span class="number">20</span>', evenNumbers.getHead(<span class="number">10</span>).join(' '))</div></pre></td></tr></table></figure></p>
+<p>缓求值在Groovy中的应用：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def prepend(val, closure) &#123; new LazyList(val, closure) &#125;</span><br><span class="line">def integers(n) &#123; prepend(n, &#123; integers(n + <span class="number">1</span>) &#125;) &#125;</span><br><span class="line"></span><br><span class="line">@Test</span><br><span class="line">public void lazy_list_acts_like_a_list() &#123;</span><br><span class="line">    def naturalNumbers = integers(<span class="number">1</span>)</span><br><span class="line">    assertEquals('<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>', naturalNumbers.getHead(<span class="number">10</span>).join(' '))</span><br><span class="line">    def evenNumbers = naturalNumbers.filter &#123; it % <span class="number">2</span> == <span class="number">0</span> &#125;</span><br><span class="line">    assertEquals('<span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span> <span class="number">20</span>', evenNumbers.getHead(<span class="number">10</span>).join(' '))</span><br></pre></td></tr></table></figure></p>
 <h3 id="四、函数式的数据结构"><a href="#四、函数式的数据结构" class="headerlink" title="四、函数式的数据结构"></a>四、函数式的数据结构</h3><p>函数式语言里经常遇到返回两种截然不同的值的需求，它们用来建模这种行为的常用数据结构是Either。<br>使用Either表示两种结果的返回值，使用Option来表示有为空返回值的类型。Option类可近似看作为Either的子类。</p>
-<p>用Java的泛型来自己实现Either类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Either</span>&lt;<span class="title">A</span>,<span class="title">B</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> A left = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">private</span> B right = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Either</span><span class="params">(A a,B b)</span> </span>&#123;</div><div class="line">        left = a;</div><div class="line">        right = b;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">left</span><span class="params">(A a)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(a,<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">left</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLeft</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> left != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRight</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right != <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> B <span class="title">right</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> right;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">right</span><span class="params">(B b)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(<span class="keyword">null</span>,b);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fold</span><span class="params">(F&lt;A&gt; leftOption, F&lt;B&gt; rightOption)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(right == <span class="keyword">null</span>)</div><div class="line">            leftOption.f(left);</div><div class="line">        <span class="keyword">else</span></div><div class="line">            rightOption.f(right);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="external">github</a><br>使用：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">if</span> (不满足)</div><div class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> <span class="type">Exception</span>(<span class="string">"Invalid Number"</span>));</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        int number = <span class="keyword">new</span> <span class="type">RomanNumeral</span>(s).toInt();</div><div class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> <span class="type">RomanNumeral</span>(number &gt;= MAX ? MAX : <span class="type">number</span>).toInt());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>用Java的泛型来自己实现Either类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Either</span>&lt;<span class="title">A</span>,<span class="title">B</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> A left = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> B right = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Either</span><span class="params">(A a,B b)</span> </span>&#123;</span><br><span class="line">        left = a;</span><br><span class="line">        right = b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">left</span><span class="params">(A a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(a,<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">left</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLeft</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> left != <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRight</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> right != <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> B <span class="title">right</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> right;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">right</span><span class="params">(B b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(<span class="keyword">null</span>,b);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fold</span><span class="params">(F&lt;A&gt; leftOption, F&lt;B&gt; rightOption)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(right == <span class="keyword">null</span>)</span><br><span class="line">            leftOption.f(left);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            rightOption.f(right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="noopener">github</a><br>使用：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="keyword">String</span> s) &#123;</span><br><span class="line">    <span class="keyword">if</span> (不满足)</span><br><span class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> <span class="type">Exception</span>(<span class="string">"Invalid Number"</span>));</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        int number = <span class="keyword">new</span> <span class="type">RomanNumeral</span>(s).toInt();</span><br><span class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> <span class="type">RomanNumeral</span>(number &gt;= MAX ? MAX : <span class="type">number</span>).toInt());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="五、完美数的示例"><a href="#五、完美数的示例" class="headerlink" title="五、完美数的示例"></a>五、完美数的示例</h3><p>案例：</p>
 <blockquote>
 <p>自然数分类规则：<br>完美数： 真约数之和 = 数本身<br>过剩数： 真约数之和 &gt; 数本身<br>不足数： 真约数之和 &lt; 数本身<br>真约数和：除了数本身之外，其余正约数的和。</p>
 </blockquote>
-<p>代码比较长，可以直接查看《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/" target="_blank" rel="external">github</a>总结如下：<br>1.完美数的命令式解法<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java</a><br>2.稍向函数式靠拢的完美数分类实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java</a><br>3.完美数分类的Java8实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java</a><br><span id="完美数的手工缓存实现">4.完美数的手工缓存实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy</a><br><span id="完美数的记忆实现">5.完美数的记忆实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy" target="_blank" rel="external">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/12/函数式编程初探1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/12/函数式编程初探1/" itemprop="url">函数式编程初探（一）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-12T17:35:13+08:00">
-                2016-11-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
-<h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
-<h3 id="三、背景"><a href="#三、背景" class="headerlink" title="三、背景"></a>三、背景</h3><p>函数式编程（Functional Programming）其实相对于计算机的历史而言是一个非常古老的概念，甚至早于第一台计算机的诞生。函数式编程的基础模型来源于 λ 演算，而 λ 演算并非设计于在计算机上执行，它是由 Alonzo Church 和 Stephen Cole Kleene 在 20 世纪三十年代引入的一套用于研究函数定义、函数应用和递归的形式系统。</p>
-<h3 id="四、为什么？"><a href="#四、为什么？" class="headerlink" title="四、为什么？"></a>四、为什么？</h3><p>在《函数式编程思维》这本书中，多处指出<code>函数式编程思维</code>的好处之一,是能够将低层次细节的控制权移交给运行时,从而消弭了一大批注定会发生的程序错误。这使得程序员得以在更高的抽象层次上工作，同时运行时也有了执行复杂优化的自由空间。</p>
-<p>在阮一峰的<a href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html" target="_blank" rel="external">《函数式编程初探》</a>一文中，<br>函数式编程的五大特点如下：</p>
-<ol>
-<li>函数是”第一等公民”</li>
-<li>只用”表达式”，不用”语句”</li>
-<li>没有”副作用”</li>
-<li>不修改状态</li>
-<li>引用透明<br>函数的运行不依赖于外部变量或”状态”，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。</li>
-</ol>
-<p>函数式编程的好处如下：</p>
-<ol>
-<li>代码简洁，开发快速</li>
-<li>接近自然语言，易于理解</li>
-<li>更方便的代码管理(每一个函数都可以被看做独立单元，很有利于进行单元测试以及模块化组合)</li>
-<li>易于”并发编程”</li>
-<li>代码的热升级（函数式编程没有副作用，只要保证接口不变，内部实现是外部无关的）</li>
-</ol>
-<h3 id="五、转变思维"><a href="#五、转变思维" class="headerlink" title="五、转变思维"></a>五、转变思维</h3><p>先大致说明一下函数式编程与命令式编程的区别吧！</p>
-<p>命令式编程：按照“程序是一系列改变状态的命令”来建模的一种编程风格。<br>函数式编程将程序描述为表达式和变换，以数学方程的形式建立模型，并且尽量避免可变的状态。</p>
-<p>《Working with Lagacy Code》的作者Michael Feathers的用以下一句话说明了函数式抽象和面向对象抽象的关键区别：</p>
-<blockquote>
-<p>面向对象编程通过封装不确定因素来使代码能被人理解；函数式编程通过尽量减少不确定因素来使代码能被人理解。——Michael Feathers</p>
-</blockquote>
-<p>在面向对象的命令式编程语言里面，重用的单元是类和类之间沟通用的消息。所以OOP的世界提倡开发人员针对具体问题<strong>建立专门的数据结构</strong>，相关的专门操作以“方法”的形式附加在数据结构上。<br>函数式编程语言重用的思路很不一样，它提倡在<strong>有限的几种关键数据结构</strong>（如list、set、map）上运用针对这些数据结构高度优化过的操作，以此构成基本运转结构。</p>
-<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>程序员往往都是讨厌看文档而偏爱看代码的，上述那么多文字，你不一定看的下去，还是首先来一个hello world吧。<br>对于计算表达式（1+2）* 3，</p>
-<p>传统的编程方式是：<br>int a = 1 + 2<br>int b = a * 3</p>
-<p>而对于函数式编程方式是：<br>int result = multiply(add(1,2), 3)<br>这里函数作为参数进行传递。</p>
-<h4 id="函数式编程的常见函数"><a href="#函数式编程的常见函数" class="headerlink" title="函数式编程的常见函数"></a>函数式编程的常见函数</h4><p>从一个例子说起，假设我们有一个名字列表，其中一些条目由单个字符构成。现在的任务是：</p>
-<ul>
-<li>除去单字符条目</li>
-<li>放在一个逗号分隔的字符串中进行返回</li>
-<li>每个名字的首字母都是大写<br>代码可参考《函数式编程思维》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/trans/TheCompanyProcess.java" target="_blank" rel="external">github</a><br>传统的java实现<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> cleanNames(List&lt;<span class="keyword">String</span>&gt; listOfNames) &#123;</div><div class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder();</div><div class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; listOfNames.<span class="built_in">size</span>(); i++) &#123;</div><div class="line">        <span class="keyword">if</span> (listOfNames.<span class="built_in">get</span>(i).length() &gt; <span class="number">1</span>) &#123;</div><div class="line">            result.<span class="built_in">append</span>(capitalizeString(listOfNames.<span class="built_in">get</span>(i))).<span class="built_in">append</span>(<span class="string">","</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>).toString();</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> capitalizeString(<span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + s.substring(<span class="number">1</span>, s.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>命令式编程鼓励程序员将操作安排在循环内部执行，本例中的三个操作filter、transform、convert都必须依赖于相同的低层次机制。</p>
-<p>Java8的实现：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="built_in">String</span> cleanNames(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names) &#123;</div><div class="line">    <span class="keyword">if</span> (names == <span class="built_in">null</span>) <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">    <span class="keyword">return</span> names</div><div class="line">            .stream()</div><div class="line">            .filter(name -&gt; name.length() &gt; <span class="number">1</span>)</div><div class="line">            .<span class="built_in">map</span>(name -&gt; capitalize(name))</div><div class="line">            .collect(Collectors.joining(<span class="string">","</span>));</div><div class="line">&#125;</div><div class="line"><span class="keyword">private</span> <span class="built_in">String</span> capitalize(<span class="built_in">String</span> e) &#123;</div><div class="line">    <span class="keyword">return</span> e.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + e.substring(<span class="number">1</span>, e.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>两者的对比，可以发现后者这种更高层次的抽象思考有一些好处：</p>
-<ul>
-<li>促使我们换一种角度去归类问题，看到问题的共性。</li>
-<li>让运行时有更大的余地去做只能的优化（有时候调整作业的先后顺序会更有效率）。</li>
-<li>让埋头实现细节的开发者看到原本视野之外的解决方案（比如，如果改用多线程，传统的方式可能需要自己手动穿插一些线程相关的代码）</li>
-</ul>
-<p>可以从上述例子中，看到三个函数filter、map、fold/reduce的影子。</p>
-<ol>
-<li><p>filter——筛选<br>根据用户定义的条件来筛选列表中的条目，并由此产生一个较小的新列表。</p>
-</li>
-<li><p>map——映射<br>对原集合的每一个元素执行给定的函数，从而变换成一个新的集合。</p>
-</li>
-<li><p>fold/reduce——折叠/化约<br>用一个累积量来“收集”集合元素。</p>
-</li>
-</ol>
-<p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
-<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/01/RxJava/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/01/RxJava/" itemprop="url">RxJava</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-01T22:19:46+08:00">
-                2016-11-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/RxJava/" itemprop="url" rel="index">
-                    <span itemprop="name">RxJava</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
-<h3 id="二、响应式编程"><a href="#二、响应式编程" class="headerlink" title="二、响应式编程"></a>二、响应式编程</h3><p>响应式编程是一种面向数据流和变化传播的编程范式，数据更新是相关联的。<br>在交互式编程中，A = B + C这样的表达式意味着将B与C之和赋给A，而此后B与C的改变都与A无关。<br>而在响应式编程中，A会去“响应”B或C的变化，即一旦B或C改变之后，A的值也会随之变化。</p>
-<h3 id="三、定义"><a href="#三、定义" class="headerlink" title="三、定义"></a>三、定义</h3><p>我的理解是，RxJava本质上是一个异步操作库，是一个能让你用极其简洁的逻辑去处理繁琐复杂任务的异步事件库。（其实初学者把握两点就好了：观察者模式和异步）</p>
-<h3 id="四、背景"><a href="#四、背景" class="headerlink" title="四、背景"></a>四、背景</h3><p>Rx的全称是Reactive Extensions。直译过来就是响应式扩展。<br>Rx基于观察者模式，是一种编程模型。其目标是提供一致的编程接口，帮助开发者更方便的处理异步数据流。<br>Rx最初是LINQ的一个扩展，由微软的架构师Erik Meijer领导的团队开发，在2012年11月开源。<br>Rx的大部分语言库由ReactiveX这个组织负责维护，比较流行的有RxJava/RxJS/Rx.NET，社区网站是 reactivex.io。<br>RxJava是 ReactiveX 在JVM上的一个实现。</p>
-<h3 id="五、为什么"><a href="#五、为什么" class="headerlink" title="五、为什么?"></a>五、为什么?</h3><ul>
-<li>函数式风格</li>
-<li>简化代码</li>
-<li>异步错误处理</li>
-<li>轻松使用并发</li>
-</ul>
-<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>说了很多，其实对RxJava是什么，其实还不是很明确，我们先来一个Hello world。</p>
-<pre><code>Observable
-    .create(new OnSubscribe&lt;String&gt;() {
-        @Override
-        public void call(Subscriber&lt;? super String&gt; subscriber) {
-            subscriber.onNext(&quot;Hello World&quot;);
-        }
-    })
-    .subscribe(new Subscriber&lt;String&gt;() {
-        @Override
-        public void onNext(String s) {
-            System.out.println(s);
-        }
-    });
-</code></pre><p>简化下来就是：</p>
-<pre><code>Observable.create(subscriber -&gt; {
-    subscriber.onNext(&quot;Hello World!&quot;);
-}).subscribe(System.out::println);
-</code></pre><p>执行的过程就是创建、监听、订阅。</p>
-<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
-<li>Observable：被观察者</li>
-<li>Observer: 观察者</li>
-<li>Subscriber：观察者，implements Observer。 </li>
-<li>OnSubscribe：一个接口类，是连接被观察者和观察者的桥梁，另外要说明的是onSubscribe是Observable的一个局部变量。</li>
-</ul>
-<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><h5 id="第1步：创建观察者Observer"><a href="#第1步：创建观察者Observer" class="headerlink" title="第1步：创建观察者Observer"></a>第1步：创建观察者Observer</h5><pre><code>Observer&lt;Object&gt; observer = new Observer&lt;Object&gt;() {
-
-    @Override
-    public void onCompleted() {
-
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
-    public void onNext(Object s) {
-
-    }
-};
-</code></pre><h5 id="第2步：创建被观察者Observable"><a href="#第2步：创建被观察者Observable" class="headerlink" title="第2步：创建被观察者Observable"></a>第2步：创建被观察者Observable</h5><p>Observable.create()方法可以创建一个Observable，<br>使用create()创建Observable需要一个OnSubscribe对象，这个对象继承Action1。<br>当观察者订阅我们的Observable时，它作为一个参数传入并执行call()函数。</p>
-<pre><code>Observable&lt;Object&gt; observable = Observable.create(new Observable.OnSubscribe&lt;Object&gt;() {         
-    @Override
-    public void call(Subscriber&lt;? super Object&gt; subscriber) {
-
-    }
-});
-</code></pre><p>除了create()，just()和from()同样可以创建Observable。看看下面两个例子：</p>
-<p>just(T…)将传入的参数依次发送</p>
-<pre><code>Observable observable = Observable.just(&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;);
-//上面这行代码会依次调用
-//onNext(&quot;One&quot;);
-//onNext(&quot;Two&quot;);
-//onNext(&quot;Three&quot;);
-//onCompleted();
-</code></pre><p>from(T[])/from(Iterable&lt;? extends T&gt;)将传入的数组或者Iterable拆分成Java对象依次发送</p>
-<pre><code>String[] parameters = {&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;};
-Observable observable = Observable.from(parameters);
-//上面这行代码会依次调用
-//onNext(&quot;One&quot;);
-//onNext(&quot;Two&quot;);
-//onNext(&quot;Three&quot;);
-//onCompleted();
-</code></pre><h5 id="第3步：被观察者Observable订阅观察者Observer"><a href="#第3步：被观察者Observable订阅观察者Observer" class="headerlink" title="第3步：被观察者Observable订阅观察者Observer"></a>第3步：被观察者Observable订阅观察者Observer</h5><p>你没看错，不同于普通的观察者模式，这里是被观察者订阅观察者：</p>
-<pre><code>observable.subscribe(observer);
-</code></pre><p>连起来就是：</p>
-<pre><code>Observable.create(new OnSubscribe&lt;String&gt;() {
-        @Override
-        public void call(Subscriber&lt;? super String&gt; subscriber) {
-            subscriber.onNext(&quot;Hello World!&quot;);
-            subscriber.onCompleted();
-        }
-
-    }).subscribe(new Subscriber&lt;String&gt;() {
-
-        @Override
-        public void onCompleted() {
-            System.out.println(&quot;Done&quot;);
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            e.printStackTrace();
-        }
-
-        @Override
-        public void onNext(String t) {
-            System.out.println(t);
-        }
-
-    });
-</code></pre><p>这里表面是被观察者订阅观察者，是为了更好的链式结构。<br>实际上，过程如下：</p>
-<ul>
-<li>创建一个被观察者，并传入一个OnSubcribe。</li>
-<li>创建一个观察者Subscriber。</li>
-<li>一旦发生subscribe时，会自动触发上述的OnSubcribe的call方法。</li>
-<li>而OnSubcribe的call方法中的参数subscriber就是第二步中的被观察者Subscriber。</li>
-<li>然后就调用上述代码中的<code>subscriber.onNext(&quot;Hello World!&quot;);</code></li>
-<li>也就是真实上述代码中<code>Override</code>的<code>onNext()</code>方法了。<br>所以本质上来讲，还是被观察者执行订阅操作的。</li>
-</ul>
-<h3 id="七、操作符"><a href="#七、操作符" class="headerlink" title="七、操作符"></a>七、操作符</h3><p>有了对上一步调用的理解，再去看源代码中操作符的实质，就很简单了。</p>
-<p>RxJava的操作符分为如下几类：</p>
-<ul>
-<li>转换类操作符<br>map、flatMap、concatMap等等</li>
-<li>过滤类操作符<br>filter、find等等</li>
-<li>组合类操作符<br>concat、merge、zip等等</li>
-<li>数学类操作符<br>count、max等等</li>
-<li>布尔类操作符<br>includes、some等等</li>
-</ul>
-<p>对于这些操作符的调用分析，读者可以自己查看源代码。<br>对于操作符的用法，可以参考<a href="https://github.com/zhangyuyu/learnrxjava" target="_blank" rel="external">Github TDD 练习</a>。<br>对于操作符形象化的理解，可以参考一个交互式的动画网站<a href="http://rxmarbles.com/" target="_blank" rel="external">http://rxmarbles.com/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/27/微服务-consul架构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/04/27/微服务-consul架构/" itemprop="url">Consul架构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-27T19:10:52+08:00">
-                2016-04-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MicroServices/" itemprop="url" rel="index">
-                    <span itemprop="name">MicroServices</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
-<li><a href="#agent">Agent</a></li>
-<li><a href="#client">Client</a></li>
-<li><a href="#server">Server</a></li>
-<li><a href="#datacenter">DataCenter</a></li>
-<li><a href="#gossip">Gossip</a></li>
-<li><a href="#consensus">Consensus</a></li>
-<li><a href="#rpc">RPC</a></li>
-</ul>
-<h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
-<h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
-<h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
-<h4 id="DataCenter"><a href="#DataCenter" class="headerlink" title="DataCenter"></a><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
-<h4 id="Gossip"><a href="#Gossip" class="headerlink" title="Gossip"></a><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
-<h4 id="Consensus"><a href="#Consensus" class="headerlink" title="Consensus"></a><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="external">Raft Protocol</a></p>
-<h4 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="external">Remote Procedure Call</a></p>
-<p>　　下图为Consul的架构图：<br><img src="/imgs/consul-arch.jpg" width="400" height="250"></p>
-<h3 id="使用Consul发现服务的三个组件"><a href="#使用Consul发现服务的三个组件" class="headerlink" title="使用Consul发现服务的三个组件"></a>使用Consul发现服务的三个组件</h3><ol>
-<li><p>Consul 存储服务信息<br>　　tool to store information about services</p>
-</li>
-<li><p>Registrator 注册Docker服务<br>　　tool to register Docker servicecs</p>
-</li>
-<li><p>Consul-template 查询注册的服务并应用配置<br>　　tool to query registered services and apply configuration</p>
-</li>
-</ol>
-<p>　　下图为Consul和ECS之间一起运作的架构：<br><img src="/imgs/consul-EC2.png" width="400" height="250"></p>
-<blockquote>
-<p>Consul官网对于Consul架构的解释:<br><br><a href="https://www.consul.io/docs/internals/architecture.html" target="_blank" rel="external">CONSUL ARCHITECTURE</a><br></p>
-<p>Amazon官网上的博客:<br><br><a href="https://aws.amazon.com/blogs/compute/service-discovery-via-consul-with-amazon-ecs/" target="_blank" rel="external">Service Discovery via Consul with Amazon ECS</a><br><br>翻译的中文版地址:<br><br><a href="http://yaowenjie.github.io/cloud/service-discovery-via-consul-with-amazon-ecs" target="_blank" rel="external">在ECS上使用Consul实现服务发现</a></p>
-</blockquote>
+<p>代码比较长，可以直接查看《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/" target="_blank" rel="noopener">github</a>总结如下：<br>1.完美数的命令式解法<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java</a><br>2.稍向函数式靠拢的完美数分类实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java</a><br>3.完美数分类的Java8实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java</a><br><span id="完美数的手工缓存实现">4.完美数的手工缓存实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy</a><br><span id="完美数的记忆实现">5.完美数的记忆实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy</a></p>
 
           
         
@@ -2089,7 +1937,7 @@ Observable observable = Observable.from(parameters);
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2135,7 +1983,7 @@ Observable observable = Observable.from(parameters);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2146,7 +1994,7 @@ Observable observable = Observable.from(parameters);
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2157,7 +2005,7 @@ Observable observable = Observable.from(parameters);
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2203,7 +2051,7 @@ Observable observable = Observable.from(parameters);
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

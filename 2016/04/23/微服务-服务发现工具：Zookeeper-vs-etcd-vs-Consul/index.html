@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="为了能够定位服务，我们需要至少接下来的两个有用的步骤。  服务注册——该步骤存储的信息至少包括正在运行的服务的主机和端口信息 服务发现——该步骤允许其他用户可以发现在服务注册阶段存储的信息。  　　除了上述的步骤，我们还需要考虑其他方面。如果一个服务停止工作并部署/注册了一个新的服务实例，那么该服务是否应该注销呢？当有相同服务的多个副本时咋办？我们该如何做负载均衡呢？如果一个服务器宕机了咋办？">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/etcd.png">
 <meta property="og:image" content="http://yoursite.com/imgs/etcd-registrator.png">
 <meta property="og:image" content="http://yoursite.com/imgs/etcd-confud.png">
@@ -385,8 +386,8 @@
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>　　所有这些工具都是基于相似的原则和架构，它们在节点上运行，需要仲裁来运行，并且都是强一致性的，都提供某种形式的键/值对存储。<br>　　ZooKeeper是其中最老态龙钟的一个，使用年限显示出了其复杂性、资源利用和尽力达成的目标，它是为了与我们评估的其他工具所处的不同时代而设计的（即使它不是老得太多）。<br>　　etcd、Registrator和Confd是一个非常简单但非常强大的组合，可以解决大部分问题，如果不是全部满足服务发现需要的话。它还展示了我们可以通过组合非常简单和特定的工具来获得强大的服务发现能力，它们中的每一个都执行一个非常具体的任务，通过精心设计的API进行通讯，具备相对自治工作的能力，从架构和功能途径方面都是微服务方式。<br>　　Consul的不同之处在于无需第三方工具就可以原生支持多数据中心和健康检查，这并不意味着使用第三方工具不好。实际上，在这篇博客里我们通过选择那些表现更佳同时不会引入不必要的功能的的工具，尽力组合不同的工具。使用正确的工具可以获得最好的结果。如果工具引入了工作不需要的特性，那么工作效率反而会下降，另一方面，如果工具没有提供工作所需要的特性也是没有用的。Consul很好地权衡了权重，用尽量少的东西很好的达成了目标。<br>　　Consul使用gossip来传播集群信息的方式，使其比etcd更易于搭建，特别是对于大的数据中心。将存储数据作为服务的能力使其比etcd仅仅只有健/值对存储的特性更加完整、更有用（即使Consul也有该选项）。虽然我们可以在etcd中通过插入多个键来达成相同的目标，Consul的服务实现了一个更紧凑的结果，通常只需要一次查询就可以获得与服务相关的所有数据。除此之外，Registrator很好地实现了Consul的两个协议，使其合二为一，特别是添加Consul-template到了拼图中。Consul的Web UI更是锦上添花般地提供了服务和健康检查的可视化途径。<br>　　我不能说Consul是一个明确的赢家，而是与etcd相比其有一个轻微的优势。服务发现作为一个概念，以及作为工具都很新，我们可以期待在这一领域会有许多的变化。秉承开放的心态，大家可以对本文的建议持保留态度，尝试不同的工具然后做出自己的结论。
 　　</p>
 <blockquote>
-<p>完整中文版地址:<a href="http://dockone.io/article/667" target="_blank" rel="external">服务发现：ZooKeeper vs etcd vs Consul</a></p>
-<p>完整原文链接：<a href="https://technologyconversations.com/2015/09/08/service-discovery-ZooKeeper-vs-etcd-vs-consul/" target="_blank" rel="external">Service Discovery: ZooKeeper vs etcd vs Consul</a></p>
+<p>完整中文版地址:<a href="http://dockone.io/article/667" target="_blank" rel="noopener">服务发现：ZooKeeper vs etcd vs Consul</a></p>
+<p>完整原文链接：<a href="https://technologyconversations.com/2015/09/08/service-discovery-ZooKeeper-vs-etcd-vs-consul/" target="_blank" rel="noopener">Service Discovery: ZooKeeper vs etcd vs Consul</a></p>
 </blockquote>
 
       
@@ -515,7 +516,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -526,7 +527,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -537,7 +538,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -599,7 +600,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

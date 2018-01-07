@@ -88,9 +88,10 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/17/Docker-workshop-5-Docker网络/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　上一篇 Docker的数据存储主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。本篇主要讲述网络的实现、网络模型、网络模式等相关知识。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  三、网">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-network-implement.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-network-concept.png">
-<meta property="og:updated_time" content="2017-12-27T07:13:02.000Z">
+<meta property="og:updated_time" content="2018-01-07T08:56:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（五）Docker网络">
 <meta name="twitter:description" content="一、前言　　上一篇 Docker的数据存储主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。本篇主要讲述网络的实现、网络模型、网络模式等相关知识。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  三、网">
@@ -319,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -356,15 +357,15 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">上一篇 Docker的数据存储</a>主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。<br>本篇主要讲述网络的实现、网络模型、网络模式等相关知识。</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">上一篇 Docker的数据存储</a>主要讲述Docker数据管理的两种方式：数据卷和数据卷容器。<br>本篇主要讲述网络的实现、网络模型、网络模式等相关知识。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
 <li><strong>Docker网络</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -632,7 +633,7 @@ PING app_container.web (172.18.0.3): 56 data bytes
 <pre><code>$ midir docker-cluster
 $ cd docker-cluster
 $ vim Vagrantfile
-</code></pre><figure class="highlight coq"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Vagrant.configure(<span class="number">2</span>) <span class="built_in">do</span> |<span class="type">config</span>|</div><div class="line">  <span class="type">(1</span>.<span class="number">.2</span>).each <span class="built_in">do</span> |<span class="type">i</span>|</div><div class="line">    <span class="type">config</span>.vm.define <span class="string">"wanzi-node#&#123;i&#125;"</span> <span class="built_in">do</span> |<span class="type">node</span>|</div><div class="line">      <span class="type">node</span>.vm.box = <span class="string">"comiq/dockerbox"</span></div><div class="line">      node.vm.provider <span class="string">"virtualbox"</span> <span class="built_in">do</span> |<span class="type">vb</span>|</div><div class="line">        <span class="type">vb</span>.name = <span class="string">"wanzi-node#&#123;i&#125;"</span></div><div class="line">      <span class="keyword">end</span></div><div class="line">    <span class="keyword">end</span></div><div class="line">  <span class="keyword">end</span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+</code></pre><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Vagrant.configure(<span class="number">2</span>) <span class="built_in">do</span> |<span class="type">config</span>|<span class="type"></span></span><br><span class="line"><span class="type">  (1</span>.<span class="number">.2</span>).each <span class="built_in">do</span> |<span class="type">i</span>|<span class="type"></span></span><br><span class="line"><span class="type">    config</span>.vm.define <span class="string">"wanzi-node#&#123;i&#125;"</span> <span class="built_in">do</span> |<span class="type">node</span>|<span class="type"></span></span><br><span class="line"><span class="type">      node</span>.vm.box = <span class="string">"comiq/dockerbox"</span></span><br><span class="line">      node.vm.provider <span class="string">"virtualbox"</span> <span class="built_in">do</span> |<span class="type">vb</span>|<span class="type"></span></span><br><span class="line"><span class="type">        vb</span>.name = <span class="string">"wanzi-node#&#123;i&#125;"</span></span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <pre><code>$ vagrant up
 Bringing machine &apos;wanzi-node1&apos; up with &apos;virtualbox&apos; provider...
 Bringing machine &apos;wanzi-node2&apos; up with &apos;virtualbox&apos; provider...
@@ -745,13 +746,13 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
 
  vagrant@vagrant:~$ docker exec hello.1.66zkihz10oaoxv1i94niud0cy apt-get update; apt-get install iputils-ping -y; ping 10.0.0.4
 </code></pre><h4 id="2-2-插件"><a href="#2-2-插件" class="headerlink" title="2-2.插件"></a>2-2.插件</h4><p>该方式是通过插件（plugin）方式引入的第三方实现方案，比如 Weave, Calico, Contiv Netplugin, Cisco, VMware, MidoNet, pipework, flannel等等。</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要是讲述Docker网络相关的内容，包括Docker的网络实现、网络创建过程、网络模型组件与优势、网络模式（单节点、多节点）等。<br><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">下一篇</a>将讲述Docker的安全。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要是讲述Docker网络相关的内容，包括Docker的网络实现、网络创建过程、网络模型组件与优势、网络模式（单节点、多节点）等。<br><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">下一篇</a>将讲述Docker的安全。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a href="http://dockone.io/article/1261" target="_blank" rel="external">Docker网络模式</a></li>
-<li><a href="http://www.cnblogs.com/sammyliu/p/5894191.html" target="_blank" rel="external">理解Docker网络</a></li>
-<li><a href="https://yeasy.gitbooks.io/docker_practice/content/advanced_network/&lt;ptp class=&quot;html&quot;&gt;&lt;/ptp" target="_blank" rel="external">Docker从入门到实践-高级网络配置</a></li>
-<li><a href="http://dockone.io/article/1736" target="_blank" rel="external">使用Docker Swarm来运行服务</a></li>
-<li><a href="http://kiwenlau.com/2016/07/03/vagrant-vm-cluster/" target="_blank" rel="external">使用Vagrant创建多节点虚拟机集群</a></li>
+<li><a href="http://dockone.io/article/1261" target="_blank" rel="noopener">Docker网络模式</a></li>
+<li><a href="http://www.cnblogs.com/sammyliu/p/5894191.html" target="_blank" rel="noopener">理解Docker网络</a></li>
+<li><a href="https://yeasy.gitbooks.io/docker_practice/content/advanced_network/&lt;ptp class=&quot;html&quot;&gt;&lt;/ptp" target="_blank" rel="noopener">Docker从入门到实践-高级网络配置</a></li>
+<li><a href="http://dockone.io/article/1736" target="_blank" rel="noopener">使用Docker Swarm来运行服务</a></li>
+<li><a href="http://kiwenlau.com/2016/07/03/vagrant-vm-cluster/" target="_blank" rel="noopener">使用Vagrant创建多节点虚拟机集群</a></li>
 </ul>
 
       
@@ -880,7 +881,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -891,7 +892,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -902,7 +903,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -964,7 +965,7 @@ e506461b95f3        ubuntu:latest       &quot;sleep infinity&quot;    48 seconds
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

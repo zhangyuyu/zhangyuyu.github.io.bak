@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/09/20/手动创建Servlet/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="1、创建servlet　　（笔者的tomcat安装在/usr/local/Cellar/tomcat/8.0.26/）　　在tomcat下的webapps下创建一个名为test的文件夹，然后在test里创建一个名为WEB-INF的文件（文件名严格遵守），在WEB-INF中再创建一个classes文件夹、一个lib文件夹、一个web.xml文件，然后在classes文件夹下创建一个Java文件Ser">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2015-10-21T14:32:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet">
@@ -408,7 +409,7 @@ public class ServletExample implements Servlet {
 <h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><p>　　到tomcat的bin目录下，运行startup.sh文件。(保险起见，可以在运行startup.sh之前，先运行shutdown.sh)</p>
 <pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/test，结果为显示`Hello" target="_blank" rel="external">http://localhost:8080/test/test，结果为显示`Hello</a> World`　</p>
+</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/test，结果为显示`Hello" target="_blank" rel="noopener">http://localhost:8080/test/test，结果为显示`Hello</a> World`　</p>
 <h3 id="6、目录结构"><a href="#6、目录结构" class="headerlink" title="6、目录结构"></a>6、目录结构</h3><pre><code>|---test
     |---WEB-INF
         |---classes
@@ -548,7 +549,7 @@ $ ./startup.sh
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -559,7 +560,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -570,7 +571,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -632,7 +633,7 @@ $ ./startup.sh
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/11/21/Anguar跨域请求/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="本节用Yeoman和AngularJS搭建一个功能完整的应用CustomerUI，向后端CustomerApi发送跨域请求。　　跨域资源共享（Cross-Origin Resource Sharing）是一种允许当前域（domain）的资源（比如html/js/web service）被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security poli">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/CustomerUI.png">
 <meta property="og:image" content="http://yoursite.com/imgs/GetByName.png">
 <meta property="og:image" content="http://yoursite.com/imgs/Authentication.png">
@@ -502,11 +503,11 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
   });
 });
 </code></pre><h3 id="六、运行及结果"><a href="#六、运行及结果" class="headerlink" title="六、运行及结果"></a>六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口"><a href="#1、本地启动CustomerApi运行在8080端口" class="headerlink" title="1、本地启动CustomerApi运行在8080端口"></a>1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt-serve启动CustomerUI"><a href="#2、grunt-serve启动CustomerUI" class="headerlink" title="2、grunt serve启动CustomerUI"></a>2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求"><a href="#3、在terminal中输入下述命令，使其允许跨域请求" class="headerlink" title="3、在terminal中输入下述命令，使其允许跨域请求"></a>3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code>open /Applications/Google\ Chrome.app --args --allow-file-access-from-files --disable-web-security
-</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="noopener">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
 <h4 id="5、点击GetByName"><a href="#5、点击GetByName" class="headerlink" title="5、点击GetByName"></a>5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
 　　</p>
 <blockquote>
-<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="noopener">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="noopener">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="noopener">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
 </blockquote>
 
       
@@ -635,7 +636,7 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -646,7 +647,7 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -657,7 +658,7 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -719,7 +720,7 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

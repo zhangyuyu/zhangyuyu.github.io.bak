@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/10/25/servlet-life/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、整体工作流程 1、Client对Web Server发出请求2、Web Server接收到请求后，将其发送给Servlet容器3、Servlet容器产生Servlet实例对象并调用ServletAPI中相应的方法来对Client的请求进行处理，然后将处理的相应结果返回给WEB Server。4、Web server将从Servlet实例中收到响应并发送回客户端。   二、阶段流程　　为了细化上">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/client-server.png">
 <meta property="og:image" content="http://yoursite.com/imgs/servlet-container.png">
 <meta property="og:image" content="http://yoursite.com/imgs/servletLife.png">
@@ -387,7 +388,7 @@
 </blockquote>
 <h3 id="四、Listener"><a href="#四、Listener" class="headerlink" title="四、Listener"></a>四、Listener</h3><p>　　Listener是Servlet的监听器，它可以监听客户端的请求、服务端的操作等。如监听context、session、application的create,destroy,可以监听到context、session、application<br>属性绑定的变化。通过监听器，可以自动激发一些操作，比如监听在线的用户的数量。<br>　　以实现ServletContextListener接口监听context的create和destroy为例：<br>　　contextInitialized()是在上述deploy阶段Filter的init()之前执行的。<br>　　contextDestroyed()是在Servlet的destroy()及Filter的destroy()之后执行的。
 　　</p>
-<h3 id="五、执行顺序"><a href="#五、执行顺序" class="headerlink" title="五、执行顺序"></a>五、执行顺序</h3><p>　　在<a href="https://github.com/zhangyuyu/ServletLife" target="_blank" rel="external">ServletLife</a>的工程下，执行命令<code>gradle tomcatRunWar</code>。根据下面控制台打印信息，可以看出listen-&gt;filter-&gt;servlet的顺序：</p>
+<h3 id="五、执行顺序"><a href="#五、执行顺序" class="headerlink" title="五、执行顺序"></a>五、执行顺序</h3><p>　　在<a href="https://github.com/zhangyuyu/ServletLife" target="_blank" rel="noopener">ServletLife</a>的工程下，执行命令<code>gradle tomcatRunWar</code>。根据下面控制台打印信息，可以看出listen-&gt;filter-&gt;servlet的顺序：</p>
 <pre><code>*************Context created on*************
 ***********This is the filter init***********
 Started Tomcat Server
@@ -529,7 +530,7 @@ The Server is running at http://localhost:8080/ServletLife
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -540,7 +541,7 @@ The Server is running at http://localhost:8080/ServletLife
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -551,7 +552,7 @@ The Server is running at http://localhost:8080/ServletLife
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -613,7 +614,7 @@ The Server is running at http://localhost:8080/ServletLife
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

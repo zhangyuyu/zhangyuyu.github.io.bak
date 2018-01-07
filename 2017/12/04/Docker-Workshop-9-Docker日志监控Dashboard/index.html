@@ -88,9 +88,10 @@
 <meta property="og:url" content="http://yoursite.com/2017/12/04/Docker-Workshop-9-Docker日志监控Dashboard/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　《Docker in Production》 workshop于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。 二、背景　　该系列《Do">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-log-driver.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-log-elk.png">
-<meta property="og:updated_time" content="2017-12-28T10:07:08.000Z">
+<meta property="og:updated_time" content="2018-01-07T08:57:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（九）Docker日志、监控、Dashboard">
 <meta name="twitter:description" content="一、前言　　《Docker in Production》 workshop于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。 二、背景　　该系列《Do">
@@ -319,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -356,15 +357,15 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="https://www.bagevent.com/event/828605" target="_blank" rel="external">《Docker in Production》 workshop</a>于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。<br>直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="https://www.bagevent.com/event/828605" target="_blank" rel="noopener">《Docker in Production》 workshop</a>于2017年9月23在ThoughtWorks武汉举办，之后，有懒癌的笔者就“忘记“去接着更新这一系列了。<br>直到上次上线（OTR Diaochan Release）出现了一些问题，在寻找问题过程中，docker的日志、监控、Dashboard这一主题发挥了很重要的作用，才想起来该好好整理下这一篇文章。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li><strong>日志、监控、Dashboard</strong></li>
@@ -379,7 +380,9 @@
 <li><p>3.日志本身它的价值不光在于排查一些系统问题上面，可能在一些数据的分析上，可能利用日志来做一些用户的决策，这也是它的价值，如果不能把它利用起来，价值就不能充分的发挥出来。</p>
 </li>
 </ul>
-<h3 id="2-docker日志处理"><a href="#2-docker日志处理" class="headerlink" title="2. docker日志处理"></a>2. docker日志处理</h3><p>与Docker相关的日志主要有两部分：</p>
+<h3 id="2-docker日志处理"><a href="#2-docker日志处理" class="headerlink" title="2. docker日志处理"></a>2. docker日志处理</h3><blockquote class="blockquote-center"><p>Docker daemon与Docker container的联系：<br>　　一个docker的container就是一个特殊的进程，它是由docker daemon创建并启动。<br>因此container是docker daemon的子进程，由docker daemon守护和管理。</p>
+</blockquote>
+<p>与Docker相关的日志主要有两部分：</p>
 <ul>
 <li><p>Docker Daemon日志，即Docker自身运行产生的日志。</p>
 </li>
@@ -390,8 +393,6 @@
 </ul>
 </li>
 </ul>
-<blockquote class="blockquote-center"><p>　　一个docker的container就是一个特殊的进程，它是由docker daemon创建并启动。<br>因此container是docker daemon的子进程，由docker daemon守护和管理。</p>
-</blockquote>
 <img src="/imgs/docker-log-driver.png" width="400" height="250">
 <p>　　标准输出日志，其原理在于，当在启动进程的时候，进程之间有一个父子关系，父进程可以拿到子进程的标准输出。拿到子进程标准输出的后，父进程可以对标准输出做所有希望的处理。</p>
 <p>　　日志文件记录，在Docker 1.6以前，Docker仅仅是从容器中采集stdout和stderr，然后用JSON进行简单的封装并存储到磁盘。Docker 1.6以后，引入了日志驱动(Log Drivers) 。<br>LogDriver就是Docker用来处理容器标准输出的一个模块，Docker支持很多种不同的处理方式，如下表所示：</p>
@@ -449,6 +450,7 @@
 </tr>
 </tbody>
 </table>
+<p><a href="https://docs.docker.com/engine/reference/commandline/logs/#parent-command" target="_blank" rel="noopener">目前</a>，只有json-file和journald可以通过<code>docker logs</code>和<code>docker-compose logs</code>显示日志，其他方式有其他日志查看方式。</p>
 <h3 id="3-集中式日志聚合"><a href="#3-集中式日志聚合" class="headerlink" title="3. 集中式日志聚合"></a>3. 集中式日志聚合</h3><p>　　当系统中的节点增加到多个节点，管理和访问日志会变得复杂。如果没有合适的工具，要从上百个节点上的上百个日志文件中搜索出错误日志会变得很困难。常见解决思路是建立集中式日志收集系统(Centralized Logging)，将所有节点上的日志统一收集，管理，访问。</p>
 <p>集中式日志聚合有两种思路：</p>
 <ul>
@@ -461,7 +463,7 @@
 <li>2.在做镜像的时候，需要把容器里面日志采集程序做到镜像里面去，对你的镜像其实是有入侵的，为了日志采集，不得不把自己的日志程序再做个新镜像，然后把东西放进去，所以对你的镜像过程是有入侵性的。</li>
 <li>3.当一个容器里面好多个进程的时候，对于容器的资源管理，会干扰你对容器的资源使用的判断，包括对于在做资源分配和监控的时候，都会有一些这样的干扰。</li>
 </ul>
-<p>　　目前最流行的日志聚合解决方案是ELK（Logstash、Elasticsearch、Kibana）：<br><img src="/imgs/docker-log-elk.png" width="400" height="250"></p>
+<p>目前最流行的日志聚合解决方案是ELK（Logstash、Elasticsearch、Kibana）：<br><img src="/imgs/docker-log-elk.png" width="800" height="400"></p>
 <ul>
 <li>Shipper - logstash forward是一个Shipper，用来放到各个主机中收集指定位置的日志，将收集到日志发送到 Logstash。</li>
 <li>Logstash - Logstash用来收集、过滤、转发日志。</li>
@@ -476,11 +478,123 @@
 <li>使用json、csv等日志格式，方便工具解析；</li>
 <li>尽量不要使用多行日志(Java Exception Stack)。</li>
 </ol>
-<h2 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h2><h3 id="1-why？"><a href="#1-why？" class="headerlink" title="1. why？"></a>1. why？</h3><h3 id="2-监控什么？"><a href="#2-监控什么？" class="headerlink" title="2. 监控什么？"></a>2. 监控什么？</h3><h2 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h2><h3 id="1-why-可视化？"><a href="#1-why-可视化？" class="headerlink" title="1. why 可视化？"></a>1. why 可视化？</h3><h3 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h3><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a href="https://yq.aliyun.com/articles/72700" target="_blank" rel="external">Docker日志收集最佳实践</a></li>
-<li><a href="http://dockone.io/article/2644" target="_blank" rel="external">Docker日志的5个最佳实践</a></li>
-<li><a href="http://dockone.io/article/2252" target="_blank" rel="external">使用ELK处理Docker日志(一)</a></li>
-<li><a href="http://blog.cloud66.com/9-crtitical-decisions-needed-to-run-docker-in-production/" target="_blank" rel="external">9 Critical Decisions for Running Docker in Production</a></li>
+<h2 id="四、监控"><a href="#四、监控" class="headerlink" title="四、监控"></a>四、监控</h2><h3 id="1-为什么进行日志监控？"><a href="#1-为什么进行日志监控？" class="headerlink" title="1. 为什么进行日志监控？"></a>1. 为什么进行日志监控？</h3><ul>
+<li>提前地，可以在用户致电报错之前，了解问题。</li>
+<li>问题上，可以获得相关信息，并进行分析解决。</li>
+<li>潜在地，可以在潜在问题造成影响之前，发现可疑活动。</li>
+<li>技术上，可以建立一个周期性的性能基线，获取各项指标。</li>
+<li>业务上，可以利用日志文件的数据进行战略和战术决策。</li>
+</ul>
+<h3 id="2-监控对象与指标"><a href="#2-监控对象与指标" class="headerlink" title="2. 监控对象与指标"></a>2. 监控对象与指标</h3><ul>
+<li><p>硬件监控</p>
+<ul>
+<li>CPU温度</li>
+<li>物理磁盘</li>
+<li>虚拟磁盘</li>
+<li>主板温度</li>
+<li>磁盘阵列</li>
+</ul>
+</li>
+<li><p>系统监控</p>
+<ul>
+<li>CPU</li>
+<li>磁盘（吞吐量、读写次数）</li>
+<li>内存（使用量、剩余量）</li>
+<li>网络</li>
+<li>进程</li>
+</ul>
+</li>
+<li><p>应用监控</p>
+<ul>
+<li>应用程序</li>
+<li>数据库</li>
+</ul>
+</li>
+<li><p>网络监控</p>
+<ul>
+<li>响应时间</li>
+<li>可用率</li>
+</ul>
+</li>
+<li><p>流量分析</p>
+<ul>
+<li>访客分析</li>
+<li>来源分析</li>
+<li>页面分析</li>
+</ul>
+</li>
+<li><p><strong>日志监控</strong></p>
+<ul>
+<li>访问日志</li>
+<li>错误日志</li>
+<li>运行日志</li>
+<li>网络日志</li>
+</ul>
+</li>
+<li><p>安全监控</p>
+<ul>
+<li>SQL注入</li>
+<li>跨站脚本</li>
+<li>代码执行漏洞</li>
+<li>扫码探测</li>
+</ul>
+</li>
+<li><p>API监控</p>
+<ul>
+<li>可用性</li>
+<li>正确性</li>
+<li>响应性</li>
+</ul>
+</li>
+<li><p>性能监控</p>
+<ul>
+<li>DNS响应时间</li>
+<li>HTTP建立连接时间</li>
+<li>页面性能指数</li>
+<li>响应时间</li>
+<li>可用率</li>
+</ul>
+</li>
+<li><p>业务监控</p>
+<ul>
+<li>每分钟产生多少订单</li>
+<li>每分钟注册多少用户</li>
+<li>每天有多少活跃用户</li>
+<li>每天有多少推广活动</li>
+<li>推广活动引入多少用户</li>
+<li>推广活动引入多少流量</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-监控流程"><a href="#3-监控流程" class="headerlink" title="3. 监控流程"></a>3. 监控流程</h3><ul>
+<li>数据采集</li>
+<li>数据存储</li>
+<li>数据分析</li>
+<li>数据展示</li>
+<li>监控报警</li>
+<li>报警处理</li>
+</ul>
+<h2 id="五、Dashboard"><a href="#五、Dashboard" class="headerlink" title="五、Dashboard"></a>五、Dashboard</h2><h3 id="1-为什么要仪表盘？"><a href="#1-为什么要仪表盘？" class="headerlink" title="1. 为什么要仪表盘？"></a>1. 为什么要仪表盘？</h3><ul>
+<li>数据可视化（度量信息，关键业务指标）</li>
+<li>交互式界面（从多个数据源获取数据，并定制化交互式界面）</li>
+<li>提升用户体验（清晰地传达关键信息给用户，信息能够快速被理解）</li>
+</ul>
+<h3 id="2-可视化哪些信息？"><a href="#2-可视化哪些信息？" class="headerlink" title="2. 可视化哪些信息？"></a>2. 可视化哪些信息？</h3><ul>
+<li>应用的健康状况</li>
+<li>错误统计和走势</li>
+<li>资源利用率和走势</li>
+<li>全部生产力</li>
+<li>部署次数，版本，响应时间, 等等.</li>
+<li>业务指标</li>
+</ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　关于日志、监控、可视化，虽然有很多工具可以帮我们实现，比如监控上的Prometheus、AppDynamic，比如ELK的一整套解决方案，但是了解背后的本质与为什么是尤为重要的。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://yq.aliyun.com/articles/72700" target="_blank" rel="noopener">Docker日志收集最佳实践</a></li>
+<li><a href="http://dockone.io/article/2644" target="_blank" rel="noopener">Docker日志的5个最佳实践</a></li>
+<li><a href="http://dockone.io/article/2252" target="_blank" rel="noopener">使用ELK处理Docker日志(一)</a></li>
+<li><a href="http://blog.cloud66.com/9-crtitical-decisions-needed-to-run-docker-in-production/" target="_blank" rel="noopener">9 Critical Decisions for Running Docker in Production</a></li>
+<li><a href="http://blog.scalyr.com/2017/08/five-reasons-need-log-monitoring/" target="_blank" rel="noopener">Five Reasons You Need Log Monitoring</a></li>
+<li><a href="https://www.jianshu.com/p/a4e55b10f5f4" target="_blank" rel="noopener">一篇文章全面了解监控知识体系</a></li>
 </ul>
 
       
@@ -530,8 +644,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/27/Mongo-记一次安装启动错误/" rel="prev" title="Mongo-记一次安装启动异常">
-                Mongo-记一次安装启动异常 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/26/MYSQL-索引概述/" rel="prev" title="MYSQL - 索引概述">
+                MYSQL - 索引概述 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -609,7 +723,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -620,7 +734,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -631,7 +745,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -673,7 +787,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、日志"><span class="nav-number">3.</span> <span class="nav-text">三、日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-传统日志处理"><span class="nav-number">3.1.</span> <span class="nav-text">1. 传统日志处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-docker日志处理"><span class="nav-number">3.2.</span> <span class="nav-text">2. docker日志处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-集中式日志聚合"><span class="nav-number">3.3.</span> <span class="nav-text">3. 集中式日志聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Out-of-scope"><span class="nav-number">3.4.</span> <span class="nav-text">4. Out of scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、监控"><span class="nav-number">4.</span> <span class="nav-text">四、监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-why？"><span class="nav-number">4.1.</span> <span class="nav-text">1. why？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-监控什么？"><span class="nav-number">4.2.</span> <span class="nav-text">2. 监控什么？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Dashboard"><span class="nav-number">5.</span> <span class="nav-text">五、Dashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-why-可视化？"><span class="nav-number">5.1.</span> <span class="nav-text">1. why 可视化？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-可视化哪些信息？"><span class="nav-number">5.2.</span> <span class="nav-text">2. 可视化哪些信息？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、日志"><span class="nav-number">3.</span> <span class="nav-text">三、日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-传统日志处理"><span class="nav-number">3.1.</span> <span class="nav-text">1. 传统日志处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-docker日志处理"><span class="nav-number">3.2.</span> <span class="nav-text">2. docker日志处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-集中式日志聚合"><span class="nav-number">3.3.</span> <span class="nav-text">3. 集中式日志聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Out-of-scope"><span class="nav-number">3.4.</span> <span class="nav-text">4. Out of scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、监控"><span class="nav-number">4.</span> <span class="nav-text">四、监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-为什么进行日志监控？"><span class="nav-number">4.1.</span> <span class="nav-text">1. 为什么进行日志监控？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-监控对象与指标"><span class="nav-number">4.2.</span> <span class="nav-text">2. 监控对象与指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-监控流程"><span class="nav-number">4.3.</span> <span class="nav-text">3. 监控流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Dashboard"><span class="nav-number">5.</span> <span class="nav-text">五、Dashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-为什么要仪表盘？"><span class="nav-number">5.1.</span> <span class="nav-text">1. 为什么要仪表盘？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-可视化哪些信息？"><span class="nav-number">5.2.</span> <span class="nav-text">2. 可视化哪些信息？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>
@@ -693,7 +807,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

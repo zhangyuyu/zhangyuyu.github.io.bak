@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/11/21/Vagrant/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、Vagrant的认识　　Vagrant 是一款用来构建虚拟开发环境的工具，它底层支持VirtualBox、VMware甚至AWS作为虚拟机系统。  Vagrant的作用：1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2015-11-21T08:35:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vagrant">
@@ -335,18 +336,18 @@
 <blockquote>
 <p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
 </blockquote>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="noopener">http://www.vagrantup.com/downloads</a></p>
 <blockquote>
-<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
+<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="noopener">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
 </blockquote>
 <h4 id="3、安装系统镜像"><a href="#3、安装系统镜像" class="headerlink" title="3、安装系统镜像"></a>3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
 <ul>
 <li>新建一个文件夹，如AgentBox,然后进入目录</li>
-<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
+<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="noopener">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
 </ul>
 <p>3.2 通过添加box方式</p>
 <ul>
-<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
+<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="noopener">http://www.vagrantbox.es/</a></a>下载镜像。</li>
 <li><code>$ vagrant box add {title} {url}</code><ul>
 <li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
 <li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
@@ -357,7 +358,7 @@
 </ul>
 <h3 id="三、常用指令"><a href="#三、常用指令" class="headerlink" title="三、常用指令"></a>三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
 <blockquote>
-<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
+<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="noopener">http://files.vagrantup.com/lucid64.box</a></p>
 </blockquote>
 <p>2、vagrant init，初始化</p>
 <blockquote>
@@ -386,7 +387,7 @@ config.vm.network &quot;public_network&quot;
   vb.name = &quot;my_vm&quot;
 end
 </code></pre><blockquote>
-<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
+<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="noopener">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="noopener">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
 </blockquote>
 
       
@@ -515,7 +516,7 @@ end
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -526,7 +527,7 @@ end
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -537,7 +538,7 @@ end
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -599,7 +600,7 @@ end
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

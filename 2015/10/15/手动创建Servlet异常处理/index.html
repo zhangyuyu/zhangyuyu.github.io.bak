@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/10/15/手动创建Servlet异常处理/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="1、创建产生异常的servlet在ExceptionServlet.java中： import javax.servlet.*; import java.io.IOException; import java.io.PrintWriter;  public class ExceptionServlet implements Servlet {      @Override     public v">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2015-10-17T09:08:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet异常处理">
@@ -455,11 +456,11 @@ public class ErrorHandler extends HttpServlet {
 &lt;/error-page&gt;
 </code></pre><h3 id="5、启动tomcat"><a href="#5、启动tomcat" class="headerlink" title="5、启动tomcat"></a>5、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="6、运行及结果"><a href="#6、运行及结果" class="headerlink" title="6、运行及结果"></a>6、运行及结果</h3><p>　　使用上面会产生异常的Servlet，或者输入一个错误的URL，会触发Web容器调用ErrorHandler的Servlet，并显示适当的信息。<br><br>　　如果使用上面会产生异常的ExceptionServlet(<a href="http://localhost:8080/test/exception)，那么它将显示：" target="_blank" rel="external">http://localhost:8080/test/exception)，那么它将显示：</a></p>
+</code></pre><h3 id="6、运行及结果"><a href="#6、运行及结果" class="headerlink" title="6、运行及结果"></a>6、运行及结果</h3><p>　　使用上面会产生异常的Servlet，或者输入一个错误的URL，会触发Web容器调用ErrorHandler的Servlet，并显示适当的信息。<br><br>　　如果使用上面会产生异常的ExceptionServlet(<a href="http://localhost:8080/test/exception)，那么它将显示：" target="_blank" rel="noopener">http://localhost:8080/test/exception)，那么它将显示：</a></p>
 <blockquote>
 <p>Exception Type : javax.servlet.ServletException<br><br>The exception message: hello<br><br>The status code : 500<br><br>Servlet Name : ExceptionServlet<br><br>The request URI: /test/exception</p>
 </blockquote>
-<p>　　如果输入了一个错误的URL(<a href="http://localhost:8080/test/ex)，那么它将显示`The" target="_blank" rel="external">http://localhost:8080/test/ex)，那么它将显示`The</a> status code : 404`
+<p>　　如果输入了一个错误的URL(<a href="http://localhost:8080/test/ex)，那么它将显示`The" target="_blank" rel="noopener">http://localhost:8080/test/ex)，那么它将显示`The</a> status code : 404`
 　　</p>
 <h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
     |---WEB-INF
@@ -595,7 +596,7 @@ $ ./startup.sh
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -606,7 +607,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -617,7 +618,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -679,7 +680,7 @@ $ ./startup.sh
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

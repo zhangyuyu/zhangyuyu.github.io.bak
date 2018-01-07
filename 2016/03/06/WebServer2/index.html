@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/03/06/WebServer2/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="还记得吗，在第一部分我问了一个问题：如何在你刚写出来的web server上运行一个Django应用，Flask应用和Pyramid应用，同时不做出改动就能适应这些不同的Web框架呢？往下读就可以找到答案。　　　　在以前，你选择的Python web框架会限制你可选择的web server，反之亦然。如果框架和服务器被设计成协同工作的话，那就是极好的。 　　但是当你试图去连接没有被设计成协同工">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/WS_part2_before_wsgi.png">
 <meta property="og:image" content="http://yoursite.com/imgs/WS_part2_after_wsgi.png">
 <meta property="og:image" content="http://yoursite.com/imgs/WS_part2_wsgi_idea.png">
@@ -516,7 +517,7 @@ if __name__ == &apos;__main__&apos;:
     httpd = make_server(SERVER_ADDRESS, application)
     print(&apos;WSGIServer: Serving HTTP on port {port} ...\n&apos;.format(port=PORT))
     httpd.serve_forever()
-</code></pre><p>　　上面的代码确实比第一部分服务器的代码长，但是为了让你能够理解而不至于陷入细节的泥潭中，它已经足够短了（不到150行）。上面的服务器也能做更多——它能运行用你喜欢的框架（Pyramid, flask, Django或者其他Python WSGI框架）编写的基本web应用程序。<br>　　不信？动手试一下吧。保存上面的代码到<code>webserver2.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/webserver2.py" target="_blank" rel="external">GitHub</a>上下载。如果你试图运行时不带任何参数，它会提示并退出。</p>
+</code></pre><p>　　上面的代码确实比第一部分服务器的代码长，但是为了让你能够理解而不至于陷入细节的泥潭中，它已经足够短了（不到150行）。上面的服务器也能做更多——它能运行用你喜欢的框架（Pyramid, flask, Django或者其他Python WSGI框架）编写的基本web应用程序。<br>　　不信？动手试一下吧。保存上面的代码到<code>webserver2.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/webserver2.py" target="_blank" rel="noopener">GitHub</a>上下载。如果你试图运行时不带任何参数，它会提示并退出。</p>
 <pre><code>$ python webserver2.py
 Provide a WSGI application object as module:callable
 </code></pre><p>　　它真的想服务你的web应用程序，这就是有趣的开始。运行这个服务器你唯一要做的就是安装Python。但是要运行用Pyramid, flask或Django开发的应用，你需要先安装这些框架。让我们来安装这三个框架吧，我更喜欢使用virtualenv，只需要按照下面的步骤去创建和激活一个虚拟环境，就可以安装这三个框架了。</p>
@@ -530,7 +531,7 @@ $ source bin/activate
 (lsbaws) $ pip install pyramid
 (lsbaws) $ pip install flask
 (lsbaws) $ pip install django
-</code></pre><h3 id="Pyramid框架"><a href="#Pyramid框架" class="headerlink" title="Pyramid框架"></a>Pyramid框架</h3><p>　　这时，你需创建一个Web应用程序。我们首先从Pyramid开始吧，保存下面的代码到<code>pyramidapp.py</code>并放到与<code>webserver2.py</code>的相同路径下，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/pyramidapp.py" target="_blank" rel="external">GitHub</a>上下载。</p>
+</code></pre><h3 id="Pyramid框架"><a href="#Pyramid框架" class="headerlink" title="Pyramid框架"></a>Pyramid框架</h3><p>　　这时，你需创建一个Web应用程序。我们首先从Pyramid开始吧，保存下面的代码到<code>pyramidapp.py</code>并放到与<code>webserver2.py</code>的相同路径下，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/pyramidapp.py" target="_blank" rel="noopener">GitHub</a>上下载。</p>
 <pre><code>from pyramid.config import Configurator
 from pyramid.response import Response
 
@@ -567,7 +568,7 @@ def hello_world():
     )
 
 app = flask_app.wsgi_app
-</code></pre><p>　　保存上面的代码到<code>flaskapp.py</code>，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/flaskapp.py" target="_blank" rel="external">GitHub</a>上下载，运行服务器：</p>
+</code></pre><p>　　保存上面的代码到<code>flaskapp.py</code>，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/flaskapp.py" target="_blank" rel="noopener">GitHub</a>上下载，运行服务器：</p>
 <pre><code>(lsbaws) $ python webserver2.py flaskapp:app
 WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　在浏览器输入<code>http://localhost:8888/hello</code>，回车：<br><img src="/imgs/WS_part2_browser_flask.png" width="400" height="250"></p>
@@ -632,12 +633,12 @@ run_application(app)
     response_headers = [(&apos;Content-Type&apos;, &apos;text/plain&apos;)]
     start_response(status, response_headers)
     return [&apos;Hello world from a simple WSGI application!\n’]
-</code></pre><p>　　同样的，把上面的代码保存为<code>wsgiapp.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/wsgiapp.py" target="_blank" rel="external">GitHub</a>上下载，然后用你的web server运行：</p>
+</code></pre><p>　　同样的，把上面的代码保存为<code>wsgiapp.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/wsgiapp.py" target="_blank" rel="noopener">GitHub</a>上下载，然后用你的web server运行：</p>
 <pre><code>(lsbaws) $ python webserver2.py wsgiapp:app
 WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　输入下面的地址，回车，你会看到下面的结果：<br><img src="/imgs/WS_part2_browser_simple_wsgi_app.png" width="400" height="250"></p>
 <h3 id="HTTP响应"><a href="#HTTP响应" class="headerlink" title="HTTP响应"></a>HTTP响应</h3><p>　　在学习如何创建一个web server的同时，你刚刚写出了自己的微型WSGI Web框架。真是意外之喜。<br>　　现在让我们回到服务器给客户端传输什么。下面是当你用HTTP客户端调用你的Pyramid应用程序时，服务器生成的HTTP响应。<br><img src="/imgs/WS_part2_http_response.png" width="400" height="250"></p>
-<p>　　上述响应和你在<a href="http://zhangyuyu.github.io/2016/03/05/WebServer1/" target="_blank" rel="external">第一部分</a>看到的有些类似，但是也有一些新的内容。比如，有四个之前没见过的HTTP headers: <code>Content-Type</code>，<code>Content-Length</code>，<code>Date</code>，<code>Server</code>。这些都是web server生成的响应头信息中应该含有的。虽然它们都不是被严格要求的，但是这些头信息的目的是传输有关HTTP请求/响应的附加信息。<br>　　现在你更多的了解了关于WSGI的接口，下面是同一个HTTP响应关于哪些部分生成它的详细信息：<br><img src="/imgs/WS_part2_http_response_explanation.png" width="400" height="250"></p>
+<p>　　上述响应和你在<a href="http://zhangyuyu.github.io/2016/03/05/WebServer1/" target="_blank" rel="noopener">第一部分</a>看到的有些类似，但是也有一些新的内容。比如，有四个之前没见过的HTTP headers: <code>Content-Type</code>，<code>Content-Length</code>，<code>Date</code>，<code>Server</code>。这些都是web server生成的响应头信息中应该含有的。虽然它们都不是被严格要求的，但是这些头信息的目的是传输有关HTTP请求/响应的附加信息。<br>　　现在你更多的了解了关于WSGI的接口，下面是同一个HTTP响应关于哪些部分生成它的详细信息：<br><img src="/imgs/WS_part2_http_response_explanation.png" width="400" height="250"></p>
 <p>　　到现在我还没有说任何有关<code>environ</code>字典的信息，但是，它基本上就是一个Pyhon字典，这个字典必须包含某些有WSGI规定所规定的WSGI和CGI变量。解析完请求之后，服务器从HTTP请求中拿到了字典所需要的值。字典的内容如下：<br><img src="/imgs/WS_part2_environ.png" width="400" height="250"></p>
 <p>　　Web 框架用这个字典的信息，来决定使用哪个view（基于指定路由和请求方法等）；决定从哪里读取请求的正文；以及把错误信息写在哪里，如果有的话。
 　　</p>
@@ -655,7 +656,7 @@ WSGIServer: Serving HTTP on port 8888 …
 <p>　　这就是全部了，你现在有了一个可以工作的WSGI服务器，它可以服务那些用WSGI兼容的Web框架（Django，Flask，Pyramid或者你自己写的WSGI框架）开发的Web应用程序。最好的是服务器能够在不改变服务器代码的情况下与多个Web框架使用。还不错！<br>在你离开之前，还有一个问题需要你思考，“如何让你的服务器一次处理多个请求？”<br>　　敬请关注，在第三部分我会展示给你一种实现方式。谢谢！
 　　</p>
 <blockquote>
-<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part2/" target="_blank" rel="external">Let’s Build A Web Server. Part 2.</a></p>
+<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part2/" target="_blank" rel="noopener">Let’s Build A Web Server. Part 2.</a></p>
 </blockquote>
 
       
@@ -784,7 +785,7 @@ WSGIServer: Serving HTTP on port 8888 …
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -795,7 +796,7 @@ WSGIServer: Serving HTTP on port 8888 …
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -806,7 +807,7 @@ WSGIServer: Serving HTTP on port 8888 …
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -868,7 +869,7 @@ WSGIServer: Serving HTTP on port 8888 …
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

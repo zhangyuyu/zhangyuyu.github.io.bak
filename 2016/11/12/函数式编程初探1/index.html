@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/11/12/函数式编程初探1/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入RxJava之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。 二、定义函数式编程(Functional Programming)是一种编程范式（programming paradigm），也就是如何编写程序的方法论。主要思想是把运算过程尽量写成一系列嵌套的函数调">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-11-12T13:42:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="函数式编程初探（一）">
@@ -353,11 +354,11 @@
       
 
       
-        <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="external">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
+        <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="noopener">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
 <h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
 <h3 id="三、背景"><a href="#三、背景" class="headerlink" title="三、背景"></a>三、背景</h3><p>函数式编程（Functional Programming）其实相对于计算机的历史而言是一个非常古老的概念，甚至早于第一台计算机的诞生。函数式编程的基础模型来源于 λ 演算，而 λ 演算并非设计于在计算机上执行，它是由 Alonzo Church 和 Stephen Cole Kleene 在 20 世纪三十年代引入的一套用于研究函数定义、函数应用和递归的形式系统。</p>
 <h3 id="四、为什么？"><a href="#四、为什么？" class="headerlink" title="四、为什么？"></a>四、为什么？</h3><p>在《函数式编程思维》这本书中，多处指出<code>函数式编程思维</code>的好处之一,是能够将低层次细节的控制权移交给运行时,从而消弭了一大批注定会发生的程序错误。这使得程序员得以在更高的抽象层次上工作，同时运行时也有了执行复杂优化的自由空间。</p>
-<p>在阮一峰的<a href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html" target="_blank" rel="external">《函数式编程初探》</a>一文中，<br>函数式编程的五大特点如下：</p>
+<p>在阮一峰的<a href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html" target="_blank" rel="noopener">《函数式编程初探》</a>一文中，<br>函数式编程的五大特点如下：</p>
 <ol>
 <li>函数是”第一等公民”</li>
 <li>只用”表达式”，不用”语句”</li>
@@ -387,11 +388,11 @@
 <ul>
 <li>除去单字符条目</li>
 <li>放在一个逗号分隔的字符串中进行返回</li>
-<li>每个名字的首字母都是大写<br>代码可参考《函数式编程思维》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/trans/TheCompanyProcess.java" target="_blank" rel="external">github</a><br>传统的java实现<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> cleanNames(List&lt;<span class="keyword">String</span>&gt; listOfNames) &#123;</div><div class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder();</div><div class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; listOfNames.<span class="built_in">size</span>(); i++) &#123;</div><div class="line">        <span class="keyword">if</span> (listOfNames.<span class="built_in">get</span>(i).length() &gt; <span class="number">1</span>) &#123;</div><div class="line">            result.<span class="built_in">append</span>(capitalizeString(listOfNames.<span class="built_in">get</span>(i))).<span class="built_in">append</span>(<span class="string">","</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>).toString();</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="keyword">String</span> capitalizeString(<span class="keyword">String</span> s) &#123;</div><div class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + s.substring(<span class="number">1</span>, s.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li>每个名字的首字母都是大写<br>代码可参考《函数式编程思维》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/trans/TheCompanyProcess.java" target="_blank" rel="noopener">github</a><br>传统的java实现<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">String</span> cleanNames(List&lt;<span class="keyword">String</span>&gt; listOfNames) &#123;</span><br><span class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; listOfNames.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (listOfNames.<span class="built_in">get</span>(i).length() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            result.<span class="built_in">append</span>(capitalizeString(listOfNames.<span class="built_in">get</span>(i))).<span class="built_in">append</span>(<span class="string">","</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>).toString();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">String</span> capitalizeString(<span class="keyword">String</span> s) &#123;</span><br><span class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + s.substring(<span class="number">1</span>, s.length());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>命令式编程鼓励程序员将操作安排在循环内部执行，本例中的三个操作filter、transform、convert都必须依赖于相同的低层次机制。</p>
-<p>Java8的实现：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="built_in">String</span> cleanNames(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names) &#123;</div><div class="line">    <span class="keyword">if</span> (names == <span class="built_in">null</span>) <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">    <span class="keyword">return</span> names</div><div class="line">            .stream()</div><div class="line">            .filter(name -&gt; name.length() &gt; <span class="number">1</span>)</div><div class="line">            .<span class="built_in">map</span>(name -&gt; capitalize(name))</div><div class="line">            .collect(Collectors.joining(<span class="string">","</span>));</div><div class="line">&#125;</div><div class="line"><span class="keyword">private</span> <span class="built_in">String</span> capitalize(<span class="built_in">String</span> e) &#123;</div><div class="line">    <span class="keyword">return</span> e.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + e.substring(<span class="number">1</span>, e.length());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Java8的实现：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">String</span> cleanNames(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names) &#123;</span><br><span class="line">    <span class="keyword">if</span> (names == <span class="built_in">null</span>) <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">return</span> names</span><br><span class="line">            .stream()</span><br><span class="line">            .filter(name -&gt; name.length() &gt; <span class="number">1</span>)</span><br><span class="line">            .<span class="built_in">map</span>(name -&gt; capitalize(name))</span><br><span class="line">            .collect(Collectors.joining(<span class="string">","</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> <span class="built_in">String</span> capitalize(<span class="built_in">String</span> e) &#123;</span><br><span class="line">    <span class="keyword">return</span> e.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + e.substring(<span class="number">1</span>, e.length());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>两者的对比，可以发现后者这种更高层次的抽象思考有一些好处：</p>
 <ul>
 <li>促使我们换一种角度去归类问题，看到问题的共性。</li>
@@ -408,7 +409,7 @@
 </li>
 </ol>
 <p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
-<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="external">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
+<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="noopener">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
 
       
     </div>
@@ -536,7 +537,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -547,7 +548,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -558,7 +559,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -620,7 +621,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

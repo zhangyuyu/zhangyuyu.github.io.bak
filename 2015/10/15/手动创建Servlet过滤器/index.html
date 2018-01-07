@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/10/15/手动创建Servlet过滤器/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：  在客户端的请求访问后端资源之前，拦截这些请求。在服务器的响应发送回客户端之前，处理这些响应。  　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。 1、创建Filter在test/WEB_INF/classes下新建一个LogFilter.jav">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2015-10-21T14:33:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet过滤器">
@@ -425,7 +426,7 @@ public class LogFilter implements Filter  {
 　　</p>
 <h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
+</code></pre><h3 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="noopener">http://localhost:8080/test/hello</a>
 　　</p>
 <h3 id="6、结果"><a href="#6、结果" class="headerlink" title="6、结果"></a>6、结果</h3><pre><code>[ Time : Thu Oct 15 20:56:29 CST 2015 ]
 Hello World
@@ -563,7 +564,7 @@ Hello World
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -574,7 +575,7 @@ Hello World
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -585,7 +586,7 @@ Hello World
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -647,7 +648,7 @@ Hello World
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

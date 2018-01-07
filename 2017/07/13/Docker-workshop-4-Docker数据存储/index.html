@@ -88,9 +88,10 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/13/Docker-workshop-4-Docker数据存储/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　上一篇 Docker的基本操作按照构建流程练习了docker的一些常见基本指令。本篇主要讲述Docker数据管理相关的内容。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  本章主要通过练习数据卷和数">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-volumn-vs-container.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-volumn-plugin.png">
-<meta property="og:updated_time" content="2017-12-27T07:12:53.000Z">
+<meta property="og:updated_time" content="2018-01-07T08:56:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（四）Docker数据存储">
 <meta name="twitter:description" content="一、前言　　上一篇 Docker的基本操作按照构建流程练习了docker的一些常见基本指令。本篇主要讲述Docker数据管理相关的内容。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  本章主要通过练习数据卷和数">
@@ -319,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -356,15 +357,15 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">上一篇 Docker的基本操作</a>按照构建流程练习了docker的一些常见基本指令。<br>本篇主要讲述Docker数据管理相关的内容。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
 <li><strong>Docker数据存储</strong></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="external">Docker安全</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/20/Docker-workshop-6-Docker%E5%AE%89%E5%85%A8/" target="_blank" rel="noopener">Docker安全</a></li>
 <li>多主机部署</li>
 <li>服务发现</li>
 <li>日志、跟踪、监控</li>
@@ -438,7 +439,7 @@ local               093c2cccfcc37e01d0ae4c145dcfb25a6c65a4b94617944efaa8f130463b
         &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/093c2cccfcc37e01d0ae4c145dcfb25a6c65a4b94617944efaa8f130463bcc6f/_data&quot;
     }
 ]
-</code></pre><h4 id="【练习2】用Dockerfile挂载数据卷"><a href="#【练习2】用Dockerfile挂载数据卷" class="headerlink" title="【练习2】用Dockerfile挂载数据卷"></a>【练习2】用Dockerfile挂载数据卷</h4><p>1） 创建一个<code>Dockerfile</code><br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">FROM</span> <span class="string">busybox</span></div><div class="line"><span class="string">RUN</span> <span class="string">mkdir</span> <span class="string">/test-dir</span></div><div class="line"><span class="string">COPY</span> <span class="string">test.yml</span> <span class="string">/test-dir</span></div><div class="line"><span class="string">VOLUME</span> <span class="string">/test-dir</span></div></pre></td></tr></table></figure></p>
+</code></pre><h4 id="【练习2】用Dockerfile挂载数据卷"><a href="#【练习2】用Dockerfile挂载数据卷" class="headerlink" title="【练习2】用Dockerfile挂载数据卷"></a>【练习2】用Dockerfile挂载数据卷</h4><p>1） 创建一个<code>Dockerfile</code><br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="string">busybox</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">mkdir</span> <span class="string">/test-dir</span></span><br><span class="line"><span class="string">COPY</span> <span class="string">test.yml</span> <span class="string">/test-dir</span></span><br><span class="line"><span class="string">VOLUME</span> <span class="string">/test-dir</span></span><br></pre></td></tr></table></figure></p>
 <p>2) 创建一个<code>test.yml</code>文件</p>
 <pre><code>$ echo &quot;This is a test file for testing volume from Dockerfile.&quot; &gt; test.yml
 </code></pre><p>3) 构建一个镜像</p>
@@ -552,16 +553,16 @@ test-dir/test.yml
 <li><p>Flocker：Flocker volume plugin driver主要用于多主机环境Docker数据卷的迁移，从而支持数据库应用等stateful有状态应用的主机间迁移。</p>
 </li>
 </ul>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇文章主要是讲述了Docker的数据存储以及数据管理。<br><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">下一篇</a>将讲述Docker的网络。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇文章主要是讲述了Docker的数据存储以及数据管理。<br><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">下一篇</a>将讲述Docker的网络。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a href="http://dockone.io/article/1257" target="_blank" rel="external">Docker容器对存储的定义</a></li>
-<li><a href="http://dockone.io/article/1729" target="_blank" rel="external">Docker存储方式选型建议</a></li>
-<li><a href="https://medium.com/@ramangupta/why-docker-data-containers-are-good-589b3c6c749e" target="_blank" rel="external">Why Docker Data Containers (Volumes!) are Good</a></li>
-<li><a href="https://rominirani.com/docker-tutorial-series-part-7-data-volumes-93073a1b5b72" target="_blank" rel="external">Data Volumes</a></li>
-<li><a href="http://container-solutions.com/understanding-volumes-docker/" target="_blank" rel="external">Understanding Volumes in Docker</a></li>
-<li><a href="http://clusterhq.com/2015/12/09/difference-docker-volumes-flocker-volumes/" target="_blank" rel="external">Docker Volumes vs Docker Volumes with Flocker</a></li>
-<li><a href="http://feisky.xyz/docker/data_management/volume.html" target="_blank" rel="external">Docker数据管理</a></li>
-<li><a href="http://www.ywnds.com/?p=7015" target="_blank" rel="external">Docker：容器数据管理</a></li>
+<li><a href="http://dockone.io/article/1257" target="_blank" rel="noopener">Docker容器对存储的定义</a></li>
+<li><a href="http://dockone.io/article/1729" target="_blank" rel="noopener">Docker存储方式选型建议</a></li>
+<li><a href="https://medium.com/@ramangupta/why-docker-data-containers-are-good-589b3c6c749e" target="_blank" rel="noopener">Why Docker Data Containers (Volumes!) are Good</a></li>
+<li><a href="https://rominirani.com/docker-tutorial-series-part-7-data-volumes-93073a1b5b72" target="_blank" rel="noopener">Data Volumes</a></li>
+<li><a href="http://container-solutions.com/understanding-volumes-docker/" target="_blank" rel="noopener">Understanding Volumes in Docker</a></li>
+<li><a href="http://clusterhq.com/2015/12/09/difference-docker-volumes-flocker-volumes/" target="_blank" rel="noopener">Docker Volumes vs Docker Volumes with Flocker</a></li>
+<li><a href="http://feisky.xyz/docker/data_management/volume.html" target="_blank" rel="noopener">Docker数据管理</a></li>
+<li><a href="http://www.ywnds.com/?p=7015" target="_blank" rel="noopener">Docker：容器数据管理</a></li>
 </ul>
 
       
@@ -690,7 +691,7 @@ test-dir/test.yml
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -701,7 +702,7 @@ test-dir/test.yml
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -712,7 +713,7 @@ test-dir/test.yml
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -774,7 +775,7 @@ test-dir/test.yml
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

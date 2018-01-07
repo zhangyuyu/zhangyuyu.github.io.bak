@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/09/20/手动创建Servlet连接数据库/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="1、准备数据库(1)在本地mysql中create 一个数据库$ mysql.server start $ mysql -uroot -p mysql&amp;gt; show databases; mysql&amp;gt; create database test; mysql&amp;gt; use test; mysql&amp;gt; create table raw_report(        name varch">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2015-10-21T14:34:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet连接数据库">
@@ -490,7 +491,7 @@ public class DBServlet extends HttpServlet{            //定义一个继承HttpS
 &lt;/web-app&gt;
 </code></pre><h3 id="5、启动tomcat"><a href="#5、启动tomcat" class="headerlink" title="5、启动tomcat"></a>5、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.24/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="6、运行"><a href="#6、运行" class="headerlink" title="6、运行"></a>6、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/DB" target="_blank" rel="external">http://localhost:8080/test/DB</a></p>
+</code></pre><h3 id="6、运行"><a href="#6、运行" class="headerlink" title="6、运行"></a>6、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/DB" target="_blank" rel="noopener">http://localhost:8080/test/DB</a></p>
 <h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
     |---WEB-INF
         |---classes
@@ -624,7 +625,7 @@ $ ./startup.sh
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -635,7 +636,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -646,7 +647,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -708,7 +709,7 @@ $ ./startup.sh
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

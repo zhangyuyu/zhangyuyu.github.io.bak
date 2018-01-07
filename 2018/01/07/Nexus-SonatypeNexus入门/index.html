@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一、前言　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nexus-SonatypeNexus入门">
+<meta property="og:url" content="http://yoursite.com/2018/01/07/Nexus-SonatypeNexus入门/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="一、前言　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-maven仓库.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-私服.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-kitematic-docker.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-环境变量.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-功能-browse-server-content.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-功能-server-adminstration-configuration.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-功能-repositories.png">
+<meta property="og:updated_time" content="2018-01-07T10:12:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nexus-SonatypeNexus入门">
+<meta name="twitter:description" content="一、前言　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，">
+<meta name="twitter:image" content="http://yoursite.com/imgs/nexus-maven仓库.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/07/Nexus-SonatypeNexus入门/"/>
+
+
+
+
+
+  <title>Nexus-SonatypeNexus入门 | 若见喻笺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">若见喻笺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/07/Nexus-SonatypeNexus入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nexus-SonatypeNexus入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-07T18:08:15+08:00">
+                2018-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。<br>　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，进行输出。<br>　　这里，我主要负责利用Nexus进行仓库的管理，本篇主要讲述nexus的一些基础，下一篇将利用nexus作为maven的私服，利用gradle进行构建一个简单的web应用。</p>
+<a id="more"></a>
+<h2 id="二、Nexus"><a href="#二、Nexus" class="headerlink" title="二、Nexus"></a>二、Nexus</h2><p>　　Nexus是谷歌手机的一个牌子，我们要介绍的不是Nexus，而是Sonatype Nexus。<br>　　Sonatype Nexus是Sonatype公司的一个产品，叫Nexus，它是Maven的私服。<br>　　<img src="/imgs/nexus-maven仓库.png" width="500" height="200"></p>
+<p>　　事实上有三种专门的Maven仓库管理软件可以帮助我们创建私服：</p>
+<ul>
+<li><a href="http://archiva.apache.org/index.cgi" target="_blank" rel="noopener">Apache Archiva</a></li>
+<li><a href="https://link.jianshu.com/?t=http://www.jfrog.com/home/v_artifactory_opensource_overview/" target="_blank" rel="noopener"> Artifactory</a></li>
+<li><a href="http://www.sonatype.org/nexus/" target="_blank" rel="noopener">Sonatype Nexus</a>。 </li>
+</ul>
+<p>　　其中Archiva是开源的，Artifactory和Nexus的核心也是开源的。详细的对比可参考<a href="https://binary-repositories-comparison.github.io/" target="_blank" rel="noopener">Binary Repository Manager Feature Matrix</a>。Nexus是目前最常用的一个。</p>
+<h2 id="三、私服"><a href="#三、私服" class="headerlink" title="三、私服"></a>三、私服</h2><p>　　私服是指私有服务器，是架设在局域网的一种特殊的远程仓库，目的是代理远程仓库及部署第三方构建。有了私服之后，当 Maven 需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。</p>
+<img src="/imgs/nexus-私服.png" width="800" height="350">
+<h2 id="四、Why-Nexus"><a href="#四、Why-Nexus" class="headerlink" title="四、Why Nexus?"></a>四、Why Nexus?</h2><ol>
+<li><p>节省外网带宽<br>　　大量对于外部仓库的重复请求会消耗带宽，利用私服代理外部仓库，可以消除对外的重复构件下载，降低带宽的压力。</p>
+</li>
+<li><p>加速Maven构建<br>　　不停地连接请求外部仓库十分的耗时，Maven在执行构建的时候不停地检查远程仓库的数据。利用私服，Maven只检查局域网的数据，提高构建的速度。</p>
+</li>
+<li><p>部署第三方构件<br>　　当某个构件无法从任何一个外部远程仓库获得。建立私服之后，便可以将这些构件部署到私服，供内部的Maven项目使用。</p>
+</li>
+<li><p>提高稳定性，增强控制<br>　　Maven构建高度依赖于远程仓库，因此，当网络不稳定的时候，Maven构建也会变得不稳定，甚至无法构建。私服缓存了大量构建，即使暂时没有网络，Maven也可以正常的运行。</p>
+</li>
+<li><p>降低中央仓库的负荷<br>　　使用私服可以避免很多对中央仓库的重复下载，降低中央仓库的压力。</p>
+</li>
+</ol>
+<h2 id="五、Docker搭建"><a href="#五、Docker搭建" class="headerlink" title="五、Docker搭建"></a>五、Docker搭建</h2><p>　　安装过程，网上有很多资料，这里不再赘述。笔者是MAC Pro，安装了Docker for Mac，因此很容易Kitematic进行容器的安装。<br><img src="/imgs/nexus-kitematic-docker.png" width="800" height="500"></p>
+<p>宿主机上docker image的存放地址：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$HOME</span>/Library/Containers/com<span class="selector-class">.docker</span><span class="selector-class">.docker</span>/Data/com<span class="selector-class">.docker</span><span class="selector-class">.driver</span><span class="selector-class">.amd64-linux</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="1-安装目录"><a href="#1-安装目录" class="headerlink" title="1. 安装目录"></a>1. 安装目录</h3><p>下面是nexus的一些环境变量：<br><img src="/imgs/nexus-环境变量.png" width="800" height="800"></p>
+<p>nexus-container中：<br><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ whoami</span><br><span class="line">nexus</span><br><span class="line">sh-4.2$ pwd</span><br><span class="line">/opt/sonatype/nexus</span><br><span class="line">sh-4.2$ ls -l</span><br><span class="line">total 68</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>root root<span class="number"> 39222 </span>Dec<span class="number"> 27 </span>16:00 LICENSE.txt</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>root root  <span class="number"> 395 </span>Dec<span class="number"> 27 </span>16:00 NOTICE.txt</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 bin</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 deploy</span><br><span class="line">drwxr-xr-x <span class="number"> 7 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 etc</span><br><span class="line">drwxr-xr-x <span class="number"> 4 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 lib</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 public</span><br><span class="line">drwxr-xr-x<span class="number"> 21 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 system</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>LICENSE.txt和NOTICE.txt，包含有关许可证和版权声明的法律细节；</li>
+<li>bin，包含启动脚本以及启动相关的配置文件</li>
+<li>etc，包含配置文件</li>
+<li>lib，包含与Apache Karaf相关的二进制库</li>
+<li>public，包含应用相关的公共资源</li>
+<li>system，包含构成应用程序相关的所有组件和插件</li>
+</ul>
+<h3 id="2-数据目录"><a href="#2-数据目录" class="headerlink" title="2. 数据目录"></a>2. 数据目录</h3><p>nexus-container中：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sh</span>-4.2$ <span class="keyword">cd</span> ~</span><br><span class="line"><span class="keyword">sh</span>-4.2$ <span class="keyword">pwd</span></span><br><span class="line">/opt/sonatype/nexus</span><br><span class="line"><span class="keyword">sh</span>-4.2$ <span class="keyword">ls</span> ../</span><br><span class="line">nexus  sonatype-work  start-nexus-repository-manager.<span class="keyword">sh</span></span><br><span class="line"><span class="keyword">sh</span>-4.2$ <span class="keyword">cd</span> ../sonatype-work/nexus3/</span><br><span class="line"><span class="keyword">sh</span>-4.2$ <span class="keyword">ls</span></span><br><span class="line">backup  blobs  cache  <span class="keyword">db</span>  elasticsearch  etc  generated-bundles  health-check  instances  javaprefs  keystores  lock  <span class="keyword">log</span>  orient  port  tmp</span><br><span class="line"><span class="keyword">sh</span>-4.2$</span><br></pre></td></tr></table></figure></p>
+<p>上述地址<code>/opt/sonatype/sonatype-work/nexus3</code>或者<code>/nexus-data</code>中，则是数据存放的地址了。</p>
+<ul>
+<li>blobs/，这是blob存储的默认地址，可在UI上的Server Adminstration And configuration进行配置。</li>
+<li>cache/，包含当前缓存的Karaf bundles信息。</li>
+<li>db/，包含OrientDB数据库，数据库存的是Nexus respository manager的元数据。</li>
+<li>elasticsearch，包含当前配置的Elasticsearch状态</li>
+<li>etc/，包含主要的运行时配置和自定义的Nexus respository manager配置。</li>
+<li>health-check/，包含来自 Repository Health Check功能的缓存 报告</li>
+<li>keystores/，包含用于鉴别Nexus respository manager的自动生成的密钥。</li>
+<li>log/，nexus.log文件包含Nexus respository manager运行实例的信息；该目录也包含一些日志文件的归档副本；日志滚动（Log rotation）每天进行。</li>
+<li>tmp/，用于临时存储。</li>
+</ul>
+<h2 id="六、功能介绍"><a href="#六、功能介绍" class="headerlink" title="六、功能介绍"></a>六、功能介绍</h2><h3 id="1-Browse-Server-Content"><a href="#1-Browse-Server-Content" class="headerlink" title="1. Browse Server Content"></a>1. Browse Server Content</h3><img src="/imgs/nexus-功能-browse-server-content.png" width="800" height="250">
+<h4 id="1-1-Search"><a href="#1-1-Search" class="headerlink" title="1.1 Search"></a>1.1 Search</h4><p>　　搜索功能，就是从私服上查找是否有哪些包:</p>
+<ul>
+<li>在Search这级是支持模糊搜索的</li>
+<li>如果进入具体的目录，不支持模糊搜索</li>
+</ul>
+<h4 id="1-2-Browse"><a href="#1-2-Browse" class="headerlink" title="1.2 Browse"></a>1.2 Browse</h4><ul>
+<li>Assets，能看到所有的资源，包含Jar，已经对Jar的一些描述信息。</li>
+<li>Components，只能看到Jar</li>
+</ul>
+<h3 id="2-Server-Adminstration-And-configuration"><a href="#2-Server-Adminstration-And-configuration" class="headerlink" title="2. Server Adminstration And configuration"></a>2. Server Adminstration And configuration</h3><p>　　看到这选项是要进行登录的，在右上角点击“Sign In”的登录按钮，输入<code>admin/admin123</code>,登录成功之后，即可看到此功能，如图所示：<br><img src="/imgs/nexus-功能-server-adminstration-configuration.png" width="800" height="300"></p>
+<h4 id="2-1-Repository"><a href="#2-1-Repository" class="headerlink" title="2.1 Repository"></a>2.1 Repository</h4><ul>
+<li>Blob Stores, 文件存储的地方，创建一个目录的话，对应文件系统的一个目录</li>
+<li>Repositories，仓库</li>
+</ul>
+<h5 id="2-1-1-仓库类型"><a href="#2-1-1-仓库类型" class="headerlink" title="2.1.1 仓库类型"></a>2.1.1 仓库类型</h5><ul>
+<li>hosted<br>　　宿主仓库，用户可以把自己的一些构件，deploy到hosted中，也可以手工上传构件到hosted里。比如说oracle的驱动程序，ojdbc6.jar，在central repository是获取不到的，就需要手工上传到hosted里 </li>
+<li>proxy<br>　　远程仓库的代理。比如说在nexus中配置了一个central repository的proxy，当用户向这个proxy请求一个artifact，这个proxy就会先在本地查找，如果找不到的话，就会从远程仓库下载，然后返回给用户，相当于起到一个中转的作用 </li>
+<li>group<br>　　仓库组，在maven里没有这个概念，是nexus特有的。目的是将上述多个仓库聚合，对用户暴露统一的地址，这样用户就不需要在pom中配置多个地址，只要统一配置group的地址就可以了 </li>
+<li>virtual<br>　　虚拟类型仓库，此类型主要是为了兼容maven的版本，maven版本经过大幅度提升，虚拟类型仓库主要是为了兼容maven1</li>
+</ul>
+<h5 id="2-1-2-仓库格式"><a href="#2-1-2-仓库格式" class="headerlink" title="2.1.2 仓库格式"></a>2.1.2 仓库格式</h5><p><a href="https://help.sonatype.com/display/NXRM3/Supported+Formats" target="_blank" rel="noopener">最新Nexus支持的仓库格式</a>如下：</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>2.x</th>
+<th>3.x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bower</td>
+<td>❌</td>
+<td>✅ 3.0+</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>❌</td>
+<td>✅ 3.0+</td>
+</tr>
+<tr>
+<td>git-lfs</td>
+<td>❌</td>
+<td>✅ 3.3+ (只支持hosted)</td>
+</tr>
+<tr>
+<td>Maven 1</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Maven 2</td>
+<td>✅</td>
+<td>✅ 3.1+</td>
+</tr>
+<tr>
+<td>npm</td>
+<td>✅</td>
+<td>✅ 3.0+</td>
+</tr>
+<tr>
+<td>NuGet</td>
+<td>✅</td>
+<td>✅ 3.0+</td>
+</tr>
+<tr>
+<td>OBR</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>PyPI</td>
+<td>❌</td>
+<td>✅ 3.0.2+</td>
+</tr>
+<tr>
+<td>RubyGems</td>
+<td>✅</td>
+<td>✅ 3.0.2+</td>
+</tr>
+<tr>
+<td>Site/Raw</td>
+<td>✅</td>
+<td>✅ 3.0+</td>
+</tr>
+<tr>
+<td>Yum</td>
+<td>✅</td>
+<td>❌ (在3.5+ 支持Proxy)</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-1-3-仓库策略"><a href="#2-1-3-仓库策略" class="headerlink" title="2.1.3 仓库策略"></a>2.1.3 仓库策略</h5><ul>
+<li>releases，发布版，稳定版的jar</li>
+<li>snapshots，快照版，一般是处于开发中的jar</li>
+<li>mixed，混合的</li>
+</ul>
+<h5 id="2-1-4-预定义本地仓库"><a href="#2-1-4-预定义本地仓库" class="headerlink" title="2.1.4 预定义本地仓库"></a>2.1.4 预定义本地仓库</h5><img src="/imgs/nexus-功能-repositories.png" width="800" height="300">
+<h4 id="2-2-Security"><a href="#2-2-Security" class="headerlink" title="2.2 Security"></a>2.2 Security</h4><p>主要是用户、角色、权限的配置</p>
+<h4 id="2-3-Support"><a href="#2-3-Support" class="headerlink" title="2.3 Support"></a>2.3 Support</h4><p>包含日志及数据分析</p>
+<h4 id="2-4-System"><a href="#2-4-System" class="headerlink" title="2.4 System"></a>2.4 System</h4><p>主要是邮件服务器，调度的设置地方</p>
+<h2 id="七、实现原理"><a href="#七、实现原理" class="headerlink" title="七、实现原理"></a>七、实现原理</h2><p>　　Nexus Repository是以Java和JavaScript为主，实现的一个包含前端与后台的Web服务。 后台方面，它采用Jetty作为应用服务器、Karaf作为OSGi容器、OrientDB作为数据库。 前端方面，它使用Swagger UI作为框架，是一个单页面Web App。</p>
+<p>　　另外，它也通过Resteasy支持REST API，可以通过网络进行访问控制。并且，自行实现了一个插件系统，用插件的方式支持了更多复杂的功能。比如，Maven、PyPI、Docker这些支持，都是由插件实现的。 如果希望支持其它方式的代理、缓存、发布，比如APT，也可以通过插件定制。</p>
+<h2 id="八、最后"><a href="#八、最后" class="headerlink" title="八、最后"></a>八、最后</h2><p>　　本篇主要讲述了Nexus的概念及好处，介绍了nexus涉及到的安装目录以及数据目录，简单的列举了一下Nexus repository manager UI上的功能。<br>　　下一篇将利用nexus作为maven的私服，利用gradle进行构建一个简单的web应用。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://blog.csdn.net/gaoying_blogs/article/details/48917847" target="_blank" rel="noopener">【项目管理】Sonatype Nexus,Maven私服</a></li>
+<li><a href="http://juvenshun.iteye.com/blog/285059" target="_blank" rel="noopener">使用仓库管理器——Sonatype Nexus的九大理由</a></li>
+<li><a href="http://juvenshun.iteye.com/blog/349534" target="_blank" rel="noopener">Nexus入门指南（图文）</a></li>
+<li><a href="http://www.tinygroup.org/docs/d0e8e7273742486ab59f161785e07a66" target="_blank" rel="noopener">Tiny Nexus3.0.0+Maven的使用</a></li>
+<li><a href="https://books.sonatype.com/nexus-book/3.5/reference/install.html#data-directory" target="_blank" rel="noopener">Reference nexus-book</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/imgs/qr-code.png" alt="Zhang Yu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫一扫，用手机访问本站</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/07/Nexus-SonatypeNexus搭建maven私服/" rel="next" title="Nexus - Sonatype Nexus搭建maven私服">
+                <i class="fa fa-chevron-left"></i> Nexus - Sonatype Nexus搭建maven私服
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Zhang Yu</p>
+              <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Nexus"><span class="nav-number">2.</span> <span class="nav-text">二、Nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、私服"><span class="nav-number">3.</span> <span class="nav-text">三、私服</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Why-Nexus"><span class="nav-number">4.</span> <span class="nav-text">四、Why Nexus?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Docker搭建"><span class="nav-number">5.</span> <span class="nav-text">五、Docker搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装目录"><span class="nav-number">5.1.</span> <span class="nav-text">1. 安装目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数据目录"><span class="nav-number">5.2.</span> <span class="nav-text">2. 数据目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、功能介绍"><span class="nav-number">6.</span> <span class="nav-text">六、功能介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Browse-Server-Content"><span class="nav-number">6.1.</span> <span class="nav-text">1. Browse Server Content</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Search"><span class="nav-number">6.1.1.</span> <span class="nav-text">1.1 Search</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Browse"><span class="nav-number">6.1.2.</span> <span class="nav-text">1.2 Browse</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Server-Adminstration-And-configuration"><span class="nav-number">6.2.</span> <span class="nav-text">2. Server Adminstration And configuration</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Repository"><span class="nav-number">6.2.1.</span> <span class="nav-text">2.1 Repository</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-1-仓库类型"><span class="nav-number">6.2.1.1.</span> <span class="nav-text">2.1.1 仓库类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-2-仓库格式"><span class="nav-number">6.2.1.2.</span> <span class="nav-text">2.1.2 仓库格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-仓库策略"><span class="nav-number">6.2.1.3.</span> <span class="nav-text">2.1.3 仓库策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-预定义本地仓库"><span class="nav-number">6.2.1.4.</span> <span class="nav-text">2.1.4 预定义本地仓库</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Security"><span class="nav-number">6.2.2.</span> <span class="nav-text">2.2 Security</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-Support"><span class="nav-number">6.2.3.</span> <span class="nav-text">2.3 Support</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-System"><span class="nav-number">6.2.4.</span> <span class="nav-text">2.4 System</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、实现原理"><span class="nav-number">7.</span> <span class="nav-text">七、实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、最后"><span class="nav-number">8.</span> <span class="nav-text">八、最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">9.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+  
+   <span style="margin-left:8px;">
+   <script src="http://s6.cnzz.com/stat.php?id=1263347220&web_id=1263347220" type="text/javascript"></script>
+   </span>
+
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

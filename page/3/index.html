@@ -87,6 +87,7 @@
 <meta property="og:url" content="http://yoursite.com/page/3/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="行是知之始，知是行之成">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="若见喻笺">
 <meta name="twitter:description" content="行是知之始，知是行之成">
@@ -263,6 +264,637 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/12/函数式编程初探1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/12/函数式编程初探1/" itemprop="url">函数式编程初探（一）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-12T17:35:13+08:00">
+                2016-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>作为一名从业以来一直在编写Java的程序媛，虽然项目里经常用java8的lambda，可是在引入<a href="http://zhangyuyu.github.io/2016/11/01/RxJava/" target="_blank" rel="noopener">RxJava</a>之后，函数作为参数传递更加普遍，故阅读《函数式编程思维》一书，以求了解函数式编程。</p>
+<h3 id="二、定义"><a href="#二、定义" class="headerlink" title="二、定义"></a>二、定义</h3><p><code>函数式编程</code>(Functional Programming)是一种<code>编程范式</code>（programming paradigm），也就是如何编写程序的方法论。<br>主要思想是把运算过程尽量写成一系列嵌套的函数调用。</p>
+<h3 id="三、背景"><a href="#三、背景" class="headerlink" title="三、背景"></a>三、背景</h3><p>函数式编程（Functional Programming）其实相对于计算机的历史而言是一个非常古老的概念，甚至早于第一台计算机的诞生。函数式编程的基础模型来源于 λ 演算，而 λ 演算并非设计于在计算机上执行，它是由 Alonzo Church 和 Stephen Cole Kleene 在 20 世纪三十年代引入的一套用于研究函数定义、函数应用和递归的形式系统。</p>
+<h3 id="四、为什么？"><a href="#四、为什么？" class="headerlink" title="四、为什么？"></a>四、为什么？</h3><p>在《函数式编程思维》这本书中，多处指出<code>函数式编程思维</code>的好处之一,是能够将低层次细节的控制权移交给运行时,从而消弭了一大批注定会发生的程序错误。这使得程序员得以在更高的抽象层次上工作，同时运行时也有了执行复杂优化的自由空间。</p>
+<p>在阮一峰的<a href="http://www.ruanyifeng.com/blog/2012/04/functional_programming.html" target="_blank" rel="noopener">《函数式编程初探》</a>一文中，<br>函数式编程的五大特点如下：</p>
+<ol>
+<li>函数是”第一等公民”</li>
+<li>只用”表达式”，不用”语句”</li>
+<li>没有”副作用”</li>
+<li>不修改状态</li>
+<li>引用透明<br>函数的运行不依赖于外部变量或”状态”，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。</li>
+</ol>
+<p>函数式编程的好处如下：</p>
+<ol>
+<li>代码简洁，开发快速</li>
+<li>接近自然语言，易于理解</li>
+<li>更方便的代码管理(每一个函数都可以被看做独立单元，很有利于进行单元测试以及模块化组合)</li>
+<li>易于”并发编程”</li>
+<li>代码的热升级（函数式编程没有副作用，只要保证接口不变，内部实现是外部无关的）</li>
+</ol>
+<h3 id="五、转变思维"><a href="#五、转变思维" class="headerlink" title="五、转变思维"></a>五、转变思维</h3><p>先大致说明一下函数式编程与命令式编程的区别吧！</p>
+<p>命令式编程：按照“程序是一系列改变状态的命令”来建模的一种编程风格。<br>函数式编程将程序描述为表达式和变换，以数学方程的形式建立模型，并且尽量避免可变的状态。</p>
+<p>《Working with Lagacy Code》的作者Michael Feathers的用以下一句话说明了函数式抽象和面向对象抽象的关键区别：</p>
+<blockquote>
+<p>面向对象编程通过封装不确定因素来使代码能被人理解；函数式编程通过尽量减少不确定因素来使代码能被人理解。——Michael Feathers</p>
+</blockquote>
+<p>在面向对象的命令式编程语言里面，重用的单元是类和类之间沟通用的消息。所以OOP的世界提倡开发人员针对具体问题<strong>建立专门的数据结构</strong>，相关的专门操作以“方法”的形式附加在数据结构上。<br>函数式编程语言重用的思路很不一样，它提倡在<strong>有限的几种关键数据结构</strong>（如list、set、map）上运用针对这些数据结构高度优化过的操作，以此构成基本运转结构。</p>
+<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>程序员往往都是讨厌看文档而偏爱看代码的，上述那么多文字，你不一定看的下去，还是首先来一个hello world吧。<br>对于计算表达式（1+2）* 3，</p>
+<p>传统的编程方式是：<br>int a = 1 + 2<br>int b = a * 3</p>
+<p>而对于函数式编程方式是：<br>int result = multiply(add(1,2), 3)<br>这里函数作为参数进行传递。</p>
+<h4 id="函数式编程的常见函数"><a href="#函数式编程的常见函数" class="headerlink" title="函数式编程的常见函数"></a>函数式编程的常见函数</h4><p>从一个例子说起，假设我们有一个名字列表，其中一些条目由单个字符构成。现在的任务是：</p>
+<ul>
+<li>除去单字符条目</li>
+<li>放在一个逗号分隔的字符串中进行返回</li>
+<li>每个名字的首字母都是大写<br>代码可参考《函数式编程思维》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/trans/TheCompanyProcess.java" target="_blank" rel="noopener">github</a><br>传统的java实现<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">String</span> cleanNames(List&lt;<span class="keyword">String</span>&gt; listOfNames) &#123;</span><br><span class="line">    StringBuilder result = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; listOfNames.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (listOfNames.<span class="built_in">get</span>(i).length() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            result.<span class="built_in">append</span>(capitalizeString(listOfNames.<span class="built_in">get</span>(i))).<span class="built_in">append</span>(<span class="string">","</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>).toString();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">String</span> capitalizeString(<span class="keyword">String</span> s) &#123;</span><br><span class="line">    <span class="keyword">return</span> s.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + s.substring(<span class="number">1</span>, s.length());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>命令式编程鼓励程序员将操作安排在循环内部执行，本例中的三个操作filter、transform、convert都必须依赖于相同的低层次机制。</p>
+<p>Java8的实现：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">String</span> cleanNames(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; names) &#123;</span><br><span class="line">    <span class="keyword">if</span> (names == <span class="built_in">null</span>) <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">return</span> names</span><br><span class="line">            .stream()</span><br><span class="line">            .filter(name -&gt; name.length() &gt; <span class="number">1</span>)</span><br><span class="line">            .<span class="built_in">map</span>(name -&gt; capitalize(name))</span><br><span class="line">            .collect(Collectors.joining(<span class="string">","</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> <span class="built_in">String</span> capitalize(<span class="built_in">String</span> e) &#123;</span><br><span class="line">    <span class="keyword">return</span> e.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + e.substring(<span class="number">1</span>, e.length());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>两者的对比，可以发现后者这种更高层次的抽象思考有一些好处：</p>
+<ul>
+<li>促使我们换一种角度去归类问题，看到问题的共性。</li>
+<li>让运行时有更大的余地去做只能的优化（有时候调整作业的先后顺序会更有效率）。</li>
+<li>让埋头实现细节的开发者看到原本视野之外的解决方案（比如，如果改用多线程，传统的方式可能需要自己手动穿插一些线程相关的代码）</li>
+</ul>
+<p>可以从上述例子中，看到三个函数filter、map、fold/reduce的影子。</p>
+<ol>
+<li><p>filter——筛选<br>根据用户定义的条件来筛选列表中的条目，并由此产生一个较小的新列表。</p>
+</li>
+<li><p>map——映射<br>对原集合的每一个元素执行给定的函数，从而变换成一个新的集合。</p>
+</li>
+<li><p>fold/reduce——折叠/化约<br>用一个累积量来“收集”集合元素。</p>
+</li>
+</ol>
+<p>总而言之，函数式编程以参数传递和函数的复合作为主要的表现手段，我们不需要掌握太多作为“不确定因素”存在的其他语言构造之间的交互规则。</p>
+<p>本篇只讲述了函数式编程的概念、背景和三个具有普遍意义的基本构造单元，<a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探2" target="_blank" rel="noopener">下一篇</a>我会讲述一些柯里化与部分施用、缓存、缓求值、 函数式的数据结构。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/01/RxJava/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/01/RxJava/" itemprop="url">RxJava</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-01T22:19:46+08:00">
+                2016-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RxJava/" itemprop="url" rel="index">
+                    <span itemprop="name">RxJava</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
+<h3 id="二、响应式编程"><a href="#二、响应式编程" class="headerlink" title="二、响应式编程"></a>二、响应式编程</h3><p>响应式编程是一种面向数据流和变化传播的编程范式，数据更新是相关联的。<br>在交互式编程中，A = B + C这样的表达式意味着将B与C之和赋给A，而此后B与C的改变都与A无关。<br>而在响应式编程中，A会去“响应”B或C的变化，即一旦B或C改变之后，A的值也会随之变化。</p>
+<h3 id="三、定义"><a href="#三、定义" class="headerlink" title="三、定义"></a>三、定义</h3><p>我的理解是，RxJava本质上是一个异步操作库，是一个能让你用极其简洁的逻辑去处理繁琐复杂任务的异步事件库。（其实初学者把握两点就好了：观察者模式和异步）</p>
+<h3 id="四、背景"><a href="#四、背景" class="headerlink" title="四、背景"></a>四、背景</h3><p>Rx的全称是Reactive Extensions。直译过来就是响应式扩展。<br>Rx基于观察者模式，是一种编程模型。其目标是提供一致的编程接口，帮助开发者更方便的处理异步数据流。<br>Rx最初是LINQ的一个扩展，由微软的架构师Erik Meijer领导的团队开发，在2012年11月开源。<br>Rx的大部分语言库由ReactiveX这个组织负责维护，比较流行的有RxJava/RxJS/Rx.NET，社区网站是 reactivex.io。<br>RxJava是 ReactiveX 在JVM上的一个实现。</p>
+<h3 id="五、为什么"><a href="#五、为什么" class="headerlink" title="五、为什么?"></a>五、为什么?</h3><ul>
+<li>函数式风格</li>
+<li>简化代码</li>
+<li>异步错误处理</li>
+<li>轻松使用并发</li>
+</ul>
+<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>说了很多，其实对RxJava是什么，其实还不是很明确，我们先来一个Hello world。</p>
+<pre><code>Observable
+    .create(new OnSubscribe&lt;String&gt;() {
+        @Override
+        public void call(Subscriber&lt;? super String&gt; subscriber) {
+            subscriber.onNext(&quot;Hello World&quot;);
+        }
+    })
+    .subscribe(new Subscriber&lt;String&gt;() {
+        @Override
+        public void onNext(String s) {
+            System.out.println(s);
+        }
+    });
+</code></pre><p>简化下来就是：</p>
+<pre><code>Observable.create(subscriber -&gt; {
+    subscriber.onNext(&quot;Hello World!&quot;);
+}).subscribe(System.out::println);
+</code></pre><p>执行的过程就是创建、监听、订阅。</p>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
+<li>Observable：被观察者</li>
+<li>Observer: 观察者</li>
+<li>Subscriber：观察者，implements Observer。 </li>
+<li>OnSubscribe：一个接口类，是连接被观察者和观察者的桥梁，另外要说明的是onSubscribe是Observable的一个局部变量。</li>
+</ul>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><h5 id="第1步：创建观察者Observer"><a href="#第1步：创建观察者Observer" class="headerlink" title="第1步：创建观察者Observer"></a>第1步：创建观察者Observer</h5><pre><code>Observer&lt;Object&gt; observer = new Observer&lt;Object&gt;() {
+
+    @Override
+    public void onCompleted() {
+
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
+    }
+
+    @Override
+    public void onNext(Object s) {
+
+    }
+};
+</code></pre><h5 id="第2步：创建被观察者Observable"><a href="#第2步：创建被观察者Observable" class="headerlink" title="第2步：创建被观察者Observable"></a>第2步：创建被观察者Observable</h5><p>Observable.create()方法可以创建一个Observable，<br>使用create()创建Observable需要一个OnSubscribe对象，这个对象继承Action1。<br>当观察者订阅我们的Observable时，它作为一个参数传入并执行call()函数。</p>
+<pre><code>Observable&lt;Object&gt; observable = Observable.create(new Observable.OnSubscribe&lt;Object&gt;() {         
+    @Override
+    public void call(Subscriber&lt;? super Object&gt; subscriber) {
+
+    }
+});
+</code></pre><p>除了create()，just()和from()同样可以创建Observable。看看下面两个例子：</p>
+<p>just(T…)将传入的参数依次发送</p>
+<pre><code>Observable observable = Observable.just(&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;);
+//上面这行代码会依次调用
+//onNext(&quot;One&quot;);
+//onNext(&quot;Two&quot;);
+//onNext(&quot;Three&quot;);
+//onCompleted();
+</code></pre><p>from(T[])/from(Iterable&lt;? extends T&gt;)将传入的数组或者Iterable拆分成Java对象依次发送</p>
+<pre><code>String[] parameters = {&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;};
+Observable observable = Observable.from(parameters);
+//上面这行代码会依次调用
+//onNext(&quot;One&quot;);
+//onNext(&quot;Two&quot;);
+//onNext(&quot;Three&quot;);
+//onCompleted();
+</code></pre><h5 id="第3步：被观察者Observable订阅观察者Observer"><a href="#第3步：被观察者Observable订阅观察者Observer" class="headerlink" title="第3步：被观察者Observable订阅观察者Observer"></a>第3步：被观察者Observable订阅观察者Observer</h5><p>你没看错，不同于普通的观察者模式，这里是被观察者订阅观察者：</p>
+<pre><code>observable.subscribe(observer);
+</code></pre><p>连起来就是：</p>
+<pre><code>Observable.create(new OnSubscribe&lt;String&gt;() {
+        @Override
+        public void call(Subscriber&lt;? super String&gt; subscriber) {
+            subscriber.onNext(&quot;Hello World!&quot;);
+            subscriber.onCompleted();
+        }
+
+    }).subscribe(new Subscriber&lt;String&gt;() {
+
+        @Override
+        public void onCompleted() {
+            System.out.println(&quot;Done&quot;);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onNext(String t) {
+            System.out.println(t);
+        }
+
+    });
+</code></pre><p>这里表面是被观察者订阅观察者，是为了更好的链式结构。<br>实际上，过程如下：</p>
+<ul>
+<li>创建一个被观察者，并传入一个OnSubcribe。</li>
+<li>创建一个观察者Subscriber。</li>
+<li>一旦发生subscribe时，会自动触发上述的OnSubcribe的call方法。</li>
+<li>而OnSubcribe的call方法中的参数subscriber就是第二步中的被观察者Subscriber。</li>
+<li>然后就调用上述代码中的<code>subscriber.onNext(&quot;Hello World!&quot;);</code></li>
+<li>也就是真实上述代码中<code>Override</code>的<code>onNext()</code>方法了。<br>所以本质上来讲，还是被观察者执行订阅操作的。</li>
+</ul>
+<h3 id="七、操作符"><a href="#七、操作符" class="headerlink" title="七、操作符"></a>七、操作符</h3><p>有了对上一步调用的理解，再去看源代码中操作符的实质，就很简单了。</p>
+<p>RxJava的操作符分为如下几类：</p>
+<ul>
+<li>转换类操作符<br>map、flatMap、concatMap等等</li>
+<li>过滤类操作符<br>filter、find等等</li>
+<li>组合类操作符<br>concat、merge、zip等等</li>
+<li>数学类操作符<br>count、max等等</li>
+<li>布尔类操作符<br>includes、some等等</li>
+</ul>
+<p>对于这些操作符的调用分析，读者可以自己查看源代码。<br>对于操作符的用法，可以参考<a href="https://github.com/zhangyuyu/learnrxjava" target="_blank" rel="noopener">Github TDD 练习</a>。<br>对于操作符形象化的理解，可以参考一个交互式的动画网站<a href="http://rxmarbles.com/" target="_blank" rel="noopener">http://rxmarbles.com/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/27/微服务-consul架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/27/微服务-consul架构/" itemprop="url">Consul架构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-27T19:10:52+08:00">
+                2016-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MicroServices/" itemprop="url" rel="index">
+                    <span itemprop="name">MicroServices</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
+<li><a href="#agent">Agent</a></li>
+<li><a href="#client">Client</a></li>
+<li><a href="#server">Server</a></li>
+<li><a href="#datacenter">DataCenter</a></li>
+<li><a href="#gossip">Gossip</a></li>
+<li><a href="#consensus">Consensus</a></li>
+<li><a href="#rpc">RPC</a></li>
+</ul>
+<h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a><p id="agent"></p>Agent</h4><p>　　<code>Consul agent</code>有两种运行模式：<a href="#server">Server</a> 和 <a href="#client">Client</a>。这里的Server和Client只是Consul集群层面的区分，与搭建在Cluster之上的应用服务无关。<br>　　agent负责节点以及节点上服务的健康检查，健康检查是每个服务发现框架中重要组成部分，因为只有健康的服务才应该被clients发现，不健康的主机会被Consul服务注销.Agent之间是通过指定的端口以及TCP和UDP协议进行通信的。</p>
+<h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a><p id="client"></p>Client</h4><p>　　Client节点是相对无状态的，Client的唯一活动就是转发请求给<code>Server agent</code>节点，以保持低延迟和少资源消耗。</p>
+<h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a><p id="server"></p>Server</h4><p>　　以Server模式运行的Consul agent节点用于维护Consul集群的状态，官方建议每个Consul Cluster至少有3个或以上的运行在Server模式的Agent,Client节点则不限。<br>　　每个<a href="#datacenter">DataCenter</a>的Consul Cluster都会在<code>server agent</code>节点中选出一个Leader节点，这个选举过程通过Consul实现的<a href="https://raft.github.io/" target="_blank" rel="noopener">Raft Protocol</a>保证，多个<code>server agent</code>节点上的Consul数据信息是强一致的。</p>
+<h4 id="DataCenter"><a href="#DataCenter" class="headerlink" title="DataCenter"></a><p id="datacenter"></p>DataCenter</h4><p>　　数据中心似乎是显而易见的，但也有微妙的细节，如EC2多个可用区。 我们定义了一个数据中心是一个联网环境是私有的，低延迟和高带宽。 这不包括通信，将穿越公共互联网。</p>
+<h4 id="Gossip"><a href="#Gossip" class="headerlink" title="Gossip"></a><p id="gossip"></p>Gossip</h4><p>　　Gossip协议是电脑之间的通信协议，受启发于现实社会的流言蜚语。现代分布式系统通常用Gossip协议来解决一些用其他方法难以解决的问题，可能是因为当前网络有一个不便的问题——过于庞大，或许是因为Gossip协议有时候是最为行之有效的方法。<br>　　“传染病协议”(Epidemic protocol)有时候也是Gossip协议的同义词，因为gossip协议传播信息的方式，有时候很类似于生物体内的病毒传播。<br>　　简言之，Gossip就是p2p协议。它主要要做的事情是，去中心化。<br>这个协议就是模拟人类中传播谣言的行为而来。首先要传播谣言就要有种子节点。种子节点每秒都会随机向其他节点发送自己所拥有的节点列表，以及需要传播的消息。任何新加入的节点，就在这种传播方式下很快地被全网所知道。<br>　　LAN gossip pool包含了同一局域网内所有节点，包括<code>server agent</code>与<code>client agent</code>。这基本上是位于同一个数据中心DC。<br>　　WAN gossip pool一般仅包含<code>server agent</code>，将跨越多个DC数据中心，通过互联网或广域网进行通信。</p>
+<h4 id="Consensus"><a href="#Consensus" class="headerlink" title="Consensus"></a><p id="consensus"></p>Consensus</h4><p>　　一致性协议使用的是<a href="https://raft.github.io/" target="_blank" rel="noopener">Raft Protocol</a></p>
+<h4 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a><p id="rpc"></p>RPC</h4><p>　　RPC(Remote Procedure Call)远程过程调用,这是一个请求/响应机制，允许一个客户端，向一个服务器发送请求。<br><code>Leader server agent</code>负责所有的RPC请求，查询并相应。所以其他服务器收到<code>client agent</code>的RPC请求时，会转发到<code>Leader server agent</code>。<br>　　同事整理的RPC文档→<a href="http://koly.me/2016/04/22/RPC-and-Apache-Thrift/" target="_blank" rel="noopener">Remote Procedure Call</a></p>
+<p>　　下图为Consul的架构图：<br><img src="/imgs/consul-arch.jpg" width="400" height="250"></p>
+<h3 id="使用Consul发现服务的三个组件"><a href="#使用Consul发现服务的三个组件" class="headerlink" title="使用Consul发现服务的三个组件"></a>使用Consul发现服务的三个组件</h3><ol>
+<li><p>Consul 存储服务信息<br>　　tool to store information about services</p>
+</li>
+<li><p>Registrator 注册Docker服务<br>　　tool to register Docker servicecs</p>
+</li>
+<li><p>Consul-template 查询注册的服务并应用配置<br>　　tool to query registered services and apply configuration</p>
+</li>
+</ol>
+<p>　　下图为Consul和ECS之间一起运作的架构：<br><img src="/imgs/consul-EC2.png" width="400" height="250"></p>
+<blockquote>
+<p>Consul官网对于Consul架构的解释:<br><br><a href="https://www.consul.io/docs/internals/architecture.html" target="_blank" rel="noopener">CONSUL ARCHITECTURE</a><br></p>
+<p>Amazon官网上的博客:<br><br><a href="https://aws.amazon.com/blogs/compute/service-discovery-via-consul-with-amazon-ecs/" target="_blank" rel="noopener">Service Discovery via Consul with Amazon ECS</a><br><br>翻译的中文版地址:<br><br><a href="http://yaowenjie.github.io/cloud/service-discovery-via-consul-with-amazon-ecs" target="_blank" rel="noopener">在ECS上使用Consul实现服务发现</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/23/微服务-服务发现工具：Zookeeper-vs-etcd-vs-Consul/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -380,8 +1012,8 @@
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>　　所有这些工具都是基于相似的原则和架构，它们在节点上运行，需要仲裁来运行，并且都是强一致性的，都提供某种形式的键/值对存储。<br>　　ZooKeeper是其中最老态龙钟的一个，使用年限显示出了其复杂性、资源利用和尽力达成的目标，它是为了与我们评估的其他工具所处的不同时代而设计的（即使它不是老得太多）。<br>　　etcd、Registrator和Confd是一个非常简单但非常强大的组合，可以解决大部分问题，如果不是全部满足服务发现需要的话。它还展示了我们可以通过组合非常简单和特定的工具来获得强大的服务发现能力，它们中的每一个都执行一个非常具体的任务，通过精心设计的API进行通讯，具备相对自治工作的能力，从架构和功能途径方面都是微服务方式。<br>　　Consul的不同之处在于无需第三方工具就可以原生支持多数据中心和健康检查，这并不意味着使用第三方工具不好。实际上，在这篇博客里我们通过选择那些表现更佳同时不会引入不必要的功能的的工具，尽力组合不同的工具。使用正确的工具可以获得最好的结果。如果工具引入了工作不需要的特性，那么工作效率反而会下降，另一方面，如果工具没有提供工作所需要的特性也是没有用的。Consul很好地权衡了权重，用尽量少的东西很好的达成了目标。<br>　　Consul使用gossip来传播集群信息的方式，使其比etcd更易于搭建，特别是对于大的数据中心。将存储数据作为服务的能力使其比etcd仅仅只有健/值对存储的特性更加完整、更有用（即使Consul也有该选项）。虽然我们可以在etcd中通过插入多个键来达成相同的目标，Consul的服务实现了一个更紧凑的结果，通常只需要一次查询就可以获得与服务相关的所有数据。除此之外，Registrator很好地实现了Consul的两个协议，使其合二为一，特别是添加Consul-template到了拼图中。Consul的Web UI更是锦上添花般地提供了服务和健康检查的可视化途径。<br>　　我不能说Consul是一个明确的赢家，而是与etcd相比其有一个轻微的优势。服务发现作为一个概念，以及作为工具都很新，我们可以期待在这一领域会有许多的变化。秉承开放的心态，大家可以对本文的建议持保留态度，尝试不同的工具然后做出自己的结论。
 　　</p>
 <blockquote>
-<p>完整中文版地址:<a href="http://dockone.io/article/667" target="_blank" rel="external">服务发现：ZooKeeper vs etcd vs Consul</a></p>
-<p>完整原文链接：<a href="https://technologyconversations.com/2015/09/08/service-discovery-ZooKeeper-vs-etcd-vs-consul/" target="_blank" rel="external">Service Discovery: ZooKeeper vs etcd vs Consul</a></p>
+<p>完整中文版地址:<a href="http://dockone.io/article/667" target="_blank" rel="noopener">服务发现：ZooKeeper vs etcd vs Consul</a></p>
+<p>完整原文链接：<a href="https://technologyconversations.com/2015/09/08/service-discovery-ZooKeeper-vs-etcd-vs-consul/" target="_blank" rel="noopener">Service Discovery: ZooKeeper vs etcd vs Consul</a></p>
 </blockquote>
 
           
@@ -524,24 +1156,24 @@
       
         
           
-            <h3 id="为什么要使用服务发现？"><a href="#为什么要使用服务发现？" class="headerlink" title="为什么要使用服务发现？"></a>为什么要使用服务发现？</h3><p>　　我们可以想象一下，当我们需要远程的访问REST API或者Thrift API时，我们必须得知道服务的网络地址（IP Address和port）。传统的应用程序都是运行在固定的物理机器上，IP Address和端口号都是相对固定的。可以通过配置文件方式来实现不定期更新的Ip Address和端口号。但是，在基于云的微服务应用中，这是一个非常难以解决的问题。如下图所示：<br><img src="/imgs/theproblemofdiscovery.png" width="400" height="250"><br>　　在基于云的微服务应用中，服务实例的网络地址（IP Address和Port）是动态分配的，并且由于系统的auto-scaling, failures 和 upgrades等因数，一些服务运行的实例数量也是动态变化的。因此，客户端代码需要使用一个非常精细和准确的服务发现机制。<br>有两种主要的服务发现方式：客户端发现（<a href="http://microservices.io/patterns/client-side-discovery.html" target="_blank" rel="external">client-side discovery</a>）和服务器端发现（<a href="http://microservices.io/patterns/server-side-discovery.html" target="_blank" rel="external">server-side discovery</a>）。</p>
+            <h3 id="为什么要使用服务发现？"><a href="#为什么要使用服务发现？" class="headerlink" title="为什么要使用服务发现？"></a>为什么要使用服务发现？</h3><p>　　我们可以想象一下，当我们需要远程的访问REST API或者Thrift API时，我们必须得知道服务的网络地址（IP Address和port）。传统的应用程序都是运行在固定的物理机器上，IP Address和端口号都是相对固定的。可以通过配置文件方式来实现不定期更新的Ip Address和端口号。但是，在基于云的微服务应用中，这是一个非常难以解决的问题。如下图所示：<br><img src="/imgs/theproblemofdiscovery.png" width="400" height="250"><br>　　在基于云的微服务应用中，服务实例的网络地址（IP Address和Port）是动态分配的，并且由于系统的auto-scaling, failures 和 upgrades等因数，一些服务运行的实例数量也是动态变化的。因此，客户端代码需要使用一个非常精细和准确的服务发现机制。<br>有两种主要的服务发现方式：客户端发现（<a href="http://microservices.io/patterns/client-side-discovery.html" target="_blank" rel="noopener">client-side discovery</a>）和服务器端发现（<a href="http://microservices.io/patterns/server-side-discovery.html" target="_blank" rel="noopener">server-side discovery</a>）。</p>
 <h3 id="客户端发现方式"><a href="#客户端发现方式" class="headerlink" title="客户端发现方式"></a>客户端发现方式</h3><p>　　在使用客户端发现方式时，客户端通过查询服务注册中心，获取可用的服务的实际网络地址（IP Adress 和 端口号）。然后通过负载均衡算法来选择一个可用的服务实例，并将请求发送至该服务。下图显示了客户端发现方式的结构图：<br><img src="/imgs/pattern_clientside.png" width="400" height="250"><br>　　在服务启动的时候，向服务注册中心注册服务；在服务停止的时候，向服务注册中心注销服务。服务注册的一个典型的实现方式就是通过heartbeat机制定时刷新。Netflix OSS 就是使用客户端发现方式的一个很好的例子。  Netflix Eureka是一个服务注册中心。它提供了一个管理和查询可用服务的 REST API。 负载均衡功能是通过Netflix Ribbon（是一个IPC客户端）和Eureka一起共同实现的。在文章的后面将深入的介绍Eureka。<br>　　客户端发现方式的优缺点。由于客户端知道所有可用的服务的实际网络地址，所以可以非常方便的实现负载均衡功能（比如：一致性哈希）。但是这种方式有一个非常明显的缺点就是具有非常强的耦合性。针对不同的语言，每个服务的客户端都得实现一套服务发现的功能。</p>
-<h3 id="服务端发现方式"><a href="#服务端发现方式" class="headerlink" title="服务端发现方式"></a>服务端发现方式</h3><p>　　另外一种服务发现的方式就是Server-Side Discovery Pattern，下图展示了这种方式的架构示例图：<br><img src="/imgs/pattern_serverside.png" width="400" height="250"><br>　　客户端向load balancer 发送请求。load balancer 查询服务注册中心找到可用的服务，然后转发请求到该服务上。和客户端发现一样，服务都要到注册中心进行服务注册和注销。AWS的弹性负载均衡（Elastic Load Balancer–ELB）就是服务端发现的一个例子。ELB通常是用于为外网服务提供负载平衡的。当然你也可以使用ELB为内部虚拟私有云（VPC）提供负载均衡服务。客户端通过使用DNS名称，发送HTTP或TCP请求到ELB。ELB为EC2或ECS集群提供负载均衡服务。AWS并没有提供单独的服务注册中心。而是通过ELB实现EC2实例和ECS容器的注册的。<br>　　NGINX不仅可以作为HTTP反向代理服务器和负载均衡器，也可以用来作为一个服务发现的负载均衡器。例如，这篇博客（<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx" target="_blank" rel="external">Scalable Architecture DR CoN: Docker, Registrator, Consul, Consul Template and Nginx</a>）介绍如何使用Consul Template 动态的配置NGINX功能。<br><a href="https://github.com/kubernetes/kubernetes/blob/master/docs/design/architecture.md" target="_blank" rel="external">Kubernetes</a> 和 <a href="https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html" target="_blank" rel="external">Marathon</a>是在通过集群中每个节点都运行一个代理来实现服务发现的功能的，代理的角色就是server-side discovery,客户端通过使用主机的IP Address和Port向Proxy发送请求，Proxy再将请求转发到集群中任何一个可用的服务上。<br>　　服务器端发现方式的优点是，服务的发现逻辑对客户端是透明的。客户只需简单的向load balancer发送请求就可以了。这就避免了为每种不同语言的客户端实现一套发现的逻辑。此外，许多软件都内置实现了这种功能。这种方式的一个最大的缺点是，你必须得关心该组件的高可用性。</p>
+<h3 id="服务端发现方式"><a href="#服务端发现方式" class="headerlink" title="服务端发现方式"></a>服务端发现方式</h3><p>　　另外一种服务发现的方式就是Server-Side Discovery Pattern，下图展示了这种方式的架构示例图：<br><img src="/imgs/pattern_serverside.png" width="400" height="250"><br>　　客户端向load balancer 发送请求。load balancer 查询服务注册中心找到可用的服务，然后转发请求到该服务上。和客户端发现一样，服务都要到注册中心进行服务注册和注销。AWS的弹性负载均衡（Elastic Load Balancer–ELB）就是服务端发现的一个例子。ELB通常是用于为外网服务提供负载平衡的。当然你也可以使用ELB为内部虚拟私有云（VPC）提供负载均衡服务。客户端通过使用DNS名称，发送HTTP或TCP请求到ELB。ELB为EC2或ECS集群提供负载均衡服务。AWS并没有提供单独的服务注册中心。而是通过ELB实现EC2实例和ECS容器的注册的。<br>　　NGINX不仅可以作为HTTP反向代理服务器和负载均衡器，也可以用来作为一个服务发现的负载均衡器。例如，这篇博客（<a href="https://www.airpair.com/scalable-architecture-with-docker-consul-and-nginx" target="_blank" rel="noopener">Scalable Architecture DR CoN: Docker, Registrator, Consul, Consul Template and Nginx</a>）介绍如何使用Consul Template 动态的配置NGINX功能。<br><a href="https://github.com/kubernetes/kubernetes/blob/master/docs/design/architecture.md" target="_blank" rel="noopener">Kubernetes</a> 和 <a href="https://mesosphere.github.io/marathon/docs/service-discovery-load-balancing.html" target="_blank" rel="noopener">Marathon</a>是在通过集群中每个节点都运行一个代理来实现服务发现的功能的，代理的角色就是server-side discovery,客户端通过使用主机的IP Address和Port向Proxy发送请求，Proxy再将请求转发到集群中任何一个可用的服务上。<br>　　服务器端发现方式的优点是，服务的发现逻辑对客户端是透明的。客户只需简单的向load balancer发送请求就可以了。这就避免了为每种不同语言的客户端实现一套发现的逻辑。此外，许多软件都内置实现了这种功能。这种方式的一个最大的缺点是，你必须得关心该组件的高可用性。</p>
 <h3 id="服务注册中心"><a href="#服务注册中心" class="headerlink" title="服务注册中心"></a>服务注册中心</h3><p>　　服务注册中心是服务发现的核心。它保存了各个可用服务实例的网络地址（IP Address和Port）。服务注册中心必须要有高可用性和实时更新功能。<br>　　上面提到的 Netflix Eureka 就是一个服务注册中心。它提供了服务注册和查询服务信息的REST API。服务通过使用POST请求注册自己的IP Address和Port。每30秒发送一个PUT请求刷新注册信息。通过DELETE请求注销服务。客户端通过GET请求获取可用的服务实例信息。<br>Netflix的高可用（Netflix achieves high availability ）是通过在Amazon EC2运行多个实例来实现的,每一个Eureka服务都有一个弹性IP Address。当Eureka服务启动时，有DNS服务器动态的分配。Eureka客户端通过查询 DNS来获取Eureka的网络地址（IP Address和Port）。一般情况下，都是返回和客户端在同一个可用区Eureka服务器地址。<br>　　其他能够作为服务注册中心的有：<br>－　etcd —– 高可用，分布式，强一致性的，key-value，Kubernetes和Cloud Foundry都是使用了etcd。<br>－　consul —–一个用于discovering和 configuring的工具。它提供了允许客户端注册和发现服务的API。Consul可以进行服务健康检查，以确定服务的可用性。<br>－　zookeeper —— 在分布式应用中被广泛使用，高性能的协调服务。 Apache Zookeeper 最初为Hadoop的一个子项目，但现在是一个顶级项目。<br>　　我们已经了解了服务注册中心的概念，接下来我们看看服务是如果注册到注册中心的。有两种不同的方式来处理服务的注册和注销。一种是服务自己主动注册-自己注册（self-registration）。另一种是通过其他组件来管理服务的注册-第三方注册（third-party registration）。</p>
 <h3 id="Self-Registration"><a href="#Self-Registration" class="headerlink" title="Self-Registration"></a>Self-Registration</h3><p>　　使用Self-Registration的方式注册，服务实例必须自己主动的到注册中心注册和注销。比如可以使用heartbeat机制了实现。下图为这种方式的示意图：<br><img src="/imgs/pattern_selfregistration.png" width="400" height="250"><br>　　Netflix OSS Eureka client就是使用这种方式进行服务注册的。Eureka的客户端处理了服务注册和注销的所有工作。<br>　　Self-Registration方式的优缺点：一个明显的优点就是，非常简单，不需要任何其它辅助组件。而缺点也是比较明显的，使得各个服务和注册中心的耦合度比较高。服务的不同语言的客户端都得实现注册和注销的逻辑。另一种服务注册方式，可以达到解耦的功能，就是third-party registration方式。</p>
 <h3 id="Third-Party-Registration"><a href="#Third-Party-Registration" class="headerlink" title="Third-Party Registration"></a>Third-Party Registration</h3><p>　　使用Third-Party方式进行服务注册时，服务本身不必关心注册和注销功能。而是通过其他组件（service registrarhandles）来实现服务注册功能。可以通过如事件订阅等方式来监控服务的状态，如果发现一个新的服务实例运行，就向注册中心注册该服务，如果监控到某一服务停止了，就向注册中心注销该服务。下图显示了这种方式的结构图示意图：<br><img src="/imgs/pattern_thirdparties.png" width="400" height="250"><br>　　third-party Registration方式的优点是使服务和注册中心解耦，不用为每种语言实现服务注册的逻辑。这种方式的缺点就是必须得考虑该组件的高可用性。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　在微服务的应用系统中，服务实例的数量是动态变化。各服务实例动态分配网络地址（IP Address 和Port）。因此，为了为客户端能够访问到服务，就必须要有一种服务的发现机制。<br>服务发现的核心是服务注册中心。服务注册中心保存了各个服务可用的实例的相关信息。服务注册中心提供了管理API和查询API。使用管理API进行服务注册、注销。系统的其他组件可以通过查询API来获得当前可用的服务实例信息。<br>　　有两种主要的服务发现方式：客户端发现（client-side service discovery）和服务端发现（ server-side discovery）。在使用客户端服务发现的方式中，客户通过查询服务注册中心，选择一个可用的服务实例。在使用服务器端发现系统中，客户访问Router/load balancer，通过Router/load balancer查询服务注册中心，并将请求转发到一个可用服务实例上。<br>　　服务注册和注销的方式也有两种。一种是服务自己主动的将自己注册到服务注册中心，称为self-registration。另一种是通过其他组件来处理服务的注册和注销，称为third-party registration。<br>在有些环境中，服务发现功能需要自己通过服务注册中心（比如：Netflix Eureka, etcd, Apache Zookeeper）实现，而有些环境中，服务发现功能是内置的。例如，Kubernetes和Marathon。<br>Nginx可以作为HTTP反向代理和负载平衡器，也可以用来作为一个服务发现的负载均衡器。通过向nginx推送routing information来修改nginx的配置，比如使用：Consul Template动态修改NGINX的配置. NGINX Plus 也支持动态修改配置功能。<br>　　在今后的文章中，我们将继续深入分析微服务的其他方面的内容。</p>
 <blockquote>
-<p>MaxLeap翻译的中文版地址：<a href="https://blog.maxleap.cn/archives/524" target="_blank" rel="external">微服务系统中的服务发现机制</a></p>
+<p>MaxLeap翻译的中文版地址：<a href="https://blog.maxleap.cn/archives/524" target="_blank" rel="noopener">微服务系统中的服务发现机制</a></p>
 <p>原文作者发布的关于微服务系列文章的地址：</p>
 <ul>
-<li><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="external">Introduction to Microservices</a></li>
-<li><a href="https://www.nginx.com/blog/building-microservices-using-an-api-gateway/" target="_blank" rel="external">Building Microservices: Using an API Gateway</a></li>
-<li><a href="https://www.nginx.com/blog/building-microservices-inter-process-communication/" target="_blank" rel="external">Building Microservices: Inter-Process Communication in a Microservices Architecture</a></li>
-<li><a href="https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/" target="_blank" rel="external">Service Discovery in a Microservices Architecture</a></li>
-<li><a href="https://www.nginx.com/blog/event-driven-data-management-microservices/" target="_blank" rel="external">Event-Driven Data Management for Microservices</a></li>
-<li><a href="https://www.nginx.com/blog/deploying-microservices/" target="_blank" rel="external">Choosing a Microservices Deployment Strategy</a></li>
-<li><a href="https://www.nginx.com/blog/refactoring-a-monolith-into-microservices/" target="_blank" rel="external">Refactoring a Monolith into Microservices</a></li>
+<li><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">Introduction to Microservices</a></li>
+<li><a href="https://www.nginx.com/blog/building-microservices-using-an-api-gateway/" target="_blank" rel="noopener">Building Microservices: Using an API Gateway</a></li>
+<li><a href="https://www.nginx.com/blog/building-microservices-inter-process-communication/" target="_blank" rel="noopener">Building Microservices: Inter-Process Communication in a Microservices Architecture</a></li>
+<li><a href="https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/" target="_blank" rel="noopener">Service Discovery in a Microservices Architecture</a></li>
+<li><a href="https://www.nginx.com/blog/event-driven-data-management-microservices/" target="_blank" rel="noopener">Event-Driven Data Management for Microservices</a></li>
+<li><a href="https://www.nginx.com/blog/deploying-microservices/" target="_blank" rel="noopener">Choosing a Microservices Deployment Strategy</a></li>
+<li><a href="https://www.nginx.com/blog/refactoring-a-monolith-into-microservices/" target="_blank" rel="noopener">Refactoring a Monolith into Microservices</a></li>
 </ul>
 </blockquote>
 
@@ -834,7 +1466,7 @@ if __name__ == &apos;__main__&apos;:
     httpd = make_server(SERVER_ADDRESS, application)
     print(&apos;WSGIServer: Serving HTTP on port {port} ...\n&apos;.format(port=PORT))
     httpd.serve_forever()
-</code></pre><p>　　上面的代码确实比第一部分服务器的代码长，但是为了让你能够理解而不至于陷入细节的泥潭中，它已经足够短了（不到150行）。上面的服务器也能做更多——它能运行用你喜欢的框架（Pyramid, flask, Django或者其他Python WSGI框架）编写的基本web应用程序。<br>　　不信？动手试一下吧。保存上面的代码到<code>webserver2.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/webserver2.py" target="_blank" rel="external">GitHub</a>上下载。如果你试图运行时不带任何参数，它会提示并退出。</p>
+</code></pre><p>　　上面的代码确实比第一部分服务器的代码长，但是为了让你能够理解而不至于陷入细节的泥潭中，它已经足够短了（不到150行）。上面的服务器也能做更多——它能运行用你喜欢的框架（Pyramid, flask, Django或者其他Python WSGI框架）编写的基本web应用程序。<br>　　不信？动手试一下吧。保存上面的代码到<code>webserver2.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/webserver2.py" target="_blank" rel="noopener">GitHub</a>上下载。如果你试图运行时不带任何参数，它会提示并退出。</p>
 <pre><code>$ python webserver2.py
 Provide a WSGI application object as module:callable
 </code></pre><p>　　它真的想服务你的web应用程序，这就是有趣的开始。运行这个服务器你唯一要做的就是安装Python。但是要运行用Pyramid, flask或Django开发的应用，你需要先安装这些框架。让我们来安装这三个框架吧，我更喜欢使用virtualenv，只需要按照下面的步骤去创建和激活一个虚拟环境，就可以安装这三个框架了。</p>
@@ -848,7 +1480,7 @@ $ source bin/activate
 (lsbaws) $ pip install pyramid
 (lsbaws) $ pip install flask
 (lsbaws) $ pip install django
-</code></pre><h3 id="Pyramid框架"><a href="#Pyramid框架" class="headerlink" title="Pyramid框架"></a>Pyramid框架</h3><p>　　这时，你需创建一个Web应用程序。我们首先从Pyramid开始吧，保存下面的代码到<code>pyramidapp.py</code>并放到与<code>webserver2.py</code>的相同路径下，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/pyramidapp.py" target="_blank" rel="external">GitHub</a>上下载。</p>
+</code></pre><h3 id="Pyramid框架"><a href="#Pyramid框架" class="headerlink" title="Pyramid框架"></a>Pyramid框架</h3><p>　　这时，你需创建一个Web应用程序。我们首先从Pyramid开始吧，保存下面的代码到<code>pyramidapp.py</code>并放到与<code>webserver2.py</code>的相同路径下，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/pyramidapp.py" target="_blank" rel="noopener">GitHub</a>上下载。</p>
 <pre><code>from pyramid.config import Configurator
 from pyramid.response import Response
 
@@ -885,7 +1517,7 @@ def hello_world():
     )
 
 app = flask_app.wsgi_app
-</code></pre><p>　　保存上面的代码到<code>flaskapp.py</code>，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/flaskapp.py" target="_blank" rel="external">GitHub</a>上下载，运行服务器：</p>
+</code></pre><p>　　保存上面的代码到<code>flaskapp.py</code>，或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/flaskapp.py" target="_blank" rel="noopener">GitHub</a>上下载，运行服务器：</p>
 <pre><code>(lsbaws) $ python webserver2.py flaskapp:app
 WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　在浏览器输入<code>http://localhost:8888/hello</code>，回车：<br><img src="/imgs/WS_part2_browser_flask.png" width="400" height="250"></p>
@@ -950,12 +1582,12 @@ run_application(app)
     response_headers = [(&apos;Content-Type&apos;, &apos;text/plain&apos;)]
     start_response(status, response_headers)
     return [&apos;Hello world from a simple WSGI application!\n’]
-</code></pre><p>　　同样的，把上面的代码保存为<code>wsgiapp.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/wsgiapp.py" target="_blank" rel="external">GitHub</a>上下载，然后用你的web server运行：</p>
+</code></pre><p>　　同样的，把上面的代码保存为<code>wsgiapp.py</code>或者直接从<a href="https://github.com/rspivak/lsbaws/blob/master/part2/wsgiapp.py" target="_blank" rel="noopener">GitHub</a>上下载，然后用你的web server运行：</p>
 <pre><code>(lsbaws) $ python webserver2.py wsgiapp:app
 WSGIServer: Serving HTTP on port 8888 …
 </code></pre><p>　　输入下面的地址，回车，你会看到下面的结果：<br><img src="/imgs/WS_part2_browser_simple_wsgi_app.png" width="400" height="250"></p>
 <h3 id="HTTP响应"><a href="#HTTP响应" class="headerlink" title="HTTP响应"></a>HTTP响应</h3><p>　　在学习如何创建一个web server的同时，你刚刚写出了自己的微型WSGI Web框架。真是意外之喜。<br>　　现在让我们回到服务器给客户端传输什么。下面是当你用HTTP客户端调用你的Pyramid应用程序时，服务器生成的HTTP响应。<br><img src="/imgs/WS_part2_http_response.png" width="400" height="250"></p>
-<p>　　上述响应和你在<a href="http://zhangyuyu.github.io/2016/03/05/WebServer1/" target="_blank" rel="external">第一部分</a>看到的有些类似，但是也有一些新的内容。比如，有四个之前没见过的HTTP headers: <code>Content-Type</code>，<code>Content-Length</code>，<code>Date</code>，<code>Server</code>。这些都是web server生成的响应头信息中应该含有的。虽然它们都不是被严格要求的，但是这些头信息的目的是传输有关HTTP请求/响应的附加信息。<br>　　现在你更多的了解了关于WSGI的接口，下面是同一个HTTP响应关于哪些部分生成它的详细信息：<br><img src="/imgs/WS_part2_http_response_explanation.png" width="400" height="250"></p>
+<p>　　上述响应和你在<a href="http://zhangyuyu.github.io/2016/03/05/WebServer1/" target="_blank" rel="noopener">第一部分</a>看到的有些类似，但是也有一些新的内容。比如，有四个之前没见过的HTTP headers: <code>Content-Type</code>，<code>Content-Length</code>，<code>Date</code>，<code>Server</code>。这些都是web server生成的响应头信息中应该含有的。虽然它们都不是被严格要求的，但是这些头信息的目的是传输有关HTTP请求/响应的附加信息。<br>　　现在你更多的了解了关于WSGI的接口，下面是同一个HTTP响应关于哪些部分生成它的详细信息：<br><img src="/imgs/WS_part2_http_response_explanation.png" width="400" height="250"></p>
 <p>　　到现在我还没有说任何有关<code>environ</code>字典的信息，但是，它基本上就是一个Pyhon字典，这个字典必须包含某些有WSGI规定所规定的WSGI和CGI变量。解析完请求之后，服务器从HTTP请求中拿到了字典所需要的值。字典的内容如下：<br><img src="/imgs/WS_part2_environ.png" width="400" height="250"></p>
 <p>　　Web 框架用这个字典的信息，来决定使用哪个view（基于指定路由和请求方法等）；决定从哪里读取请求的正文；以及把错误信息写在哪里，如果有的话。
 　　</p>
@@ -973,7 +1605,7 @@ WSGIServer: Serving HTTP on port 8888 …
 <p>　　这就是全部了，你现在有了一个可以工作的WSGI服务器，它可以服务那些用WSGI兼容的Web框架（Django，Flask，Pyramid或者你自己写的WSGI框架）开发的Web应用程序。最好的是服务器能够在不改变服务器代码的情况下与多个Web框架使用。还不错！<br>在你离开之前，还有一个问题需要你思考，“如何让你的服务器一次处理多个请求？”<br>　　敬请关注，在第三部分我会展示给你一种实现方式。谢谢！
 　　</p>
 <blockquote>
-<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part2/" target="_blank" rel="external">Let’s Build A Web Server. Part 2.</a></p>
+<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part2/" target="_blank" rel="noopener">Let’s Build A Web Server. Part 2.</a></p>
 </blockquote>
 
           
@@ -1146,11 +1778,11 @@ Hello, World!
 &quot;&quot;&quot;
     client_connection.sendall(http_response)
     client_connection.close()
-</code></pre><p>　　保存上面的代码到<code>webserver.1py</code>文件或者在<a href="https://github.com/rspivak/lsbaws/blob/master/part1/webserver1.py" target="_blank" rel="external">GitHub</a>上直接下载，然后用下面的命令运行：</p>
+</code></pre><p>　　保存上面的代码到<code>webserver.1py</code>文件或者在<a href="https://github.com/rspivak/lsbaws/blob/master/part1/webserver1.py" target="_blank" rel="noopener">GitHub</a>上直接下载，然后用下面的命令运行：</p>
 <pre><code>$ python webserver1.py
 Serving HTTP on port 8888 …
 </code></pre><p>　　然后在浏览器地址栏输入<code>http://localhost:8888/hello</code>，然后回车，见证奇迹的时刻到来了。你应该可以看到<code>Hello World!</code>显示在浏览器中，如下所示：<br><img src="/imgs/WS_browser_hello_world.png" width="400" height="250"></p>
-<p>　　试着做一下吧，你在测试时候我会等你的。做完了吗？好极了。现在我们一起讨论它是如何生效的吧。首先让我们从你输入的网址开始，它叫做<a href="http://baike.baidu.com/link?url=cigkFmQSCQHgSk9SfSVZH7palffbNp6nHiV0WjRy4LkAFH02SIDw-htgvq-wBlMDAORPltXx1i-xcqNpLeGxla" target="_blank" rel="external">URL</a>,下面是它的基本结构：<br><img src="/imgs/WS_URL_Web_address.png" width="400" height="250"></p>
+<p>　　试着做一下吧，你在测试时候我会等你的。做完了吗？好极了。现在我们一起讨论它是如何生效的吧。首先让我们从你输入的网址开始，它叫做<a href="http://baike.baidu.com/link?url=cigkFmQSCQHgSk9SfSVZH7palffbNp6nHiV0WjRy4LkAFH02SIDw-htgvq-wBlMDAORPltXx1i-xcqNpLeGxla" target="_blank" rel="noopener">URL</a>,下面是它的基本结构：<br><img src="/imgs/WS_URL_Web_address.png" width="400" height="250"></p>
 <p>　　这就是你如何告诉浏览器，它需要找到并且连接的web server地址，同时获取服务器页面的方式。在你的浏览器发送一个HTTP请求，它首先需要和Web server建立一个TCP连接。然后它基于TCP连接给服务器发送一个HTTP请求等待服务器发送一个HTTP的响应回来。当收到响应之后，它会显示响应信息<code>Hello World!</code>。
 　　</p>
 <h3 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h3><p>　　让我们更详细的探讨如何在发送HTTP请求和响应之前，建立客户端和服务器TCP连接。要做到这一点，它们都使用所谓的sockets。如果不直接使用浏览器，可以通过手动在命令行使用telnet来模拟浏览器。在运行web server的同一台计算机上，通过命令行激活一个telnet会话指定连接主机为localhost，连接端口为8888，然后回车：</p>
@@ -1173,7 +1805,7 @@ Hello, World!
 <p>　　让我们深入剖析它，响应包含：状态行<code>HTTP/1.1 200 OK</code>，紧接着是需要的空行，然后就是HTTP的响应正文。响应状态行<code>HTTP/1.1 200 OK</code>包含HTTP的版本，HTTP的状态码（status code），以及对状态码的简短描述<code>OK</code>(reason-phrase)。当浏览器得到响应，会把响应正文展示出来，这就是你为什么在浏览器看到<code>Hello World!</code>的原因。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结　　"></a>总结　　</h3><p>　　上述是web server如何运行的基本模型。总而言之，web server创建一个监听socket并且开始循环的接收新的连接。客户端初始化一个TCP连接，当连接成功建立之后，客户端发送HTTP请求给服务器，服务器返回用于展示给用户的HTTP响应。要建立一个TCP响应，客户端和服务器都要使用sockets。<br>　　现在你有了一个非常基本的web server了， 你可以用浏览器和一些其他的HTTP客户端测试它。正如你所看到和你所希望的一样，你也可以通过telnet手动输入HTTP请求成为人工HTTP客户端。<br>　　下面提一个问题：你如何用你刚写出来的web server去运行一个Django应用，Flask应用和Pyramid应用，同时不对这个服务器做出单一改变来容纳所有这些不同的Web框架呢？在接下来的第二部分我会展示如何实现，敬请关注。</p>
 <blockquote>
-<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part1/" target="_blank" rel="external">Let’s Build A Web Server. Part 1.</a></p>
+<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part1/" target="_blank" rel="noopener">Let’s Build A Web Server. Part 1.</a></p>
 </blockquote>
 
           
@@ -1298,18 +1930,18 @@ Hello, World!
 <blockquote>
 <p>Vagrant的作用：<br>1、统一开发环境。一次配置打包，统一分发给团队成员，统一团队开发环境，解决诸如“编码问题”，“缺少模块”，“配置文件不同”带来的问题；<br>2、避免重复搭建开发环境。新员工加入，不用浪费时间搭建开发环境，快速加入开发，减少时间成本的浪费；<br>3、多个相互隔离开发环境。可以在不用box里跑不同的语言，或者编译安装同一语言不同版本，搭建多个相互隔离的开发环境，卸载清除时也很快捷轻松。</p>
 </blockquote>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="external">http://www.vagrantup.com/downloads</a></p>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、安装-VirtualBox"><a href="#1、安装-VirtualBox" class="headerlink" title="1、安装 VirtualBox"></a>1、安装 VirtualBox</h4><h4 id="2、安装-Vagrant"><a href="#2、安装-Vagrant" class="headerlink" title="2、安装 Vagrant"></a>2、安装 Vagrant</h4><p>下载地址：<a href="http://www.vagrantup.com/downloads" target="_blank" rel="noopener">http://www.vagrantup.com/downloads</a></p>
 <blockquote>
-<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="external">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
+<p>Window下可以使用软件包管理工具chocolate安装，参照<a><a href="https://chocolatey.org/" target="_blank" rel="noopener">https://chocolatey.org/</a></a><br>Mac OSX下可以使用brew安装。</p>
 </blockquote>
 <h4 id="3、安装系统镜像"><a href="#3、安装系统镜像" class="headerlink" title="3、安装系统镜像"></a>3、安装系统镜像</h4><p>3.1 通过Vagrant Cloud方式</p>
 <ul>
 <li>新建一个文件夹，如AgentBox,然后进入目录</li>
-<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="external">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
+<li>在<a><a href="https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1" target="_blank" rel="noopener">https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1</a></a>上搜索想安装的镜像，找到对应的安装指令，如<code>$ vagrant init ubuntu/precise64; vagrant up --provider virtualbox</code>。　</li>
 </ul>
 <p>3.2 通过添加box方式</p>
 <ul>
-<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="external">http://www.vagrantbox.es/</a></a>下载镜像。</li>
+<li>在<a><a href="http://www.vagrantbox.es/" target="_blank" rel="noopener">http://www.vagrantbox.es/</a></a>下载镜像。</li>
 <li><code>$ vagrant box add {title} {url}</code><ul>
 <li>假设我们下载的镜像存放路径是~/box/precise64.box,在终端里输入:<br><code>$ vagrant box add AgentBox ~/box/precise64.box</code><br>AgentBox是我们给这个box命的名字，~/box/precise64.box是box 所在路径。</li>
 <li>box文件也可以是远程地址:<code>vagrant box add AgentBox http://files.vagrantup.com/lucid64.box</code></li>
@@ -1320,7 +1952,7 @@ Hello, World!
 </ul>
 <h3 id="三、常用指令"><a href="#三、常用指令" class="headerlink" title="三、常用指令"></a>三、常用指令</h3><p>1、 添加box<br>vagrant box add AgentBox ~/box/precise64.box</p>
 <blockquote>
-<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="external">http://files.vagrantup.com/lucid64.box</a></p>
+<p>box文件也可以是远程地址 base 为默认名称<br>vagrant box add base <a href="http://files.vagrantup.com/lucid64.box" target="_blank" rel="noopener">http://files.vagrantup.com/lucid64.box</a></p>
 </blockquote>
 <p>2、vagrant init，初始化</p>
 <blockquote>
@@ -1349,7 +1981,7 @@ config.vm.network &quot;public_network&quot;
   vb.name = &quot;my_vm&quot;
 end
 </code></pre><blockquote>
-<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="external">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="external">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
+<p>更多资源：<br>GETTING STARTED：<a><a href="https://docs.vagrantup.com/v2/getting-started/" target="_blank" rel="noopener">https://docs.vagrantup.com/v2/getting-started/</a></a><br>Vagrant简介和安装配置：<a><a href="http://rmingwang.com/vagrant-commands-and-config.html" target="_blank" rel="noopener">http://rmingwang.com/vagrant-commands-and-config.html</a></a><br>Docker学习总结之Docker与Vagrant之间的特点比较：<a><a href="http://www.linuxidc.com/Linux/2014-09/106783.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2014-09/106783.htm</a></a></p>
 </blockquote>
 
           
@@ -1635,11 +2267,11 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
   });
 });
 </code></pre><h3 id="六、运行及结果"><a href="#六、运行及结果" class="headerlink" title="六、运行及结果"></a>六、运行及结果</h3><h4 id="1、本地启动CustomerApi运行在8080端口"><a href="#1、本地启动CustomerApi运行在8080端口" class="headerlink" title="1、本地启动CustomerApi运行在8080端口"></a>1、本地启动CustomerApi运行在8080端口</h4><h4 id="2、grunt-serve启动CustomerUI"><a href="#2、grunt-serve启动CustomerUI" class="headerlink" title="2、grunt serve启动CustomerUI"></a>2、<code>grunt serve</code>启动CustomerUI</h4><h4 id="3、在terminal中输入下述命令，使其允许跨域请求"><a href="#3、在terminal中输入下述命令，使其允许跨域请求" class="headerlink" title="3、在terminal中输入下述命令，使其允许跨域请求"></a>3、在terminal中输入下述命令，使其允许跨域请求</h4><pre><code>open /Applications/Google\ Chrome.app --args --allow-file-access-from-files --disable-web-security
-</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
+</code></pre><h4 id="4、输入url"><a href="#4、输入url" class="headerlink" title="4、输入url"></a>4、输入url</h4><p>　　在<strong>弹出</strong>的浏览器输入<a href="http://localhost:9000/" target="_blank" rel="noopener">http://localhost:9000/</a><br>　　<img src="/imgs/CustomerUI.png" width="400" height="250"></p>
 <h4 id="5、点击GetByName"><a href="#5、点击GetByName" class="headerlink" title="5、点击GetByName"></a>5、点击<code>GetByName</code></h4><p>　　进入get customer by name界面如下：<br>　　<img src="/imgs/GetByName.png" width="400" height="250"><br>　　输入name,出现CustomerApi的认证如下：<br>　　<img src="/imgs/Authentication.png" width="400" height="250"><br>　　输入用户名user和密码password，得到：<br>　　<img src="/imgs/GetSuccessfully.png" width="400" height="250"><br>　　显示通过CustomerApi获取到的Customer信息如下：<br>　　<img src="/imgs/GetResults.png" width="400" height="250">
 　　</p>
 <blockquote>
-<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="external">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="external">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
+<p>更多资源：<br>enable cross-origin resource sharing:<a><a href="http://enable-cors.org/index.html" target="_blank" rel="noopener">http://enable-cors.org/index.html</a></a><br>CustomerUI代码：<a><a href="https://github.com/zhangyuyu/CustomerUI" target="_blank" rel="noopener">https://github.com/zhangyuyu/CustomerUI</a></a><br>CustomerApi代码：<a><a href="https://github.com/zhangyuyu/CustomerAPI" target="_blank" rel="noopener">https://github.com/zhangyuyu/CustomerAPI</a></a></p>
 </blockquote>
 
           
@@ -1796,674 +2428,8 @@ describe(&apos;Controller: CreateCtrl&apos;, function () {
 <li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
 </ul>
 <h4 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h4><pre><code>grunt serve
-</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="external">http://localhost:9000/</a></p>
+</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="noopener">http://localhost:9000/</a></p>
 
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/25/servlet-life/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/25/servlet-life/" itemprop="url">Servlet life</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-25T22:19:46+08:00">
-                2015-10-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Servlet/" itemprop="url" rel="index">
-                    <span itemprop="name">Servlet</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、整体工作流程"><a href="#一、整体工作流程" class="headerlink" title="一、整体工作流程"></a>一、整体工作流程</h3><blockquote>
-<p>1、Client对Web Server发出请求<br><br>2、Web Server接收到请求后，将其发送给Servlet容器<br><br>3、Servlet容器产生Servlet实例对象并调用ServletAPI中相应的方法来对Client的请求进行处理，然后将处理的相应结果返回给WEB Server。<br><br>4、Web server将从Servlet实例中收到响应并发送回客户端。<br></p>
-</blockquote>
-<img src="/imgs/client-server.png" width="600" height="200">
-<h3 id="二、阶段流程"><a href="#二、阶段流程" class="headerlink" title="二、阶段流程"></a>二、阶段流程</h3><p>　　为了细化上述过程，可分为application的deploy过程和request的发送过程来讲：</p>
-<h4 id="1、deploy阶段："><a href="#1、deploy阶段：" class="headerlink" title="1、deploy阶段："></a>1、deploy阶段：</h4><p>　　以Tomcat的容器为例，真正管理Servlet的容器是Context容器。一个Context对应一个Web工程。Context容器直接管理Servlet在容器中的包装类Wrapper。<br>　　deploy过程中，首先会生成context对象，config对象。（listener、filter的初始化过程也是在此阶段先后完成的）。<br>　　<img src="/imgs/servlet-container.png" width="300" height="500"></p>
-<h4 id="2、发送request阶段"><a href="#2、发送request阶段" class="headerlink" title="2、发送request阶段"></a>2、发送request阶段</h4><p>(1）在默认情况下，Servlet实例是在第一个请求到来的时候创建，以后复用。如果有的Servlet需要复杂的操作需要载初始化时完成，比如打开文件、初始化网络连接等，可以通知服务器在启动的时候创建该Servlet的实例，配置<code>&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</code>。<br>(2）init()<br>　　一旦Servlet实例被创建，Web服务器会自动调用init(ServletConfig config)方法来初始化该Servlet。其中方法参数config中包含了Servlet的配置信息，比如初始化参数，该对象在deploy阶段创建。<br>　　init()方法只执行一次。<br>(3)service()<br>　　 service()方法为Servlet的核心方法，Client的业务逻辑应该在该方法内执行，解析Client请求-〉执行业务逻辑-〉输出响应页面到Client。<br>(4）destroy()<br>　　当Web Server认为Servlet实例没有存在的必要了，比如应用重新装载，或服务器关闭，以及Servlet很长时间都没有被访问过。Web Server可以从内存中销毁该实例。Web Server必须保证在销毁Servlet实例之前调用该实例的destroy()方法，以便回收Servlet申请的资源或进行其它的重要的处理。</p>
-<blockquote>
-<p>当先后发送多个request时候，init()只执行一次。servlet容器处理多个请求通过产生多个线程，每个线程执行servlet的单实例的service()方法。</p>
-</blockquote>
-<img src="/imgs/servletLife.png" width="600" height="280">
-<h3 id="三、Filter"><a href="#三、Filter" class="headerlink" title="三、Filter"></a>三、Filter</h3><p>　　Filter不是一个servlet,它不能产生一个response,但是它能够在一个request到达servlet之前预处理request,也可以在离开servlet时处理response。</p>
-<blockquote>
-<p>Filter常用来：<br></p>
-<ul>
-<li>日志文件记录request参数<br></li>
-<li>身份验证或认证request的resource<br></li>
-<li>在request发送给Servlet之前格式化request的header或者body<br></li>
-<li>压缩发回给Client的reponse数据</li>
-</ul>
-</blockquote>
-<p>　　一个filter有三个阶段init()、doFilter()、destroy()。</p>
-<h4 id="1、init"><a href="#1、init" class="headerlink" title="1、init()"></a>1、init()</h4><p>　　filter的init()是在上述的deploy阶段完成的。</p>
-<h4 id="2、doFilter"><a href="#2、doFilter" class="headerlink" title="2、doFilter()　"></a>2、doFilter()　</h4><p>　　一个Servlet初始化之后，每次request到达该Servlet的service()方法之前，都会先做doFilter()。能够配置一个filter到一个或多个servlet；单个servlet或servlet组能够被多个filter使用。</p>
-<h4 id="3、destroy"><a href="#3、destroy" class="headerlink" title="3、destroy()"></a>3、destroy()</h4><p>　　　当Servlet进行destroy之后，对应的Filter也会destroy。</p>
-<blockquote>
-<p>当有多个Filter时，按照web.xml中声明的顺序执行filter。</p>
-</blockquote>
-<h3 id="四、Listener"><a href="#四、Listener" class="headerlink" title="四、Listener"></a>四、Listener</h3><p>　　Listener是Servlet的监听器，它可以监听客户端的请求、服务端的操作等。如监听context、session、application的create,destroy,可以监听到context、session、application<br>属性绑定的变化。通过监听器，可以自动激发一些操作，比如监听在线的用户的数量。<br>　　以实现ServletContextListener接口监听context的create和destroy为例：<br>　　contextInitialized()是在上述deploy阶段Filter的init()之前执行的。<br>　　contextDestroyed()是在Servlet的destroy()及Filter的destroy()之后执行的。
-　　</p>
-<h3 id="五、执行顺序"><a href="#五、执行顺序" class="headerlink" title="五、执行顺序"></a>五、执行顺序</h3><p>　　在<a href="https://github.com/zhangyuyu/ServletLife" target="_blank" rel="external">ServletLife</a>的工程下，执行命令<code>gradle tomcatRunWar</code>。根据下面控制台打印信息，可以看出listen-&gt;filter-&gt;servlet的顺序：</p>
-<pre><code>*************Context created on*************
-***********This is the filter init***********
-Started Tomcat Server
-The Server is running at http://localhost:8080/ServletLife
-**********This is the servlet init***********
-*****************do filter*****************
-***********This is the servlet service***********
-***********This is the servlet destroy***********
-***********This is the filter destroy***********
-*************Context destroy*************
-</code></pre><h3 id="六、对应一个故事"><a href="#六、对应一个故事" class="headerlink" title="六、对应一个故事"></a>六、对应一个故事</h3><blockquote>
-<p></p><h5 align="center">T公司CX项目开发经历</h5><br>1、T公司接到一个CX项目<br><br>　　根据项目计划书划分职能（BA、开发A功能人员、开发B功能人员……）<br><br>　　确定BA具体人员<br><br>2、需求R1<br><br>　　准备安排具体人员A、B<br><br>　　BA分析问题<br><br>　　A、B开始认真干活<br><br>3、需求R2<br><br>　　BA分析问题<br><br>　　A、B继续干活<br><br>　　……<br><br>4、项目完成了，开发人员解散<br><br>　　BA也role off<br><p></p>
-</blockquote>
-<p>　　故事中，T对应一个Web container, CX对应一个context, BA对应Filter，A\B分别对应一个Servlet，需求R1\R2分别对应两次request。<br>　　第一个阶段对应deploy阶段：划分职能可以代表生成context、config对象；确定BA的具体人员则代表着Filter的初始化。<br>　　第二个阶段对应发送request阶段：安排A、B的巨头人员代表Servlet的初始化；BA分析问题代表着Filter的doFilter(）操作；认真干活则代表Servlet的service()操作。<br>　　第三个阶段是发送另一个request，此过程中没有安排具体的人员（Servlet的初始化），对应的是servlet的多线程操作。<br>　　第四个阶段对应destroy过程，开发人员解散代表Servlet的destroy，BA的role off则代表着Filter的destroy。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/15/手动创建Servlet异常处理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/15/手动创建Servlet异常处理/" itemprop="url">手动创建Servlet异常处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-15T21:19:45+08:00">
-                2015-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Servlet/" itemprop="url" rel="index">
-                    <span itemprop="name">Servlet</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1、创建产生异常的servlet"><a href="#1、创建产生异常的servlet" class="headerlink" title="1、创建产生异常的servlet"></a>1、创建产生异常的servlet</h3><p>在ExceptionServlet.java中：</p>
-<pre><code>import javax.servlet.*;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-public class ExceptionServlet implements Servlet {
-
-    @Override
-    public void init(ServletConfig servletConfig) {
-
-    }
-
-    @Override
-    public ServletConfig getServletConfig() {
-        return null;
-    }
-
-    @Override
-    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
-        throw new ServletException(&quot;hello&quot;);  
-    }
-
-    @Override
-    public String getServletInfo() {
-        return null;
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-}
-</code></pre><h3 id="2、创建异常处理类"><a href="#2、创建异常处理类" class="headerlink" title="2、创建异常处理类"></a>2、创建异常处理类</h3><p>在ErrorHandle.java中：</p>
-<pre><code>import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
-
-// 扩展 HttpServlet 类
-public class ErrorHandler extends HttpServlet {
-
-  // 处理 GET 方法请求的方法
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-  {
-      PrintWriter out = response.getWriter();
-      // 分析 Servlet 异常       
-      Throwable throwable = (Throwable)request.getAttribute(&quot;javax.servlet.error.exception&quot;);
-      Integer statusCode = (Integer)request.getAttribute(&quot;javax.servlet.error.status_code&quot;);
-      String servletName = (String)request.getAttribute(&quot;javax.servlet.error.servlet_name&quot;);
-      String requestUri = (String)request.getAttribute(&quot;javax.servlet.error.request_uri&quot;);
-
-      if (throwable != null){
-         out.println(&quot;Exception Type : &quot; + throwable.getClass( ).getName( ));
-         out.println(&quot;The exception message: &quot; + throwable.getMessage( ));
-      }
-      if (statusCode != null){
-         out.println(&quot;The status code : &quot; + statusCode);
-      }
-      out.println(&quot;Servlet Name : &quot; + servletName);
-      out.println(&quot;The request URI: &quot; + requestUri);
-
-  }
-  // 处理 POST 方法请求的方法
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-     doGet(request, response);
-  }
-}
-</code></pre><h3 id="3、编译"><a href="#3、编译" class="headerlink" title="3、编译"></a>3、编译</h3><pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26/libexec/webapps/test/WEB-INF/classes/*.java
-</code></pre><h3 id="4、部署"><a href="#4、部署" class="headerlink" title="4、部署"></a>4、部署</h3><p>在web.xml中</p>
-<pre><code>&lt;servlet&gt;
-    &lt;servlet-name&gt;ErrorHandler&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;ErrorHandler&lt;/servlet-class&gt;
-&lt;/servlet&gt;
-
-&lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;ErrorHandler&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/error&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;
-
-&lt;error-page&gt;
-    &lt;error-code&gt;404&lt;/error-code&gt;
-    &lt;location&gt;/error&lt;/location&gt;
-&lt;/error-page&gt;
-
-&lt;error-page&gt;
-    &lt;error-code&gt;403&lt;/error-code&gt;
-    &lt;location&gt;/error&lt;/location&gt;
-&lt;/error-page&gt;
-
-&lt;error-page&gt;
-    &lt;exception-type&gt;javax.servlet.ServletException&lt;/exception-type &gt;
-    &lt;location&gt;/error&lt;/location&gt;
-&lt;/error-page&gt;
-
-&lt;error-page&gt;
-    &lt;exception-type&gt;java.io.IOException&lt;/exception-type &gt;
-    &lt;location&gt;/errorr&lt;/location&gt;
-&lt;/error-page&gt;
-</code></pre><h3 id="5、启动tomcat"><a href="#5、启动tomcat" class="headerlink" title="5、启动tomcat"></a>5、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
-$ ./startup.sh    
-</code></pre><h3 id="6、运行及结果"><a href="#6、运行及结果" class="headerlink" title="6、运行及结果"></a>6、运行及结果</h3><p>　　使用上面会产生异常的Servlet，或者输入一个错误的URL，会触发Web容器调用ErrorHandler的Servlet，并显示适当的信息。<br><br>　　如果使用上面会产生异常的ExceptionServlet(<a href="http://localhost:8080/test/exception)，那么它将显示：" target="_blank" rel="external">http://localhost:8080/test/exception)，那么它将显示：</a></p>
-<blockquote>
-<p>Exception Type : javax.servlet.ServletException<br><br>The exception message: hello<br><br>The status code : 500<br><br>Servlet Name : ExceptionServlet<br><br>The request URI: /test/exception</p>
-</blockquote>
-<p>　　如果输入了一个错误的URL(<a href="http://localhost:8080/test/ex)，那么它将显示`The" target="_blank" rel="external">http://localhost:8080/test/ex)，那么它将显示`The</a> status code : 404`
-　　</p>
-<h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
-    |---WEB-INF
-        |---classes
-            |---ServletException.java
-            |---ErrorHandler.java
-        |---lib
-        |---web.xml
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/15/手动创建Servlet过滤器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/15/手动创建Servlet过滤器/" itemprop="url">手动创建Servlet过滤器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-15T20:18:09+08:00">
-                2015-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Servlet/" itemprop="url" rel="index">
-                    <span itemprop="name">Servlet</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>　　Servlet 过滤器是可用于 Servlet 编程的 Java 类，主要用于：</p>
-<blockquote>
-<p>在客户端的请求访问后端资源之前，拦截这些请求。<br><br>在服务器的响应发送回客户端之前，处理这些响应。</p>
-</blockquote>
-<p>　　在前面《手动创建Servlet》实现的基础上，增加一个filter,在服务器的响应发送回客户端之前，打印log。</p>
-<h3 id="1、创建Filter"><a href="#1、创建Filter" class="headerlink" title="1、创建Filter"></a>1、创建Filter</h3><p>在test/WEB_INF/classes下新建一个LogFilter.java</p>
-<pre><code>import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
-
-public class LogFilter implements Filter  {
-    public void  init(FilterConfig config) 
-                         throws ServletException{
-        // 获取初始化参数
-        String testParam = config.getInitParameter(&quot;test-param&quot;); 
-
-        // 输出初始化参数
-        System.out.println(&quot;********Test Param: &quot; + testParam); 
-
-   }
-    public void  doFilter(ServletRequest request, 
-                 ServletResponse response,
-                 FilterChain chain) 
-                 throws java.io.IOException, ServletException {
-
-        PrintWriter out = response.getWriter();
-        out.println(&quot;[ Time : &quot;+ new Date().toString()+&quot; ]&quot;);    
-        // 把请求传回过滤链
-        chain.doFilter(request,response);
-   }
-   public void destroy( ){
-      /* 在 Filter 实例被 Web 容器从服务移除之前调用 */
-   }
- }
-</code></pre><p>　　过滤器是一个实现了 javax.servlet.Filter 接口的Java类.javax.servlet.Filter 接口定义了三个方法:</p>
-<blockquote>
-<p>（1）public void doFilter (ServletRequest, ServletResponse, FilterChain)<br>该方法在每次一个请求/响应对因客户端在链的末端请求资源而通过链传递时由容器调用。<br><br>（2）public void init(FilterConfig filterConfig)<br>该方法由Web容器调用，指示一个过滤器被放入服务。<br><br>（3）public void destroy()<br>该方法由Web容器调用，指示一个过滤器被取出服务。</p>
-</blockquote>
-<h3 id="2、编译"><a href="#2、编译" class="headerlink" title="2、编译"></a>2、编译</h3><p>　　编译ServletExample以及LogFilter：</p>
-<pre><code>javac -cp /usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar /usr/local/Cellar/tomcat/8.0.26、libexec/webapps/test/WEB-INF/classes/LogFilter.java
-</code></pre><h3 id="3、部署"><a href="#3、部署" class="headerlink" title="3、部署"></a>3、部署</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
-&lt;web-app&gt;
-
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;ServletExample&lt;/servlet-class&gt;
-    &lt;/servlet&gt;
-
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;ServletExample&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/test&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-
-    &lt;filter&gt;
-       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
-       &lt;filter-class&gt;LogFilter&lt;/filter-class&gt;
-       &lt;init-param&gt;
-          &lt;param-name&gt;test-param&lt;/param-name&gt;
-          &lt;param-value&gt;Initialization Paramter&lt;/param-value&gt;
-       &lt;/init-param&gt;
-    &lt;/filter&gt;
-
-    &lt;filter-mapping&gt;
-       &lt;filter-name&gt;LogFilter&lt;/filter-name&gt;
-       &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/filter-mapping&gt;
-&lt;/web-app&gt;
-</code></pre><p>　　过滤器被部署在部署web.xml中然后映射到部署的Servlet名称或 URL模式。有多个过滤器时，执行的顺序是按它们在声明的顺序。
-　　</p>
-<h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.26/libexec/bin
-$ ./startup.sh    
-</code></pre><h3 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/hello" target="_blank" rel="external">http://localhost:8080/test/hello</a>
-　　</p>
-<h3 id="6、结果"><a href="#6、结果" class="headerlink" title="6、结果"></a>6、结果</h3><pre><code>[ Time : Thu Oct 15 20:56:29 CST 2015 ]
-Hello World
-</code></pre><h3 id="7、目录结构"><a href="#7、目录结构" class="headerlink" title="7、目录结构"></a>7、目录结构</h3><pre><code>|---test
-    |---WEB-INF
-        |---classes
-            |---ServletExample.java
-            |---LogFilter.java
-        |---lib
-        |---web.xml
-</code></pre>
           
         
       
@@ -2502,7 +2468,7 @@ Hello World
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2548,7 +2514,7 @@ Hello World
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2559,7 +2525,7 @@ Hello World
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2570,7 +2536,7 @@ Hello World
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2616,7 +2582,7 @@ Hello World
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

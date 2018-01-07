@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/03/05/WebServer1/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一天，女士外出散步，经过施工现场看到三个工人正在干活。　　女士上前询问第一个工人：“你在干什么？”，被问题惹恼的第一个工人咆哮道：“难道你没看见我正在铺砖吗？”。　　女士不满意刚才的答案，于是问第二个人他正在干什么。“我正在建造一堵墙。”第二个工人说着，便把注意力转向第一个工人说道：“喂，你刚刚超过了墙的末尾， 你需要把最后一块砖拿走。”　　女士对第二个人的回答仍然不满意，于是她问第三个人正">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/WS_confucius_hear.png">
 <meta property="og:image" content="http://yoursite.com/imgs/WS_confucius_see.png">
 <meta property="og:image" content="http://yoursite.com/imgs/WS_confucius_do.png">
@@ -393,11 +394,11 @@ Hello, World!
 &quot;&quot;&quot;
     client_connection.sendall(http_response)
     client_connection.close()
-</code></pre><p>　　保存上面的代码到<code>webserver.1py</code>文件或者在<a href="https://github.com/rspivak/lsbaws/blob/master/part1/webserver1.py" target="_blank" rel="external">GitHub</a>上直接下载，然后用下面的命令运行：</p>
+</code></pre><p>　　保存上面的代码到<code>webserver.1py</code>文件或者在<a href="https://github.com/rspivak/lsbaws/blob/master/part1/webserver1.py" target="_blank" rel="noopener">GitHub</a>上直接下载，然后用下面的命令运行：</p>
 <pre><code>$ python webserver1.py
 Serving HTTP on port 8888 …
 </code></pre><p>　　然后在浏览器地址栏输入<code>http://localhost:8888/hello</code>，然后回车，见证奇迹的时刻到来了。你应该可以看到<code>Hello World!</code>显示在浏览器中，如下所示：<br><img src="/imgs/WS_browser_hello_world.png" width="400" height="250"></p>
-<p>　　试着做一下吧，你在测试时候我会等你的。做完了吗？好极了。现在我们一起讨论它是如何生效的吧。首先让我们从你输入的网址开始，它叫做<a href="http://baike.baidu.com/link?url=cigkFmQSCQHgSk9SfSVZH7palffbNp6nHiV0WjRy4LkAFH02SIDw-htgvq-wBlMDAORPltXx1i-xcqNpLeGxla" target="_blank" rel="external">URL</a>,下面是它的基本结构：<br><img src="/imgs/WS_URL_Web_address.png" width="400" height="250"></p>
+<p>　　试着做一下吧，你在测试时候我会等你的。做完了吗？好极了。现在我们一起讨论它是如何生效的吧。首先让我们从你输入的网址开始，它叫做<a href="http://baike.baidu.com/link?url=cigkFmQSCQHgSk9SfSVZH7palffbNp6nHiV0WjRy4LkAFH02SIDw-htgvq-wBlMDAORPltXx1i-xcqNpLeGxla" target="_blank" rel="noopener">URL</a>,下面是它的基本结构：<br><img src="/imgs/WS_URL_Web_address.png" width="400" height="250"></p>
 <p>　　这就是你如何告诉浏览器，它需要找到并且连接的web server地址，同时获取服务器页面的方式。在你的浏览器发送一个HTTP请求，它首先需要和Web server建立一个TCP连接。然后它基于TCP连接给服务器发送一个HTTP请求等待服务器发送一个HTTP的响应回来。当收到响应之后，它会显示响应信息<code>Hello World!</code>。
 　　</p>
 <h3 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h3><p>　　让我们更详细的探讨如何在发送HTTP请求和响应之前，建立客户端和服务器TCP连接。要做到这一点，它们都使用所谓的sockets。如果不直接使用浏览器，可以通过手动在命令行使用telnet来模拟浏览器。在运行web server的同一台计算机上，通过命令行激活一个telnet会话指定连接主机为localhost，连接端口为8888，然后回车：</p>
@@ -420,7 +421,7 @@ Hello, World!
 <p>　　让我们深入剖析它，响应包含：状态行<code>HTTP/1.1 200 OK</code>，紧接着是需要的空行，然后就是HTTP的响应正文。响应状态行<code>HTTP/1.1 200 OK</code>包含HTTP的版本，HTTP的状态码（status code），以及对状态码的简短描述<code>OK</code>(reason-phrase)。当浏览器得到响应，会把响应正文展示出来，这就是你为什么在浏览器看到<code>Hello World!</code>的原因。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结　　"></a>总结　　</h3><p>　　上述是web server如何运行的基本模型。总而言之，web server创建一个监听socket并且开始循环的接收新的连接。客户端初始化一个TCP连接，当连接成功建立之后，客户端发送HTTP请求给服务器，服务器返回用于展示给用户的HTTP响应。要建立一个TCP响应，客户端和服务器都要使用sockets。<br>　　现在你有了一个非常基本的web server了， 你可以用浏览器和一些其他的HTTP客户端测试它。正如你所看到和你所希望的一样，你也可以通过telnet手动输入HTTP请求成为人工HTTP客户端。<br>　　下面提一个问题：你如何用你刚写出来的web server去运行一个Django应用，Flask应用和Pyramid应用，同时不对这个服务器做出单一改变来容纳所有这些不同的Web框架呢？在接下来的第二部分我会展示如何实现，敬请关注。</p>
 <blockquote>
-<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part1/" target="_blank" rel="external">Let’s Build A Web Server. Part 1.</a></p>
+<p>本文翻译自Ruslan’s Blog <a href="https://ruslanspivak.com/lsbaws-part1/" target="_blank" rel="noopener">Let’s Build A Web Server. Part 1.</a></p>
 </blockquote>
 
       
@@ -549,7 +550,7 @@ Hello, World!
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -560,7 +561,7 @@ Hello, World!
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -571,7 +572,7 @@ Hello, World!
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -633,7 +634,7 @@ Hello, World!
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

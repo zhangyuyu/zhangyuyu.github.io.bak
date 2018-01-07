@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/01/14/基于RabbitMQ topic的消息发送与接收/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言1.项目结构： A是消息的生产者，B、C则是消息的consumer。A会通过queue（不关心其产品类型）发送消息给B、C。 2.需求近期项目上，新增的D应用程序需要监听原有A应用程序的消息。按照以往的做法，我需要做如下两件事：  向某个团队，给每该D应用的每个region（dev、intg、sys、prod等），申请新的queue A.D。（这中间可能需要两个星期时间） 改变应用A的代码">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/rabbit-1.png">
 <meta property="og:image" content="http://yoursite.com/imgs/rabbit-2.png">
 <meta property="og:image" content="http://yoursite.com/imgs/rabbit-3.png">
@@ -386,8 +387,8 @@ $ vagrant init yungsang/coreos
 </code></pre><p>然后注意取消注释<code>config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;</code></p>
 <h4 id="2-登陆到虚拟机"><a href="#2-登陆到虚拟机" class="headerlink" title="2.登陆到虚拟机"></a>2.登陆到虚拟机</h4><pre><code>vagrant ssh
 </code></pre><h4 id="3-外部访问rabbitmq的管理页面"><a href="#3-外部访问rabbitmq的管理页面" class="headerlink" title="3.外部访问rabbitmq的管理页面"></a>3.外部访问rabbitmq的管理页面</h4><p>URL：<code>http://192.168.33.10:15672/#/</code><br>用户名：<code>guest</code><br>密码：<code>guest</code></p>
-<h3 id="三、Spike"><a href="#三、Spike" class="headerlink" title="三、Spike"></a>三、Spike</h3><p>在编写本文时候，笔者顺便了解了一下Rabbit MQ的相关基础模式与用法，可以参见上一篇文章<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="external">RabbitMQ初探</a></p>
-<p>再回过头来看这个spike，发现其实本文要实现的就是<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="external">RabbitMQ初探</a>中的Topic Exchange模式。</p>
+<h3 id="三、Spike"><a href="#三、Spike" class="headerlink" title="三、Spike"></a>三、Spike</h3><p>在编写本文时候，笔者顺便了解了一下Rabbit MQ的相关基础模式与用法，可以参见上一篇文章<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="noopener">RabbitMQ初探</a></p>
+<p>再回过头来看这个spike，发现其实本文要实现的就是<a href="http://zhangyuyu.github.io/2017/01/14/RabbitMQ%E5%88%9D%E6%8E%A2/" target="_blank" rel="noopener">RabbitMQ初探</a>中的Topic Exchange模式。</p>
 <p>其实说起来，就是JMS和AMQP的一个较大的区别：</p>
 <ul>
 <li>JMS有队列(Queues)和主题(Topics)两种形式，发送到JMS队列的消息最多只能被一个Client消费，发送到JMS主题的消息可能会被多个Clients消费；</li>
@@ -521,7 +522,7 @@ $ vagrant init yungsang/coreos
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -532,7 +533,7 @@ $ vagrant init yungsang/coreos
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -543,7 +544,7 @@ $ vagrant init yungsang/coreos
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -605,7 +606,7 @@ $ vagrant init yungsang/coreos
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

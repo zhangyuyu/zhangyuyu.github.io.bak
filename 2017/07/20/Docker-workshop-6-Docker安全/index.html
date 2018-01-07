@@ -88,11 +88,12 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/20/Docker-workshop-6-Docker安全/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言上一篇 Docker网络主要讲述了网络模型、网络模式。本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  三、Docker访问主机系统很">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-security-host.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-security-images.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-security-daemon.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-security-container-runtime.png">
-<meta property="og:updated_time" content="2017-12-27T07:13:07.000Z">
+<meta property="og:updated_time" content="2018-01-07T08:56:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（六）Docker安全">
 <meta name="twitter:description" content="一、前言上一篇 Docker网络主要讲述了网络模型、网络模式。本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  三、Docker访问主机系统很">
@@ -321,8 +322,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
                   </a>
                 </span>
 
@@ -358,14 +359,14 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">上一篇 Docker网络</a>主要讲述了网络模型、网络模式。<br>本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">上一篇 Docker网络</a>主要讲述了网络模型、网络模式。<br>本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。</p>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
 <ul>
-<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">容器简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="external">Docker简介</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="external">Docker的基本操作</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="external">Docker数据存储</a></li>
-<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="external">Docker网络</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
 <li><strong>Docker安全</strong></li>
 <li>多主机部署</li>
 <li>服务发现</li>
@@ -373,16 +374,16 @@
 </ul>
 <h2 id="三、Docker访问主机系统"><a href="#三、Docker访问主机系统" class="headerlink" title="三、Docker访问主机系统"></a>三、Docker访问主机系统</h2><p>很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。<br><a id="more"></a></p>
 <h3 id="【练习】访问主机系统"><a href="#【练习】访问主机系统" class="headerlink" title="【练习】访问主机系统"></a>【练习】访问主机系统</h3><p>1）主机上访问文件系统</p>
-<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/shadow  # 使用普通用户访问</div><div class="line">cat: /etc/shadow: Permission denied</div><div class="line">$ who am i<span class="comment">; groups;  # 查看当前的用户和组</span></div><div class="line">vagrant  pts/<span class="number">0</span>        <span class="number">2017-09-14</span> <span class="number">08</span>:<span class="number">08</span> (<span class="number">10.0.2.2</span>)</div><div class="line">vagrant docker</div><div class="line">$ sudo cat /etc/shadow  # 使用root用户访问</div><div class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">...</div></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/shadow  # 使用普通用户访问</span><br><span class="line">cat: /etc/shadow: Permission denied</span><br><span class="line">$ who am i<span class="comment">; groups;  # 查看当前的用户和组</span></span><br><span class="line">vagrant  pts/<span class="number">0</span>        <span class="number">2017-09-14</span> <span class="number">08</span>:<span class="number">08</span> (<span class="number">10.0.2.2</span>)</span><br><span class="line">vagrant docker</span><br><span class="line">$ sudo cat /etc/shadow  # 使用root用户访问</span><br><span class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>2) Docker容器里访问文件系统</p>
-<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ docker run -v /:/hostfs busybox cat /hostfs/etc/shadow</div><div class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</div><div class="line">...</div></pre></td></tr></table></figure>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -v /:/hostfs busybox cat /hostfs/etc/shadow</span><br><span class="line">root:$<span class="number">6</span>$HmunRCSU$YXNgfbnj2AQVtJS8DWFqb2ZxXIFGp3eRXMbXtuF9XUfgkAD1X8o2cQxBK6SHEH/K6D77PYMuv9p7rVtjAFfmh<span class="number">0:16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">daemon:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">bin:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">sys:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">sync:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">games:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">man:*:<span class="number">16744:0</span>:<span class="number">99999:7</span>:::</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>可以看出只有root用户才能访问上面的文件。而Docker容器是用root权限运行的，所以在docker group下的用户间接地就有了root权限，也就可以访问到上述文件了。</p>
 <p>3）Docker容器里修改主机文件系统</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ ls / | grep threat</div><div class="line">$ docker <span class="built_in">run</span> -<span class="keyword">it</span> -v /:/hostfs busybox touch /hostfs/threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</div><div class="line">$ ls / | grep threat</div><div class="line">threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</div></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ls / | grep threat</span><br><span class="line">$ docker <span class="built_in">run</span> -<span class="keyword">it</span> -v /:/hostfs busybox touch /hostfs/threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</span><br><span class="line">$ ls / | grep threat</span><br><span class="line">threat-<span class="keyword">on</span>-<span class="keyword">the</span>-way</span><br></pre></td></tr></table></figure>
 <p>可以看到，在Docker容器中创建的文件出现在了宿主机中，即在Docker容器中能够修改主机文件系统。</p>
 <p>更严重的时，如果是 Privileged 容器，即在运行容器时指定–privileged=true参数，则能够允许容器所有设备执行任意操作，能够读写内核内存/proc/kcore，使用参数–net=host可以嗅探主机所有网络流量。</p>
 <p>4）查看Docker容器和Metadata在宿主机上存储的地址</p>
-<figure class="highlight tap"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ ll /var/lib/docker/</div><div class="line">total 84</div><div class="line">drwxr-xr-x  <span class="number"> 9 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 ./</div><div class="line">drwxr-xr-x <span class="number"> 52 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>../</div><div class="line">drwxr-xr-x  <span class="number"> 5 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>aufs/</div><div class="line">drwx------  <span class="number"> 8 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 containers/</div><div class="line">drwx------<span class="number"> 259 </span>root root<span class="number"> 36864 </span>Sep<span class="number"> 14 </span>08:10 graph/</div><div class="line">-rw-r--r--  <span class="number"> 1 </span>root root <span class="number"> 5120 </span>Sep<span class="number"> 14 </span>12:24 linkgraph.db</div><div class="line">drwxr-x---  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>network/</div><div class="line">-rw-------  <span class="number"> 1 </span>root root <span class="number"> 2116 </span>Sep<span class="number"> 14 </span>08:14 repositories-aufs</div><div class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:10 tmp/</div><div class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>trust/</div><div class="line">drwx------  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:08 volumes/</div></pre></td></tr></table></figure>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ ll /var/lib/docker/</span><br><span class="line">total 84</span><br><span class="line">drwxr-xr-x  <span class="number"> 9 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 ./</span><br><span class="line">drwxr-xr-x <span class="number"> 52 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>../</span><br><span class="line">drwxr-xr-x  <span class="number"> 5 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>aufs/</span><br><span class="line">drwx------  <span class="number"> 8 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>12:24 containers/</span><br><span class="line">drwx------<span class="number"> 259 </span>root root<span class="number"> 36864 </span>Sep<span class="number"> 14 </span>08:10 graph/</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>root root <span class="number"> 5120 </span>Sep<span class="number"> 14 </span>12:24 linkgraph.db</span><br><span class="line">drwxr-x---  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>network/</span><br><span class="line">-rw-------  <span class="number"> 1 </span>root root <span class="number"> 2116 </span>Sep<span class="number"> 14 </span>08:14 repositories-aufs</span><br><span class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:10 tmp/</span><br><span class="line">drwx------  <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Nov<span class="number"> 22 </span><span class="number"> 2015 </span>trust/</span><br><span class="line">drwx------  <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Sep<span class="number"> 14 </span>08:08 volumes/</span><br></pre></td></tr></table></figure>
 <p>运行态容器默认都是使用/var/lib/docker目录，容器内部写日志、产生运行时数据等都会影响该目录，并且产生的文件越来越多，占用空间越来越大，因此需要定期清理无用的镜像和容器。可以用Logical Volume Manager (LVM)为Docker挂载点/var/lib/docker创建单独的分区，最好是SSD盘。</p>
 <h2 id="四、Docker的安全性"><a href="#四、Docker的安全性" class="headerlink" title="四、Docker的安全性"></a>四、Docker的安全性</h2><p>Docker的安全性主要体现在如下几个方面：</p>
 <ul>
@@ -418,7 +419,7 @@
 <li>指定容器重启策略为on-failure，重启策略(Restart policies)有四种：<code>no</code>、<code>on-failure</code>、<code>always</code>、<code>unless-stopped</code>。</li>
 <li>使用强制权限控制系统 AppArmor 和 Linux安全增强工具 SELinux 保证额外的安全层</li>
 </ul>
-<p>更多详情，可以参考<a href="https://learn.cisecurity.org/benchmarks" target="_blank" rel="external">Security Benchmarks</a>制定的容器的安全基准。下面截取了其中的一部分目录：<br><img src="/imgs/docker-security-host.png" width="500" height="250"></p>
+<p>更多详情，可以参考<a href="https://learn.cisecurity.org/benchmarks" target="_blank" rel="noopener">Security Benchmarks</a>制定的容器的安全基准。下面截取了其中的一部分目录：<br><img src="/imgs/docker-security-host.png" width="500" height="250"></p>
 <center>主机</center><br><br><br><img src="/imgs/docker-security-images.png" width="500" height="250"><br><center>镜像</center><br><br><br><img src="/imgs/docker-security-daemon.png" width="500" height="250"><br><center>守护进程</center><br><br><br><img src="/imgs/docker-security-container-runtime.png" width="500" height="250"><br><center>容器运行时</center>
 
 <h3 id="六、构建容器平台时候的安全问题"><a href="#六、构建容器平台时候的安全问题" class="headerlink" title="六、构建容器平台时候的安全问题"></a>六、构建容器平台时候的安全问题</h3><p>上面说到的安全问题基本上是容器自身的，就是单独去考虑一个容器时，容器自身的一个安全性的问题。那么，当我们构建一个云平台的时候，这时容器是大量的，也可能是多租户的，特别是公有云，用户上传上来的应用是否安全，在这种情况下，怎么来去考虑一个容器平台的安全问题。可以从四个方面：</p>
@@ -438,11 +439,11 @@
 </ul>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本篇文章主要列举了一些Docker安全的最佳实践，并没有做过多的解释，具体情况还需要结合具体的项目实践。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
-<li><a href="http://www.freebuf.com/articles/system/69809.html" target="_blank" rel="external">浅谈Docker隔离性和安全性</a></li>
-<li><a href="https://segmentfault.com/a/1190000005794220" target="_blank" rel="external">Docker安全</a></li>
-<li><a href="https://mp.weixin.qq.com/s/IN_JJhg_oG7ILVjNj-UexA" target="_blank" rel="external">绝不避谈 Docker 安全</a></li>
-<li><a href="http://securityer.lofter.com/post/1d0f3ee7_d4e69b1" target="_blank" rel="external">如何打造安全的容器云平台</a></li>
-<li><a href="http://www.10tiao.com/html/167/201707/2650762256/2.html" target="_blank" rel="external">从自身漏洞与架构缺陷，谈Docker安全建设</a></li>
+<li><a href="http://www.freebuf.com/articles/system/69809.html" target="_blank" rel="noopener">浅谈Docker隔离性和安全性</a></li>
+<li><a href="https://segmentfault.com/a/1190000005794220" target="_blank" rel="noopener">Docker安全</a></li>
+<li><a href="https://mp.weixin.qq.com/s/IN_JJhg_oG7ILVjNj-UexA" target="_blank" rel="noopener">绝不避谈 Docker 安全</a></li>
+<li><a href="http://securityer.lofter.com/post/1d0f3ee7_d4e69b1" target="_blank" rel="noopener">如何打造安全的容器云平台</a></li>
+<li><a href="http://www.10tiao.com/html/167/201707/2650762256/2.html" target="_blank" rel="noopener">从自身漏洞与架构缺陷，谈Docker安全建设</a></li>
 </ul>
 
       
@@ -571,7 +572,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -582,7 +583,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -593,7 +594,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -655,7 +656,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

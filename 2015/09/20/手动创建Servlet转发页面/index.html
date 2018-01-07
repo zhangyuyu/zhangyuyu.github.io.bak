@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/09/20/手动创建Servlet转发页面/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="在上一篇的基础上，本节实现转发页面。 1、创建servlet（1）在test目录下，新建一个index.html&amp;lt;?xml version=&amp;apos;1.0&amp;apos; encoding=&amp;apos;UTF-8&amp;apos; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot;">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2015-10-21T14:33:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="手动创建Servlet转发页面">
@@ -415,7 +416,7 @@ public class Hello extends HttpServlet {
 &lt;/web-app&gt;
 </code></pre><h3 id="4、启动tomcat"><a href="#4、启动tomcat" class="headerlink" title="4、启动tomcat"></a>4、启动tomcat</h3><pre><code>$ cd /usr/local/Cellar/tomcat/8.0.24/libexec/bin
 $ ./startup.sh    
-</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。" target="_blank" rel="external">http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。</a></p>
+</code></pre><h3 id="5、运行及结果"><a href="#5、运行及结果" class="headerlink" title="5、运行及结果"></a>5、运行及结果</h3><p>　　在浏览器输入<a href="http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。" target="_blank" rel="noopener">http://localhost:8080/test/index.html，填写内容，点击submit，跳转到了hello页面。</a></p>
 <h3 id="6、目录结构"><a href="#6、目录结构" class="headerlink" title="6、目录结构"></a>6、目录结构</h3><pre><code>|---test
     |---index.html
     |---WEB-INF
@@ -550,7 +551,7 @@ $ ./startup.sh
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -561,7 +562,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -572,7 +573,7 @@ $ ./startup.sh
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -634,7 +635,7 @@ $ ./startup.sh
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

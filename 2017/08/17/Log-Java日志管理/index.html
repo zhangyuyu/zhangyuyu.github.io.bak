@@ -88,6 +88,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/17/Log-Java日志管理/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言日志是所有软件系统非常重要的一部分；良好统一的日志规范和严格执行会大大提高系统的可维护性、可用性、可靠性，并进而提高开发效率，指导业务。  过程监控－－通过分析程序的执行过程，用于验证程序的执行是否按照既定的方式运行。 问题定位－－通过查看程序错误日志的详细信息以及产生位置，迅速定位问题产生的原因。 业务指导，通过统计和分析相关的业务、用户行为日志，对业务进行预测指导。 数据恢复－－通过反">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/java-log-frameworks.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-log-history.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-log-adapter-bridge1.png">
@@ -482,16 +483,16 @@
 <li>ThreadContext.clearMap()，清除MDC；</li>
 <li>ThreadContext.clearAll()，清除所有。</li>
 </ul>
-<h3 id="八、总结"><a href="#八、总结" class="headerlink" title="八、总结"></a>八、总结</h3><p>本文从日志的好处讲起，先总体上概述了日志相关库分为：日志框架和日志门面；然后按照时间顺序列举了这些日志常见库；随后对它们进行简单的对比；提出了几个常见的日之框架与日志门面的组合使用；最后提到了NDC、MDC、ThreadContext的概念为<a href="http://zhangyuyu.github.io/2017/08/17/Log-Slf4j%20MDC%20%E4%BD%BF%E7%94%A8%E5%92%8C%E5%9F%BA%E4%BA%8E%20Logback%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_blank" rel="external">下一篇文章</a>提供一点理论基础。<br>针对每个库更详细的特性或者具体的使用步骤，大家可以自行去对应的官网查看。</p>
+<h3 id="八、总结"><a href="#八、总结" class="headerlink" title="八、总结"></a>八、总结</h3><p>本文从日志的好处讲起，先总体上概述了日志相关库分为：日志框架和日志门面；然后按照时间顺序列举了这些日志常见库；随后对它们进行简单的对比；提出了几个常见的日之框架与日志门面的组合使用；最后提到了NDC、MDC、ThreadContext的概念为<a href="http://zhangyuyu.github.io/2017/08/17/Log-Slf4j%20MDC%20%E4%BD%BF%E7%94%A8%E5%92%8C%E5%9F%BA%E4%BA%8E%20Logback%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">下一篇文章</a>提供一点理论基础。<br>针对每个库更详细的特性或者具体的使用步骤，大家可以自行去对应的官网查看。</p>
 <h3 id="九、Reference"><a href="#九、Reference" class="headerlink" title="九、Reference"></a>九、Reference</h3><ul>
-<li><a href="http://patchouli-know.com/2017/04/08/java-log/" target="_blank" rel="external">Java 日志系统梳理</a></li>
-<li><a href="http://group.jobbole.com/30249/" target="_blank" rel="external">聊一聊那些年我们用过的 Java 日志框架</a></li>
-<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-practicelog/" target="_blank" rel="external">Java 日志管理最佳实践</a></li>
-<li><a href="http://blog.csdn.net/yycdaizi/article/details/8276265" target="_blank" rel="external">Java日志组件介绍</a></li>
-<li><a href="http://blog.csdn.net/gaojiaweir0011/article/details/8217604" target="_blank" rel="external">Log4j 对比 java.util.logging</a></li>
-<li><a href="http://dev.sei.pku.edu.cn/trac/pkuas/blog/2011/04/06/zhanglei09/my_topic" target="_blank" rel="external">Log4J与Java Logging调研</a></li>
-<li><a href="http://tech.lede.com/2017/02/06/rd/server/log4jSearch/" target="_blank" rel="external">日志工具现状调研</a></li>
-<li><a href="https://www.ibm.com/developerworks/cn/web/wa-lo-usertrack/index.html" target="_blank" rel="external">在Web 应用中增加用户跟踪功能</a></li>
+<li><a href="http://patchouli-know.com/2017/04/08/java-log/" target="_blank" rel="noopener">Java 日志系统梳理</a></li>
+<li><a href="http://group.jobbole.com/30249/" target="_blank" rel="noopener">聊一聊那些年我们用过的 Java 日志框架</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-practicelog/" target="_blank" rel="noopener">Java 日志管理最佳实践</a></li>
+<li><a href="http://blog.csdn.net/yycdaizi/article/details/8276265" target="_blank" rel="noopener">Java日志组件介绍</a></li>
+<li><a href="http://blog.csdn.net/gaojiaweir0011/article/details/8217604" target="_blank" rel="noopener">Log4j 对比 java.util.logging</a></li>
+<li><a href="http://dev.sei.pku.edu.cn/trac/pkuas/blog/2011/04/06/zhanglei09/my_topic" target="_blank" rel="noopener">Log4J与Java Logging调研</a></li>
+<li><a href="http://tech.lede.com/2017/02/06/rd/server/log4jSearch/" target="_blank" rel="noopener">日志工具现状调研</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/web/wa-lo-usertrack/index.html" target="_blank" rel="noopener">在Web 应用中增加用户跟踪功能</a></li>
 </ul>
 
       
@@ -620,7 +621,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -631,7 +632,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -642,7 +643,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -704,7 +705,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
