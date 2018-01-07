@@ -84,18 +84,18 @@
 <meta name="description" content="一、前言　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nexus-SonatypeNexus入门">
-<meta property="og:url" content="http://yoursite.com/2018/01/07/Nexus-SonatypeNexus入门/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/01/06/Nexus-SonatypeNexus入门/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-maven仓库.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-私服.png">
-<meta property="og:image" content="http://yoursite.com/imgs/nexus-kitematic-docker.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-kitematic-container.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-环境变量.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-功能-browse-server-content.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-功能-server-adminstration-configuration.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-功能-repositories.png">
-<meta property="og:updated_time" content="2018-01-07T10:12:15.000Z">
+<meta property="og:updated_time" content="2018-01-07T13:34:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nexus-SonatypeNexus入门">
 <meta name="twitter:description" content="一、前言　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，">
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/07/Nexus-SonatypeNexus入门/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/06/Nexus-SonatypeNexus入门/"/>
 
 
 
@@ -272,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/07/Nexus-SonatypeNexus入门/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/Nexus-SonatypeNexus入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Yu">
@@ -301,8 +301,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-07T18:08:15+08:00">
-                2018-01-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T18:08:15+08:00">
+                2018-01-06
               </time>
             
 
@@ -339,7 +339,7 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。<br>　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，进行输出。<br>　　这里，我主要负责利用Nexus进行仓库的管理，本篇主要讲述nexus的一些基础，下一篇将利用nexus作为maven的私服，利用gradle进行构建一个简单的web应用。</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　最近在组建公司内部的Devops Community，按照一整套的项目故事线列出了Devops knowledge Library。其中涉及到基础知识、云平台、持续集成、产出物管理、开发流程和工具、容器编排、配置管理、监控管理、日志管理、HA等。<br>　　为了尽快的搭建内部人员的知识体系，按照上述流程，我们利用最常见的工具，构想了一个简单的流水线，每个人负责流水线的一部分，然后顺序串到一起，进行输出。<br>　　这里，我主要负责利用Nexus进行仓库的管理，本篇主要讲述nexus的一些基础，<a href="http://zhangyuyu.github.io/2018/01/07/Nexus-SonatypeNexus%E6%90%AD%E5%BB%BAmaven%E7%A7%81%E6%9C%8D/" target="_blank" rel="noopener">下一篇</a>将利用nexus作为maven的私服，利用gradle进行构建一个简单的web应用。</p>
 <a id="more"></a>
 <h2 id="二、Nexus"><a href="#二、Nexus" class="headerlink" title="二、Nexus"></a>二、Nexus</h2><p>　　Nexus是谷歌手机的一个牌子，我们要介绍的不是Nexus，而是Sonatype Nexus。<br>　　Sonatype Nexus是Sonatype公司的一个产品，叫Nexus，它是Maven的私服。<br>　　<img src="/imgs/nexus-maven仓库.png" width="500" height="200"></p>
 <p>　　事实上有三种专门的Maven仓库管理软件可以帮助我们创建私服：</p>
@@ -363,8 +363,7 @@
 <li><p>降低中央仓库的负荷<br>　　使用私服可以避免很多对中央仓库的重复下载，降低中央仓库的压力。</p>
 </li>
 </ol>
-<h2 id="五、Docker搭建"><a href="#五、Docker搭建" class="headerlink" title="五、Docker搭建"></a>五、Docker搭建</h2><p>　　安装过程，网上有很多资料，这里不再赘述。笔者是MAC Pro，安装了Docker for Mac，因此很容易Kitematic进行容器的安装。<br><img src="/imgs/nexus-kitematic-docker.png" width="800" height="500"></p>
-<p>宿主机上docker image的存放地址：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$HOME</span>/Library/Containers/com<span class="selector-class">.docker</span><span class="selector-class">.docker</span>/Data/com<span class="selector-class">.docker</span><span class="selector-class">.driver</span><span class="selector-class">.amd64-linux</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="五、Docker搭建"><a href="#五、Docker搭建" class="headerlink" title="五、Docker搭建"></a>五、Docker搭建</h2><p>　　安装过程，网上有很多资料，这里不再赘述。笔者是MAC Pro，安装了Docker for Mac，因此很容易Kitematic进行容器的安装。<br><img src="/imgs/nexus-kitematic-container.png" width="800" height="500"></p>
 <h3 id="1-安装目录"><a href="#1-安装目录" class="headerlink" title="1. 安装目录"></a>1. 安装目录</h3><p>下面是nexus的一些环境变量：<br><img src="/imgs/nexus-环境变量.png" width="800" height="800"></p>
 <p>nexus-container中：<br><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sh-4.2$ whoami</span><br><span class="line">nexus</span><br><span class="line">sh-4.2$ pwd</span><br><span class="line">/opt/sonatype/nexus</span><br><span class="line">sh-4.2$ ls -l</span><br><span class="line">total 68</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>root root<span class="number"> 39222 </span>Dec<span class="number"> 27 </span>16:00 LICENSE.txt</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>root root  <span class="number"> 395 </span>Dec<span class="number"> 27 </span>16:00 NOTICE.txt</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 bin</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 deploy</span><br><span class="line">drwxr-xr-x <span class="number"> 7 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 etc</span><br><span class="line">drwxr-xr-x <span class="number"> 4 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 lib</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 public</span><br><span class="line">drwxr-xr-x<span class="number"> 21 </span>root root <span class="number"> 4096 </span>Jan <span class="number"> 2 </span>21:41 system</span><br></pre></td></tr></table></figure></p>
 <ul>
@@ -497,7 +496,7 @@
 <h4 id="2-4-System"><a href="#2-4-System" class="headerlink" title="2.4 System"></a>2.4 System</h4><p>主要是邮件服务器，调度的设置地方</p>
 <h2 id="七、实现原理"><a href="#七、实现原理" class="headerlink" title="七、实现原理"></a>七、实现原理</h2><p>　　Nexus Repository是以Java和JavaScript为主，实现的一个包含前端与后台的Web服务。 后台方面，它采用Jetty作为应用服务器、Karaf作为OSGi容器、OrientDB作为数据库。 前端方面，它使用Swagger UI作为框架，是一个单页面Web App。</p>
 <p>　　另外，它也通过Resteasy支持REST API，可以通过网络进行访问控制。并且，自行实现了一个插件系统，用插件的方式支持了更多复杂的功能。比如，Maven、PyPI、Docker这些支持，都是由插件实现的。 如果希望支持其它方式的代理、缓存、发布，比如APT，也可以通过插件定制。</p>
-<h2 id="八、最后"><a href="#八、最后" class="headerlink" title="八、最后"></a>八、最后</h2><p>　　本篇主要讲述了Nexus的概念及好处，介绍了nexus涉及到的安装目录以及数据目录，简单的列举了一下Nexus repository manager UI上的功能。<br>　　下一篇将利用nexus作为maven的私服，利用gradle进行构建一个简单的web应用。</p>
+<h2 id="八、最后"><a href="#八、最后" class="headerlink" title="八、最后"></a>八、最后</h2><p>　　本篇主要讲述了Nexus的概念及好处，介绍了nexus涉及到的安装目录以及数据目录，简单的列举了一下Nexus repository manager UI上的功能。<br>　　<a href="http://zhangyuyu.github.io/2018/01/07/Nexus-SonatypeNexus%E6%90%AD%E5%BB%BAmaven%E7%A7%81%E6%9C%8D/" target="_blank" rel="noopener">下一篇</a> 将利用nexus作为maven的私服，利用gradle进行构建一个简单的web应用。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://blog.csdn.net/gaoying_blogs/article/details/48917847" target="_blank" rel="noopener">【项目管理】Sonatype Nexus,Maven私服</a></li>
 <li><a href="http://juvenshun.iteye.com/blog/285059" target="_blank" rel="noopener">使用仓库管理器——Sonatype Nexus的九大理由</a></li>
@@ -537,8 +536,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/07/Nexus-SonatypeNexus搭建maven私服/" rel="next" title="Nexus - Sonatype Nexus搭建maven私服">
-                <i class="fa fa-chevron-left"></i> Nexus - Sonatype Nexus搭建maven私服
+              <a href="/2017/12/27/Mongo-记一次安装启动错误/" rel="next" title="Mongo-记一次安装启动异常">
+                <i class="fa fa-chevron-left"></i> Mongo-记一次安装启动异常
               </a>
             
           </div>
@@ -546,6 +545,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/07/Nexus-SonatypeNexus搭建maven私服/" rel="prev" title="Nexus - Sonatype Nexus搭建maven私服">
+                Nexus - Sonatype Nexus搭建maven私服 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
