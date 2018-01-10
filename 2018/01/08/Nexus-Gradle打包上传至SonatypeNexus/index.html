@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-create-local-blob.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-create-maven2-hosted.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-browse-simple-web.png">
-<meta property="og:updated_time" content="2018-01-08T13:51:51.000Z">
+<meta property="og:updated_time" content="2018-01-09T10:25:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nexus - Gradle打包上传至Sonatype Nexus">
 <meta name="twitter:description" content="一、前言　　前一篇介绍了用nexus搭建一个maven私服，并尝试创建了一个proxy仓库。本篇将主要创建一个hosted仓库，上传gradle生成的构建产物。">
@@ -361,12 +361,12 @@
         <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　<a href="http://zhangyuyu.github.io/2018/01/07/Nexus-SonatypeNexus%E6%90%AD%E5%BB%BAmaven%E7%A7%81%E6%9C%8D/" target="_blank" rel="noopener">前一篇</a>介绍了用nexus搭建一个maven私服，并尝试创建了一个proxy仓库。本篇将主要创建一个hosted仓库，上传gradle生成的构建产物。</p>
 <a id="more"></a>
 <h2 id="二、搭建Nexus-hosted-仓库"><a href="#二、搭建Nexus-hosted-仓库" class="headerlink" title="二、搭建Nexus hosted 仓库"></a>二、搭建Nexus hosted 仓库</h2><h3 id="1-创建单独的blob"><a href="#1-创建单独的blob" class="headerlink" title="1. 创建单独的blob"></a>1. 创建单独的blob</h3><p>　　<img src="/imgs/nexus-create-local-blob.png" width="500" height="250"></p>
-<p>　　完成创建之后，可以在宿主机上看到路径<code>nexus-data/blobs/local-blob</code>的存在。</p>
+<p>　　完成创建之后，可以在宿主机上看到路径<code>nexus-data/blobs/mvn-local-blob</code>的存在。</p>
 <h3 id="2-创建hosted仓库"><a href="#2-创建hosted仓库" class="headerlink" title="2. 创建hosted仓库"></a>2. 创建hosted仓库</h3><p>　　选择maven2(hosted)的仓库，进行创建：<br>　　<img src="/imgs/nexus-create-maven2-hosted.png" width="500" height="800"></p>
 <p>　　注意选择：</p>
 <ul>
 <li>version policy：Mixed（此处笔者并不进行release和snapshot的区分，所以选择Mixed）</li>
-<li>blob store：刚刚创建的local-blob</li>
+<li>blob store：刚刚创建的mvn-local-blob</li>
 <li>deployment policy：allow redeploy</li>
 </ul>
 <h2 id="三、配置gradle"><a href="#三、配置gradle" class="headerlink" title="三、配置gradle"></a>三、配置gradle</h2><p>　　在上一篇的基础上，build.gralde里面需要增加：</p>
@@ -378,16 +378,16 @@
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'maven'</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>uploadArchives的task</p>
-<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">uploadArchives &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenDeployer &#123;</span><br><span class="line">            repository(url: <span class="string">"<span class="subst">$&#123;nexusUrl&#125;</span>/mvnlocal/"</span>) &#123;</span><br><span class="line">                authentication(userName: nexusUsername, password: nexusPassword)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            pom.<span class="attr">version</span> = <span class="string">"<span class="subst">$&#123;project.version&#125;</span>"</span></span><br><span class="line">            pom.<span class="attr">artifactId</span> = <span class="string">"<span class="subst">$&#123;project.name&#125;</span>"</span></span><br><span class="line">            pom.<span class="attr">groupId</span> = <span class="string">"<span class="subst">$&#123;project.group&#125;</span>"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">uploadArchives &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenDeployer &#123;</span><br><span class="line">            repository(url: <span class="string">"<span class="subst">$&#123;nexusUrl&#125;</span>/mvn-local/"</span>) &#123;</span><br><span class="line">                authentication(userName: nexusUsername, password: nexusPassword)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            pom.<span class="attr">version</span> = <span class="string">"<span class="subst">$&#123;project.version&#125;</span>"</span></span><br><span class="line">            pom.<span class="attr">artifactId</span> = <span class="string">"<span class="subst">$&#123;project.name&#125;</span>"</span></span><br><span class="line">            pom.<span class="attr">groupId</span> = <span class="string">"<span class="subst">$&#123;project.group&#125;</span>"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <ul>
 <li>maven会以<code>groupId:artifactId:packaging:version</code>定位某一个输出物。上述指定了version、artifactId和groupId。packaging为War包。</li>
-<li>注意上述repository配置的为<code>${nexusUrl}/mvnlocal/</code>，拼起来就是上述创建的hosted仓库的URL。</li>
+<li>注意上述repository配置的为<code>${nexusUrl}/mvn-local/</code>，拼起来就是上述创建的hosted仓库的URL。</li>
 </ul>
 <h2 id="四、运行"><a href="#四、运行" class="headerlink" title="四、运行"></a>四、运行</h2><ol>
 <li>执行命令<code>./gradlew uploadArchives</code>上传war包到nexus hosted repo。</li>
-<li>查看nexus上<a href="http://localhost:32768/#browse/browse:mvnlocal" target="_blank" rel="noopener">mvn local</a>的hosted仓库，可以看到simple-web-1.0.0.war<img src="/imgs/nexus-browse-simple-web.png" width="300" height="400">
+<li>查看nexus上<a href="http://localhost:32768/#browse/browse:mvn-local" target="_blank" rel="noopener">mvn local</a>的hosted仓库，可以看到simple-web-1.0.0.war<img src="/imgs/nexus-browse-simple-web.png" width="300" height="400">
 </li>
 </ol>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇利用gralde生成程序构建产物，并在nexus上创建一个hosted仓库，将构建产物打包上传到nexus。</p>
@@ -445,6 +445,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/09/Nexus-构建并上传docker-image至Sonatype-Nexus/" rel="prev" title="Nexus - 构建并上传docker image至Sonatype Nexus">
+                Nexus - 构建并上传docker image至Sonatype Nexus <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -521,7 +525,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
