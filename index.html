@@ -264,6 +264,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/" itemprop="url">Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T12:04:13+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。<br>　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/09/Nexus-构建并上传docker-image至Sonatype-Nexus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -356,7 +502,7 @@
 
       
         
-          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面两篇文章都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。<br>本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。<br>方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。</p>
+          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面两篇文章<a href="http://zhangyuyu.github.io/2018/01/07/Nexus-SonatypeNexus%E6%90%AD%E5%BB%BAmaven%E7%A7%81%E6%9C%8D/" target="_blank" rel="noopener">Nexus - Sonatype Nexus搭建maven私服</a>、<a href="http://zhangyuyu.github.io/2018/01/08/Nexus-Gradle%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E8%87%B3SonatypeNexus/" target="_blank" rel="noopener">Nexus - Gradle打包上传至Sonatype Nexus</a>都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。<br>本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。<br>方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/09/Nexus-构建并上传docker-image至Sonatype-Nexus/#more" rel="contents">
@@ -1619,155 +1765,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/30/餐巾纸的背面（一）视觉化思考/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/30/餐巾纸的背面（一）视觉化思考/" itemprop="url">餐巾纸的背面（一）视觉化思考</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-30T21:34:55+08:00">
-                2017-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/阅读/" itemprop="url" rel="index">
-                    <span itemprop="name">阅读</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　《餐巾纸的背面》不是告诉你如何成为一个画家，而是告诉你如何进行思考。将视觉化思考的观点，移植到你的工作、生活、交往、个人品牌规划以及你的一切中。学会用眼睛看待世界，用心思考世界，从而用笔与世界沟通。</p>
-<img src="/imgs/餐巾纸的背面-视觉化思考-大纲.jpg" width="500" height="800">
-<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　转眼已经2017年的年底了，回顾这一年虽然看了不少书，但是却是边看边忘，边焦虑边放松，似乎每次都能给自己找到足够的借口来“堕落”，继而冠冕堂皇的继续“优雅地享受生活”。<br>　　上次的《Buddy Workshop》，顿似醍醐灌顶，让人不容小觑<code>输出</code>的重要性；<br>　　邮件里面看到的《21天写工作坊》，蓦地振聋发聩，让人歆羡<code>坚持</code>的点滴沉淀；<br>　　考虑年底的training budget的书籍，忽地豁然开朗，让人开始沉静下来总结些许。</p>
-<h2 id="三、什么是视觉化思考"><a href="#三、什么是视觉化思考" class="headerlink" title="三、什么是视觉化思考"></a>三、什么是视觉化思考</h2>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/11/30/餐巾纸的背面（一）视觉化思考/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1818,7 +1815,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

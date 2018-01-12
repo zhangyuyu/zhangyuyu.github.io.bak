@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Nexus," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
+<meta name="keywords" content="Nexus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖">
+<meta property="og:url" content="http://yoursite.com/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-kitematic-web-view.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-unlock.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-customize-plugins.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-admin-user.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-configure-tools.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-new-item.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-configure-source-code.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-configure-build.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-link-container.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-build-console.png">
+<meta property="og:updated_time" content="2018-01-12T10:45:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖">
+<meta name="twitter:description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
+<meta name="twitter:image" content="http://yoursite.com/imgs/nexus-jenkins-kitematic-web-view.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/"/>
+
+
+
+
+
+  <title>Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖 | 若见喻笺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">若见喻笺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T12:04:13+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。<br>　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。<br><a id="more"></a></p>
+<h2 id="二、构建jenkins容器"><a href="#二、构建jenkins容器" class="headerlink" title="二、构建jenkins容器"></a>二、构建jenkins容器</h2><h3 id="1-通过nexus获取jenkins-jenkins-lts镜像"><a href="#1-通过nexus获取jenkins-jenkins-lts镜像" class="headerlink" title="1. 通过nexus获取jenkins/jenkins:lts镜像"></a>1. 通过nexus获取jenkins/jenkins:lts镜像</h3><h4 id="1-1-启动nexus-container"><a href="#1-1-启动nexus-container" class="headerlink" title="1.1 启动nexus container"></a>1.1 启动nexus container</h4><p>　　创建container的部分，可以参考前文<a href="http://zhangyuyu.github.io/2018/01/07/Nexus-SonatypeNexus%E6%90%AD%E5%BB%BAmaven%E7%A7%81%E6%9C%8D/" target="_blank" rel="noopener">Nexus - Sonatype Nexus搭建maven私服</a>。<br>启动nexus container，可直接在docker for mac里面，点击start即可。</p>
+<h4 id="1-2-获取镜像"><a href="#1-2-获取镜像" class="headerlink" title="1.2 获取镜像"></a>1.2 获取镜像</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull <span class="string">localhost:</span><span class="number">50000</span><span class="regexp">/jenkins/</span><span class="string">jenkins:</span>lts</span><br></pre></td></tr></table></figure>
+<h4 id="1-3-运行容器"><a href="#1-3-运行容器" class="headerlink" title="1.3 运行容器"></a>1.3 运行容器</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --name jenkins-container -p <span class="number">51001</span>:<span class="number">8080</span> -p <span class="number">51002</span>:<span class="number">50000</span> -v <span class="regexp">~/Documents/</span><span class="string">jenkins_home:</span><span class="regexp">/var/</span>jenkins_home <span class="string">localhost:</span><span class="number">50000</span><span class="regexp">/jenkins/</span><span class="string">jenkins:</span>lts</span><br></pre></td></tr></table></figure>
+<h4 id="1-4-初始化jenkins配置"><a href="#1-4-初始化jenkins配置" class="headerlink" title="1.4 初始化jenkins配置"></a>1.4 初始化jenkins配置</h4><ul>
+<li><p>上述运行容器的命令执行之后，会出现如下信息：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>*</span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>*</span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>*</span><br><span class="line"></span><br><span class="line">Jenkins initial setup is required. An admin user has been created and a password generated.</span><br><span class="line">Please use the following password to proceed to installation:</span><br><span class="line"></span><br><span class="line">97b8f494cbc340c4818083XXXXXXXXXX</span><br><span class="line"></span><br><span class="line">This may also be found at: /var/jenkins_home/secrets/initialAdminPassword</span><br><span class="line"></span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>*</span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>*</span><br><span class="line"><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kitematic的右侧也会出现如下页面：<br>　　<img src="/imgs/nexus-jenkins-kitematic-web-view.png" width="400" height="200"></p>
+</li>
+<li><p>浏览器访问<code>http://localhost:51001/</code>，输入上述命令行的password<br>　　<img src="/imgs/nexus-jenkins-unlock.png" width="400" height="200"></p>
+</li>
+<li><p>自定义安装插件<br>　　建议在下图中，选择“select plugins to install”，然后不要选择太多的插件，等到要用的时候再去安装。笔者在本次使用中只选择了<code>Git plugin</code>和<code>Gradle Plugin</code>。</p>
+<ul>
+<li>Git插件:用于从git仓库获取代码</li>
+<li>Gradle插件:用于打包gradle项目</li>
+</ul>
+</li>
+</ul>
+<img src="/imgs/nexus-jenkins-customize-plugins.png" width="400" height="200">
+<ul>
+<li>创建admin user<br>　　为了不忘记，笔者设置的是<code>admin/admin</code>。</li>
+</ul>
+<img src="/imgs/nexus-jenkins-admin-user.png" width="400" height="200">
+<ul>
+<li>配置插件<br>　　依次选择Jenkins -&gt; Manage Jenkins -&gt; Global Tool Configuration：</li>
+</ul>
+<img src="/imgs/nexus-jenkins-configure-tools.png" width="800" height="500">
+<h2 id="三、配置gradle-job"><a href="#三、配置gradle-job" class="headerlink" title="三、配置gradle job"></a>三、配置gradle job</h2><h3 id="1-新建Freestyle-project"><a href="#1-新建Freestyle-project" class="headerlink" title="1. 新建Freestyle project"></a>1. 新建Freestyle project</h3><p>　　<img src="/imgs/nexus-jenkins-new-item.png" width="800" height="500"></p>
+<h3 id="2-配置source-code-management"><a href="#2-配置source-code-management" class="headerlink" title="2. 配置source code management"></a>2. 配置source code management</h3><p>　　<img src="/imgs/nexus-jenkins-configure-source-code.png" width="800" height="500"></p>
+<p>　　选择Git：</p>
+<ul>
+<li>Repository URL 填写你的项目的git地址</li>
+<li>Credentials 选择你的git仓库的账户密码(如果没有，请点击Add)</li>
+<li>Branches to build =&gt; Branch Specifier (blank for ‘any’) 这里填写构建项目时将要拉取的分支的名称 例如(*/master)</li>
+</ul>
+<h3 id="3-配置build"><a href="#3-配置build" class="headerlink" title="3. 配置build"></a>3. 配置build</h3><p>　　<img src="/imgs/nexus-jenkins-configure-build.png" width="800" height="500"></p>
+<p>　　选择Invoke Gradle script：</p>
+<ul>
+<li>选择 Invoke Gradle , Gradle Version 中选择前面自动安装的gradle</li>
+<li>Tasks 填写 <code>clean build</code></li>
+<li>点击高级，勾上Force GRADLE_USER_HOME to use workspace</li>
+</ul>
+<h3 id="4-手动在容器里进行build"><a href="#4-手动在容器里进行build" class="headerlink" title="4. 手动在容器里进行build"></a>4. 手动在容器里进行build</h3><h4 id="4-1-登录到jenkins-container"><a href="#4-1-登录到jenkins-container" class="headerlink" title="4.1 登录到jenkins container"></a>4.1 登录到jenkins container</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> bash -c <span class="string">"clear &amp;&amp; docker exec -it jenkins-container sh"</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="4-2-在jenkins-container里面"><a href="#4-2-在jenkins-container里面" class="headerlink" title="4.2 在jenkins container里面"></a>4.2 在jenkins container里面</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /var/jenkins_home/workspace/simple-web</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew clean build</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-3-可能出现的错误"><a href="#4-3-可能出现的错误" class="headerlink" title="4.3 可能出现的错误"></a>4.3 可能出现的错误</h4><h5 id="4-3-1-具体错误"><a href="#4-3-1-具体错误" class="headerlink" title="4.3.1 具体错误"></a>4.3.1 具体错误</h5><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ ./gradlew clean build</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed <span class="keyword">with</span> <span class="keyword">an</span> exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">A problem occurred configuring root project <span class="string">'simple-web'</span>.</span><br><span class="line">&gt; Could <span class="keyword">not</span> <span class="built_in">resolve</span> all <span class="built_in">files</span> <span class="keyword">for</span> configuration <span class="string">':classpath'</span>.</span><br><span class="line">   &gt; Could <span class="keyword">not</span> <span class="built_in">resolve</span> org.akhikhl.gretty:gretty:<span class="number">2.0</span><span class="number">.0</span>.</span><br><span class="line">     Required <span class="keyword">by</span>:</span><br><span class="line">         project :</span><br><span class="line">      &gt; Could <span class="keyword">not</span> <span class="built_in">resolve</span> org.akhikhl.gretty:gretty:<span class="number">2.0</span><span class="number">.0</span>.</span><br><span class="line">         &gt; Could <span class="keyword">not</span> <span class="built_in">get</span> resource <span class="string">'http://localhost:32768/repository/maven-central/org/akhikhl/gretty/gretty/2.0.0/gretty-2.0.0.pom'</span>.</span><br><span class="line">            &gt; Could <span class="keyword">not</span> HEAD <span class="string">'http://localhost:32768/repository/maven-central/org/akhikhl/gretty/gretty/2.0.0/gretty-2.0.0.pom'</span>.</span><br><span class="line">               &gt; Connect <span class="built_in">to</span> localhost:<span class="number">32768</span> [localhost/<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>] failed: Connection refused (Connection refused)</span><br></pre></td></tr></table></figure>
+<h5 id="4-3-2-原因"><a href="#4-3-2-原因" class="headerlink" title="4.3.2 原因"></a>4.3.2 原因</h5><p>　　由于应用simple-web的代码<code>gradle.properties</code>里面的nexus是localhost，而实际上期望的是我们自己搭建的nexus repo的地址，因此会报错，连接失败，下载不了依赖。<br><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nexusUrl=http:<span class="regexp">//</span>localhost:<span class="number">32768</span><span class="regexp">/repository/</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="4-3-3-解决办法"><a href="#4-3-3-解决办法" class="headerlink" title="4.3.3 解决办法"></a>4.3.3 解决办法</h5><p>　　这里先提供粗暴的直接解决办法，下文会自动化整个过程。一般docker之间的互连有如下三种方式：</p>
+<ul>
+<li>通过端口公开（port exposure）连接</li>
+<li>将宿主机端口绑定（bind）至容器端口</li>
+<li>通过链接（link）选项去连接两个容器</li>
+</ul>
+<p>　　对于第一种方式，由于我们的容器已经正在运行了，不好再次公开端口；对于第二种方式，应该是连接jenkins container -&gt; host -&gt; nexus container，但是nexus container已经将32768端口号和宿主机绑定，jenkins就无法再次绑定该端口；第三种方式可以一试。</p>
+<h5 id="4-3-4-具体解决步骤"><a href="#4-3-4-具体解决步骤" class="headerlink" title="4.3.4 具体解决步骤"></a>4.3.4 具体解决步骤</h5><ul>
+<li><p>先构建nexus3-container容器和jenkins-container的网络连接<br>用Docker for mac，在两个container的network设置处，都要配置Links：</p>
+<img src="/imgs/nexus-jenkins-link-container.png" width="600" height="300">
+<p>之后登陆到<code>jenkins-container</code>，就可以ping通<code>nexus3-container</code>了。</p>
+</li>
+<li><p>将gradle.properties文件里的nexusUrl设置为<code>nexus3-container</code>的ip地址及端口号<code>510001</code>。</p>
+</li>
+</ul>
+<p>　　上述方式缺点很明显，每次构建都要更改代码里的nexusUrl，依赖于一个动态ip配置；此外，用link必须要求容器是正在运行的，因此每次都必须先启动两个容器，再去配置link container。可以有几种解决方案，比如动态设置环境变量、比如设置静态子网ip（下文将讲述该方式）。</p>
+<h3 id="5-通过jenkins-UI进行build"><a href="#5-通过jenkins-UI进行build" class="headerlink" title="5. 通过jenkins UI进行build"></a>5. 通过jenkins UI进行build</h3><p>　　点击左侧的<code>Build Now</code>，即可看到<code>Build History</code>里面有Build的次数和时间信息。点击进入，可看到详细的console构建信息：<br>　　<img src="/imgs/nexus-jenkins-build-console.png" width="800" height="550"></p>
+<h2 id="四、自动化"><a href="#四、自动化" class="headerlink" title="四、自动化"></a>四、自动化</h2><h3 id="1-删除已有container"><a href="#1-删除已有container" class="headerlink" title="1. 删除已有container"></a>1. 删除已有container</h3><p>　　手动删除本地的nexus3-container和jenkins-container，不删除其对应的容器数据。</p>
+<h3 id="2-创建docker-compose-yml"><a href="#2-创建docker-compose-yml" class="headerlink" title="2. 创建docker-compose.yml"></a>2. 创建docker-compose.yml</h3><p>　　下面的docker-compose文件基本是按照现有的容器配置进行编写的，唯一不同的是，增加了关于网络的部分：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">version</span>: <span class="string">'3'</span></span><br><span class="line"><span class="attribute">services</span>:</span><br><span class="line">  <span class="attribute">nexus-service</span>:</span><br><span class="line">    <span class="attribute">image</span>: sonatype/<span class="attribute">nexus3</span>:latest</span><br><span class="line">    <span class="attribute">container_name</span>: nexus3-container</span><br><span class="line">    <span class="attribute">hostname</span>: wanzi</span><br><span class="line">    <span class="attribute">ports</span>:</span><br><span class="line">      - <span class="string">"32768:8081"</span></span><br><span class="line">      - <span class="string">"50000:50000"</span></span><br><span class="line">      - <span class="string">"50001:50001"</span></span><br><span class="line">      - <span class="string">"50002:50002"</span></span><br><span class="line">    <span class="attribute">volumes</span>:</span><br><span class="line">      - ~/Documents/Kitematic/nexus3-container/<span class="attribute">nexus-data</span>:/nexus-data</span><br><span class="line">    <span class="attribute">networks</span>:</span><br><span class="line">      <span class="attribute">nexus-net</span>:</span><br><span class="line">        <span class="attribute">ipv4_address</span>: <span class="number">172.16</span>.<span class="number">238.10</span></span><br><span class="line">    <span class="attribute">restart</span>: always</span><br><span class="line"></span><br><span class="line">  <span class="attribute">jenkins-service</span>:</span><br><span class="line">    <span class="attribute">image</span>: <span class="attribute">localhost</span>:<span class="number">50000</span>/jenkins/<span class="attribute">jenkins</span>:lts</span><br><span class="line">    <span class="attribute">container_name</span>: jenkins-container</span><br><span class="line">    <span class="attribute">hostname</span>: wanzi</span><br><span class="line">    <span class="attribute">volumes</span>:</span><br><span class="line">      - ~/Documents/<span class="attribute">jenkins_home</span>:/var/jenkins_home</span><br><span class="line">    <span class="attribute">networks</span>:</span><br><span class="line">      <span class="attribute">nexus-net</span>:</span><br><span class="line">        <span class="attribute">ipv4_address</span>: <span class="number">172.16</span>.<span class="number">238.11</span></span><br><span class="line">    <span class="attribute">ports</span>:</span><br><span class="line">      - <span class="string">"51001:8080"</span></span><br><span class="line">      - <span class="string">"51002:50000"</span></span><br><span class="line">    <span class="attribute">depends_on</span>:</span><br><span class="line">      - nexus-service</span><br><span class="line">    <span class="attribute">restart</span>: always</span><br><span class="line"></span><br><span class="line"><span class="attribute">networks</span>:</span><br><span class="line">  <span class="attribute">nexus-net</span>:</span><br><span class="line">    <span class="attribute">driver</span>: bridge</span><br><span class="line">    <span class="attribute">ipam</span>:</span><br><span class="line">      <span class="attribute">driver</span>: default</span><br><span class="line">      <span class="attribute">config</span>:</span><br><span class="line">        - <span class="attribute">subnet</span>: <span class="number">172.16</span>.<span class="number">238.0</span>/<span class="number">24</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="4-更改nexusUrl"><a href="#4-更改nexusUrl" class="headerlink" title="4. 更改nexusUrl"></a>4. 更改nexusUrl</h4><ul>
+<li><p>更改<code>simple-web</code>中<code>gradle.properties</code>文件的nexusUrl</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nexusUrl=http:<span class="regexp">//</span><span class="number">172.16</span>.<span class="number">238.10</span>:<span class="number">8081</span><span class="regexp">/repository/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后push代码到github</p>
+</li>
+</ul>
+<h3 id="3-依次启动nexus3-container和jenkins-container"><a href="#3-依次启动nexus3-container和jenkins-container" class="headerlink" title="3. 依次启动nexus3-container和jenkins-container"></a>3. 依次启动<code>nexus3-container</code>和<code>jenkins-container</code></h3><p>　　由于<code>jenkins-container</code>要依赖于从<code>nexus3-container</code>下载依赖，所以要先启动<code>nexus3-container</code>。<br>    <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose up nexus-service</span></span><br></pre></td></tr></table></figure></p>
+<p>　　然后启动<code>jenkins-container</code><br>    <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose up jenkins-service</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇文章是以jenkins搭建持续集成、持续交付应用的首篇，主要介绍了一些基本的操作。包括搭建jenkens容器，与前文的nexus环境进行结合，创建第一个gradle job构建产物。<br>　　接下来，会逐步搭建jenkins上其他的job。</p>
+<p>Github代码地址：<a href="https://github.com/zhangyuyu/Simple-web" target="_blank" rel="noopener">https://github.com/zhangyuyu/Simple-web</a></p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="http://www.jdkhome.com/article/build-automation-by-git-jenkins-gradle-docker" target="_blank" rel="noopener">基于 git + jenkins + gradle + docker 搭建自动化集成环境</a></li>
+<li><a href="https://deepzz.com/post/docker-compose-file.html" target="_blank" rel="noopener">如何对docker-compose配置静态ip</a></li>
+<li><a href="http://dockone.io/article/1155" target="_blank" rel="noopener">Docker容器互联方法-篇一</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/imgs/qr-code.png" alt="Zhang Yu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫一扫，用手机访问本站</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nexus/" rel="tag"># Nexus</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/09/Nexus-构建并上传docker-image至Sonatype-Nexus/" rel="next" title="Nexus - 构建并上传docker image至Sonatype Nexus">
+                <i class="fa fa-chevron-left"></i> Nexus - 构建并上传docker image至Sonatype Nexus
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Zhang Yu</p>
+              <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、构建jenkins容器"><span class="nav-number">2.</span> <span class="nav-text">二、构建jenkins容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-通过nexus获取jenkins-jenkins-lts镜像"><span class="nav-number">2.1.</span> <span class="nav-text">1. 通过nexus获取jenkins/jenkins:lts镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-启动nexus-container"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1 启动nexus container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-获取镜像"><span class="nav-number">2.1.2.</span> <span class="nav-text">1.2 获取镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-运行容器"><span class="nav-number">2.1.3.</span> <span class="nav-text">1.3 运行容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-初始化jenkins配置"><span class="nav-number">2.1.4.</span> <span class="nav-text">1.4 初始化jenkins配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、配置gradle-job"><span class="nav-number">3.</span> <span class="nav-text">三、配置gradle job</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-新建Freestyle-project"><span class="nav-number">3.1.</span> <span class="nav-text">1. 新建Freestyle project</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置source-code-management"><span class="nav-number">3.2.</span> <span class="nav-text">2. 配置source code management</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-配置build"><span class="nav-number">3.3.</span> <span class="nav-text">3. 配置build</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-手动在容器里进行build"><span class="nav-number">3.4.</span> <span class="nav-text">4. 手动在容器里进行build</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-登录到jenkins-container"><span class="nav-number">3.4.1.</span> <span class="nav-text">4.1 登录到jenkins container</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-在jenkins-container里面"><span class="nav-number">3.4.2.</span> <span class="nav-text">4.2 在jenkins container里面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-可能出现的错误"><span class="nav-number">3.4.3.</span> <span class="nav-text">4.3 可能出现的错误</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-1-具体错误"><span class="nav-number">3.4.3.1.</span> <span class="nav-text">4.3.1 具体错误</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-2-原因"><span class="nav-number">3.4.3.2.</span> <span class="nav-text">4.3.2 原因</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-3-解决办法"><span class="nav-number">3.4.3.3.</span> <span class="nav-text">4.3.3 解决办法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-4-具体解决步骤"><span class="nav-number">3.4.3.4.</span> <span class="nav-text">4.3.4 具体解决步骤</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-通过jenkins-UI进行build"><span class="nav-number">3.5.</span> <span class="nav-text">5. 通过jenkins UI进行build</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、自动化"><span class="nav-number">4.</span> <span class="nav-text">四、自动化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-删除已有container"><span class="nav-number">4.1.</span> <span class="nav-text">1. 删除已有container</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建docker-compose-yml"><span class="nav-number">4.2.</span> <span class="nav-text">2. 创建docker-compose.yml</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-更改nexusUrl"><span class="nav-number">4.2.1.</span> <span class="nav-text">4. 更改nexusUrl</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-依次启动nexus3-container和jenkins-container"><span class="nav-number">4.3.</span> <span class="nav-text">3. 依次启动nexus3-container和jenkins-container</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">6.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+  
+   <span style="margin-left:8px;">
+   <script src="http://s6.cnzz.com/stat.php?id=1263347220&web_id=1263347220" type="text/javascript"></script>
+   </span>
+
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

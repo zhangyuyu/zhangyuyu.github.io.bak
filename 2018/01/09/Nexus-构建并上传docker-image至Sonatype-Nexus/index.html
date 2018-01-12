@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="一、前言　　前面两篇文章都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。">
+<meta name="description" content="一、前言　　前面两篇文章Nexus - Sonatype Nexus搭建maven私服、Nexus - Gradle打包上传至Sonatype Nexus都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。">
 <meta name="keywords" content="Nexus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nexus - 构建并上传docker image至Sonatype Nexus">
 <meta property="og:url" content="http://yoursite.com/2018/01/09/Nexus-构建并上传docker-image至Sonatype-Nexus/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、前言　　前面两篇文章都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。">
+<meta property="og:description" content="一、前言　　前面两篇文章Nexus - Sonatype Nexus搭建maven私服、Nexus - Gradle打包上传至Sonatype Nexus都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-docker-proxy-repository-connectors.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-docker-proxy-registry-api.png">
@@ -100,10 +100,10 @@
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-docker-group.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-browse-docker-local.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-browse-docker-group.png">
-<meta property="og:updated_time" content="2018-01-10T13:57:50.000Z">
+<meta property="og:updated_time" content="2018-01-12T05:34:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nexus - 构建并上传docker image至Sonatype Nexus">
-<meta name="twitter:description" content="一、前言　　前面两篇文章都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。">
+<meta name="twitter:description" content="一、前言　　前面两篇文章Nexus - Sonatype Nexus搭建maven私服、Nexus - Gradle打包上传至Sonatype Nexus都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。">
 <meta name="twitter:image" content="http://yoursite.com/imgs/nexus-docker-proxy-repository-connectors.png">
 
 
@@ -366,7 +366,7 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面两篇文章都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。<br>本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。<br>方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。</p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面两篇文章<a href="http://zhangyuyu.github.io/2018/01/07/Nexus-SonatypeNexus%E6%90%AD%E5%BB%BAmaven%E7%A7%81%E6%9C%8D/" target="_blank" rel="noopener">Nexus - Sonatype Nexus搭建maven私服</a>、<a href="http://zhangyuyu.github.io/2018/01/08/Nexus-Gradle%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E8%87%B3SonatypeNexus/" target="_blank" rel="noopener">Nexus - Gradle打包上传至Sonatype Nexus</a>都是介绍maven相关的仓库，下载应用程序相关的依赖包，上传应用程序的构建产物。<br>本篇文章将介绍docker相关的仓库，下载docker镜像，上传自己构建的应用程序的docker镜像。<br>方便持续集成时候，能够直接从ci上获取应用程序镜像，进行部署。</p>
 <a id="more"></a>
 <h2 id="二、搭建Nexus-docker仓库"><a href="#二、搭建Nexus-docker仓库" class="headerlink" title="二、搭建Nexus docker仓库"></a>二、搭建Nexus docker仓库</h2><p>　　下面我们会：</p>
 <ul>
@@ -509,6 +509,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/" rel="prev" title="Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖">
+                Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -584,7 +588,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
