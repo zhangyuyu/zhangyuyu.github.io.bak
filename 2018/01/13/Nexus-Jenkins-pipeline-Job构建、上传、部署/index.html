@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="AngularJs," />
+  <meta name="keywords" content="Nexus," />
 
 
 
@@ -81,24 +81,21 @@
 
 
 
-<meta name="description" content="一、认识Yeoman　　Yeoman的logo是一个戴帽子的男人。　　　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。  Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为">
-<meta name="keywords" content="AngularJs">
+<meta name="description" content="一、前言　　上一篇里面，在Jenkins容器里面，创建了一个简单的gradle job，进行构建产物。本篇则构建多个stage：构建、上传、形成一个stage view。">
+<meta name="keywords" content="Nexus">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Yeoman">
-<meta property="og:url" content="http://yoursite.com/2015/11/21/Yeoman/index.html">
+<meta property="og:title" content="Nexus - Jenkins pipeline Job构建、上传、部署">
+<meta property="og:url" content="http://yoursite.com/2018/01/13/Nexus-Jenkins-pipeline-Job构建、上传、部署/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、认识Yeoman　　Yeoman的logo是一个戴帽子的男人。　　　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。  Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为">
+<meta property="og:description" content="一、前言　　上一篇里面，在Jenkins容器里面，创建了一个简单的gradle job，进行构建产物。本篇则构建多个stage：构建、上传、形成一个stage view。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/imgs/yeoman.png">
-<meta property="og:image" content="http://yoursite.com/imgs/yo.png">
-<meta property="og:image" content="http://yoursite.com/imgs/yo-search.png">
-<meta property="og:image" content="http://yoursite.com/imgs/yo-angular.png">
-<meta property="og:image" content="http://yoursite.com/imgs/CustomerUIStructure.png">
-<meta property="og:updated_time" content="2015-11-21T06:38:05.000Z">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-new-item-pipeline.png">
+<meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-pipeline-build.png">
+<meta property="og:updated_time" content="2018-01-16T04:37:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Yeoman">
-<meta name="twitter:description" content="一、认识Yeoman　　Yeoman的logo是一个戴帽子的男人。　　　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。  Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为">
-<meta name="twitter:image" content="http://yoursite.com/imgs/yeoman.png">
+<meta name="twitter:title" content="Nexus - Jenkins pipeline Job构建、上传、部署">
+<meta name="twitter:description" content="一、前言　　上一篇里面，在Jenkins容器里面，创建了一个简单的gradle job，进行构建产物。本篇则构建多个stage：构建、上传、形成一个stage view。">
+<meta name="twitter:image" content="http://yoursite.com/imgs/nexus-jenkins-new-item-pipeline.png">
 
 
 
@@ -128,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2015/11/21/Yeoman/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/13/Nexus-Jenkins-pipeline-Job构建、上传、部署/"/>
 
 
 
 
 
-  <title>Yeoman | 若见喻笺</title>
+  <title>Nexus - Jenkins pipeline Job构建、上传、部署 | 若见喻笺</title>
   
 
 
@@ -271,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/21/Yeoman/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/13/Nexus-Jenkins-pipeline-Job构建、上传、部署/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Yu">
@@ -288,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Yeoman</h1>
+          <h1 class="post-title" itemprop="name headline">Nexus - Jenkins pipeline Job构建、上传、部署</h1>
         
 
         <div class="post-meta">
@@ -300,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-21T09:15:32+08:00">
-                2015-11-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T13:56:23+08:00">
+                2018-01-13
               </time>
             
 
@@ -310,6 +307,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/devops/" itemprop="url" rel="index">
+                    <span itemprop="name">devops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -338,43 +357,54 @@
       
 
       
-        <h3 id="一、认识Yeoman"><a href="#一、认识Yeoman" class="headerlink" title="一、认识Yeoman"></a>一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
-<blockquote>
-<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
-</blockquote>
-<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置："><a href="#1、在安装Yeoman之前，你需要确认以下配置：" class="headerlink" title="1、在安装Yeoman之前，你需要确认以下配置："></a>1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
-<li>Node.js 版本在0.10以上</li>
-<li>npm 版本在1.3.7以上</li>
-</ul>
-<h4 id="2、安装"><a href="#2、安装" class="headerlink" title="2、安装"></a>2、安装</h4><pre><code>npm install -g yo grunt-cli bower
-</code></pre><h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入"><a href="#1、创建一个文件夹CustomerUI，并进入" class="headerlink" title="1、创建一个文件夹CustomerUI，并进入"></a>1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器"><a href="#2、安装Yeoman生成器" class="headerlink" title="2、安装Yeoman生成器"></a>2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
-<pre><code>yo
-</code></pre><img src="/imgs/yo.png" width="400" height="300">
-<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
-<p>2.2 如果你知道要安装的生成器的名字：</p>
-<pre><code>yo angular
-</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
-<h4 id="3、选择"><a href="#3、选择" class="headerlink" title="3、选择"></a>3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
-<h4 id="4、目录"><a href="#4、目录" class="headerlink" title="4、目录"></a>4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　上一篇里面，在Jenkins容器里面，创建了一个简单的gradle job，进行构建产物。<br>本篇则构建多个stage：构建、上传、形成一个stage view。</p>
+<a id="more"></a>
+<p>　　本打算把build docker image，publish docker image的stage加上，但是中间出现了一些问题，主要是在jenkins的docker容器里运行docker，就形成了docker in docker 的局面。这部分问题查阅了相关的资料，没找到非常满意的做法，因此暂不在本文涉及。</p>
+<p>　　下面暂时列举一些参考链接：</p>
 <ul>
-<li>app/：Web应用的父级目录。<ul>
-<li>index.html： Angular应用的基准HTML文件（base html file）</li>
-<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
-<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
-<li>scripts：我们的JS文件<ul>
-<li>app.js：主程序</li>
-<li>controllers：Angular控制器</li>
+<li>[katacoda上关于Jenkins - Building Docker Images using Jenkins的实验课程]<br>(<a href="https://www.katacoda.com/courses/jenkins/build-docker-images" target="_blank" rel="noopener">https://www.katacoda.com/courses/jenkins/build-docker-images</a>)</li>
+<li><a href="http://container-solutions.com/running-docker-in-jenkins-in-docker/" target="_blank" rel="noopener">Running Docker in Jenkins (in Docker)</a></li>
+<li><a href="https://getintodevops.com/blog/the-simple-way-to-run-docker-in-docker-for-ci" target="_blank" rel="noopener">The simple way to run Docker-in-Docker for CI</a></li>
+</ul>
+<h2 id="二、安装Pipeline插件"><a href="#二、安装Pipeline插件" class="headerlink" title="二、安装Pipeline插件"></a>二、安装Pipeline插件</h2><p>　　如果你是新建一个jenkins容器，只需要在安装的时候勾选Pipeline插件即可。</p>
+<p>　　如果你是已经存在的jenkins容器，则进入Jenkins -&gt; Plugin Manager -&gt; <a href="http://localhost:51001/pluginManager/available" target="_blank" rel="noopener">available</a>，找到Pipeline插件，选择install without restart等待安装完成即可。</p>
+<h2 id="三、新建pipeline工程"><a href="#三、新建pipeline工程" class="headerlink" title="三、新建pipeline工程"></a>三、新建pipeline工程</h2><h3 id="1-新建item，选择pipeline工程"><a href="#1-新建item，选择pipeline工程" class="headerlink" title="1. 新建item，选择pipeline工程"></a>1. 新建item，选择pipeline工程</h3><p>　　<img src="/imgs/nexus-jenkins-new-item-pipeline.png" width="800" height="400"></p>
+<h3 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h3><ul>
+<li>General，去一个项目名称</li>
+<li>Pipeline，选择Pipeline Script；在Script里面写下如下脚本：<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">node &#123;</span><br><span class="line">   stage <span class="string">'Checkout'</span></span><br><span class="line">   git([ur<span class="variable">l:</span> <span class="string">'https://github.com/zhangyuyu/Simple-web.git'</span>, branch: <span class="string">'master'</span>])</span><br><span class="line">   </span><br><span class="line">   stage <span class="string">'Build'</span></span><br><span class="line">   <span class="keyword">sh</span> <span class="string">'./gradlew clean build'</span></span><br><span class="line">   </span><br><span class="line">   stage <span class="string">'Upload'</span></span><br><span class="line">   <span class="keyword">sh</span> <span class="string">'./gradlew uploadArchives'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-Build-Now"><a href="#3-Build-Now" class="headerlink" title="3. Build Now"></a>3. Build Now</h3><p>　　配置完成之后，即可手动触发了。<br>　　<img src="/imgs/nexus-jenkins-pipeline-build.png" width="500" height="300"></p>
+<h2 id="四、jenkins中涉及到的术语"><a href="#四、jenkins中涉及到的术语" class="headerlink" title="四、jenkins中涉及到的术语"></a>四、jenkins中涉及到的术语</h2><ol>
+<li><p>Master<br>　　Master是Jenkins安装和运行的地方，它负责解析job脚本，处理任务，调度计算资源。</p>
+</li>
+<li><p>Agent<br>　　Agent是负责处理从Master分发的任务。</p>
+</li>
+<li><p>Executor<br>　　Executor是执行任务的计算资源，它可以在Master或者Agent上运行。多个Executor也可以合作执行一些任务。</p>
+</li>
+<li><p>Job 任务<br>　　job用来定义具体的构建过程。一个新的job及时一个新的item（这一点区别于另外一个CI CD工具——GO CD，在Go里面，一个job只是一个pipeline的一个步骤）</p>
+</li>
+<li><p>Groovy<br>　　Groovy是一种基于JVM（Java虚拟机）的敏捷开发语言，它结合了Python、Ruby和Smalltalk的许多强大的特性，Groovy代码能够与Java代码很好地结合，也能用于扩展现有代码。由于其运行在 JVM 上的特性，Groovy可以使用其他Java语言编写的库。Jenkins用Groovy作为DSL。</p>
+</li>
+<li><p>Pipeline<br>　　流水线即代码（Pipeline as Code），通过编码而非配置持续集成/持续交付（CI/CD）运行工具的方式定义部署。流水线使得部署是可重现、可重复的。<br>　　流水线包括节点（Node）、阶段（Stage）和步骤（Step）。流水线执行在节点上。节点是Jenkins安装的一部分。流水线通常包含多个阶段。一个阶段包含多个步骤。</p>
+<ul>
+<li><p>node在Pipeline中的context中，node是job运行的地方。 node会给job创建一个工作空间。工作空间就是一个文件目录，这是为了避免跟资源相关的处理互相产生影响。工作空间是node创建的，在node里的所有step都执行完毕后会自动删除。</p>
+</li>
+<li><p>stage阶段，stage是一个任务执行过程的独立的并且唯一的逻辑块，Pipeline定义在语法上就是由一系列的stage组成的。 每一个stage逻辑都包含一个或多个step。</p>
+</li>
+<li><p>step步骤，一个step是整个流程中的一系列事情中的一个独立的任务，step是用来告诉Jenkins如何做。</p>
+</li>
 </ul>
 </li>
-<li>styles：我们的CSS文件</li>
-<li>views：Angular模板</li>
-</ul>
+<li><p>Jenkinfile<br>　　Jenkins支持创建流水线。它使用一种基于Groovy的流水线领域特定语言（Pipeline DSL）的简单脚。而这些脚本，通常名字叫Jenkinsfile。它定义了一些根据指定参数执行简单或复杂的任务的步骤。流水线创建好后，可以用来构建代码，或者编排从代码提交到交付过程中所需的工作。Jenkins中的Jenkinsfile有点类似Docker中的Dockfile的感觉。</p>
 </li>
-<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
-<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇文章只是基础的记录了一下运用jenkins构建pipeline工程的做法，关于docker的复杂步骤，以后将会更新。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://www.cnblogs.com/wzy5223/p/5554935.html" target="_blank" rel="noopener">试用Jenkins 2 的 Pipeline 项目</a></li>
+<li><a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/" target="_blank" rel="noopener">Using a Jenkinsfile</a></li>
+<li><a href="http://dockone.io/article/2594" target="_blank" rel="noopener">Jenkins与Docker的持续集成实践</a></li>
 </ul>
-<h4 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h4><pre><code>grunt serve
-</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="noopener">http://localhost:9000/</a></p>
 
       
     </div>
@@ -400,7 +430,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/AngularJs/" rel="tag"># AngularJs</a>
+            <a href="/tags/Nexus/" rel="tag"># Nexus</a>
           
         </div>
       
@@ -413,8 +443,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/25/servlet-life/" rel="next" title="Servlet life">
-                <i class="fa fa-chevron-left"></i> Servlet life
+              <a href="/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/" rel="next" title="Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖">
+                <i class="fa fa-chevron-left"></i> Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖
               </a>
             
           </div>
@@ -422,10 +452,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/21/Anguar跨域请求/" rel="prev" title="AnguarJS跨域请求">
-                AnguarJS跨域请求 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -566,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、认识Yeoman"><span class="nav-number">1.</span> <span class="nav-text">一、认识Yeoman</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、安装"><span class="nav-number">2.</span> <span class="nav-text">二、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、在安装Yeoman之前，你需要确认以下配置："><span class="nav-number">2.1.</span> <span class="nav-text">1、在安装Yeoman之前，你需要确认以下配置：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、安装"><span class="nav-number">2.2.</span> <span class="nav-text">2、安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、使用"><span class="nav-number">3.</span> <span class="nav-text">三、使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、创建一个文件夹CustomerUI，并进入"><span class="nav-number">3.1.</span> <span class="nav-text">1、创建一个文件夹CustomerUI，并进入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、安装Yeoman生成器"><span class="nav-number">3.2.</span> <span class="nav-text">2、安装Yeoman生成器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、选择"><span class="nav-number">3.3.</span> <span class="nav-text">3、选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、目录"><span class="nav-number">3.4.</span> <span class="nav-text">4、目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、运行"><span class="nav-number">3.5.</span> <span class="nav-text">5、运行</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、安装Pipeline插件"><span class="nav-number">2.</span> <span class="nav-text">二、安装Pipeline插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、新建pipeline工程"><span class="nav-number">3.</span> <span class="nav-text">三、新建pipeline工程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-新建item，选择pipeline工程"><span class="nav-number">3.1.</span> <span class="nav-text">1. 新建item，选择pipeline工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置"><span class="nav-number">3.2.</span> <span class="nav-text">2. 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Build-Now"><span class="nav-number">3.3.</span> <span class="nav-text">3. Build Now</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、jenkins中涉及到的术语"><span class="nav-number">4.</span> <span class="nav-text">四、jenkins中涉及到的术语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">6.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>

@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
+<meta name="description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并上传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
 <meta name="keywords" content="Nexus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖">
 <meta property="og:url" content="http://yoursite.com/2018/01/12/Nexus-构建jenkins容器、配置gradle-job从nexus获取依赖/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
+<meta property="og:description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并上传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-kitematic-web-view.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-unlock.png">
@@ -99,10 +99,10 @@
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-configure-build.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-link-container.png">
 <meta property="og:image" content="http://yoursite.com/imgs/nexus-jenkins-build-console.png">
-<meta property="og:updated_time" content="2018-01-12T10:45:00.000Z">
+<meta property="og:updated_time" content="2018-01-13T05:55:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nexus - 构建jenkins容器、配置gradle job从nexus获取依赖">
-<meta name="twitter:description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
+<meta name="twitter:description" content="一、前言　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并上传构建产物、构建并上传应用程序的docker image以及部署应用。　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。">
 <meta name="twitter:image" content="http://yoursite.com/imgs/nexus-jenkins-kitematic-web-view.png">
 
 
@@ -365,7 +365,7 @@
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并长传构建产物、构建并上传应用程序的docker image以及部署应用。<br>　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。<br><a id="more"></a></p>
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　前面都是在手动的构建、上传，那么接下来我们会熟悉持续集成与持续交付的相关过程：利用jenkins生成并上传构建产物、构建并上传应用程序的docker image以及部署应用。<br>　　本篇文章主要是先构建一个jenkins容器，然后基本实现利用jenkins生成构建产物。<br><a id="more"></a></p>
 <h2 id="二、构建jenkins容器"><a href="#二、构建jenkins容器" class="headerlink" title="二、构建jenkins容器"></a>二、构建jenkins容器</h2><h3 id="1-通过nexus获取jenkins-jenkins-lts镜像"><a href="#1-通过nexus获取jenkins-jenkins-lts镜像" class="headerlink" title="1. 通过nexus获取jenkins/jenkins:lts镜像"></a>1. 通过nexus获取jenkins/jenkins:lts镜像</h3><h4 id="1-1-启动nexus-container"><a href="#1-1-启动nexus-container" class="headerlink" title="1.1 启动nexus container"></a>1.1 启动nexus container</h4><p>　　创建container的部分，可以参考前文<a href="http://zhangyuyu.github.io/2018/01/07/Nexus-SonatypeNexus%E6%90%AD%E5%BB%BAmaven%E7%A7%81%E6%9C%8D/" target="_blank" rel="noopener">Nexus - Sonatype Nexus搭建maven私服</a>。<br>启动nexus container，可直接在docker for mac里面，点击start即可。</p>
 <h4 id="1-2-获取镜像"><a href="#1-2-获取镜像" class="headerlink" title="1.2 获取镜像"></a>1.2 获取镜像</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker pull <span class="string">localhost:</span><span class="number">50000</span><span class="regexp">/jenkins/</span><span class="string">jenkins:</span>lts</span><br></pre></td></tr></table></figure>
 <h4 id="1-3-运行容器"><a href="#1-3-运行容器" class="headerlink" title="1.3 运行容器"></a>1.3 运行容器</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --name jenkins-container -p <span class="number">51001</span>:<span class="number">8080</span> -p <span class="number">51002</span>:<span class="number">50000</span> -v <span class="regexp">~/Documents/</span><span class="string">jenkins_home:</span><span class="regexp">/var/</span>jenkins_home <span class="string">localhost:</span><span class="number">50000</span><span class="regexp">/jenkins/</span><span class="string">jenkins:</span>lts</span><br></pre></td></tr></table></figure>
@@ -495,6 +495,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/01/13/Nexus-Jenkins-pipeline-Job构建、上传、部署/" rel="prev" title="Nexus - Jenkins pipeline Job构建、上传、部署">
+                Nexus - Jenkins pipeline Job构建、上传、部署 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -570,7 +574,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
