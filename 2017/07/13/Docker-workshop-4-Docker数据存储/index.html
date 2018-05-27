@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-volumn-vs-container.png">
 <meta property="og:image" content="http://yoursite.com/imgs/docker-volumn-plugin.png">
-<meta property="og:updated_time" content="2018-01-07T08:56:51.000Z">
+<meta property="og:updated_time" content="2018-05-27T09:18:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Workshop（四）Docker数据存储">
 <meta name="twitter:description" content="一、前言　　上一篇 Docker的基本操作按照构建流程练习了docker的一些常见基本指令。本篇主要讲述Docker数据管理相关的内容。 二、背景　　该系列《Docker in Prodcution》内容包含如下部分：  容器简介 Docker简介 Docker的基本操作 Docker数据存储 Docker网络 Docker安全 多主机部署 服务发现 日志、跟踪、监控  本章主要通过练习数据卷和数">
@@ -297,7 +297,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-13T08:18:24+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-13T08:18:24+02:00">
                 2017-07-13
               </time>
             
@@ -320,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devops/" itemprop="url" rel="index">
-                    <span itemprop="name">devops</span>
+                  <a href="/categories/Devops/" itemprop="url" rel="index">
+                    <span itemprop="name">Devops</span>
                   </a>
                 </span>
 
@@ -414,13 +414,15 @@
 [{093c2cccfcc37e01d0ae4c145dcfb25a6c65a4b94617944efaa8f130463bcc6f /var/lib/docker/volumes/093c2cccfcc37e01d0ae4c145dcfb25a6c65a4b94617944efaa8f130463bcc6f/_data /data local  true}]
 </code></pre><blockquote>
 <p>如果<code>步骤1）</code>，没有指定host的挂载目录，那么docker会自动创建一个挂载文件夹放在<br><code>/var/lib/docker/volumes/</code>下。上述例子中，在主机下的挂载目录是:</p>
+</blockquote>
 <pre><code>/var/lib/docker/volumes/093c2cccfcc37e01d0ae4c145dcfb25a6c65a4b94617944efaa8f130463bcc6f/_data
-</code></pre><p>如果<code>步骤1）</code>，指定了主机目录：</p>
+</code></pre><blockquote>
+<p>如果<code>步骤1）</code>，指定了主机目录：</p>
+</blockquote>
 <pre><code>$ docker run -d -it --name volume-example -v ~/volume/data:/data busybox
 $ docker inspect -f {{.Mounts}} volume-example
 [{ /home/vagrant/volume/data /data   true}]
 </code></pre><p>那么在主机下挂载的目录则是自己指定的<code>~/volume/data</code>了。</p>
-</blockquote>
 <p>4) 在主机对应的目录创建一个文件</p>
 <pre><code>$ sudo touch &lt;paste the copied host directory location&gt;/test-file
 </code></pre><p>5) 在容器里面检查一下刚才创建的文件</p>
@@ -484,13 +486,17 @@ test.yml
 test.yml
 </code></pre><blockquote>
 <p>Dockerfile中每一句指令，都会生成一个临时的容器，如:</p>
+</blockquote>
 <pre><code>Step 4 : VOLUME /test-dir
 ---&gt; Running in c20cfc350b8f
 ---&gt; 8ea4d7630233
-</code></pre><p>首先，<code>Step 4</code>里面生成了一个临时容器<code>c20cfc350b8f</code>;<br>然后，commit容器得到了镜像<code>8ea4d7630233</code>;<br>因此，<code>VOLUME /test-dir</code>是通过<code>是通过docker run -v  /test-dir</code>来实现的，随后由于容器的commit，该配置保存到了镜像<code>8ea4d7630233</code>里，可以通过如下质量查看</p>
+</code></pre><blockquote>
+<p>首先，<code>Step 4</code>里面生成了一个临时容器<code>c20cfc350b8f</code>;<br>然后，commit容器得到了镜像<code>8ea4d7630233</code>;<br>因此，<code>VOLUME /test-dir</code>是通过<code>是通过docker run -v  /test-dir</code>来实现的，随后由于容器的commit，该配置保存到了镜像<code>8ea4d7630233</code>里，可以通过如下质量查看</p>
+</blockquote>
 <pre><code>$ docker inspect -f {{.Config.Volumes}} 8ea4d7630233
 map[/test-dir:{}]
-</code></pre><p>由于没有指定挂载到的宿主机目录，因此会默认挂载到宿主机的/var/lib/docker/volumes下的一个随机名称的目录下，因此Dockerfile里面的VOLUME不能指定主机挂载目录。</p>
+</code></pre><blockquote>
+<p>由于没有指定挂载到的宿主机目录，因此会默认挂载到宿主机的/var/lib/docker/volumes下的一个随机名称的目录下，因此Dockerfile里面的VOLUME不能指定主机挂载目录。</p>
 </blockquote>
 <h3 id="2-数据卷容器（Data-volume-containers）"><a href="#2-数据卷容器（Data-volume-containers）" class="headerlink" title="2. 数据卷容器（Data volume containers）"></a>2. 数据卷容器（Data volume containers）</h3><p>　　如果你有一些持续更新的数据需要在容器之间共享，最好创建数据卷容器。<br>数据卷容器，其实就是一个正常的容器，是一个挂载了数据卷但是不执行任何命令的容器，其目的只是为其他容器提供数据卷，方便数据在多容器之间共享、复用。</p>
 <p>使用数据容器的两个注意点：</p>
@@ -691,7 +697,7 @@ test-dir/test.yml
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -702,7 +708,7 @@ test-dir/test.yml
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -713,7 +719,7 @@ test-dir/test.yml
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

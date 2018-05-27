@@ -300,7 +300,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-18T19:14:52+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-18T19:14:52+02:00">
                 2016-04-18
               </time>
             
@@ -369,6 +369,8 @@
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　在微服务的应用系统中，服务实例的数量是动态变化。各服务实例动态分配网络地址（IP Address 和Port）。因此，为了为客户端能够访问到服务，就必须要有一种服务的发现机制。<br>服务发现的核心是服务注册中心。服务注册中心保存了各个服务可用的实例的相关信息。服务注册中心提供了管理API和查询API。使用管理API进行服务注册、注销。系统的其他组件可以通过查询API来获得当前可用的服务实例信息。<br>　　有两种主要的服务发现方式：客户端发现（client-side service discovery）和服务端发现（ server-side discovery）。在使用客户端服务发现的方式中，客户通过查询服务注册中心，选择一个可用的服务实例。在使用服务器端发现系统中，客户访问Router/load balancer，通过Router/load balancer查询服务注册中心，并将请求转发到一个可用服务实例上。<br>　　服务注册和注销的方式也有两种。一种是服务自己主动的将自己注册到服务注册中心，称为self-registration。另一种是通过其他组件来处理服务的注册和注销，称为third-party registration。<br>在有些环境中，服务发现功能需要自己通过服务注册中心（比如：Netflix Eureka, etcd, Apache Zookeeper）实现，而有些环境中，服务发现功能是内置的。例如，Kubernetes和Marathon。<br>Nginx可以作为HTTP反向代理和负载平衡器，也可以用来作为一个服务发现的负载均衡器。通过向nginx推送routing information来修改nginx的配置，比如使用：Consul Template动态修改NGINX的配置. NGINX Plus 也支持动态修改配置功能。<br>　　在今后的文章中，我们将继续深入分析微服务的其他方面的内容。</p>
 <blockquote>
 <p>MaxLeap翻译的中文版地址：<a href="https://blog.maxleap.cn/archives/524" target="_blank" rel="noopener">微服务系统中的服务发现机制</a></p>
+</blockquote>
+<blockquote>
 <p>原文作者发布的关于微服务系列文章的地址：</p>
 <ul>
 <li><a href="https://www.nginx.com/blog/introduction-to-microservices/" target="_blank" rel="noopener">Introduction to Microservices</a></li>
@@ -507,7 +509,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -518,7 +520,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -529,7 +531,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -294,7 +294,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-27T22:56:33+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-27T22:56:33+02:00">
                 2015-08-27
               </time>
             
@@ -502,16 +502,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
         &lt;property name=&quot;advice&quot; ref=&quot;helloAroundMethodBean&quot; /&gt;
     &lt;/bean&gt;
 &lt;/beans&gt;
-</code></pre><p>#####（2）运行，结果如下：</p>
-<pre><code>*************************
-Method name : printName
-HelloAroundMethod : Before method ,hello!
-Customer name : Zhang Yu
-HelloAroundMethod : After method ,hello!
-*************************
-Customer occupation : developer
-*************************
-</code></pre><p>　　可以看到，只拦截了printName（），在其前后分别输出了“Before method ，hello!”和“After method ,hello!”</p>
+</code></pre><p>#####（2）运行，结果如下：<br>    <strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong><br>    Method name : printName<br>    HelloAroundMethod : Before method ,hello!<br>    Customer name : Zhang Yu<br>    HelloAroundMethod : After method ,hello!<br>    <strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong><br>    Customer occupation : developer<br>    <strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong><br>　　可以看到，只拦截了printName（），在其前后分别输出了“Before method ，hello!”和“After method ,hello!”</p>
 <p>#####（3）另外<br>　　以上配置中pointcut和advisor可以合并在一起配置，即不用单独配置customerPointcut和customerAdvisor，只要配置customerAdvisor时class选择NameMatchMethodPointcutAdvisor如下：</p>
 <pre><code>&lt;bean id=&quot;customerAdvisor&quot; class=&quot;org.springframework.aop.support.NameMatchMethodPointcutAdvisor&quot;&gt;
     &lt;property name=&quot;mappedName&quot; value=&quot;printName&quot; /&gt;
@@ -662,7 +653,7 @@ HelloAroundMethod : After method ,hello!
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -673,7 +664,7 @@ HelloAroundMethod : After method ,hello!
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -684,7 +675,7 @@ HelloAroundMethod : After method ,hello!
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
