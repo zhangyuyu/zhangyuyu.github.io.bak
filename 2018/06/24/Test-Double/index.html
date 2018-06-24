@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="前言 本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行">
+<meta name="description" content="前言 本文的主要观点、代码片段、图片均源自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以">
 <meta name="keywords" content="Test">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Test Double">
 <meta property="og:url" content="http://yoursite.com/2018/06/24/Test-Double/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="前言 本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行">
+<meta property="og:description" content="前言 本文的主要观点、代码片段、图片均源自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/test-double-four-phase-test.png">
 <meta property="og:image" content="http://yoursite.com/imgs/test-double-for-sut.png">
@@ -96,10 +96,10 @@
 <meta property="og:image" content="http://yoursite.com/imgs/test-double-spy.png">
 <meta property="og:image" content="http://yoursite.com/imgs/test-double-mock.png">
 <meta property="og:image" content="http://yoursite.com/imgs/test-double-fake.png">
-<meta property="og:updated_time" content="2018-06-24T11:57:26.000Z">
+<meta property="og:updated_time" content="2018-06-24T12:34:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Test Double">
-<meta name="twitter:description" content="前言 本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行">
+<meta name="twitter:description" content="前言 本文的主要观点、代码片段、图片均源自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以">
 <meta name="twitter:image" content="http://yoursite.com/imgs/test-double-four-phase-test.png">
 
 
@@ -363,7 +363,7 @@
 
       
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
-<p>本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的<em>Test Double</em>章节</p>
+<p>本文的主要观点、代码片段、图片均源自《Test Double – xUnit Test Patterns》书的<em>Test Double</em>章节</p>
 </blockquote>
 <p>　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称<code>Test Double</code>，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行阐述：</p>
 <ul>
@@ -659,8 +659,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/23/IoT-初识/" rel="next" title="认识IoT">
-                <i class="fa fa-chevron-left"></i> 认识IoT
+              <a href="/2018/06/23/认识IoT/" rel="next" title="IoT初识">
+                <i class="fa fa-chevron-left"></i> IoT初识
               </a>
             
           </div>
@@ -668,6 +668,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/24/认识Cmake/" rel="prev" title="CMake初识">
+                CMake初识 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -744,7 +748,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -755,7 +759,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

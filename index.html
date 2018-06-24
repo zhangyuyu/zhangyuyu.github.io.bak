@@ -264,6 +264,261 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/24/认识Cmake/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/24/认识Cmake/" itemprop="url">CMake初识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T14:34:14+02:00">
+                2018-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tool/" itemprop="url" rel="index">
+                    <span itemprop="name">Tool</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>本文的主要观点、代码片段、图片均源自《The Hitchhiker’s Guide to the CMake》教程的Overview 章节。</p>
+</blockquote>
+<p>主要包含以下方面：</p>
+<ul>
+<li>认识 CMake</li>
+<li>CMake可以做什么？</li>
+<li>CMake 的特点</li>
+<li>CMake 的 Workflow</li>
+<li>CMake 的组成？</li>
+<li>make 与 ninja</li>
+</ul>
+<h3 id="一、认识-Cmake"><a href="#一、认识-Cmake" class="headerlink" title="一、认识 Cmake"></a>一、认识 Cmake</h3><p>　　CMake，是<code>Cross Platform Make</code>的缩写，是一个跨平台的安装（编译）工具，可以用简单的语句来描述所有平台的安装(编译过程)。</p>
+<p>　　CMake 自己本身并不是构建工具（build tool），它不直接建构出最终的软件。它的职责是从抽象配置代码生成原生构建工具（native build tool）文件。</p>
+<blockquote>
+<p>原生构建工具比如：</p>
+<ul>
+<li>Xcode</li>
+<li>Visual Studio</li>
+<li>Ninja</li>
+<li>Make</li>
+</ul>
+</blockquote>
+<p>　　CMake使用指定名为<code>CMakeLists.txt</code>的配置文件可以控制软件的构建、测试和打包等流程。同时，通过编写平台无关的<code>CMakeLists.txt</code>文件和需要简单的配置，CMake就能生成对应目标平台的构建文件，例如：类Unix系统的<code>makefile</code>文件、Windows的<code>Visual Studio</code>工程或者Mac的<code>Xcode</code>工程，大大简化了跨平台和交叉编译方面的工作。</p>
+<h3 id="二、Cmake可以做什么？"><a href="#二、Cmake可以做什么？" class="headerlink" title="二、Cmake可以做什么？"></a>二、Cmake可以做什么？</h3><h4 id="1-跨平台开发"><a href="#1-跨平台开发" class="headerlink" title="1. 跨平台开发"></a>1. 跨平台开发</h4><p>　　假设你有C++的跨平台项目，其代码在不同的平台/IDE共享。比如，Windows的<code>Visual Studio</code>、 OSX的<code>XCode</code>和 Linux 的<code>Makefile</code>：<br><img src="/imgs/cmake-native-build.png" width="500" height="250"></p>
+<p>　　如果要添加一个<code>bar.cpp</code>源文件，你会怎么做？你不得不将该文件添加到你所使用的每个工具中：<br><img src="/imgs/cmake-native-build-add.png" width="500" height="250"></p>
+<p>　　为了保证环境的一致性，你不得不将类似的更新操作好几次。更重要的是，你还得手动进行操作（如下图红色的箭头）。当然这种方式很容易出错，而且很不灵活。</p>
+<p>　　CMake 通过在开发过程中增加额外的步骤来解决这一设计缺陷。你可以在<code>CMakeList.txt</code>文件中描述项目，并使用 CMake 通过跨平台的 CMake 代码来生成你感兴趣的构建工具。<br><img src="/imgs/cmake-generate-native-files.png" width="500" height="250"></p>
+<p>　　同样地，当要添加<code>bar.cpp</code>源文件的时候，就只需要一个步骤了：<br><img src="/imgs/cmake-generate-native-files-add.png" width="500" height="250"></p>
+<p>　　注意，上述图表的底部并没有发生变化，你仍然可以使用你喜欢的工具，比如<code>Visual Studio/msbuild</code>, <code>Xcode/xcodebuild</code> 和 <code>Makefile/make</code>。</p>
+<h4 id="2-VCS-友好"><a href="#2-VCS-友好" class="headerlink" title="2. VCS 友好"></a>2. VCS 友好</h4><p>　　当你在团队工作时候，你可能想共享、保存更改的历史记录，这就是通常版本控制（VCS）做的事情。在实践中，对于IDE 的文件（比如*.sln ）该怎么存储呢？<br>下面是将<code>bar.cpp</code>文件加入到<code>Visual Studio</code>解决方案之后，可执行文件的差异：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">--- /overview/snippets/foo-old.sln</span><br><span class="line">+++ /overview/snippets/foo-new.sln</span><br><span class="line">@@ <span class="number">-4</span>,<span class="number">6</span> +<span class="number">4</span>,<span class="number">8</span> @@</span><br><span class="line"> VisualStudioVersion = <span class="number">14.0</span><span class="number">.25123</span><span class="number">.0</span></span><br><span class="line"> MinimumVisualStudioVersion = <span class="number">10.0</span><span class="number">.40219</span><span class="number">.1</span></span><br><span class="line"> Project(<span class="string">"&#123;8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942&#125;"</span>) = <span class="string">"foo"</span>, <span class="string">"foo.vcxproj"</span>, <span class="string">"&#123;C8F8C325-ACF3-460E-81DF-8515C72B334A&#125;"</span></span><br><span class="line">+EndProject</span><br><span class="line">+Project(<span class="string">"&#123;8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942&#125;"</span>) = <span class="string">"bar"</span>, <span class="string">"..\bar\bar.vcxproj"</span>, <span class="string">"&#123;D14B78EA-1ADA-487F-B1ED-42C2B919C000&#125;"</span></span><br><span class="line"> EndProject</span><br><span class="line"> Global</span><br><span class="line">    GlobalSection(SolutionConfigurationPlatforms) = preSolution</span><br><span class="line">@@ <span class="number">-21</span>,<span class="number">6</span> +<span class="number">23</span>,<span class="number">14</span> @@</span><br><span class="line">        &#123;C8F8C325-ACF3<span class="number">-460E-81</span>DF<span class="number">-8515</span>C72B334A&#125;.Release|x64.Build<span class="number">.0</span> = Release|x64</span><br><span class="line">        &#123;C8F8C325-ACF3<span class="number">-460E-81</span>DF<span class="number">-8515</span>C72B334A&#125;.Release|x86.ActiveCfg = Release|Win32</span><br><span class="line">        &#123;C8F8C325-ACF3<span class="number">-460E-81</span>DF<span class="number">-8515</span>C72B334A&#125;.Release|x86.Build<span class="number">.0</span> = Release|Win32</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Debug|x64.ActiveCfg = Debug|x64</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Debug|x64.Build<span class="number">.0</span> = Debug|x64</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Debug|x86.ActiveCfg = Debug|Win32</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Debug|x86.Build<span class="number">.0</span> = Debug|Win32</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Release|x64.ActiveCfg = Release|x64</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Release|x64.Build<span class="number">.0</span> = Release|x64</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Release|x86.ActiveCfg = Release|Win32</span><br><span class="line">+       &#123;D14B78EA<span class="number">-1</span>ADA<span class="number">-487</span>F-B1ED<span class="number">-42</span>C2B919C000&#125;.Release|x86.Build<span class="number">.0</span> = Release|Win32</span><br><span class="line">    EndGlobalSection</span><br><span class="line">    GlobalSection(SolutionProperties) = preSolution</span><br><span class="line">        HideSolutionNode = <span class="literal">FALSE</span></span><br></pre></td></tr></table></figure>
+<p>　　同时还增加了一个<code>bar.vcxproj</code>文件，大概有150行代码，此处省略该代码。当使用<code>Xcode</code>的时候，类似地，在<code>.pbxproj</code>文件也有很多更改。</p>
+<p>　　我们只是简单的添加了一个源文件，就有上述如此多的改动，于是你不禁会问几个问题：</p>
+<ul>
+<li>你确定所有 XML 代码是有意添加的，而不是不小心点击造成的？</li>
+<li>你确定所有这些<code>x86/x64/Win32</code>，<code>Debug/Release</code>配置是以正确的顺序连接到一起，并且你没有破坏一些东西吗？</li>
+<li>你确定上面所有的magic number 不是在你执行重要脚本之后从你的环境变量中读取的，或者事实上是一些密钥、令牌或者密码？</li>
+<li>你认为这个文件的冲突很容易解决吗？</li>
+</ul>
+<p>　　幸运地是，我们有 CMake，它可以以一种整洁的方式帮助我们。我们还没涉及任何 CMake 的语法，但是我很确定你能一眼看出改变是什么：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--- /overview/snippets/CMakeLists-old.txt</span></span><br><span class="line"><span class="comment">+++ /overview/snippets/CMakeLists-new.txt</span></span><br><span class="line"><span class="meta">@@ -2,3 +2,4 @@</span></span><br><span class="line"> project(foo)</span><br><span class="line"> </span><br><span class="line"> add_executable(foo foo.cpp)</span><br><span class="line"><span class="addition">+add_executable(bar bar.cpp)</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-试验"><a href="#3-试验" class="headerlink" title="3. 试验"></a>3. 试验</h4><p>　　即使你的团队开始并没有计划使用一些原生工具，但是将来可能会发生变化。比如，你之前在使用<code>Makefile</code>，现在想尝试<code>Ninja</code>。你会怎么办？手动转换？找到转换工具？从头开始写一个转换工具？还是从头开始写<code>Ninja</code>的配置？使用 CMake，你可以将<code>cmake -G &#39;Unix Makefiles</code>改成<code>cmake -G Ninja</code>，完成！</p>
+<p>　　这也有助于新 IDE 的开发人员。当开发人员决定使用你的<code>SuperDuperIDE</code>而不是他们最喜欢的 IDE时候，他们可能编写了无数的<code>SuperDuperIDE &lt;-&gt; Xcode</code>, <code>SuperDuperIDE &lt;-&gt; Visual Studio</code>等转换器，相比于让你的IDE用户陷入该境地，你所需要做的就是将一个新的生成器<code>-G SuperDuperIDE</code>添加到 CMake 即可。</p>
+<h4 id="4-工具包"><a href="#4-工具包" class="headerlink" title="4. 工具包"></a>4. 工具包</h4><p>　　Cmake 是一个工具包（Family of tools），可以在开发者的所有阶段（<code>sources for developers</code> -&gt; <code>quality control</code> -&gt; <code>installers for users</code>）提供帮助。下面的行为图展示了<code>CMake</code>、<code>CTest</code>和<code>CPack</code>的连接。</p>
+<img src="/imgs/cmake-native-build-add.png" width="600" height="800">
+<h3 id="三、CMake的特点"><a href="#三、CMake的特点" class="headerlink" title="三、CMake的特点"></a>三、CMake的特点</h3><p>　　通过上述 CMake 可以做什么的理解，可以总结CMake的特点如下：</p>
+<ul>
+<li>人类可读的配置</li>
+<li>兼容所有工具的单一配置</li>
+<li>跨平台跨工具的友好开发</li>
+<li>不强制改变你最喜欢的构建工具/IDE</li>
+<li>VCS 友好的开发</li>
+<li>简单的试验</li>
+<li>轻松开发新的 IDE</li>
+</ul>
+<h3 id="四、CMake的-Workflow"><a href="#四、CMake的-Workflow" class="headerlink" title="四、CMake的 Workflow"></a>四、CMake的 Workflow</h3><h4 id="1-从-Hello-World-说起"><a href="#1-从-Hello-World-说起" class="headerlink" title="1. 从 Hello World 说起"></a>1. 从 Hello World 说起</h4><p>　　先引入一个<code>Hello World</code>，对应 CMake 的 Workflow。编写 CMakeList.txt 文件如下：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CMakeLists.txt</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">2.8</span>)</span><br><span class="line"><span class="keyword">project</span>(foo)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(foo foo.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">message</span>(<span class="string">"Processing CMakeLists.txt"</span>)</span><br></pre></td></tr></table></figure>
+<p>执行<code>cmake -H. -B_builds</code>命令：</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ cmake -H. -B_builds</span><br><span class="line">-<span class="ruby">- The C compiler identification is GNU <span class="number">4.8</span>.<span class="number">4</span></span></span><br><span class="line"><span class="ruby">-- The CXX compiler identification is GNU <span class="number">4.8</span>.<span class="number">4</span></span></span><br><span class="line"><span class="ruby">-- Check <span class="keyword">for</span> working C <span class="symbol">compiler:</span> /usr/bin/cc</span></span><br><span class="line"><span class="ruby">-- Check <span class="keyword">for</span> working C <span class="symbol">compiler:</span> /usr/bin/cc -- works</span></span><br><span class="line"><span class="ruby">-- Detecting C compiler ABI info</span></span><br><span class="line"><span class="ruby">-- Detecting C compiler ABI info - done</span></span><br><span class="line"><span class="ruby">-- Detecting C compile features</span></span><br><span class="line"><span class="ruby">-- Detecting C compile features - done</span></span><br><span class="line"><span class="ruby">-- Check <span class="keyword">for</span> working CXX <span class="symbol">compiler:</span> /usr/bin/c++</span></span><br><span class="line"><span class="ruby">-- Check <span class="keyword">for</span> working CXX <span class="symbol">compiler:</span> /usr/bin/c++ -- works</span></span><br><span class="line"><span class="ruby">-- Detecting CXX compiler ABI info</span></span><br><span class="line"><span class="ruby">-- Detecting CXX compiler ABI info - done</span></span><br><span class="line"><span class="ruby">-- Detecting CXX compile features</span></span><br><span class="line"><span class="ruby">-- Detecting CXX compile features - done</span></span><br><span class="line"><span class="ruby">Processing CMakeLists.txt</span></span><br><span class="line"><span class="ruby">-- Configuring done</span></span><br><span class="line"><span class="ruby">-- Generating done</span></span><br><span class="line"><span class="ruby">-- Build files have been written <span class="symbol">to:</span> /.../minimal-with-message/_builds</span></span><br></pre></td></tr></table></figure>
+<p>　　可以看到上面命令行输出有几个关键字<code>Processing</code>，<code>Configuring</code>，<code>Generating</code>，<code>Build</code>，这便是 CMake 的执行过程了。</p>
+<h4 id="2-Workflow"><a href="#2-Workflow" class="headerlink" title="2. Workflow"></a>2. Workflow</h4><img src="/imgs/cmake-workflow.png" width="500" height="800">
+<p>　　从上图中，可看出每一步的输出，<code>Configurting</code>阶段生成了<code>CMakeCache.txt</code>文件，<code>generating</code>阶段生成了构建文件（比如<code>Makefile</code>），而后，在<code>Build</code>阶段构建工具则可根据构建文件，生成二进制文件。</p>
+<h4 id="3-外部构建和内部构建"><a href="#3-外部构建和内部构建" class="headerlink" title="3. 外部构建和内部构建"></a>3. 外部构建和内部构建</h4><ul>
+<li><p>外部构建<br>　　注意上述的命令指定了<code>-B_builds</code>，生成的文件全部都在<code>_builds</code>下。<code>out-of-source build</code>，分离了源文件和生成的二进制文件，也是比较推荐的做法。</p>
+</li>
+<li><p>内部构建<br>　　<code>in-source build</code>，如果不指定输出目录，默认情况下会将生成的文件防到和源文件目录下，如果有多个子模块，则每个子模块的二进制文件都在自己的子模块下，和源文件一起。</p>
+</li>
+</ul>
+<p>Note:<br>　　外部构建不仅仅是指定<code>-B_builds</code>，同时记得要将任何自动生成的文件放到<code>_builds</code>里面。比如，C++模板文件<code>myproject.h.in</code>，该文件用于生成<code>myproject.h</code>，因此记得要将<code>myproject.h.in</code>放至源文件下，而将<code>myproject.h</code>放至二进制文件下。</p>
+<h3 id="五、一些概念"><a href="#五、一些概念" class="headerlink" title="五、一些概念"></a>五、一些概念</h3><p>　　在了解 CMake 之前，我经常听到<code>make</code> ，<code>ninja</code>，<code>makefile</code>,<code>CMakeList.txt</code>，<code>CMake</code>，<code>CMakeCache.txt</code>这些词，下面统一说明一下：</p>
+<p>　　<code>CMakeList.txt</code>是一个列表文件，它是当前源目录的入口。<code>CMake</code>会从源代码树的顶层<code>CMamkeList.txt</code>文件读起，并继续读取通过<code>add_subdirectory</code>指令添加的其他子依赖的<code>CMamkeList.txt</code>文件。</p>
+<p>　　为了优化，存在有一种特殊的变量，它的生命周期不限于一个CMake运行（可能含有子模块）。该变量保存在<code>CMakeCache.txt</code>文件中，并保存在项目构建树的多个运行中。</p>
+<ol>
+<li>CMake生成器<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ cmake --help</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">Generators</span><br><span class="line">  Unix Makefiles               = Generates standard UNIX makefiles.</span><br><span class="line">  Ninja                        = Generates build.ninja files.</span><br><span class="line">  Xcode                        = Generate Xcode project files.</span><br><span class="line">  CodeBlocks - Ninja           = Generates CodeBlocks project files.</span><br><span class="line">  CodeBlocks - Unix Makefiles  = Generates CodeBlocks project files.</span><br><span class="line">  CodeLite - Ninja             = Generates CodeLite project files.</span><br><span class="line">  CodeLite - Unix Makefiles    = Generates CodeLite project files.</span><br><span class="line">  Sublime Text <span class="number">2</span> - Ninja       = Generates Sublime Text <span class="number">2</span> project files.</span><br><span class="line">  Sublime Text <span class="number">2</span> - Unix Makefiles</span><br><span class="line">                               = Generates Sublime Text <span class="number">2</span> project files.</span><br><span class="line">  Kate - Ninja                 = Generates Kate project files.</span><br><span class="line">  Kate - Unix Makefiles        = Generates Kate project files.</span><br><span class="line">  Eclipse CDT4 - Ninja         = Generates Eclipse CDT <span class="number">4.0</span> project files.</span><br><span class="line">  Eclipse CDT4 - Unix Makefiles= Generates Eclipse CDT <span class="number">4.0</span> project files.</span><br><span class="line">  KDevelop3                    = Generates KDevelop <span class="number">3</span> project files.</span><br><span class="line">  KDevelop3 - Unix Makefiles   = Generates KDevelop <span class="number">3</span> project files.</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>　　可以看到，最上面的三个分别是<code>Unix Makefiles</code>、<code>ninja</code>和<code>Xcode</code>。</p>
+<ul>
+<li>当生成器选择的是<code>Unix Makefiles</code>时候，CMake会生成<code>Makefile</code>文件，<code>make</code> 是与 <code>Makefile</code> 对应的，<code>make</code>读取<code>Makefile</code>文件，根据源代码自动生成可执行的程序或者库。</li>
+<li>当生成器选择的是<code>ninjas</code>时候，CMake会生成<code>build.ninja</code>文件，<code>ninja</code>是与<code>build.ninja</code>对应的，<code>ninjia</code>读取<code>build.ninja</code>文件里的构建规则进行构建。</li>
+</ul>
+<ol start="2">
+<li>编译器</li>
+</ol>
+<p>　　原生构建工具只会编排我们的构建，我们还需要有编译器才能从我们的C++源中生成二进制文件。</p>
+<ul>
+<li>Visual Studio<br>　　<code>Visual Studio</code>的编译器compiler (也就是cl.exe)伴随着 IDE 一起被安装，无其他额外操作。</li>
+<li>Ubuntu GCC<br>　　<code>gcc</code>编译器通常是<code>Linux OS</code>上使用的</li>
+<li>OSX Clang<br>　　<code>Clang</code>编译器通常伴随着<code>Xcode</code>一起安装的，或者是在安装<code>make</code>的时候被安装。</li>
+</ul>
+<ol start="3">
+<li>生成原生构建工具文件</li>
+</ol>
+<p>　　我们可以使用 GUI 或者 CMake的命令行版本生成原生文件：</p>
+<ul>
+<li>GUI: Visual Studio</li>
+<li>GUI: Xcode</li>
+<li>GUI: cmake-gui</li>
+<li>CLI: Visual Studio<br>　　<code>cmake -H. -B_builds -G &quot;Visual Studio 14 2015 Win64&quot;</code></li>
+<li>CLI: Xcode<br>　　<code>cmake -H. -B_builds -GXcode</code></li>
+<li>CLI: Cake<br>　　<code>cmake -H. -B_builds -G &quot;Unix Makefiles&quot;</code></li>
+</ul>
+<p>Note:</p>
+<ul>
+<li><code>-H</code>, <code>-H&lt;path-to-source-tree&gt;</code>，无空格，必须和<code>-B</code>一起使用，该路径会被存在变量<code>CMAKE_SOURCE_DIR</code>里</li>
+<li><code>-B</code> , <code>-B&lt;path-to-binary-tree&gt;</code>，无空格，必须和<code>-H</code>一起使用，该路径会被存在变量<code>CMAKE_BINARY_DIR</code>里</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　本篇文章不在于教你如何使用 CMake，CMake 是一个工具，相应的教程，手册可以很容易找到。因此，本文主要在于理解 CMake 的特点及其 workflow，这对于之后使用 CMake 的时候很有帮助。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://cgold.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">CGold: The Hitchhiker’s Guide to the CMake</a></li>
+<li><a href="https://cmake.org/cmake-tutorial/" target="_blank" rel="noopener">Cmake 官网教程</a></li>
+<li><a href="http://devdocs.io/cmake~3.6/manual/cmake-buildsystem.7#introduction" target="_blank" rel="noopener">Cmake 参考手册 - devdocs.io</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/24/Test-Double/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -357,7 +612,7 @@
       
         
           <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
-<p>本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的<em>Test Double</em>章节</p>
+<p>本文的主要观点、代码片段、图片均源自《Test Double – xUnit Test Patterns》书的<em>Test Double</em>章节</p>
 </blockquote>
 <p>　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称<code>Test Double</code>，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行阐述：</p>
 <ul>
@@ -420,7 +675,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/23/IoT-初识/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/23/认识IoT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Yu">
@@ -439,7 +694,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/06/23/IoT-初识/" itemprop="url">认识IoT</a></h1>
+                <a class="post-title-link" href="/2018/06/23/认识IoT/" itemprop="url">IoT初识</a></h1>
         
 
         <div class="post-meta">
@@ -524,7 +779,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/06/23/IoT-初识/#more" rel="contents">
+            <a class="btn" href="/2018/06/23/认识IoT/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -629,8 +884,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Team/" itemprop="url" rel="index">
-                    <span itemprop="name">Team</span>
+                  <a href="/categories/Others/" itemprop="url" rel="index">
+                    <span itemprop="name">Others</span>
                   </a>
                 </span>
 
@@ -1584,153 +1839,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/27/Mongo-记一次安装启动错误/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/27/Mongo-记一次安装启动错误/" itemprop="url">Mongo-记一次安装启动异常</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T11:35:21+01:00">
-                2017-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mongo/" itemprop="url" rel="index">
-                    <span itemprop="name">Mongo</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>　　笔者最近换了电脑，从MacBook Pro 13”换成了MacBook Pro 15”，相关的工具软件全部得重新装。<br>再重新装Mongo的时候遇到了一些问题，特此记录。</p>
-<h2 id="二、安装异常"><a href="#二、安装异常" class="headerlink" title="二、安装异常"></a>二、安装异常</h2><h3 id="1-错误描述"><a href="#1-错误描述" class="headerlink" title="1. 错误描述"></a>1. 错误描述</h3>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/27/Mongo-记一次安装启动错误/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1781,7 +1889,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1792,7 +1900,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
