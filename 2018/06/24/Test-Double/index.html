@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Test," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言 本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行">
+<meta name="keywords" content="Test">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Test Double">
+<meta property="og:url" content="http://yoursite.com/2018/06/24/Test-Double/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="前言 本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/imgs/test-double-four-phase-test.png">
+<meta property="og:image" content="http://yoursite.com/imgs/test-double-for-sut.png">
+<meta property="og:image" content="http://yoursite.com/imgs/test-double-type.png">
+<meta property="og:image" content="http://yoursite.com/imgs/test-double-stub.png">
+<meta property="og:image" content="http://yoursite.com/imgs/test-double-spy.png">
+<meta property="og:image" content="http://yoursite.com/imgs/test-double-mock.png">
+<meta property="og:image" content="http://yoursite.com/imgs/test-double-fake.png">
+<meta property="og:updated_time" content="2018-06-24T11:57:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Test Double">
+<meta name="twitter:description" content="前言 本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的Test Double章节  　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称Test Double，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行">
+<meta name="twitter:image" content="http://yoursite.com/imgs/test-double-four-phase-test.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/24/Test-Double/"/>
+
+
+
+
+
+  <title>Test Double | 若见喻笺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">若见喻笺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/24/Test-Double/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Test Double</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T07:42:53+02:00">
+                2018-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Test/" itemprop="url" rel="index">
+                    <span itemprop="name">Test</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
+<p>本文的主要内容是翻译自《Test Double – xUnit Test Patterns》书的<em>Test Double</em>章节</p>
+</blockquote>
+<p>　　很多时候，在执行单元测试时，待测对象依赖于其他模块，我们经常听到的有 Mock、Stub、Fake、Spy之类的词。xUnit Test Patterns一书中对此进行了统称<code>Test Double</code>，并清晰的说明了各个术语的区别与应用场景。下面主要从以下几个方面进行阐述：</p>
+<ul>
+<li>Four-Phase Test</li>
+<li>理解Test Double</li>
+<li>Test Double的分类</li>
+<li>实现方式</li>
+<li>对比总结</li>
+</ul>
+<a id="more"></a>
+<h3 id="一、Four-Phase-Test"><a href="#一、Four-Phase-Test" class="headerlink" title="一、Four-Phase Test"></a>一、Four-Phase Test</h3><p>　　在开始步入正题 Test Double 之前，我们先大致看一下测试的 Four Phrase，以便我们可以on same page，不至于因为术语不同产生歧义。</p>
+<p>　　<img src="/imgs/test-double-four-phase-test.png" width="500" height="250"></p>
+<ul>
+<li>第一阶段，可以理解为做<code>GIVEN</code>，做一些准备工作，其中可以包括创建test fixture以及设置 expectation。</li>
+<li>第二阶段，可以理解为<code>WHEN</code>，即和 SUT 进行交互。</li>
+<li>第三阶段，可以理解为<code>TEHN</code>，判断是否获取到了期望的输出或者行为。</li>
+<li>第四阶段，做一些善后和清理操作，将系统还原成初始的样子。</li>
+</ul>
+<h3 id="二、理解Test-Double"><a href="#二、理解Test-Double" class="headerlink" title="二、理解Test Double"></a>二、理解Test Double</h3><p>　　有时候，测试被测系统（System under test, SUT）非常困难，因为它依赖于其他组件，而这些组件在测试环境中无法使用。这可能是因为这些组件不可用，亦或者是执行它们会产生副作用。在其他情况下，我们的测试策略要求我们对SUT的内部行为有更多的控制权或可见性。</p>
+<p>　　<img src="/imgs/test-double-for-sut.png" width="400" height="200"></p>
+<p>　　在编写测试时候，我们不能（或者不选择）使用一个真正的依赖组件（ Depended-On Component，DOC），我们会用 Test Double代替它。Test Double 不用有像真正的 DOC 一样的行为，只需要提供和真实的 API 相同的 API即可，这样SUT可以认为该 Test Double 就是真正的 API。</p>
+<h4 id="1-WHAT"><a href="#1-WHAT" class="headerlink" title="1. WHAT"></a>1. WHAT</h4><blockquote class="blockquote-center"><p>　　在计算机编程和计算机科学中，程序员和开发人员使用称为自动化单元测试的技术来提高软件的质量。 通常情况下，最终版本软件由一组复杂的对象或过程相互作用组成以创建最终结果。 在自动化单元测试中，可能有必要使用外观和行为与其发布相对应的对象或过程，但实际上用的却是简化版本的对象和过程，以降低复杂性并促进测试。Test Double是这些对象或过程的通用术语。</p>
+</blockquote>
+<p>　　一句话介绍的话， Test Double是一个通用术语，用于在任何情况下，为了测试目的而替换生产对象。</p>
+<h4 id="2-WHY"><a href="#2-WHY" class="headerlink" title="2. WHY"></a>2. WHY</h4><ul>
+<li>减少对被测对象的依赖，使得测试更加单一</li>
+<li>让测试案例执行的时间更短，运行更加稳定</li>
+<li>对SUT（待测系统）内部的输入输出进行验证，让测试更加彻底深入</li>
+</ul>
+<h3 id="三、Test-Double的分类"><a href="#三、Test-Double的分类" class="headerlink" title="三、Test Double的分类"></a>三、Test Double的分类</h3><p>　　Test Double可以进一步细化为以下5种：</p>
+<ul>
+<li>Test Stub，桩,在测试中为每个调用提供一个封装好的响应，通常不会对测试之外的请求进行响应，只用于测试。</li>
+<li>Test Spy，是一种记录一些关于它们如何被调用的信息的桩。这种形式的桩可能是记录它发出去了多少个消息的一个电子邮件服务。</li>
+<li>Mock Object，模拟对象，是一种在编程时就设定了它预期要接收到调用。如果收到了为预期的调用，它会抛出异常，并且还会在验证时被检查是否收到了它们所预期的所有调用。</li>
+<li>Fake Object，假对象，可以真正使用的实现，通常利用一些捷径，不适合在生产环境中使用，比如内存数据库（InMemoryTestDatabase）。</li>
+<li>Dummy Object，哑对象，是指那些被传递但不被真正使用的对象。通常用于添充参数列表。</li>
+</ul>
+<p>　　<img src="/imgs/test-double-type.png" width="500" height="200"></p>
+<h4 id="1-Stub"><a href="#1-Stub" class="headerlink" title="1. Stub"></a>1. Stub</h4><p>　　Test Stub是指一个完全代替待测系统依赖组件的对象，这个对象按照我们设计的输出与待测系统进行交互。这个桩既不会与测试用例(代码)交互，也不会在待测系统内部进行验证。</p>
+<p>　　<img src="/imgs/test-double-stub.png" width="400" height="200"></p>
+<h5 id="1-1-特点"><a href="#1-1-特点" class="headerlink" title="1.1 特点"></a>1.1 特点</h5><ul>
+<li>完全代替待测系统依赖组件的对象</li>
+<li>不会对 SUT 内部的输入进行验证</li>
+</ul>
+<h5 id="1-2-场景"><a href="#1-2-场景" class="headerlink" title="1.2 场景"></a>1.2 场景</h5><ul>
+<li>依赖组件无法使用，影响测试结果</li>
+<li>依赖组件运行太慢，影响测试速度</li>
+<li>成为Responder响应者，当需要给待测系统注入特定数据，从而对待测系统产生影响</li>
+<li>成为Saboteur破坏者，当需要给待测系统注入无效数据，从而对待测系统产生异常影响，观察待测系统如何处理错误情况</li>
+</ul>
+<h5 id="1-3-示例"><a href="#1-3-示例" class="headerlink" title="1.3 示例"></a>1.3 示例</h5><ul>
+<li><p>初始测试 - 依赖组件无法使用<br>　　下面的代码只是测试了基本功能–格式化含有时间的 HTML 字符串，但是它依赖于真正的系统时钟。所以测试不会通过。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> testDisplayCurrentTime_AtMidnight() &#123;</span><br><span class="line">      <span class="comment">// fixture setup</span></span><br><span class="line">      TimeDisplay sut = <span class="keyword">new</span> TimeDisplay();</span><br><span class="line">      <span class="comment">// exercise sut</span></span><br><span class="line">      <span class="keyword">String</span> result = sut.getCurrentTimeAsHtmlFragment();</span><br><span class="line">      <span class="comment">// verify direct output</span></span><br><span class="line">      <span class="keyword">String</span> expectedTimeString = <span class="string">"&lt;span class=\"tinyBoldText\"&gt;Midnight&lt;/span&gt;"</span>;</span><br><span class="line">      assertEquals( expectedTimeString, result);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用真正的系统时钟之后的测试<br>　　下面的代码引入了当前系统的时钟，但是又带来了两个问题：其一，有些测试条件永远不会执行（比如测试Midnight 的部分，你可能需要大晚上爬起来运行测试）；其二，这个测试部分的逻辑和真正的实现代码逻辑重复了。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> testDisplayCurrentTime_whenever() &#123;</span><br><span class="line">  <span class="comment">// fixture setup</span></span><br><span class="line">  TimeDisplay sut = <span class="keyword">new</span> TimeDisplay();</span><br><span class="line">  <span class="comment">// exercise sut</span></span><br><span class="line">  <span class="keyword">String</span> result = sut.getCurrentTimeAsHtmlFragment();</span><br><span class="line">  <span class="comment">// verify outcome</span></span><br><span class="line">  Calendar</span><br><span class="line">  time = <span class="keyword">new</span> DefaultTimeProvider().getTime();</span><br><span class="line">  StringBuffer expectedTime = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">  expectedTime.<span class="built_in">append</span>(<span class="string">"&lt;span class=\"tinyBoldText\"&gt;"</span>);</span><br><span class="line">  <span class="keyword">if</span> ((time.<span class="built_in">get</span>(Calendar.HOUR_OF_DAY) == <span class="number">0</span>)</span><br><span class="line">      &amp;&amp; (time.<span class="built_in">get</span>(Calendar.MINUTE) &lt;= <span class="number">1</span>)) &#123;</span><br><span class="line">    expectedTime.<span class="built_in">append</span>(<span class="string">"Midnight"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((time.<span class="built_in">get</span>(Calendar.HOUR_OF_DAY) == <span class="number">12</span>)</span><br><span class="line">             &amp;&amp; (time.<span class="built_in">get</span>(Calendar.MINUTE) == <span class="number">0</span>)) &#123; <span class="comment">// noon</span></span><br><span class="line">    expectedTime.<span class="built_in">append</span>(<span class="string">"Noon"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    SimpleDateFormat fr = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"h:mm a"</span>);</span><br><span class="line">    expectedTime.<span class="built_in">append</span>(fr.format(time.getTime()));</span><br><span class="line">  &#125;</span><br><span class="line">  expectedTime.<span class="built_in">append</span>(<span class="string">"&lt;/span&gt;"</span>);</span><br><span class="line">  assertEquals(expectedTime, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 Test Stub 之后的测试<br>　　下面的Stub用来注入有效的间接输入，被称为<code>Resnponder</code>，是一个 Happy Path。如果是注入无效的间接输入，则会是<code>Saboteur</code>。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> void testDisplayCurrentTime_AtMidnight() throws Exception &#123;</span><br><span class="line">  <span class="comment">// Fixture setup:</span></span><br><span class="line">  <span class="comment">//      Test Double configuration</span></span><br><span class="line">  TimeProviderTestStub tpStub = <span class="keyword">new</span> <span class="type">TimeProviderTestStub</span>();</span><br><span class="line">  tpStub.setHours(<span class="number">0</span>);</span><br><span class="line">  tpStub.setMinutes(<span class="number">0</span>);</span><br><span class="line">  <span class="comment">//   Instantiate SUT:</span></span><br><span class="line">  TimeDisplay sut = <span class="keyword">new</span> <span class="type">TimeDisplay</span>();</span><br><span class="line">  <span class="comment">//      Test Double installation</span></span><br><span class="line">  sut.setTimeProvider(tpStub);</span><br><span class="line">  <span class="comment">// exercise sut</span></span><br><span class="line">  <span class="keyword">String</span> result = sut.getCurrentTimeAsHtmlFragment();</span><br><span class="line">  <span class="comment">// verify outcome</span></span><br><span class="line">  <span class="keyword">String</span> expectedTimeString = <span class="string">"&lt;span class=\"tinyBoldText\"&gt;Midnight&lt;/span&gt;"</span>;</span><br><span class="line">  assertEquals(<span class="string">"Midnight"</span>, expectedTimeString, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>TimeProviderTestStub的具体实现</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Calendar myTime = <span class="keyword">new</span> GregorianCalendar();</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* The complete constructor for the TimeProviderTestStub</span></span><br><span class="line"><span class="comment">* @param hours specify the hours using a 24 hour clock</span></span><br><span class="line"><span class="comment">*    (e.g. 10 = 10 AM, 12 = noon, 22 = 10 PM, 0 = midnight)</span></span><br><span class="line"><span class="comment">* @param minutes specify the minutes after the hour</span></span><br><span class="line"><span class="comment">*   (e.g. 0 = exactly on the hour, 1 = 1 min after the hour)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TimeProviderTestStub</span><span class="params">(<span class="keyword">int</span> hours, <span class="keyword">int</span> minutes)</span> </span>&#123;</span><br><span class="line">   setTime(hours, minutes);</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(<span class="keyword">int</span> hours, <span class="keyword">int</span> minutes)</span> </span>&#123;</span><br><span class="line">   setHours(hours);</span><br><span class="line">   setMinutes(minutes);</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="comment">// Configuration Interface:</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHours</span><span class="params">(<span class="keyword">int</span> hours)</span> </span>&#123;</span><br><span class="line">   <span class="comment">// 0 is midnight; 12 is noon</span></span><br><span class="line">   myTime.<span class="built_in">set</span>(Calendar.HOUR_OF_DAY, hours);</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMinutes</span><span class="params">(<span class="keyword">int</span> minutes)</span> </span>&#123;</span><br><span class="line">   myTime.<span class="built_in">set</span>(Calendar.MINUTE, minutes);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Interface used by SUT</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Calendar <span class="title">getTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="comment">// @return The last time that was set:</span></span><br><span class="line">   <span class="keyword">return</span> myTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-Spy"><a href="#2-Spy" class="headerlink" title="2. Spy"></a>2. Spy</h4><p>　　Test Spy是指一个待测系统依赖组件的替身，并且会捕捉和保存待测对象对依赖系统的输出，这个输出会用于测试代码中的验证。Test Spy主要用于记录和验证待测对象对依赖系统的输出。</p>
+<img src="/imgs/test-double-spy.png" width="400" height="200">
+<h5 id="2-1-特点："><a href="#2-1-特点：" class="headerlink" title="2.1 特点："></a>2.1 特点：</h5><ul>
+<li>会将 Spy 内部的间接输出返回给测试用例，由测试用例进行验证</li>
+<li>只负责获取内部信息，并把这些信息发出去，不负责验证信息的正确性</li>
+</ul>
+<h5 id="2-2-示例："><a href="#2-2-示例：" class="headerlink" title="2.2 示例："></a>2.2 示例：</h5><ul>
+<li><p>初始测试<br>　　下面的代码只是测试了基本的remove flight 的功能，不能验证SUT的间接输出，也就是每次 flight 被删除之后的请求日志，包括数据、时间和用户。</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">testRemoveFlight</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">   <span class="comment">// setup</span></span><br><span class="line">   FlightDto expectedFlightDto = createARegisteredFlight();</span><br><span class="line">   FlightManagementFacade facade = <span class="keyword">new</span> FlightManagementFacadeImpl();</span><br><span class="line">   <span class="comment">// exercise</span></span><br><span class="line">   facade.removeFlight(expectedFlightDto.getFlightNumber());</span><br><span class="line">   <span class="comment">// verify</span></span><br><span class="line">   assertFalse(<span class="string">"flight should not exist after being removed"</span>,</span><br><span class="line">               facade.flightExists( expectedFlightDto.getFlightNumber()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 Test Spy 之后的测试<br>　　下面的代码中，logSpy 就是 Test Spy，<code>facade.setAuditLog(logSpy)</code>安装了 Test Spy，<code>getDate</code>, <code>getActionCode</code>等是Retrieval Interface（也称 Loopback）。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> public void testRemoveFlightLogging_recordingTestStub() throws Exception &#123;</span><br><span class="line">   // fixture setup</span><br><span class="line">   FlightD<span class="keyword">to</span> expectedFlightD<span class="keyword">to</span> = createAnUnregFlight();</span><br><span class="line">   FlightManagementFacade facade = new FlightManagementFacadeImpl();</span><br><span class="line">   //    Test Double setup</span><br><span class="line">   AuditLogSpy <span class="keyword">log</span>Spy = new AuditLogSpy();</span><br><span class="line">   facade.<span class="built_in">set</span>AuditLog(<span class="keyword">log</span>Spy);</span><br><span class="line">   // exercise</span><br><span class="line">   facade.removeFlight(expectedFlightD<span class="keyword">to</span>.getFlightNumber());</span><br><span class="line">   // verify</span><br><span class="line">   assertFalse(<span class="string">"flight still exists after being removed"</span>,</span><br><span class="line">               facade.flightExists( expectedFlightD<span class="keyword">to</span>.getFlightNumber()));</span><br><span class="line">   assertEquals(<span class="string">"number of calls"</span>, <span class="number">1</span>, <span class="keyword">log</span>Spy.getNumberOfCalls());</span><br><span class="line">   assertEquals(<span class="string">"action code"</span>, Helper.REMOVE_FLIGHT_ACTION_CODE,</span><br><span class="line">                <span class="keyword">log</span>Spy.getActionCode());</span><br><span class="line">   assertEquals(<span class="string">"date"</span>, helper.getTodaysDateWithoutTime(), <span class="keyword">log</span>Spy.getDate());</span><br><span class="line">   assertEquals(<span class="string">"user"</span>, Helper.TEST_USER_NAME, <span class="keyword">log</span>Spy.getUser());</span><br><span class="line">   assertEquals(<span class="string">"detail"</span>, expectedFlightD<span class="keyword">to</span>.getFlightNumber(),</span><br><span class="line">                <span class="keyword">log</span>Spy.getDetail());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Spy 的具体实现</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> AuditLogSpy <span class="keyword">implements</span> AuditLog &#123;</span><br><span class="line">   <span class="comment">// Fields into which we record actual usage info</span></span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">Date</span> date;</span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">String</span> user;</span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">String</span> actionCode;</span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">Object</span> detail;</span><br><span class="line">   <span class="keyword">private</span> int numberOfCalls = <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">   <span class="comment">// Recording implementation of real AuditLog interface:</span></span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">void</span> logMessage(<span class="built_in">Date</span> date, <span class="built_in">String</span> user,</span><br><span class="line">                          <span class="built_in">String</span> actionCode,</span><br><span class="line">                          <span class="built_in">Object</span> detail) &#123;</span><br><span class="line">      <span class="keyword">this</span>.date = date;</span><br><span class="line">      <span class="keyword">this</span>.user = user;</span><br><span class="line">      <span class="keyword">this</span>.actionCode = actionCode;</span><br><span class="line">      <span class="keyword">this</span>.detail = detail;</span><br><span class="line">      numberOfCalls++;</span><br><span class="line">   &#125;</span><br><span class="line">  </span><br><span class="line">   <span class="comment">// Retrieval Interface:</span></span><br><span class="line">   <span class="keyword">public</span> int getNumberOfCalls() &#123;</span><br><span class="line">      <span class="keyword">return</span> numberOfCalls;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">Date</span> getDate() &#123;</span><br><span class="line">      <span class="keyword">return</span> date;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">String</span> getUser() &#123;</span><br><span class="line">      <span class="keyword">return</span> user;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">String</span> getActionCode() &#123;</span><br><span class="line">      <span class="keyword">return</span> actionCode;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">Object</span> getDetail() &#123;</span><br><span class="line">      <span class="keyword">return</span> detail;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-Mock"><a href="#3-Mock" class="headerlink" title="3. Mock"></a>3. Mock</h4><p>　　它类似于Test Spy，安插在待测系统内部，获取到待测系统内部的间接输出，一般根据调用者输入，按照约定执行操作，然后返回调用者事先编码写好的预期结果。<br><img src="/imgs/test-double-mock.png" width="400" height="200"></p>
+<h5 id="3-1-特点"><a href="#3-1-特点" class="headerlink" title="3.1 特点"></a>3.1 特点</h5><ul>
+<li>Mock还会对调用进行验证（verify），若碰到不在预期范围的调用还会抛出异常。</li>
+<li>Mock需要设置 expectation，而且必须要在 SUT的 exercise这一阶段之前进行设置。</li>
+</ul>
+<p>　　Mock 的相应操作对应到Four Phrase如下：</p>
+<ul>
+<li>Fixture set up<ul>
+<li>构建 Mock Object</li>
+<li>配置 Mock Object</li>
+<li>安装 Mock Objct 到 SUT</li>
+</ul>
+</li>
+<li>Exercise SUT<ul>
+<li>SUT 调用 Mock Object，Mock Object 进行断言</li>
+</ul>
+</li>
+<li>Result verification<ul>
+<li>测试调用最后的 verify 方法</li>
+</ul>
+</li>
+<li>Fixture tear down<ul>
+<li>没有影响</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-2-示例"><a href="#3-2-示例" class="headerlink" title="3.2 示例"></a>3.2 示例</h5><ul>
+<li><p>初始测试</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">testRemoveFlight</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">   <span class="comment">// setup</span></span><br><span class="line">   FlightDto expectedFlightDto = createARegisteredFlight();</span><br><span class="line">   FlightManagementFacade facade = <span class="keyword">new</span> FlightManagementFacadeImpl();</span><br><span class="line">   <span class="comment">// exercise</span></span><br><span class="line">   facade.removeFlight(expectedFlightDto.getFlightNumber());</span><br><span class="line">   <span class="comment">// verify</span></span><br><span class="line">   assertFalse(<span class="string">"flight should not exist after being removed"</span>,</span><br><span class="line">               facade.flightExists( expectedFlightDto.getFlightNumber()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 Mock Object 之后的测试</p>
+<figure class="highlight pony"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public void testRemoveFlight_Mock() throws <span class="type">Exception</span> &#123;</span><br><span class="line">   <span class="comment">// fixture setup</span></span><br><span class="line">   <span class="type">FlightDto</span> expectedFlightDto = createAnonRegFlight();</span><br><span class="line">   <span class="comment">// mock configuration</span></span><br><span class="line">   <span class="type">ConfigurableMockAuditLog</span> mockLog = <span class="function"><span class="keyword">new</span> <span class="title">ConfigurableMockAuditLog</span>();</span></span><br><span class="line"><span class="function">   <span class="title">mockLog</span>.<span class="title">setExpectedLogMessage</span>( helper.getTodaysDateWithoutTime(),</span></span><br><span class="line"><span class="function">                        <span class="title">Helper</span>.<span class="title">TEST_USER_NAME</span>,</span></span><br><span class="line"><span class="function">                        <span class="title">Helper</span>.<span class="title">REMOVE_FLIGHT_ACTION_CODE</span>,</span></span><br><span class="line"><span class="function">                        <span class="title">expectedFlightDto</span>.<span class="title">getFlightNumber</span>());</span></span><br><span class="line"><span class="function">   <span class="title">mockLog</span>.<span class="title">setExpectedNumberCalls</span>(<span class="number">1</span>);</span></span><br><span class="line"><span class="function">   <span class="comment">// mock installation</span></span></span><br><span class="line"><span class="function">   <span class="title">FlightManagementFacade</span> <span class="title">facade</span> = <span class="title">new</span> <span class="title">FlightManagementFacadeImpl</span>();</span></span><br><span class="line"><span class="function">   <span class="title">facade</span>.<span class="title">setAuditLog</span>(mockLog);</span></span><br><span class="line"><span class="function">   <span class="comment">// exercise</span></span></span><br><span class="line"><span class="function">   <span class="title">facade</span>.<span class="title">removeFlight</span>(expectedFlightDto.getFlightNumber());</span></span><br><span class="line"><span class="function">   <span class="comment">// verify</span></span></span><br><span class="line"><span class="function">   <span class="title">assertFalse</span>("flight still exists after being removed",</span></span><br><span class="line"><span class="function">               facade.flightExists( expectedFlightDto.getFlightNumber()));</span></span><br><span class="line"><span class="function">   <span class="title">mockLog</span>.<span class="title">verify</span>();</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4-Fake"><a href="#4-Fake" class="headerlink" title="4. Fake"></a>4. Fake</h4><p>　　Fake Object 和 Test Stub 很类似，都是依赖组件的代替，区别就在于Fake Object 更“轻量级”。“轻量级”是指Fake Object 仅仅提供和依赖组件一样的功能接口保证待测系统正常工作，让待测系统认为 Fake Object 就是“真的”依赖组件，实现细节可以非常简单，不需要具有真实依赖组件的很多特性，也不需要像Test Stub那样接受测试的需求，返回特定response给待测系统。</p>
+<p>　　<img src="/imgs/test-double-fake.png" width="400" height="200"></p>
+<h5 id="4-1-特点"><a href="#4-1-特点" class="headerlink" title="4.1 特点"></a>4.1 特点</h5><ul>
+<li>轻量级、简单实现</li>
+<li>不适合生产环境</li>
+</ul>
+<h5 id="4-2-场景"><a href="#4-2-场景" class="headerlink" title="4.2 场景"></a>4.2 场景</h5><ul>
+<li>实际对象还未实现出来，先用一个简单的Fake Object代替它。</li>
+<li>实际对象执行需要太长的时间</li>
+<li>实际对象在实际环境下可能会有不稳定的情况。比如，网络发送数据包，不能保证每次都能成功发送。</li>
+<li>实际对象在实际系统环境下不可用，或者很难让它变得可用。比如，使用一个依赖实际数据库的数据库访问层对象，必须安装数据库，并且进行大量的配置，才能生效。</li>
+</ul>
+<p>　　通常Fake Object用于构造下面的对象：</p>
+<ul>
+<li>Fake Database</li>
+<li>In-Memory Database</li>
+<li>Fake Web Service</li>
+<li>Fake Service Layer</li>
+</ul>
+<h5 id="4-3-示例"><a href="#4-3-示例" class="headerlink" title="4.3 示例"></a>4.3 示例</h5><ul>
+<li><p>初始测试</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> testReadWrite() <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">   <span class="comment">// Setup:</span></span><br><span class="line">   FlightMngtFacade facade = <span class="keyword">new</span> FlightMgmtFacadeImpl();</span><br><span class="line">   <span class="comment">// Exercise:</span></span><br><span class="line">   BigDecimal yyc = facade.createAirport(<span class="string">"YYC"</span>, <span class="string">"Calgary"</span>, <span class="string">"Calgary"</span>);</span><br><span class="line">   BigDecimal lax = facade.createAirport(<span class="string">"LAX"</span>, <span class="string">"LAX Intl"</span>, <span class="string">"LA"</span>);</span><br><span class="line">   facade.createFlight(yyc, lax);</span><br><span class="line">   List flights = facade.getFlightsByOriginAirport(yyc);</span><br><span class="line">   <span class="comment">// Verify:</span></span><br><span class="line">   assertEquals( <span class="string">"# of flights"</span>, <span class="number">1</span>, flights.<span class="built_in">size</span>());</span><br><span class="line">   Flight flight = (Flight) flights.<span class="built_in">get</span>(<span class="number">0</span>);</span><br><span class="line">   assertEquals( <span class="string">"origin"</span>, yyc,</span><br><span class="line">                 flight.getOrigin().getCode());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Service真实实现</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> BigDecimal createAirport( String airportCode, String name,</span><br><span class="line">                                 String nearbyCity)</span><br><span class="line"><span class="keyword">throws</span> FlightBookingException&#123;</span><br><span class="line">   TransactionManager.beginTransaction();</span><br><span class="line">   Airport airport = dataAccess.createAirport(airportCode, name, nearbyCity);</span><br><span class="line">   logMessage(<span class="string">"Wrong Action Code"</span>, airport.getCode());<span class="comment">//bug</span></span><br><span class="line">   TransactionManager.commitTransaction();</span><br><span class="line">   <span class="function"><span class="keyword">return</span> airport.<span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> List getFlightsByOriginAirport( BigDecimal originAirportId)</span><br><span class="line">      <span class="keyword">throws</span> FlightBookingException &#123;</span><br><span class="line">   <span class="keyword">if</span> (originAirportId == <span class="keyword">null</span>)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> InvalidArgumentException( <span class="string">"Origin Airport Id has not been provided"</span>,</span><br><span class="line">              <span class="string">"originAirportId"</span>, <span class="keyword">null</span>);     </span><br><span class="line">   Airport origin = dataAccess.getAirportByPrimaryKey(originAirportId);</span><br><span class="line">   List flights = dataAccess.getFlightsByOriginAirport(origin);</span><br><span class="line">   <span class="keyword">return</span> flights;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setDao</span><span class="params">(Database dao)</span> </span>&#123;</span><br><span class="line">   dataAccess = dao;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 Fake Object 之后的示例<br>　　下面的代码，将Fake Object InMemoryDatabase注入到了真实的 Service facade中，测试并没有更改太多，只是会调用 Fake 的 Database，整个测试执行会变快很多。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> testReadWrite_inMemory() <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">   <span class="comment">// Setup:</span></span><br><span class="line">   FlightMgmtFacadeImpl facade = <span class="keyword">new</span> FlightMgmtFacadeImpl();</span><br><span class="line">   facade.setDao(<span class="keyword">new</span> InMemoryDatabase());</span><br><span class="line">   <span class="comment">// Exercise:</span></span><br><span class="line">   BigDecimal yyc = facade.createAirport(<span class="string">"YYC"</span>, <span class="string">"Calgary"</span>, <span class="string">"Calgary"</span>);</span><br><span class="line">   BigDecimal lax = facade.createAirport(<span class="string">"LAX"</span>, <span class="string">"LAX Intl"</span>, <span class="string">"LA"</span>);</span><br><span class="line">   facade.createFlight(yyc, lax);</span><br><span class="line">   List flights = facade.getFlightsByOriginAirport(yyc);</span><br><span class="line">   <span class="comment">// Verify:</span></span><br><span class="line">   assertEquals( <span class="string">"# of flights"</span>, <span class="number">1</span>, flights.<span class="built_in">size</span>());</span><br><span class="line">   Flight flight = (Flight) flights.<span class="built_in">get</span>(<span class="number">0</span>);</span><br><span class="line">   assertEquals( <span class="string">"origin"</span>, yyc,</span><br><span class="line">                 flight.getOrigin().getCode());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Fake Object 的实现</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InMemoryDatabase</span> <span class="keyword"><span class="keyword">implements</span> <span class="type">FlightDao</span></span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List airports = <span class="keyword">new</span> <span class="type">Vector</span>();</span><br><span class="line">    <span class="keyword">public</span> Airport createAirport(<span class="keyword">String</span> airportCode, <span class="keyword">String</span> name, <span class="keyword">String</span> nearbyCity)</span><br><span class="line">             throws DataException, InvalidArgumentException &#123;|------<span class="number">-10</span>-------<span class="number">-20</span>-------<span class="number">-30</span>-------<span class="number">-40</span>-------<span class="number">-50</span>-------<span class="number">-60</span>-----|</span><br><span class="line"></span><br><span class="line">       assertParamtersAreValid( airportCode, name, nearbyCity);     </span><br><span class="line">       assertAirportDoesntExist( airportCode); </span><br><span class="line">       Airport result = <span class="keyword">new</span> <span class="type">Airport</span>(getNextAirportId(),</span><br><span class="line">             airportCode, name, createCity(nearbyCity));</span><br><span class="line">       airports.add(result);</span><br><span class="line">       <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Airport getAirportByPrimaryKey(BigDecimal airportId)</span><br><span class="line">             throws DataException, InvalidArgumentException &#123;</span><br><span class="line">       assertAirportNotNull(airportId);</span><br><span class="line">    Airport result = <span class="literal">null</span>;</span><br><span class="line">       Iterator i = airports.iterator();</span><br><span class="line">       <span class="keyword">while</span> (i.hasNext()) &#123;</span><br><span class="line">          Airport airport = (Airport) i.next();</span><br><span class="line">          <span class="keyword">if</span> (airport.getId().equals(airportId)) &#123;</span><br><span class="line">             <span class="keyword">return</span> airport;</span><br><span class="line">          &#125;</span><br><span class="line">       &#125;</span><br><span class="line">     <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">DataException</span>(<span class="string">"Airport not found:"</span>+airportId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="5-Dummy"><a href="#5-Dummy" class="headerlink" title="5. Dummy"></a>5. Dummy</h4><p>　　Dummy Object对象是指为了调用被测试方法而传入的假参数，为什么说是假参数呢？实际上这些传入的Dummy对象并不会对测试有任何作用，仅仅是为了成功调用被测试方法。所以，Dummy Object又被称为Dummy parameter或placeholder。</p>
+<h5 id="5-1-特点"><a href="#5-1-特点" class="headerlink" title="5.1 特点"></a>5.1 特点</h5><ul>
+<li>测试中须传入的对象</li>
+<li>测试中实际并不使用Dummy Object</li>
+</ul>
+<h5 id="5-2-场景"><a href="#5-2-场景" class="headerlink" title="5.2 场景"></a>5.2 场景</h5><ul>
+<li>Dummy Argument</li>
+<li>Dummy Attribute</li>
+</ul>
+<h5 id="5-3-示例"><a href="#5-3-示例" class="headerlink" title="5.3 示例"></a>5.3 示例</h5><ul>
+<li><p>初始测试<br>下面的代码中，Invoice需要 Product 和 Customer 信息，但是 Customer的依赖信息为 Customer -&gt;Address -&gt; City -&gt; State，这就需要我们构造很多对象，让 Test setup 变得复杂起来。此外，测试只测试了 Invoice 相关的功能，并不关心 Address -&gt; City -&gt; State，因此冗余的代码会在某种程度上误导读者（该例子可能太简单，不足以说明）。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> void testInvoice_addLineItem_noECS() &#123;</span><br><span class="line">   final int QUANTITY = <span class="number">1</span>;</span><br><span class="line">   Product product = <span class="keyword">new</span> <span class="type">Product</span>(getUniqueNumberAsString(), getUniqueNumber());</span><br><span class="line">   State state = <span class="keyword">new</span> <span class="type">State</span>(<span class="string">"West Dakota"</span>, <span class="string">"WD"</span>);</span><br><span class="line">   City city = <span class="keyword">new</span> <span class="type">City</span>(<span class="string">"Centreville"</span>, state);</span><br><span class="line">   Address address = <span class="keyword">new</span> <span class="type">Address</span>(<span class="string">"123 Blake St."</span>, city, <span class="string">"12345"</span>);</span><br><span class="line">   Customer customer= <span class="keyword">new</span> <span class="type">Customer</span>(getUniqueNumberAsString(), getUniqueNumberAsString(), address);</span><br><span class="line">   Invoice inv = <span class="keyword">new</span> <span class="type">Invoice</span>(customer);</span><br><span class="line">   <span class="comment">// Exercise</span></span><br><span class="line">   inv.addItemQuantity(product, QUANTITY);</span><br><span class="line">   <span class="comment">// Verify</span></span><br><span class="line">   List lineItems = inv.getLineItems();</span><br><span class="line">   assertEquals(<span class="string">"number of items"</span>, lineItems.size(), <span class="number">1</span>);</span><br><span class="line">   LineItem actual = (LineItem)lineItems.<span class="keyword">get</span>(<span class="number">0</span>);</span><br><span class="line">   LineItem expItem = <span class="keyword">new</span> <span class="type">LineItem</span>(inv, product, QUANTITY);</span><br><span class="line">   assertLineItemsEqual(<span class="string">""</span>,expItem, actual);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入 Dummy Object之后的测试<br>　　我们用 DummyCustomer 代替了实际的 Customer，而我们并不关系具体的实现，因为我们只是需要这个 Customer 对象作为一个参数输入。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> void testInvoice_addLineItem_DO() &#123;</span><br><span class="line">   final int QUANTITY = <span class="number">1</span>;</span><br><span class="line">   Product product = <span class="keyword">new</span> <span class="type">Product</span>(<span class="string">"Dummy Product Name"</span>, getUniqueNumber());</span><br><span class="line">   Invoice inv = <span class="keyword">new</span> <span class="type">Invoice</span>( <span class="keyword">new</span> <span class="type">DummyCustomer</span>() );</span><br><span class="line">   LineItem expItem = <span class="keyword">new</span> <span class="type">LineItem</span>(inv, product, QUANTITY);</span><br><span class="line">   <span class="comment">// Exercise</span></span><br><span class="line">   inv.addItemQuantity(product, QUANTITY);</span><br><span class="line">   <span class="comment">// Verify</span></span><br><span class="line">   List lineItems = inv.getLineItems();</span><br><span class="line">   assertEquals(<span class="string">"number of items"</span>, lineItems.size(), <span class="number">1</span>);</span><br><span class="line">   LineItem actual = (LineItem)lineItems.<span class="keyword">get</span>(<span class="number">0</span>);</span><br><span class="line">   assertLineItemsEqual(<span class="string">""</span>, expItem, actual);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Dummy Object 的实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DummyCustomer</span> <span class="keyword">implements</span> <span class="title">ICustomer</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">DummyCustomer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="comment">// Real simple; nothing to initialize!</span></span><br><span class="line">   &#125;</span><br><span class="line">  </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getZone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"This should never be called!"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="四、实现方式"><a href="#四、实现方式" class="headerlink" title="四、实现方式"></a>四、实现方式</h3><ul>
+<li>Hard-Coded Test Double - 会返回固定response的Test Double</li>
+<li>Configurable Test Double - 会根据测试需求返回相应response的Test Double</li>
+</ul>
+<h3 id="五、对比总结"><a href="#五、对比总结" class="headerlink" title="五、对比总结"></a>五、对比总结</h3><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align:center">Purpose</th>
+<th style="text-align:center">Has Behavior</th>
+<th style="text-align:center">Injects indirect inputs into SUT</th>
+<th style="text-align:center">Handles indirect outputs of SUT</th>
+<th style="text-align:center">Values provided by test(er)</th>
+<th style="text-align:center">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Test Double</td>
+<td style="text-align:center">Generic name for family</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>Dummy Object</td>
+<td style="text-align:center">Attribute or Method Parameter</td>
+<td style="text-align:center">no</td>
+<td style="text-align:center">no, never called</td>
+<td style="text-align:center">no, never called</td>
+<td style="text-align:center">no</td>
+<td style="text-align:center">Null, “Ignored String”, new Object()</td>
+</tr>
+<tr>
+<td>Test Stub</td>
+<td style="text-align:center">Verify indirect inputs of SUT</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:center">ignores them</td>
+<td style="text-align:center">inputs</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>Test Spy</td>
+<td style="text-align:center">Verify indirect outputs of SUT</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:center">optional</td>
+<td style="text-align:center">captures them for later verification</td>
+<td style="text-align:center">inputs (optional)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>Mock Object</td>
+<td style="text-align:center">Verify indirect outputs of SUT</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:center">optional</td>
+<td style="text-align:center">verifies correctness against expectations</td>
+<td style="text-align:center">outputs &amp; inputs (optional)</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td>Fake Object</td>
+<td style="text-align:center">Run (unrunnable) tests (faster)</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:center">no</td>
+<td style="text-align:center">uses them</td>
+<td style="text-align:center">none</td>
+<td style="text-align:center">In-memory database emulator</td>
+</tr>
+<tr>
+<td>Temporary Test Stub</td>
+<td style="text-align:center">Stand in for procedural code not yet written</td>
+<td style="text-align:center">yes</td>
+<td style="text-align:center">no</td>
+<td style="text-align:center">uses them</td>
+<td style="text-align:center">none</td>
+<td style="text-align:center">In-memory database emulator</td>
+</tr>
+</tbody>
+</table>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　有些开源框架中可能名字叫法不一样，比如 Junit 中使用<code>Dummy Object</code>代表本文中的<code>Fake Object</code>等。因此，本篇文章主要是弄清楚一些形式，并不局限于概念的名称，理解才是关键。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><a href="https://martinfowler.com/bliki/TestDouble.html" target="_blank" rel="noopener">Test Double – Martin Fowler</a></li>
+<li><a href="http://xunitpatterns.com/Test%20Double.html" target="_blank" rel="noopener">Test Double – xUnit Test Patterns</a></li>
+<li><a href="https://martinfowler.com/articles/mocksArentStubs.html" target="_blank" rel="noopener">Mocks Aren’t Stubs -— Martin Fowler</a></li>
+<li><a href="http://www.softwaretestingmagazine.com/knowledge/unit-testing-fakes-mocks-and-stubs/" target="_blank" rel="noopener">Unit Testing: Fakes, Mocks and Stubs</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/imgs/qr-code.png" alt="Zhang Yu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫一扫，用手机访问本站</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Test/" rel="tag"># Test</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/23/IoT-初识/" rel="next" title="认识IoT">
+                <i class="fa fa-chevron-left"></i> 认识IoT
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Zhang Yu</p>
+              <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Four-Phase-Test"><span class="nav-number">2.</span> <span class="nav-text">一、Four-Phase Test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、理解Test-Double"><span class="nav-number">3.</span> <span class="nav-text">二、理解Test Double</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-WHAT"><span class="nav-number">3.1.</span> <span class="nav-text">1. WHAT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-WHY"><span class="nav-number">3.2.</span> <span class="nav-text">2. WHY</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Test-Double的分类"><span class="nav-number">4.</span> <span class="nav-text">三、Test Double的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Stub"><span class="nav-number">4.1.</span> <span class="nav-text">1. Stub</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-特点"><span class="nav-number">4.1.1.</span> <span class="nav-text">1.1 特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-场景"><span class="nav-number">4.1.2.</span> <span class="nav-text">1.2 场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-示例"><span class="nav-number">4.1.3.</span> <span class="nav-text">1.3 示例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Spy"><span class="nav-number">4.2.</span> <span class="nav-text">2. Spy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-特点："><span class="nav-number">4.2.1.</span> <span class="nav-text">2.1 特点：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-示例："><span class="nav-number">4.2.2.</span> <span class="nav-text">2.2 示例：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Mock"><span class="nav-number">4.3.</span> <span class="nav-text">3. Mock</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-特点"><span class="nav-number">4.3.1.</span> <span class="nav-text">3.1 特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-示例"><span class="nav-number">4.3.2.</span> <span class="nav-text">3.2 示例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Fake"><span class="nav-number">4.4.</span> <span class="nav-text">4. Fake</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-特点"><span class="nav-number">4.4.1.</span> <span class="nav-text">4.1 特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-场景"><span class="nav-number">4.4.2.</span> <span class="nav-text">4.2 场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-示例"><span class="nav-number">4.4.3.</span> <span class="nav-text">4.3 示例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Dummy"><span class="nav-number">4.5.</span> <span class="nav-text">5. Dummy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-特点"><span class="nav-number">4.5.1.</span> <span class="nav-text">5.1 特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-场景"><span class="nav-number">4.5.2.</span> <span class="nav-text">5.2 场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-3-示例"><span class="nav-number">4.5.3.</span> <span class="nav-text">5.3 示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、实现方式"><span class="nav-number">5.</span> <span class="nav-text">四、实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、对比总结"><span class="nav-number">6.</span> <span class="nav-text">五、对比总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">7.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">8.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+  
+   <span style="margin-left:8px;">
+   <script src="http://s6.cnzz.com/stat.php?id=1263347220&web_id=1263347220" type="text/javascript"></script>
+   </span>
+
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

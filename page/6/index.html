@@ -264,6 +264,189 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/28/SpringMVC-Gradle-xml/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/28/SpringMVC-Gradle-xml/" itemprop="url">SpringMVC_Gradle_xml</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-28T12:35:55+02:00">
+                2015-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、Gradle-Build"><a href="#一、Gradle-Build" class="headerlink" title="一、Gradle Build"></a>一、Gradle Build</h3><pre><code>apply plugin: &apos;java&apos;
+apply plugin: &apos;war&apos;
+apply plugin: &apos;idea&apos;
+apply plugin: &apos;jetty&apos;
+
+// JDK 7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+
+    compile &apos;ch.qos.logback:logback-classic:1.1.3&apos;
+    compile &apos;org.springframework:spring-webmvc:4.1.6.RELEASE&apos;
+    compile &apos;javax.servlet:jstl:1.2&apos;
+
+}
+
+// Embeded Jetty for testing
+jettyRun{
+    contextPath = &quot;spring4&quot;
+    httpPort = 8080
+}
+
+jettyRunWar{
+    contextPath = &quot;spring4&quot;
+    httpPort = 8080
+}
+</code></pre><p>　　然后，在Terminal里运行<code>gradle idea</code>,下载相关依赖，支持intellij IDE。</p>
+<h3 id="二、Spring-MVC"><a href="#二、Spring-MVC" class="headerlink" title="二、Spring MVC"></a>二、Spring MVC</h3><h4 id="1、WelcomeController-java"><a href="#1、WelcomeController-java" class="headerlink" title="1、WelcomeController.java"></a>1、WelcomeController.java</h4><h4 id="2、HelloWorldService-java"><a href="#2、HelloWorldService-java" class="headerlink" title="2、HelloWorldService.java"></a>2、HelloWorldService.java</h4><h4 id="3、logback-xml"><a href="#3、logback-xml" class="headerlink" title="3、logback.xml"></a>3、logback.xml</h4><h4 id="4、spring-core-config-xml"><a href="#4、spring-core-config-xml" class="headerlink" title="4、spring-core-config.xml"></a>4、spring-core-config.xml</h4><h4 id="5、spring-mvc-config-xml"><a href="#5、spring-mvc-config-xml" class="headerlink" title="5、spring-mvc-config.xml"></a>5、spring-mvc-config.xml</h4><h4 id="6、web-xml"><a href="#6、web-xml" class="headerlink" title="6、web.xml"></a>6、web.xml</h4><h3 id="三、运行，输出结果"><a href="#三、运行，输出结果" class="headerlink" title="三、运行，输出结果"></a>三、运行，输出结果</h3><p>　　在terminal中运行<code>gradle jettyRun</code>：</p>
+<pre><code>$ gradle jettyRun                    
+:compileJava
+:processResources
+:classes
+:jettyRun
+Building 75% &gt; :jettyRun &gt; Running at http://localhost:8080/spring4
+</code></pre><p>　　然后，在浏览器输入<a href="http://localhost:8080/spring4，可以看到页面。" target="_blank" rel="noopener">http://localhost:8080/spring4，可以看到页面。</a></p>
+<h3 id="四、目录结构"><a href="#四、目录结构" class="headerlink" title="四、目录结构"></a>四、目录结构</h3><img src="/imgs/SpringMVC-Gradle-xml.png" width="300" height="500">
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/27/SpringAOP-Pointcut-Advisor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2237,7 +2420,7 @@ public class App
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2248,7 +2431,7 @@ public class App
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2259,7 +2442,7 @@ public class App
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
