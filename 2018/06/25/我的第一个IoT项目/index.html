@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Team," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="无关技术，无关客户，无关生活，记录而已。诸多小点，诸多思绪，诸多体验，纯粹感受。">
+<meta name="keywords" content="Team">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的第一个IoT项目">
+<meta property="og:url" content="http://yoursite.com/2018/06/25/我的第一个IoT项目/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="无关技术，无关客户，无关生活，记录而已。诸多小点，诸多思绪，诸多体验，纯粹感受。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/imgs/team-cake.png">
+<meta property="og:image" content="http://yoursite.com/imgs/team-drink.png">
+<meta property="og:image" content="http://yoursite.com/imgs/team-hacknight1.png">
+<meta property="og:image" content="http://yoursite.com/imgs/team-hacknight2.png">
+<meta property="og:image" content="http://yoursite.com/imgs/team-bbq1.png">
+<meta property="og:image" content="http://yoursite.com/imgs/team-bbq2.png">
+<meta property="og:image" content="http://yoursite.com/imgs/team-office.png">
+<meta property="og:image" content="http://yoursite.com/imgs/team-adjustable-table.png">
+<meta property="og:updated_time" content="2018-07-02T08:49:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的第一个IoT项目">
+<meta name="twitter:description" content="无关技术，无关客户，无关生活，记录而已。诸多小点，诸多思绪，诸多体验，纯粹感受。">
+<meta name="twitter:image" content="http://yoursite.com/imgs/team-cake.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/25/我的第一个IoT项目/"/>
+
+
+
+
+
+  <title>我的第一个IoT项目 | 若见喻笺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">若见喻笺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/我的第一个IoT项目/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">我的第一个IoT项目</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T09:12:00+02:00">
+                2018-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Others/" itemprop="url" rel="index">
+                    <span itemprop="name">Others</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>无关技术，无关客户，无关生活，记录而已。<br>诸多小点，诸多思绪，诸多体验，纯粹感受。</p>
+<a id="more"></a>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>　　刚开始听到要去一个 IoT 相关项目的时候，内心是激动的，也许是最近 IoT 大火的缘故，也许是至少能够运用大学相关知识的兴奋，也许是不在熟悉的领域体验不一样事物的新奇，也许可能只是终于上项目了…</p>
+<h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><h4 id="关于客户"><a href="#关于客户" class="headerlink" title="关于客户"></a>关于客户</h4><p>　　Client 是世界顶尖的工业车辆(主要是物料搬运设备Material handling equipment）、仓储技术（Warehousing）以及物流技术（Logistics technology）的供应商之一。</p>
+<p>产业： 内部物流（Intralogistics），机械工程（Mechanical engineering）<br>产品： 叉车（Forklift truck）</p>
+<h4 id="关于项目"><a href="#关于项目" class="headerlink" title="关于项目"></a>关于项目</h4><p>　　项目的前两周，我一直在一张 Story Card 上 pair，以至于当有人问我的项目具体是干什么的，我惊讶的发现，我竟然无法概括。</p>
+<p>　　而后才明确，我们项目的主要内容是构建一个IoT 系统和平台，其他组基于该平台开发相关应用，最终实现通过网络（Mobile Data 或者 WLAN）来连接设备（Forklift）和应用的目的。</p>
+<h4 id="关于技术栈"><a href="#关于技术栈" class="headerlink" title="关于技术栈"></a>关于技术栈</h4><ul>
+<li>语言<ul>
+<li>C++</li>
+<li>Java</li>
+<li>Scala</li>
+<li>Ruby</li>
+<li>Lua</li>
+</ul>
+</li>
+<li>框架<ul>
+<li>Dropwizard</li>
+</ul>
+</li>
+<li>持续集成工具<ul>
+<li>GO CD</li>
+<li>Docker</li>
+<li>Terraform</li>
+<li>AWS</li>
+</ul>
+</li>
+<li>基础交付工具<ul>
+<li>Jia 及其 Confluence</li>
+</ul>
+</li>
+<li>构建工具<ul>
+<li>CMake</li>
+<li>Gradle</li>
+</ul>
+</li>
+<li>其他第三方工具<ul>
+<li>Consul</li>
+<li>Vault</li>
+</ul>
+</li>
+<li>内部沟通工具<ul>
+<li>Riot</li>
+<li>Outlook web 版</li>
+</ul>
+</li>
+<li>涉及知识<ul>
+<li>嵌入式</li>
+<li>CAN</li>
+<li>MQTT协议</li>
+<li>FreeRTOS</li>
+</ul>
+</li>
+<li>其他有用的链接<ul>
+<li>GOCD 用来找sad 或者happy gif的网站：<a href="https://giphy.com/" target="_blank" rel="noopener">https://giphy.com/</a></li>
+<li>C++编程标准：<a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/2+Rules" target="_blank" rel="noopener">https://wiki.sei.cmu.edu/confluence/display/cplusplus/2+Rules</a></li>
+<li>C++参考文档：<a href="https://en.cppreference.com/w/cpp" target="_blank" rel="noopener">https://en.cppreference.com/w/cpp</a></li>
+<li>ARM Developer: <a href="http://infocenter.arm.com/help/index.jsp" target="_blank" rel="noopener">http://infocenter.arm.com/help/index.jsp</a></li>
+<li>Freertos手册: <a href="https://www.freertos.org/uxTaskGetStackHighWaterMark.html" target="_blank" rel="noopener">https://www.freertos.org/uxTaskGetStackHighWaterMark.html</a></li>
+<li>CANopen solution: <a href="http://www.canopensolutions.com/" target="_blank" rel="noopener">http://www.canopensolutions.com/</a></li>
+<li>CANopen byteme: <a href="http://www.byteme.org.uk/canopenparent/canopen/" target="_blank" rel="noopener">http://www.byteme.org.uk/canopenparent/canopen/</a></li>
+<li>Managing Team Secrets Effectively: <a href="https://holderbaum.io/articles/SharedSecrets/" target="_blank" rel="noopener">https://holderbaum.io/articles/SharedSecrets/</a></li>
+<li>Getting Started with GNU Privacy Guard: <a href="https://spin.atomicobject.com/2013/09/25/gpg-gnu-privacy-guard/" target="_blank" rel="noopener">https://spin.atomicobject.com/2013/09/25/gpg-gnu-privacy-guard/</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="关于组织结构"><a href="#关于组织结构" class="headerlink" title="关于组织结构"></a>关于组织结构</h4><p>　　我们是在Digital Solutions (又叫 “Digital Factory”)的部门工作。<br>该 Account 下有好几个项目组，其中我们组最大，人员配备大致如下：</p>
+<ul>
+<li>来源比例上，由客户内部的7个人和 TW 的7个人组成；</li>
+<li>角色分布上，一个 BA；一个 Devops，是 Tech lead；剩下的全部是 Devopler；没有 QA；</li>
+<li>性别比例上，BA 是女生，而且她还是DP（Delivery Priciple），是 CST 的成员；Dev 只有我一个女生。</li>
+<li>国籍分布上，有两个出差的英国人，有一个希腊人，我中国的 LTA，其余人都是德国人。</li>
+<li>技术分布上，客户内部的都只 foucs 在C++的代码上；TW 的基本上都是从头学起 C++，但是有几个学的很不错的，有对 Scala 和 Ruby非常熟悉的，有对 Java 熟悉的人。</li>
+</ul>
+<h3 id="二、沟通"><a href="#二、沟通" class="headerlink" title="二、沟通"></a>二、沟通</h3><p>　　这里的很多人，平常都说德语，但是他们的英文也很好，随时切换成英文。大部分时候，只要有English speaking 的人在，他们都会选择用英文交流。</p>
+<h3 id="三、文化"><a href="#三、文化" class="headerlink" title="三、文化"></a>三、文化</h3><p>　　在德国的第一个项目，感受有很多，不知道是所有德国项目的典型特征，还是只是这一个客户现场的氛围，总之，多记录多发现，以后回想起来才会知道当初经历的一切是必然还是偶然，</p>
+<ul>
+<li><p>咖啡文化<br>　　客户现场办公室的喝的，就是咖啡、气泡水、各种果茶包。<br>看到很多同事一天会喝4-5杯咖啡，早上来一杯，站会后一杯，中饭之后一杯，下午1-2杯。希望找你catch up 的时候，会提议一起喝杯咖啡，马上要开会的时候，带杯咖啡，总之，很多杯咖啡。<br>当然也有人会倒一大瓶气泡水，然后拿个杯子，慢慢倒着喝。</p>
+</li>
+<li><p>吃饭文化<br>　　大家吃饭都不会走很远，基本在同一栋楼里，下去买了就拿上来，通常是面包、pasta、沙拉、pizza，很少有人带。<br>　　拿到楼上之后，大家会一起坐着聊天(详见下面的聊天文化)，度过中午的时间，中午不会休息，吃饭就是休息了。<br>起初，不太好意思只跟中国同事坐在一起，觉得会显得太小群化，但是后来发现他们自己也小群化，比如内部员工经常坐在一起，其他一个国家的坐在一起（只是我们看不出来）。</p>
+</li>
+<li><p>聊天文化<br>　　一个字形容——“尬”。很多东西不太好聊，比如敏感的政治，敏感的私人生活，敏感的各种信息。<br>聊的最多的是天气、各种旅游、各种技术实践、各种工作相关、或者吃的东西或者 P3文化。尝试着问他们附近的好玩的地方，发现大部分不是本地人，他们也不知道（尴尬）。</p>
+</li>
+<li><p>博士文化<br>　　发现那些是博士的人，往往邮件上或者称呼上都会加上Dr.，而且大家对博士会显得特别尊重。</p>
+</li>
+<li><p>开会文化<br>　　时间上：本来以为德国，特别注重准时，但是我却个人感觉，他们注重的是准时结束会议，而不是准时开始会议。<br>比如10：00的会议，其实都是10：05分大家陆陆续续走过去，然后开始setup机器，然后时间就过去了，可能事情没有讨论完，那就定下一次会议。<br>想起来之前的开会，一定会提前几分钟去把环境setup 好，准时开始会议，避免浪费大家的时间，也许这个有待改进。<br>　　形式上：还是和之前遇到的差不多，比较随意，可以吃、喝东西，往往不会随意打断，一般先举手，如果多个人举手，则一个一个的说自己的观点。</p>
+</li>
+<li><p>工作文化<br>　　态度上，非常认真，工作期间，拿手机的次数很少，基本不会看手机、玩手机。<br>　　时间上，实事求是，午饭都不会花太久，break的时间也不会很久，一起工作起来有一种一整天全神贯注在工作的感受。每周填timecard 的时候，工作了7.5小时就填7.5小时，工作10小时就填10小时。<br>　　工作与生活上，以前听说他们下班了就下班了，不再管工作的事情。是的，他们工作生活分的很开，下班了确实不管工作的事情，但是他们也会写代码，是真心的喜欢写代码，会研究项目上可以改进的地方（不是工作的Story 卡）。此外，工作上的同事，很少看到他们约起来，成为很好的朋友。</p>
+</li>
+<li><p>Pair文化<br>　　之前的项目，虽然会Pair，但是不是所有的时候都Pair，更多的时候是遇到需要share knowledge 的时候或者需要帮助的时候再去Pair。<br>　　这个项目组，基本上一定会Pair，每天早上站会的时候都会问是否有人rotate pair，来确保知识的传递，此外由于没有QA，所以Pair 也是保证代码质量的途径了。<br>有一个现象，内部员工不太喜欢Pair，每次有人问“要Pair 吗”的时候，他们大概都会说“这个太boring 了”或者“这个快做完了”之类的话，或者他们会内部员工pair，Twer和Twer Pair。</p>
+</li>
+<li><p>Cake文化<br>　　经常有人放蛋糕在厨房，往往是自己的生日，自己就要负责提供蛋糕，或者一些纪念日之类的。这些蛋糕很多时候都是自己烘焙的，带到公司。后来发现他们也会买超市的速成的，然后重新加工一下。</p>
+<img src="/imgs/team-cake.png" width="300" height="250">
+</li>
+<li><p>喝酒文化<br>　　客户现场，并没有其他吃的喝的，一般都是私人的。但是，有活动的时候，各种鸡尾酒调起来；看世界杯的时候，各种啤酒喝起来；难得team building的时候，约在酒吧喝起来。<br>　　在TW内部，冰箱里放满了啤酒，平常随意喝都可以，去参加awayday 的时候，火车上买了一箱啤酒喝着。</p>
+<img src="/imgs/team-drink.png" width="600" height="350">
+<p>上图是 TW 的照片，但是客户现场组织活动的时候，也差不多如上所示的各种酒水。</p>
+</li>
+</ul>
+<h3 id="四、实践"><a href="#四、实践" class="headerlink" title="四、实践"></a>四、实践</h3><h4 id="1-On-boarding"><a href="#1-On-boarding" class="headerlink" title="1. On boarding"></a>1. On boarding</h4><h5 id="Team-内部"><a href="#Team-内部" class="headerlink" title="Team 内部"></a>Team 内部</h5><p>　　虽然在 Confluence 上，有一个 On boarding 的 Checklist，列举了新人需要的一些权限（e.g. PGP， Riot账号，GoCD账号，客户邮箱账号，WIFI 账号 ），但是始终觉得不够。</p>
+<p>　　笔者个人觉得，如果还包含以下条目，就能更快的帮助新人快速了解项目：</p>
+<ul>
+<li>环境搭建，e.g.开发环境</li>
+<li>关于team，e.g.Team 介绍与定义，Team 相关的Concept，Jira 链接、GoCD链接、代码库链接等</li>
+<li>Assert，项目Assert相关的架构图，能够帮助了解整个项目技术相关的东西</li>
+<li>技术栈List，如同上文我列出的技术栈一样，包含语言、工具、理论等，这个可以参考TW 技术雷达。</li>
+</ul>
+<h5 id="TW总结的Account的On-boarding"><a href="#TW总结的Account的On-boarding" class="headerlink" title="TW总结的Account的On boarding"></a>TW总结的Account的On boarding</h5><p>　　该On boarding Slide是我加入了大概一个多月之后，才创建的，主要是 High level 的帮你了解客户。里面包括：</p>
+<ul>
+<li>客户的介绍</li>
+<li>客户组织架构及 CST团队的介绍</li>
+<li>TW各个团队的介绍</li>
+<li>Timecard 的填写</li>
+<li>交通及差旅</li>
+<li>TW内部群组，邮件组，Google drive组</li>
+</ul>
+<h4 id="2-活动"><a href="#2-活动" class="headerlink" title="2. 活动"></a>2. 活动</h4><ul>
+<li><p>Team Huddle<br>　　这个在之前的一篇文章<a href="http://zhangyuyu.github.io/2018/05/27/Team-Event/#more" target="_blank" rel="noopener">Team Huddle</a>有详细的介绍，主要是对日常Team的相关Event进行总结，里面包含基本上所有相关的活动。</p>
+</li>
+<li><p>Team Outing<br>　　就是我们常说的 Team building，不一样的是这样的Team building是包含客户的人和我们 TW 的人。一般情况下，会采用<a href="https://doodle.com/" target="_blank" rel="noopener">doodle</a>这个工具进行投票选择时间。</p>
+</li>
+</ul>
+<p>　　我在 Team 的这段时间，有过一次 Outing，但是这次是去酒吧喝酒，作为唯一一个女生，大晚上跑到红灯区喝酒，我犹豫了，最后没去。这边人更喜欢的酒吧，不是那种灯红酒绿的酒吧，而是带有古典气息或者文化气息的酒馆，纯粹喝酒聊天。</p>
+<ul>
+<li>Hacknight<br>　　带着好奇，和想融入客户的想法报名参加了这个所谓的Hacknight。我们主要是玩的fischertechnik，用他们给我解释的话说，就是一种Technical 的乐高。<img src="/imgs/team-hacknight1.png" width="400" height="250">
+<img src="/imgs/team-hacknight2.png" width="400" height="250">
+</li>
+</ul>
+<p>附上往期的视频，<a href="https://youtu.be/vRFGdXRym8w" target="_blank" rel="noopener">https://youtu.be/vRFGdXRym8w</a></p>
+<ul>
+<li>Barbeque<br>　　这边的烤肉闻名遐迩，有幸跟着整个Account和客户们一起参与了BBQ。主要食物是：香肠、面包、芝士、番茄酱、烤肉酱、各种酒。大口吃肉才是这边的风格，他们并不烤素菜，素菜是用来拌沙拉的。<img src="/imgs/team-bbq1.png" width="400" height="250">
+<img src="/imgs/team-bbq2.png" width="250" height="300">
+</li>
+</ul>
+<h4 id="3-物理环境与硬件"><a href="#3-物理环境与硬件" class="headerlink" title="3. 物理环境与硬件"></a>3. 物理环境与硬件</h4><ul>
+<li>办公区域<img src="/imgs/team-office.png" width="300" height="150">
+</li>
+</ul>
+<p>　　左边的A区域是一个大厨房，右边的B区域是工作区域，中间的部分是一些会议室。<br>大厨房：大家中午吃饭一般都是带上来在大厨房坐着吃，此外，Weekly全体会议，各种其他活动（比如烧烤、世界杯、HackNight）。<br>　　工作区域：各个项目组都在这边，划分了组的开放区域，每个组都有对应的墙可以setup 物理story 墙。<br>　　中间区域：这里有一个小厨房，放了咖啡机，小冰箱。此外，很多小组的定期 review 也会在这个开放区域进行，方便大家随时加入。</p>
+<ul>
+<li><p>办公桌<br>　　最喜欢的莫过于这个办公桌了，可以升降，想站着办公的时候，就升起桌子，不用自己额外买小桌子或者把电脑垫的高高的。<br><img src="/imgs/team-adjustable-table.png" width="400" height="300">img</p>
+</li>
+<li><p>编程设备（显示屏、鼠标、键盘）<br>　　对于一个以pair为主的 team 来说，鼠标和键盘显然不够，虽然retro 上提过好几次，但是我离开这个组的时候，还是只有一个Apple的鼠标和键盘。<br>德语的键盘倒是有几个，但是我和几个其他国家的人不太适应。<br>显示屏，倒是每个桌子都有一个，只要pair，都会接显示屏。想起以前一个人两个屏幕的时候了，一个显示屏写代码， 一个显示屏放terminal 的输出等。</p>
+</li>
+<li><p>调试模块<br>　　起初的时候，各个模块都散放着，大家各取所需，比如radio module，relay module，peakcan，uart，jlink，power 等，但是有一段时间，每对pair 都需要硬件进行调试，这就需要所有的模块都能组成一整套环境。<br>于是，后来大家就把一整套环境所需要的模块组装起来放在一个盒子里，每次要用的时候都拿一整个盒子，不能随意拆卸，保证每套环境的模块完整性。</p>
+</li>
+<li><p>Frank<br>　　前面的调试模块是我们开发的平台，但是并没有和真实的物理设备关联。为了模拟IoT 的测试，我们需要真实的传感器，传送信号。于是，为了让开发们最快的测试自己的功能，模块连接了一些传感器，比如Shock Sensor、Crash Sensor、Card Reader、Corporate Display 等等，组装好之后，我们给其取了一个名字Frank。<br>Frank是几个组share 的，只有一个，大家平常用的时候，都是事先准备好自己的调试模块，然后再去连接Frank。   </p>
+</li>
+<li><p>Forklift<br>　　有了Frank 的测试，还是不是很够，比如 Forklift 是否能够正常驾驶，是否能够正常举起货物，不会突然停在路上。于是在客户的basement 有一个专门用来测试的Forklift，偶尔会下楼测试一些功能。<br>只下楼过一次，进行测试，还是看着内部员工操作，没有自己试过。</p>
+</li>
+<li><p>Factory<br>　　上线之前， 几个内部员工会带着最近做的story，去Forklift factory，那里有更多的车可供测试。（笔者从来没有去过）</p>
+</li>
+</ul>
+<h4 id="4-文档"><a href="#4-文档" class="headerlink" title="4. 文档"></a>4. 文档</h4><ul>
+<li><p>技术文档</p>
+<ul>
+<li>代码相关，很多是直接放在了各个代码库的README里面，有如何运行应用的各种说明；</li>
+<li>硬件相关，放在了Confluence 里面，包含了很多硬件配置文档，比如Prodrive文档；</li>
+<li>软件相关，也是放在了Conflence 里面，主要是第三方软件的说明文档；</li>
+</ul>
+</li>
+<li><p>帮助文档，比如《如何使用DGB 进行对hardfault 的调试》、《如何发送CAN Frame》等等；</p>
+</li>
+<li>硬件购买，比如ARM JTAG、UART、RALY 的相关型号及其链接</li>
+<li>业务文档，比如Process（e.g.Definition of Done、Team Huddle、Sprint 等）</li>
+</ul>
+<p>还有一些缺失的，或者是正在建立/改进的文档：</p>
+<ul>
+<li>GuideLine，比如C++ Style Guide</li>
+<li>ADR（Architecture Decision Records）</li>
+<li>Concepts，对 team 涉及到相关的概念的说明，比如Agent、Behaviour</li>
+<li>Retro记录</li>
+<li>Show &amp; Tell 记录</li>
+<li>一些过程文档，比如Release的checklist、创建一个新的service的checklist</li>
+<li>一些Template的整理归纳，比如globus-service-template、aws-template 等等</li>
+</ul>
+<h3 id="五、落幕"><a href="#五、落幕" class="headerlink" title="五、落幕"></a>五、落幕</h3><p>　　当第一时间知道要离开的时候，内心是欣喜的，而后却非常沮丧。欣喜的是，终于可以离开自己并不是很适应的组，沮丧的是因为为什么离开。对于离开的原因，纠结了很久；对于是否留下来在另外的小组，也纠结了很久。最终还是决定离开这个组，去体验其他不一样的风格。</p>
+<p>　　周五是我最后在项目的最后一天，想象中，站会时候跟大家交代一下今天的任务并且及时handover 出去；大家中午一起吃个饭，或者拍个照留念一下；下班会早点走，跟大家say goodbye。</p>
+<p>　　现实是，周五有几个同事请假了，站会人很少，承诺自己尽量把手上的这张story 做完；吃饭和往常一样，大家各自小组的去吃饭；下班的时候，一直留到最后，送走一个一个同事，跟他们一个个说goodbye，然后继续尝试努力把手头的工作做完。</p>
+<p>　　听着他们每个人一样的台词“It’s my pleasure to work with you”，看着金数据“Feedback for Yu”里的空空如也，心情复杂不已。相遇便注定了离别，也许在他们的眼里，这个中国女孩不过是一瞬，可是我却莫名的有种不舍，叹一口气，也许是文化不同而已吧。</p>
+<h3 id="六、思考"><a href="#六、思考" class="headerlink" title="六、思考"></a>六、思考</h3><p>　　本来这个部分应该包含一些反思和未来，本来应该是积极向上的总结与展望，但是想那么多，还是要做的不是么？于是，重新给自己建了一个trello 墙，列一些具体的可做的，Record &amp; Track。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>　　虽然我很想在一个项目上待的时间略长，等待稍有积淀，稍有输出，稍有总结的时候。但是作为一个 LTA，只有一年的时间，更多的时候，我不想以偏概全，多多体验不一样的项目，不一样的客户，不一样的文化，才能站的更高，视野更广，才不足以局限于自己狭窄的看法。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/imgs/qr-code.png" alt="Zhang Yu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫一扫，用手机访问本站</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Team/" rel="tag"># Team</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/24/认识Cmake/" rel="next" title="CMake初识">
+                <i class="fa fa-chevron-left"></i> CMake初识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Zhang Yu</p>
+              <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、简介"><span class="nav-number">2.</span> <span class="nav-text">一、简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于客户"><span class="nav-number">2.1.</span> <span class="nav-text">关于客户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于项目"><span class="nav-number">2.2.</span> <span class="nav-text">关于项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于技术栈"><span class="nav-number">2.3.</span> <span class="nav-text">关于技术栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于组织结构"><span class="nav-number">2.4.</span> <span class="nav-text">关于组织结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、沟通"><span class="nav-number">3.</span> <span class="nav-text">二、沟通</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、文化"><span class="nav-number">4.</span> <span class="nav-text">三、文化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、实践"><span class="nav-number">5.</span> <span class="nav-text">四、实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-On-boarding"><span class="nav-number">5.1.</span> <span class="nav-text">1. On boarding</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Team-内部"><span class="nav-number">5.1.1.</span> <span class="nav-text">Team 内部</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TW总结的Account的On-boarding"><span class="nav-number">5.1.2.</span> <span class="nav-text">TW总结的Account的On boarding</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-活动"><span class="nav-number">5.2.</span> <span class="nav-text">2. 活动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-物理环境与硬件"><span class="nav-number">5.3.</span> <span class="nav-text">3. 物理环境与硬件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-文档"><span class="nav-number">5.4.</span> <span class="nav-text">4. 文档</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、落幕"><span class="nav-number">6.</span> <span class="nav-text">五、落幕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、思考"><span class="nav-number">7.</span> <span class="nav-text">六、思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">8.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+  
+   <span style="margin-left:8px;">
+   <script src="http://s6.cnzz.com/stat.php?id=1263347220&web_id=1263347220" type="text/javascript"></script>
+   </span>
+
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

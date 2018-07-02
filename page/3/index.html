@@ -264,6 +264,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/Docker-workshop-6-Docker安全/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/20/Docker-workshop-6-Docker安全/" itemprop="url">Docker Workshop（六）Docker安全</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T08:49:15+02:00">
+                2017-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Devops/" itemprop="url" rel="index">
+                    <span itemprop="name">Devops</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">上一篇 Docker网络</a>主要讲述了网络模型、网络模式。<br>本篇将讲述Docker安全性体现在哪些方面，并探讨每个方面的最佳实践。</p>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　该系列《Docker in Prodcution》内容包含如下部分：</p>
+<ul>
+<li><a href="http://zhangyuyu.github.io/2017/07/09/Docker-workshop-1-%E5%AE%B9%E5%99%A8%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">容器简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/10/Docker-workshop-2-Docker%E7%AE%80%E4%BB%8B/" target="_blank" rel="noopener">Docker简介</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/11/Docker-workshop-3-Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" target="_blank" rel="noopener">Docker的基本操作</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/13/Docker-workshop-4-Docker%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" target="_blank" rel="noopener">Docker数据存储</a></li>
+<li><a href="http://zhangyuyu.github.io/2017/07/17/Docker-workshop-5-Docker%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">Docker网络</a></li>
+<li><strong>Docker安全</strong></li>
+<li>多主机部署</li>
+<li>服务发现</li>
+<li>日志、跟踪、监控</li>
+</ul>
+<h2 id="三、Docker访问主机系统"><a href="#三、Docker访问主机系统" class="headerlink" title="三、Docker访问主机系统"></a>三、Docker访问主机系统</h2><p>很多时候，我们启动Docker容器时都以root用户权限在运行。那么，如果有ROOT权限可以做什么呢？当然可以做很多的事情，比如：访问所有信息、修改任何内容、关闭机器、结束进程以及安装各种软件等。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/07/20/Docker-workshop-6-Docker安全/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/17/Docker-workshop-5-Docker网络/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1811,269 +1970,6 @@ $ vagrant init yungsang/coreos
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/01/RxJava/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/01/RxJava/" itemprop="url">RxJava</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-01T22:19:46+01:00">
-                2016-11-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programmming/" itemprop="url" rel="index">
-                    <span itemprop="name">Programmming</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近，项目（Java编写的Spring boot API）引入了RXJava，使用了它的异步性操作以及它的一些流式写法。<br>使用过程中，有过疑惑，有过释然，有过吐槽，有过赞赏。学习应该是一个追根溯源的过程，而不是随便了解一下大致的用法就不了了之，故以此记之。</p>
-<h3 id="二、响应式编程"><a href="#二、响应式编程" class="headerlink" title="二、响应式编程"></a>二、响应式编程</h3><p>响应式编程是一种面向数据流和变化传播的编程范式，数据更新是相关联的。<br>在交互式编程中，A = B + C这样的表达式意味着将B与C之和赋给A，而此后B与C的改变都与A无关。<br>而在响应式编程中，A会去“响应”B或C的变化，即一旦B或C改变之后，A的值也会随之变化。</p>
-<h3 id="三、定义"><a href="#三、定义" class="headerlink" title="三、定义"></a>三、定义</h3><p>我的理解是，RxJava本质上是一个异步操作库，是一个能让你用极其简洁的逻辑去处理繁琐复杂任务的异步事件库。（其实初学者把握两点就好了：观察者模式和异步）</p>
-<h3 id="四、背景"><a href="#四、背景" class="headerlink" title="四、背景"></a>四、背景</h3><p>Rx的全称是Reactive Extensions。直译过来就是响应式扩展。<br>Rx基于观察者模式，是一种编程模型。其目标是提供一致的编程接口，帮助开发者更方便的处理异步数据流。<br>Rx最初是LINQ的一个扩展，由微软的架构师Erik Meijer领导的团队开发，在2012年11月开源。<br>Rx的大部分语言库由ReactiveX这个组织负责维护，比较流行的有RxJava/RxJS/Rx.NET，社区网站是 reactivex.io。<br>RxJava是 ReactiveX 在JVM上的一个实现。</p>
-<h3 id="五、为什么"><a href="#五、为什么" class="headerlink" title="五、为什么?"></a>五、为什么?</h3><ul>
-<li>函数式风格</li>
-<li>简化代码</li>
-<li>异步错误处理</li>
-<li>轻松使用并发</li>
-</ul>
-<h3 id="六、基本概念及使用介绍"><a href="#六、基本概念及使用介绍" class="headerlink" title="六、基本概念及使用介绍"></a>六、基本概念及使用介绍</h3><h4 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h4><p>说了很多，其实对RxJava是什么，其实还不是很明确，我们先来一个Hello world。</p>
-<pre><code>Observable
-    .create(new OnSubscribe&lt;String&gt;() {
-        @Override
-        public void call(Subscriber&lt;? super String&gt; subscriber) {
-            subscriber.onNext(&quot;Hello World&quot;);
-        }
-    })
-    .subscribe(new Subscriber&lt;String&gt;() {
-        @Override
-        public void onNext(String s) {
-            System.out.println(s);
-        }
-    });
-</code></pre><p>简化下来就是：</p>
-<pre><code>Observable.create(subscriber -&gt; {
-    subscriber.onNext(&quot;Hello World!&quot;);
-}).subscribe(System.out::println);
-</code></pre><p>执行的过程就是创建、监听、订阅。</p>
-<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
-<li>Observable：被观察者</li>
-<li>Observer: 观察者</li>
-<li>Subscriber：观察者，implements Observer。 </li>
-<li>OnSubscribe：一个接口类，是连接被观察者和观察者的桥梁，另外要说明的是onSubscribe是Observable的一个局部变量。</li>
-</ul>
-<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><h5 id="第1步：创建观察者Observer"><a href="#第1步：创建观察者Observer" class="headerlink" title="第1步：创建观察者Observer"></a>第1步：创建观察者Observer</h5><pre><code>Observer&lt;Object&gt; observer = new Observer&lt;Object&gt;() {
-
-    @Override
-    public void onCompleted() {
-
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-    }
-
-    @Override
-    public void onNext(Object s) {
-
-    }
-};
-</code></pre><h5 id="第2步：创建被观察者Observable"><a href="#第2步：创建被观察者Observable" class="headerlink" title="第2步：创建被观察者Observable"></a>第2步：创建被观察者Observable</h5><p>Observable.create()方法可以创建一个Observable，<br>使用create()创建Observable需要一个OnSubscribe对象，这个对象继承Action1。<br>当观察者订阅我们的Observable时，它作为一个参数传入并执行call()函数。</p>
-<pre><code>Observable&lt;Object&gt; observable = Observable.create(new Observable.OnSubscribe&lt;Object&gt;() {         
-    @Override
-    public void call(Subscriber&lt;? super Object&gt; subscriber) {
-
-    }
-});
-</code></pre><p>除了create()，just()和from()同样可以创建Observable。看看下面两个例子：</p>
-<p>just(T…)将传入的参数依次发送</p>
-<pre><code>Observable observable = Observable.just(&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;);
-//上面这行代码会依次调用
-//onNext(&quot;One&quot;);
-//onNext(&quot;Two&quot;);
-//onNext(&quot;Three&quot;);
-//onCompleted();
-</code></pre><p>from(T[])/from(Iterable&lt;? extends T&gt;)将传入的数组或者Iterable拆分成Java对象依次发送</p>
-<pre><code>String[] parameters = {&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;};
-Observable observable = Observable.from(parameters);
-//上面这行代码会依次调用
-//onNext(&quot;One&quot;);
-//onNext(&quot;Two&quot;);
-//onNext(&quot;Three&quot;);
-//onCompleted();
-</code></pre><h5 id="第3步：被观察者Observable订阅观察者Observer"><a href="#第3步：被观察者Observable订阅观察者Observer" class="headerlink" title="第3步：被观察者Observable订阅观察者Observer"></a>第3步：被观察者Observable订阅观察者Observer</h5><p>你没看错，不同于普通的观察者模式，这里是被观察者订阅观察者：</p>
-<pre><code>observable.subscribe(observer);
-</code></pre><p>连起来就是：</p>
-<pre><code>Observable.create(new OnSubscribe&lt;String&gt;() {
-        @Override
-        public void call(Subscriber&lt;? super String&gt; subscriber) {
-            subscriber.onNext(&quot;Hello World!&quot;);
-            subscriber.onCompleted();
-        }
-
-    }).subscribe(new Subscriber&lt;String&gt;() {
-
-        @Override
-        public void onCompleted() {
-            System.out.println(&quot;Done&quot;);
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            e.printStackTrace();
-        }
-
-        @Override
-        public void onNext(String t) {
-            System.out.println(t);
-        }
-
-    });
-</code></pre><p>这里表面是被观察者订阅观察者，是为了更好的链式结构。<br>实际上，过程如下：</p>
-<ul>
-<li>创建一个被观察者，并传入一个OnSubcribe。</li>
-<li>创建一个观察者Subscriber。</li>
-<li>一旦发生subscribe时，会自动触发上述的OnSubcribe的call方法。</li>
-<li>而OnSubcribe的call方法中的参数subscriber就是第二步中的被观察者Subscriber。</li>
-<li>然后就调用上述代码中的<code>subscriber.onNext(&quot;Hello World!&quot;);</code></li>
-<li>也就是真实上述代码中<code>Override</code>的<code>onNext()</code>方法了。<br>所以本质上来讲，还是被观察者执行订阅操作的。</li>
-</ul>
-<h3 id="七、操作符"><a href="#七、操作符" class="headerlink" title="七、操作符"></a>七、操作符</h3><p>有了对上一步调用的理解，再去看源代码中操作符的实质，就很简单了。</p>
-<p>RxJava的操作符分为如下几类：</p>
-<ul>
-<li>转换类操作符<br>map、flatMap、concatMap等等</li>
-<li>过滤类操作符<br>filter、find等等</li>
-<li>组合类操作符<br>concat、merge、zip等等</li>
-<li>数学类操作符<br>count、max等等</li>
-<li>布尔类操作符<br>includes、some等等</li>
-</ul>
-<p>对于这些操作符的调用分析，读者可以自己查看源代码。<br>对于操作符的用法，可以参考<a href="https://github.com/zhangyuyu/learnrxjava" target="_blank" rel="noopener">Github TDD 练习</a>。<br>对于操作符形象化的理解，可以参考一个交互式的动画网站<a href="http://rxmarbles.com/" target="_blank" rel="noopener">http://rxmarbles.com/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2124,7 +2020,7 @@ Observable observable = Observable.from(parameters);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
