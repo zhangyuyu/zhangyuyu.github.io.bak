@@ -264,6 +264,370 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/21/Yeoman/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/11/21/Yeoman/" itemprop="url">Yeoman</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-21T09:15:32+01:00">
+                2015-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tool/" itemprop="url" rel="index">
+                    <span itemprop="name">Tool</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、认识Yeoman"><a href="#一、认识Yeoman" class="headerlink" title="一、认识Yeoman"></a>一、认识Yeoman</h3><p>　　Yeoman的logo是一个戴帽子的男人。<br>　　<img src="/imgs/yeoman.png" width="400" height="250"><br>　　Yeoman旨在为开发者提供一系列健壮的工具、程序库和工作流，快速构建出漂亮、引人注目的Web应用。它不只是一个工具，还是一个工作流。它其实包括了三个部分yo、grunt、bower，分别用于项目的启动、文件操作、包管理。</p>
+<blockquote>
+<p>Yo:项目初始化工具，用于构建特定框架的生态系统,可以生成一套启动某类项目必需的项目文件,我们称之为生成器(generator)。<br>Bower：一个客户端技术的软件包管理器，用于依赖管理。它可用于搜索、安装和卸载如JavaScript、HTML、CSS之类的网络资源。使用它以后你再也不用手动地去一个个下载你的前端库了。<br>Grunt： GruntJS是基于JavaScript的命令行构建工具，它可以帮助开发者们自动化重复性的工作,自动运行你所设定的任务。</p>
+</blockquote>
+<h3 id="二、安装"><a href="#二、安装" class="headerlink" title="二、安装"></a>二、安装</h3><h4 id="1、在安装Yeoman之前，你需要确认以下配置："><a href="#1、在安装Yeoman之前，你需要确认以下配置：" class="headerlink" title="1、在安装Yeoman之前，你需要确认以下配置："></a>1、在安装Yeoman之前，你需要确认以下配置：</h4><ul>
+<li>Node.js 版本在0.10以上</li>
+<li>npm 版本在1.3.7以上</li>
+</ul>
+<h4 id="2、安装"><a href="#2、安装" class="headerlink" title="2、安装"></a>2、安装</h4><pre><code>npm install -g yo grunt-cli bower
+</code></pre><h3 id="三、使用"><a href="#三、使用" class="headerlink" title="三、使用"></a>三、使用</h3><h4 id="1、创建一个文件夹CustomerUI，并进入"><a href="#1、创建一个文件夹CustomerUI，并进入" class="headerlink" title="1、创建一个文件夹CustomerUI，并进入"></a>1、创建一个文件夹CustomerUI，并进入</h4><h4 id="2、安装Yeoman生成器"><a href="#2、安装Yeoman生成器" class="headerlink" title="2、安装Yeoman生成器"></a>2、安装Yeoman生成器</h4><p>2.1 搜索安装：</p>
+<pre><code>yo
+</code></pre><img src="/imgs/yo.png" width="400" height="300">
+<p>　　用键盘的上下键来操作菜单，当选项’install a generator’被高亮的时候按下回车键。接下来我们需要寻找一个合适的生成器。搜索’angular’的话，你会得到很多搜索结果。这些生成器都是由许多Yeoman开源社区贡献的。<br>　　<img src="/imgs/yo-search.png" width="400" height="500"><br>　　在这个例子里，我们使用的是’generator-angular’。当选中了’generator-angular’后，按下回车执行安装，它所依赖的Node包就会开始被下载了。</p>
+<p>2.2 如果你知道要安装的生成器的名字：</p>
+<pre><code>yo angular
+</code></pre><img src="/imgs/yo-angular.png" width="400" height="300">
+<h4 id="3、选择"><a href="#3、选择" class="headerlink" title="3、选择"></a>3、选择</h4><p>3.1 询问是否需要Sass，Sass运行环境是 ruby，可以直接输入no跳过。<br>3.2 询问是否需要安装 Bootstrap 框架? 需要就输入yes。<br>3.3 询问是否要安装上面提到的 angular 相关包,可以用空格选择或者取消选择,回车开始执行。    </p>
+<h4 id="4、目录"><a href="#4、目录" class="headerlink" title="4、目录"></a>4、目录</h4><img src="/imgs/CustomerUIStructure.png" width="200" height="150">
+<ul>
+<li>app/：Web应用的父级目录。<ul>
+<li>index.html： Angular应用的基准HTML文件（base html file）</li>
+<li>404.html、favicon.ico和robots.txt：通用的Web文件，Yeoman已经将它创建出来了，你不需要再手动去创建</li>
+<li>bower_components：存放项目相关的JavaScript或Web依赖，由bower安装的</li>
+<li>scripts：我们的JS文件<ul>
+<li>app.js：主程序</li>
+<li>controllers：Angular控制器</li>
+</ul>
+</li>
+<li>styles：我们的CSS文件</li>
+<li>views：Angular模板</li>
+</ul>
+</li>
+<li>Gruntfile.js、package.json以及node_modules：Grunt需要使用的依赖以及配置。</li>
+<li>test和karma.conf.js/karma-e2e.conf.js：测试框架以及针对这个项目的单元测试，包括了为控制器写的样板测试（boilerplate tests）。</li>
+</ul>
+<h4 id="5、运行"><a href="#5、运行" class="headerlink" title="5、运行"></a>5、运行</h4><pre><code>grunt serve
+</code></pre><p>在浏览器输入<a href="http://localhost:9000/" target="_blank" rel="noopener">http://localhost:9000/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/25/servlet-life/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/10/25/servlet-life/" itemprop="url">Servlet life</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-25T22:19:46+01:00">
+                2015-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programmming/" itemprop="url" rel="index">
+                    <span itemprop="name">Programmming</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、整体工作流程"><a href="#一、整体工作流程" class="headerlink" title="一、整体工作流程"></a>一、整体工作流程</h3><blockquote>
+<p>1、Client对Web Server发出请求<br><br>2、Web Server接收到请求后，将其发送给Servlet容器<br><br>3、Servlet容器产生Servlet实例对象并调用ServletAPI中相应的方法来对Client的请求进行处理，然后将处理的相应结果返回给WEB Server。<br><br>4、Web server将从Servlet实例中收到响应并发送回客户端。<br></p>
+</blockquote>
+<img src="/imgs/client-server.png" width="600" height="200">
+<h3 id="二、阶段流程"><a href="#二、阶段流程" class="headerlink" title="二、阶段流程"></a>二、阶段流程</h3><p>　　为了细化上述过程，可分为application的deploy过程和request的发送过程来讲：</p>
+<h4 id="1、deploy阶段："><a href="#1、deploy阶段：" class="headerlink" title="1、deploy阶段："></a>1、deploy阶段：</h4><p>　　以Tomcat的容器为例，真正管理Servlet的容器是Context容器。一个Context对应一个Web工程。Context容器直接管理Servlet在容器中的包装类Wrapper。<br>　　deploy过程中，首先会生成context对象，config对象。（listener、filter的初始化过程也是在此阶段先后完成的）。<br>　　<img src="/imgs/servlet-container.png" width="300" height="500"></p>
+<h4 id="2、发送request阶段"><a href="#2、发送request阶段" class="headerlink" title="2、发送request阶段"></a>2、发送request阶段</h4><p>(1）在默认情况下，Servlet实例是在第一个请求到来的时候创建，以后复用。如果有的Servlet需要复杂的操作需要载初始化时完成，比如打开文件、初始化网络连接等，可以通知服务器在启动的时候创建该Servlet的实例，配置<code>&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</code>。<br>(2）init()<br>　　一旦Servlet实例被创建，Web服务器会自动调用init(ServletConfig config)方法来初始化该Servlet。其中方法参数config中包含了Servlet的配置信息，比如初始化参数，该对象在deploy阶段创建。<br>　　init()方法只执行一次。<br>(3)service()<br>　　 service()方法为Servlet的核心方法，Client的业务逻辑应该在该方法内执行，解析Client请求-〉执行业务逻辑-〉输出响应页面到Client。<br>(4）destroy()<br>　　当Web Server认为Servlet实例没有存在的必要了，比如应用重新装载，或服务器关闭，以及Servlet很长时间都没有被访问过。Web Server可以从内存中销毁该实例。Web Server必须保证在销毁Servlet实例之前调用该实例的destroy()方法，以便回收Servlet申请的资源或进行其它的重要的处理。</p>
+<blockquote>
+<p>当先后发送多个request时候，init()只执行一次。servlet容器处理多个请求通过产生多个线程，每个线程执行servlet的单实例的service()方法。</p>
+</blockquote>
+<img src="/imgs/servletLife.png" width="600" height="280">
+<h3 id="三、Filter"><a href="#三、Filter" class="headerlink" title="三、Filter"></a>三、Filter</h3><p>　　Filter不是一个servlet,它不能产生一个response,但是它能够在一个request到达servlet之前预处理request,也可以在离开servlet时处理response。</p>
+<blockquote>
+<p>Filter常用来：<br></p>
+<ul>
+<li>日志文件记录request参数<br></li>
+<li>身份验证或认证request的resource<br></li>
+<li>在request发送给Servlet之前格式化request的header或者body<br></li>
+<li>压缩发回给Client的reponse数据</li>
+</ul>
+</blockquote>
+<p>　　一个filter有三个阶段init()、doFilter()、destroy()。</p>
+<h4 id="1、init"><a href="#1、init" class="headerlink" title="1、init()"></a>1、init()</h4><p>　　filter的init()是在上述的deploy阶段完成的。</p>
+<h4 id="2、doFilter"><a href="#2、doFilter" class="headerlink" title="2、doFilter()　"></a>2、doFilter()　</h4><p>　　一个Servlet初始化之后，每次request到达该Servlet的service()方法之前，都会先做doFilter()。能够配置一个filter到一个或多个servlet；单个servlet或servlet组能够被多个filter使用。</p>
+<h4 id="3、destroy"><a href="#3、destroy" class="headerlink" title="3、destroy()"></a>3、destroy()</h4><p>　　　当Servlet进行destroy之后，对应的Filter也会destroy。</p>
+<blockquote>
+<p>当有多个Filter时，按照web.xml中声明的顺序执行filter。</p>
+</blockquote>
+<h3 id="四、Listener"><a href="#四、Listener" class="headerlink" title="四、Listener"></a>四、Listener</h3><p>　　Listener是Servlet的监听器，它可以监听客户端的请求、服务端的操作等。如监听context、session、application的create,destroy,可以监听到context、session、application<br>属性绑定的变化。通过监听器，可以自动激发一些操作，比如监听在线的用户的数量。<br>　　以实现ServletContextListener接口监听context的create和destroy为例：<br>　　contextInitialized()是在上述deploy阶段Filter的init()之前执行的。<br>　　contextDestroyed()是在Servlet的destroy()及Filter的destroy()之后执行的。
+　　</p>
+<h3 id="五、执行顺序"><a href="#五、执行顺序" class="headerlink" title="五、执行顺序"></a>五、执行顺序</h3><p>　　在<a href="https://github.com/zhangyuyu/ServletLife" target="_blank" rel="noopener">ServletLife</a>的工程下，执行命令<code>gradle tomcatRunWar</code>。根据下面控制台打印信息，可以看出listen-&gt;filter-&gt;servlet的顺序：</p>
+<pre><code>*************Context created on*************
+***********This is the filter init***********
+Started Tomcat Server
+The Server is running at http://localhost:8080/ServletLife
+**********This is the servlet init***********
+*****************do filter*****************
+***********This is the servlet service***********
+***********This is the servlet destroy***********
+***********This is the filter destroy***********
+*************Context destroy*************
+</code></pre><h3 id="六、对应一个故事"><a href="#六、对应一个故事" class="headerlink" title="六、对应一个故事"></a>六、对应一个故事</h3><blockquote>
+<p></p><h5 align="center">T公司CX项目开发经历</h5><br>1、T公司接到一个CX项目<br><br>　　根据项目计划书划分职能（BA、开发A功能人员、开发B功能人员……）<br><br>　　确定BA具体人员<br><br>2、需求R1<br><br>　　准备安排具体人员A、B<br><br>　　BA分析问题<br><br>　　A、B开始认真干活<br><br>3、需求R2<br><br>　　BA分析问题<br><br>　　A、B继续干活<br><br>　　……<br><br>4、项目完成了，开发人员解散<br><br>　　BA也role off<br><p></p>
+</blockquote>
+<p>　　故事中，T对应一个Web container, CX对应一个context, BA对应Filter，A\B分别对应一个Servlet，需求R1\R2分别对应两次request。<br>　　第一个阶段对应deploy阶段：划分职能可以代表生成context、config对象；确定BA的具体人员则代表着Filter的初始化。<br>　　第二个阶段对应发送request阶段：安排A、B的巨头人员代表Servlet的初始化；BA分析问题代表着Filter的doFilter(）操作；认真干活则代表Servlet的service()操作。<br>　　第三个阶段是发送另一个request，此过程中没有安排具体的人员（Servlet的初始化），对应的是servlet的多线程操作。<br>　　第四个阶段对应destroy过程，开发人员解散代表Servlet的destroy，BA的role off则代表着Filter的destroy。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/15/手动创建Servlet异常处理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2200,464 +2564,11 @@ public class CustomerService
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/30/Spring-JavaConfig/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/30/Spring-JavaConfig/" itemprop="url">Spring_JavaConfig</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-30T10:47:46+02:00">
-                2015-08-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programmming/" itemprop="url" rel="index">
-                    <span itemprop="name">Programmming</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>　　使用JavaConfig (@Configuration), 需要添加依赖，如下所示的最下方：</p>
-<pre><code>&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-    &lt;groupId&gt;com.mkyong.core&lt;/groupId&gt;
-    &lt;artifactId&gt;Spring3Example&lt;/artifactId&gt;
-    &lt;packaging&gt;jar&lt;/packaging&gt;
-    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-    &lt;name&gt;Spring3Example&lt;/name&gt;
-    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
-
-    &lt;properties&gt;
-        &lt;spring.version&gt;3.0.5.RELEASE&lt;/spring.version&gt;
-    &lt;/properties&gt;
-
-    &lt;dependencies&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;junit&lt;/groupId&gt;
-            &lt;artifactId&gt;junit&lt;/artifactId&gt;
-            &lt;version&gt;4.8.2&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
-
-        &lt;!-- Spring 3 dependencies --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-core&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-            &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
-            &lt;version&gt;${spring.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-
-        &lt;!-- JavaConfig need this library --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;cglib&lt;/groupId&gt;
-            &lt;artifactId&gt;cglib&lt;/artifactId&gt;
-            &lt;version&gt;2.2.2&lt;/version&gt;
-        &lt;/dependency&gt;
-
-    &lt;/dependencies&gt;
-&lt;/project&gt;
-</code></pre><h3 id="一、Spring-Bean"><a href="#一、Spring-Bean" class="headerlink" title="一、Spring Bean"></a>一、Spring Bean</h3><pre><code>package com.mkyong;
-
-public class HelloWorld{
-
-    public void toString(String msg) {
-
-        System.out.println(&quot;Hello : &quot; + msg);
-    }
-
-}
-</code></pre><h3 id="二、Spring配置"><a href="#二、Spring配置" class="headerlink" title="二、Spring配置"></a>二、Spring配置</h3><p>1、回顾xml配置</p>
-<pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;&gt;
-
-    &lt;bean id=&quot;helloBean&quot; class=&quot;com.mkyong.HelloWorld&quot;&gt;
-
-&lt;/beans&gt;
-</code></pre><p>2、JavaConfig，在AppConfig.java中</p>
-<pre><code>package com.mkyong;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class AppConfig {
-
-    @Bean(name=&quot;helloBean&quot;)
-    public HelloWorld helloWorld() {
-        return new HelloWorld();
-    }
-
-}
-</code></pre><h3 id="三、运行，在App-java中"><a href="#三、运行，在App-java中" class="headerlink" title="三、运行，在App.java中"></a>三、运行，在App.java中</h3><pre><code>package com.mkyong;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-public class App {
-    public static void main(String[] args) {
-
-        //ApplicationContext context = new ClassPathXmlApplicationContext(&quot;SpringBeans.xml&quot;);
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        HelloWorld obj = (HelloWorld) context.getBean(&quot;helloBean&quot;);
-
-        obj.toString(&quot;Hello,Spring Java Config&quot;);
-
-    }
-}
-</code></pre><h3 id="四、结果"><a href="#四、结果" class="headerlink" title="四、结果"></a>四、结果</h3><pre><code>Hello : Hello,Spring Java Config
-</code></pre><h3 id="五、目录结构"><a href="#五、目录结构" class="headerlink" title="五、目录结构"></a>五、目录结构</h3><img src="/imgs/Spring-JavaConfig.png" width="200" height="350">
-<h3 id="六、补充-Import"><a href="#六、补充-Import" class="headerlink" title="六、补充@Import"></a>六、补充@Import</h3><p>当要配置多个文件时候，可以用@Import</p>
-<h4 id="1、在xml中"><a href="#1、在xml中" class="headerlink" title="1、在xml中"></a>1、在xml中</h4><pre><code>&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;&gt;
-
-    &lt;import resource=&quot;config/customer.xml&quot;/&gt;
-    &lt;import resource=&quot;config/scheduler.xml&quot;/&gt;
-
-&lt;/beans&gt;
-</code></pre><h4 id="2、在JavaConfig中"><a href="#2、在JavaConfig中" class="headerlink" title="2、在JavaConfig中"></a>2、在JavaConfig中</h4><pre><code>package com.mkyong.config;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
-@Configuration
-@Import({ CustomerConfig.class, SchedulerConfig.class })
-public class AppConfig {
-
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/08/29/Gradle-java-plugin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/29/Gradle-java-plugin/" itemprop="url">Gradle-java-plugin</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-29T19:42:22+02:00">
-                2015-08-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Tool/" itemprop="url" rel="index">
-                    <span itemprop="name">Tool</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>　　java plugin给项目添加了java编译，测试和捆绑的能力，是很多其他gradle plugin的基础。<br>在build.gradle中加入<code>apply plugin: &#39;java&#39;</code>，即可使用java plugin。</p>
-<h3 id="一、java-Plugin引入的主要Task"><a href="#一、java-Plugin引入的主要Task" class="headerlink" title="一、java Plugin引入的主要Task"></a>一、java Plugin引入的主要Task</h3><p>执行“gradle build”，我们已经可以看到java Plugin所引入的主要Task：</p>
-<blockquote>
-<p>:compileJava<br>:processResources<br>:classes<br>:jar<br>:assemble<br>:compileTestJava<br>:processTestResources<br>:testClasses<br>:test<br>:check<br>:build</p>
-</blockquote>
-<p>　　build也是java Plugin所引入的一个Task，它依赖于其他Task，其他Task又依赖于另外的Task，所以有了以上Task执行列表。以上Task执行列表基本上描述了java Plugin向项目中所引入的构建生命周期概念。<br>　　除了定义众多的Task外，java Plugin还向Project中加入了一些额外的Property。比如，sourceCompatibility用于指定在编译Java源文件时所使用的Java版本，archivesBaseName用于指定打包成Jar文件时的文件名称。
-　　</p>
-<h3 id="二、Source-sets"><a href="#二、Source-sets" class="headerlink" title="二、Source sets"></a>二、Source sets</h3><p>　　source set是一组编译和执行的源文件，和编译路径与执行路径有联系。Gradle的每个source set都包含有一个名字，并且包含有一个名为java的Property和一个名为resources的Property，他们分别用于表示该source set所包含的Java源文件集合和资源文件集合。</p>
-<pre><code>sourceSets {
-    main {
-        java {
-            srcDir &apos;src/java&apos;
-        }
-        resources {
-            srcDir &apos;src/resources&apos;
-        }
-    }
-}
-</code></pre><p>　　Gradle会自动地为每一个新创建的source set创建相应的Task。对于名为mySourceSet的source set，Gradle将为其创建compile<mysourceset>Java、process<mysourceset>Resources和<mysourceset>Classes这3个Task。对于这里api而言，Gradle会为其创建名为compileApiJava、processApiResource和apiClasses Task。我们可以在命令行中执行”gradle apiClasses”。<br></mysourceset></mysourceset></mysourceset></p>
-<blockquote>
-<p>注意，对于main而言，Gradle并没有相应的compileMainJava，原因在于：由于main是Gradle默认创建的source set，并且又是及其重要的source set，Gradle便省略掉了其中的“Main”，而是直接使用了compileJava作为main的编译Task。对于test来说，Gradle依然采用了compileTestJava。</p>
-</blockquote>
-<p>　　通常的情况是，我们自己创建的名为api的source set会被其他source set所依赖，比如main中的类需要实现api中的某个接口等。此时我们需要做两件事情。<br>　　<em> 第一，我们需要在编译main之前对api进行编译，即编译main中Java源文件的Task应该依赖于api中的Task：<code>classes.dependsOn apiClasses</code>
-　　</em> 第二，在编译main时，我们需要将api编译生成的class文件放在main的classpath下。此时，我们可以对main和test做以下配置：</p>
-<pre><code>sourceSets {
-  main {
-     compileClasspath = compileClasspath + files(api.output.classesDir)
-  }
-  test {
-     runtimeClasspath = runtimeClasspath + files(api.output.classesDir)
-  }
-}
-</code></pre><h3 id="三、依赖管理"><a href="#三、依赖管理" class="headerlink" title="三、依赖管理"></a>三、依赖管理</h3><h4 id="1、repositories"><a href="#1、repositories" class="headerlink" title="1、repositories"></a>1、repositories</h4><p>　　在声明对第三方类库的依赖时，我们需要告诉Gradle在什么地方去获取这些依赖，即配置Gradle的Repository。在配置好依赖之后，Gradle会自动地下载这些依赖到本地。Gradle可以使用Maven和Ivy的Repository，同时它还可以使用本地文件系统作为Repository。<br>配置Maven的Repository如下：</p>
-<pre><code>repositories {
-  mavenCentral()
-}
-</code></pre><h4 id="2、configurations"><a href="#2、configurations" class="headerlink" title="2、configurations"></a>2、configurations</h4><p>　　Gradle将对依赖进行分组，每一组依赖称为一个Configuration，在声明依赖时，我们实际上是在设置不同的Configuration。</p>
-<h5 id="1）定义一个Configuration："><a href="#1）定义一个Configuration：" class="headerlink" title="(1）定义一个Configuration："></a>(1）定义一个Configuration：</h5><pre><code>configurations {
-  myDependency
-}
-</code></pre><h5 id="2-加入实际的依赖项："><a href="#2-加入实际的依赖项：" class="headerlink" title="(2) 加入实际的依赖项："></a>(2) 加入实际的依赖项：</h5><pre><code>dependencies {
-  myDependency &apos;org.apache.commons:commons-lang3:3.0&apos;
-}
-</code></pre><blockquote>
-<p>java Plugin定义了compile和testCompile这两个Configuration，分别用于编译Java源文件和编译Java测试源文件。也定义了runtime和testRuntime，分别用于在程序运行和测试运行时加入所配置的依赖。</p>
-</blockquote>
-<p>　　因此，下述声明依赖时，可以直接使用dependencies：</p>
-<pre><code>dependencies {
-    compile group: &apos;commons-collections&apos;, name: &apos;commons-collections&apos;, version: &apos;3.2&apos;
-    testCompile group: &apos;junit&apos;, name: &apos;junit&apos;, version: &apos;4.+&apos;
-}
-</code></pre><h5 id="3）获取classpath"><a href="#3）获取classpath" class="headerlink" title="(3）获取classpath"></a>(3）获取classpath</h5><pre><code>task showMyDependency &lt;&lt; {
-  println configurations.myDependency.asPath
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2703,7 +2614,7 @@ public class AppConfig {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2714,7 +2625,7 @@ public class AppConfig {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
