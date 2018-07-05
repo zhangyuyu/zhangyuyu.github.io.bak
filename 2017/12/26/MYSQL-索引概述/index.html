@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://yoursite.com/imgs/mysql-index-non-cluster-bucket.png">
 <meta property="og:image" content="http://yoursite.com/imgs/mysql-index-B-Tree.jpg">
 <meta property="og:image" content="http://yoursite.com/imgs/mysql-index-B+Tree.jpg">
-<meta property="og:updated_time" content="2018-06-24T15:36:24.000Z">
+<meta property="og:updated_time" content="2018-07-05T19:20:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MYSQL - 索引概述">
 <meta name="twitter:description" content="一、前言　　每次项目上遇到MYSQL性能优化的点，涉及到索引的时候，我都会或多或少、零零散散地查一些相关的资料，解决当时的难题。　　这些知识点，既不系统、也不能完全确保正确无误，于是把以前从书里面《数据库系统实现》、《收获，不止SQL优化》看到的有关于SQL索引的知识点，进行整理如下。　　这篇文章不会对具体优化的tips进行介绍，主要是从概念上介绍索引，以及其结构与原理，至于使用技巧则会另外找时间">
@@ -364,6 +364,7 @@
 
       
         <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　每次项目上遇到MYSQL性能优化的点，涉及到索引的时候，我都会或多或少、零零散散地查一些相关的资料，解决当时的难题。<br>　　这些知识点，既不系统、也不能完全确保正确无误，于是把以前从书里面《数据库系统实现》、《收获，不止SQL优化》看到的有关于SQL索引的知识点，进行整理如下。<br>　　这篇文章不会对具体优化的tips进行介绍，主要是从概念上介绍索引，以及其结构与原理，至于使用技巧则会另外找时间写一篇文章记录。</p>
+<a id="more"></a>
 <h2 id="二、什么是索引"><a href="#二、什么是索引" class="headerlink" title="二、什么是索引"></a>二、什么是索引</h2><p>　　索引是为了加速对表中数据行的检索而创建的一种分散的存储结构。数据库索引好比是一本书前面的目录，能加快数据库的查询速度。</p>
 <p>索引是这样的一种数据结构：<br>它以一个或多个字段的值为输入，并能“快速地”找出具有该值得记录。<br><img src="/imgs/mysql-index-definition.jpg" width="400" height="250"></p>
 <p>　　我们都希望查询数据的速度能尽可能的快，因此数据库系统的设计者会从查询算法的角度进行优化。最基本的查询算法当然是顺序查找（linear search），这种复杂度为O(n)的算法在数据量很大时显然是糟糕的，好在计算机科学的发展提供了很多更优秀的查找算法，例如二分查找（binary search）、二叉树查找（binary tree search）等。<br>　　如果稍微分析一下会发现，每种查找算法都只能应用于特定的数据结构之上，例如二分查找要求被检索数据有序，而二叉树查找只能应用于二叉查找树上，但是数据本身的组织结构不可能完全满足各种数据结构（例如，理论上不可能同时将两列都按顺序进行组织），所以，在数据之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构，就是索引的本质。</p>

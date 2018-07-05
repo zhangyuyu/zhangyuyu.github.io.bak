@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="前言 本文的主要观点、代码片段、图片均源自《The Hitchhiker’s Guide to the CMake》教程的Overview 章节。  主要包含以下方面：  认识 CMake CMake可以做什么？ CMake 的特点 CMake 的 Workflow CMake 的组成？ make 与 ninja  一、认识 Cmake　　CMake，是Cross Platform Make的缩写">
+<meta name="description" content="前言 本文的主要观点、代码片段、图片均源自《The Hitchhiker’s Guide to the CMake》教程的Overview 章节。  主要包含以下方面：  认识 CMake CMake可以做什么？ CMake 的特点 CMake 的 Workflow CMake 的组成？ make 与 ninja">
 <meta name="keywords" content="CMake">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CMake初识">
 <meta property="og:url" content="http://yoursite.com/2018/06/24/认识Cmake/index.html">
 <meta property="og:site_name" content="若见喻笺">
-<meta property="og:description" content="前言 本文的主要观点、代码片段、图片均源自《The Hitchhiker’s Guide to the CMake》教程的Overview 章节。  主要包含以下方面：  认识 CMake CMake可以做什么？ CMake 的特点 CMake 的 Workflow CMake 的组成？ make 与 ninja  一、认识 Cmake　　CMake，是Cross Platform Make的缩写">
+<meta property="og:description" content="前言 本文的主要观点、代码片段、图片均源自《The Hitchhiker’s Guide to the CMake》教程的Overview 章节。  主要包含以下方面：  认识 CMake CMake可以做什么？ CMake 的特点 CMake 的 Workflow CMake 的组成？ make 与 ninja">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/cmake-native-build.png">
 <meta property="og:image" content="http://yoursite.com/imgs/cmake-native-build-add.png">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="http://yoursite.com/imgs/cmake-generate-native-files-add.png">
 <meta property="og:image" content="http://yoursite.com/imgs/cmake-native-build-add.png">
 <meta property="og:image" content="http://yoursite.com/imgs/cmake-workflow.png">
-<meta property="og:updated_time" content="2018-06-24T15:37:25.000Z">
+<meta property="og:updated_time" content="2018-07-05T19:19:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CMake初识">
-<meta name="twitter:description" content="前言 本文的主要观点、代码片段、图片均源自《The Hitchhiker’s Guide to the CMake》教程的Overview 章节。  主要包含以下方面：  认识 CMake CMake可以做什么？ CMake 的特点 CMake 的 Workflow CMake 的组成？ make 与 ninja  一、认识 Cmake　　CMake，是Cross Platform Make的缩写">
+<meta name="twitter:description" content="前言 本文的主要观点、代码片段、图片均源自《The Hitchhiker’s Guide to the CMake》教程的Overview 章节。  主要包含以下方面：  认识 CMake CMake可以做什么？ CMake 的特点 CMake 的 Workflow CMake 的组成？ make 与 ninja">
 <meta name="twitter:image" content="http://yoursite.com/imgs/cmake-native-build.png">
 
 
@@ -373,6 +373,7 @@
 <li>CMake 的组成？</li>
 <li>make 与 ninja</li>
 </ul>
+<a id="more"></a>
 <h3 id="一、认识-Cmake"><a href="#一、认识-Cmake" class="headerlink" title="一、认识 Cmake"></a>一、认识 Cmake</h3><p>　　CMake，是<code>Cross Platform Make</code>的缩写，是一个跨平台的安装（编译）工具，可以用简单的语句来描述所有平台的安装(编译过程)。</p>
 <p>　　CMake 自己本身并不是构建工具（build tool），它不直接建构出最终的软件。它的职责是从抽象配置代码生成原生构建工具（native build tool）文件。</p>
 <blockquote>
