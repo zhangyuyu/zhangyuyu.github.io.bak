@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Tech," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="若见喻笺" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一、前言　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：  Portal Portlet Portlet容器 JSR168 认识 Portal 和 Portlet Portlet和Widget、Servlet的对比 Portlet的生命周期">
+<meta name="keywords" content="Tech">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portal 和 Portlet">
+<meta property="og:url" content="http://yoursite.com/2018/07/07/Portal-Portlet/index.html">
+<meta property="og:site_name" content="若见喻笺">
+<meta property="og:description" content="一、前言　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：  Portal Portlet Portlet容器 JSR168 认识 Portal 和 Portlet Portlet和Widget、Servlet的对比 Portlet的生命周期">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-architecture.png">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-protocol.png">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-page.png">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-widget.png">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-interface-diagram.png">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-ibm.png">
+<meta property="og:updated_time" content="2018-07-08T14:25:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Portal 和 Portlet">
+<meta name="twitter:description" content="一、前言　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：  Portal Portlet Portlet容器 JSR168 认识 Portal 和 Portlet Portlet和Widget、Servlet的对比 Portlet的生命周期">
+<meta name="twitter:image" content="http://yoursite.com/imgs/portal-architecture.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/07/Portal-Portlet/"/>
+
+
+
+
+
+  <title>Portal 和 Portlet | 若见喻笺</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">若见喻笺</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/07/Portal-Portlet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Portal 和 Portlet</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T09:32:04+02:00">
+                2018-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index">
+                    <span itemprop="name">Tech</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：</p>
+<ul>
+<li>Portal</li>
+<li>Portlet</li>
+<li>Portlet容器</li>
+<li>JSR168</li>
+<li>认识 Portal 和 Portlet</li>
+<li>Portlet和Widget、Servlet的对比</li>
+<li>Portlet的生命周期</li>
+</ul>
+<a id="more"></a>
+<h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　最近加入敏捷咨询的团队，客户是一个保险公司，我们的任务是对他们现有的技术架构进行分析，了解他们的痛点，对应做出敏捷转型的方案。<br>　　了解到他们目前是采用 IBM 的 Websphere服务器，采用Portal的架构模式。各个 portlet 之间相互调用，相互依赖，并不是完全的独立。因此他们的主要痛点在于，每次部署都需要很长时间的准备，此外，很难进行集成测试。当然，还有其他一些问题，但是经过小组讨论之后，进行敏捷转型，第一步是要帮助其构建持续集成、持续交付。<br>　　在此之前，笔者对Portal 这一套门户系统，并不了解，因此特意先做点准备工作。</p>
+<h2 id="三、一些概念"><a href="#三、一些概念" class="headerlink" title="三、一些概念"></a>三、一些概念</h2><p>　　先简单解释下<code>Portal</code>、<code>Portlet</code>、<code>Portlet 容器</code>和<code>JSR168</code>，然后再详细展开：</p>
+<img src="/imgs/portal-architecture.png" width="600" height="300">
+<p>　　<code>Portal</code>是一种web应用，<code>Portlet</code>是一种Web组件。通俗来说，<code>Portlet</code>就是一个<code>Portal</code>上的子窗口。<code>Portlet容器</code>是<code>Portlet</code>的运行时环境。<code>JSR168</code>是规范，为创建Portlet建立标准的API。</p>
+<h3 id="1-什么是Portal？"><a href="#1-什么是Portal？" class="headerlink" title="1. 什么是Portal？"></a>1. 什么是Portal？</h3><p>　　Portal，英文直译是“大门、入口”，这里指“门户”，现多用于互联网的门户网站和企业应用系统的门户系统。</p>
+<p>　　狭义上，门户网站，指通向某类综合性互联网信息资源并提供有关信息服务的应用系统。门户网站最初提供搜索引擎、目录服务，后来由于市场竞争日益激烈，门户网站不得不快速地拓展各种新的业务类型，希望通过门类众多的业务吸引和留驻互联网用户。在全球范围中，最为著名的门户网站则是谷歌以及雅虎，而在中国，最著名的门户网站有中国四大门户网站（新浪、网易、搜狐、腾讯），其他也有百度、新华网、人民网、凤凰网等也较为著名。</p>
+<p>　　广义上，这里是一个Web应用框架，它将各种应用系统、数据资源和互联网资源集成到一个信息管理平台之上，并以统一的用户界面提供给用户，并建立企业对客户、企业对内部员工和企业对企业的信息通道，使企业能够释放存储在企业内部和外部的各种信息。</p>
+<p>　　本文的Portal主要指广义上的概念，更多解释，可以查看<a href="https://baike.baidu.com/item/%E9%97%A8%E6%88%B7%E7%BD%91%E7%AB%99#2" target="_blank" rel="noopener">门户网站的百度百科</a></p>
+<h3 id="2-什么是Portlet？"><a href="#2-什么是Portlet？" class="headerlink" title="2. 什么是Portlet？"></a>2. 什么是Portlet？</h3><p>　　Portlet，门户组件，它是基于Java的Web组件，由Portlet容器管理，并由容器处理请求，生产动态内容。Portals使用Portlets作为可插拔用户接口组件，提供信息系统的表示层。Portlets实现了Web应用的模块化和用户中心化。</p>
+<p>　　从用户的角度来看，<code>Portlet</code>是门户网站站点中提供特定服务或信息（例如，新闻、广告）的窗口；<br>从应用程序开发者的角度来看，Portlet 是可插入的模块，它们被设计成在门户网站服务器的<code>Portlet 容器</code>中运行。</p>
+<p>　　更多解释，可以查看<a href="https://baike.baidu.com/item/Portlet/1069487?fr=aladdin" target="_blank" rel="noopener">Portlet的百度百科</a></p>
+<h3 id="3-什么是Portlet容器"><a href="#3-什么是Portlet容器" class="headerlink" title="3. 什么是Portlet容器?"></a>3. 什么是Portlet容器?</h3><p>　　Portlet容器提供Portlet需求的运行时环境并运行Portlet。它包含Portlets并控制它们的生命周期。容器提供Portlet参数的持久存储机制，它接受来自Portal的request，并在其持有的Portlet上执行request。容器不负责Portlet产生内容的聚合，Portal自己处理内容聚合。</p>
+<h3 id="4-什么是JSR168？"><a href="#4-什么是JSR168？" class="headerlink" title="4. 什么是JSR168？"></a>4. 什么是JSR168？</h3><p>　　JSR168是Java规范要求（Java Specification Request，JSR）的缩写，开发符合JSR168规范的Portlet将可以顺利移植到符合该规范的不同Portal平台上！</p>
+<p>　　随着企业级Portal的大量涌现，不同提供商创建了不同的Portal组件API，即Portlet。不同的不兼容给应用服务商，Portal用户和Portal Server提供商都造成了问题。为了消除这些问题，JSR168，即Portlet规范提出，从而提供Portlet和Portal间的互操作性。</p>
+<img src="/imgs/portal-portlet-protocol.png" width="600" height="200"> 
+<p>　　JSR168的目标:</p>
+<ul>
+<li>定义了portlet运行环境 - portlet容器 </li>
+<li>定义了portlet容器和portlet之间的API </li>
+<li>提供了portlet存储持久性和非持久性数据的机制 </li>
+<li>提供了portlet包含servlet和JSP的机制 </li>
+<li>定义了portlet打包，方便部署 </li>
+<li>保证了portlet在JSR 168门户中的二进制移植 </li>
+<li>能够以WSRP（Web Service for Remote Portlet）协议把JSR 168 portlet作为远程portlet运行。</li>
+</ul>
+<h2 id="三、认识-Portal-和-Portlet"><a href="#三、认识-Portal-和-Portlet" class="headerlink" title="三、认识 Portal 和 Portlet"></a>三、认识 Portal 和 Portlet</h2><p>　　<code>Portlet</code> 在 <code>Portlet 容器</code>中运行，容器接收<code>Porlet</code>生成的内容，并传递给<code>Portal</code>。由 <code>Portal</code>服务器组织成<code>Portal 页面</code>，并送交客户端设备（如浏览器）显示。</p>
+<h3 id="1-Portal页面"><a href="#1-Portal页面" class="headerlink" title="1. Portal页面"></a>1. Portal页面</h3><p>　　<code>Portal</code>可以被视为一系列具有不同区域的网页。这些区域包含不同的窗口，每个窗口包含一个<code>Portlet</code>：<br><img src="/imgs/portal-portlet-page.png" width="600" height="300"></p>
+<p>　　Portlet 生成片段（Fragment），而 Portal 通常要添加上标题（Title）、控制按钮和其他装饰性元素（Decorations and Controls），而得到 Portlet 窗口（Portlet Window）。最后 Portal 将多个 Portlet 窗口聚合而成一个完整的文档，即 Portal 页面（Portal Page）。</p>
+<h3 id="2-Portlet-Rendering-Modes"><a href="#2-Portlet-Rendering-Modes" class="headerlink" title="2. Portlet Rendering Modes"></a>2. Portlet Rendering Modes</h3><p>　　<code>Portlet</code>有不同的视图模式，规范定义了3种模式：</p>
+<ul>
+<li>VIEW（查看）: 生成反映Portlet当前状态的标记。</li>
+<li>EDIT（编辑）: 应该允许用户自定义Portlet的行为。</li>
+<li>HELP（帮助）: 应该向用户提供有关如何使用Portlet的一些信息。</li>
+</ul>
+<h3 id="3-Window-States（窗口状态）"><a href="#3-Window-States（窗口状态）" class="headerlink" title="3. Window States（窗口状态）"></a>3. Window States（窗口状态）</h3><p>　　窗口状态是指示Portlet在任何给定页面上应占用多少页面空间的指示器。规范定义了3种状态：</p>
+<ul>
+<li>NORMAL（正常）</li>
+<li>MINIMIZED（最小化）</li>
+<li>MAXIMIZED（最大化）</li>
+</ul>
+<h2 id="四、对比"><a href="#四、对比" class="headerlink" title="四、对比"></a>四、对比</h2><h3 id="1-Portlet-和-Widget"><a href="#1-Portlet-和-Widget" class="headerlink" title="1. Portlet 和 Widget"></a>1. <code>Portlet</code> 和 <code>Widget</code></h3><p>　　<code>Widget</code>是嵌入在较大网页中的网页，通常使用iFrame——内容来自单独的HTTP连接，并具有自己的CSS样式表，cookie等。最终合成发生在用户的浏览器中。<br>　　<code>Portlet</code>是软件模块，用来生成组合HTML页面的标记片段（Markup Fragment），这些Fragment共享通用的CSS样式表，cookie等。最终组合在<code>Portlet Server</code>上进行，然后页面再被传递到客户端浏览器。</p>
+<p>　　<code>Portlet</code>和<code>Widget</code>都提供了UI组件模型，因此具有很多相似之处:</p>
+<ul>
+<li>它们都提供用户和后端服务的交互;</li>
+<li>都可以将信息和上下文传递给其他的<code>Portlet</code>或者<code>Widget</code>;</li>
+<li>最终用户和管理员可以将<code>Portlet</code>或<code>Widget</code>放到页面上并在页面上重新排列它们。</li>
+</ul>
+<p>　　上述可以看出<code>Portlet</code> 和 <code>Widget</code>最终合成页面的地方不一样，因此主要不同之处也是围绕这个展开：</p>
+<ul>
+<li><code>Portlet</code>是服务端组件模型，<code>Widget</code>是客户端组件模型;</li>
+<li><code>Widget</code>的源码是已经下载了的，所以在浏览器中是可见的;</li>
+<li><code>Widget</code>比标准的<code>Portlet</code>更具响应式，因为<code>Widget</code> 对服务器的调用是独立的浏览器调用。但是，也许有时候呈现页面的某一个部分并不是期望行为。</li>
+<li><code>Widget</code>通常直接与信息系统交互，来获取它们需要的内容，<code>Portal</code>则是聚合很多<code>Portlet</code>生成的内容</li>
+</ul>
+<img src="/imgs/portal-portlet-widget.png" width="600" height="300">
+<h3 id="2-Portlet-和-Servlet"><a href="#2-Portlet-和-Servlet" class="headerlink" title="2. Portlet 和 Servlet"></a>2. <code>Portlet</code> 和 <code>Servlet</code></h3><p>　　相似之处：</p>
+<ul>
+<li>都是基于Java技术的web组件</li>
+<li>都是被专门的容器管理，<code>Portlet</code>被<code>portlet 容器</code>管理，<code>Servlet</code>被<code>Servlet容器</code>管理</li>
+<li>都可以使用 客户端/服务器端 模式</li>
+<li>都是与web客户端通过request/response方式交互</li>
+</ul>
+<p>　　不同之处：</p>
+<ul>
+<li><code>Servlet</code>生成整个web页面，而<code>Portlet</code>只生成内容片断，而<code>Portal</code>来负责将这些片断组装到同一个页面</li>
+<li><code>Servlet</code>可以被映射为url，但是<code>Portlet</code>不可以被直接映射为url</li>
+<li>Web客户端可以直接同<code>Servlet</code>交互，但是如果Web客户端要和<code>Portlet</code>交互需要通过<code>Portal</code> 系统</li>
+<li><code>Portlet</code>定义了<code>Portlet Mode</code>和<code>Window State</code></li>
+<li><code>Portlet</code>可以持久化存储和访问数据</li>
+<li><code>Portlet</code>可以在两种范围上存/取数据到session里: Portlet私有域和application域上</li>
+<li><code>Portlet</code>的response都无法设置字符编码，而Servlet 可以。</li>
+</ul>
+<h2 id="五、Portlet的生命周期"><a href="#五、Portlet的生命周期" class="headerlink" title="五、Portlet的生命周期"></a>五、Portlet的生命周期</h2><p>　　<code>Portlet API</code>包含一个<code>GenericPortlet</code>类，它实现<code>Portlet</code>，<code>EventPortlet</code>和<code>ResourceServingPortlet</code>接口并提供默认功能。开发人员通常应直接或间接扩展<code>GenericPortlet</code>类以实现其portlet。<br><img src="/imgs/portal-portlet-interface-diagram.png" width="600" height="300"></p>
+<p>　　基本的<code>Portlet接口</code>，生命周期包括下面四个方法：</p>
+<ul>
+<li>init</li>
+<li>processAction</li>
+<li>render</li>
+<li>destroy</li>
+</ul>
+<p>　　使用<code>EventPortlet接口</code>时，额外的生命周期操作：</p>
+<ul>
+<li>processEvent，当事件被触发的时候，该方法会被调用</li>
+</ul>
+<p>　　使用<code>ResourceServingPortlet</code>时，额外的生命周期操作：</p>
+<ul>
+<li>serveResource，由portlet容器调用，以允许portlet根据其当前状态生成资源内容。</li>
+</ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　下图是基于IBM WebSphere Portal的企业门户示例，选择门户平台产品将帮助企业更好的建立各种企业级的集成标准。<br><img src="/imgs/portal-portlet-ibm.png" width="600" height="300"></p>
+<p>　　本文只是对Portal门户系统的初步了解，至于它的优势劣势、以及它的具体使用场景、使用的注意事项，甚至portlet的开发，不在此做过多描述。要有实际使用过之后，才有更深刻的体会。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a href="https://www.ibm.com/developerworks/community/files/basic/anonymous/api/library/c144a765-c982-4ab5-93ff-cfdcb9140298/document/1ae8a0f1-e5e8-4430-9b55-73c1f6e72e91/media" target="_blank" rel="noopener">IBM门户部署与管理简明教程</a></li>
+<li><a href="https://www.ibm.com/developerworks/mydeveloperworks/blogs/WebSpherePortal/entry/making_sense_of_portlets_and_widgets1?lang=en" target="_blank" rel="noopener">Making Sense of Portlets and Widgets - IBM WebSphere Portal Blog</a></li>
+<li><a href="http://jsr286tutorial.blogspot.com/p/portlet-and-servlet.html" target="_blank" rel="noopener">Portlet and Servlet</a></li>
+<li><a href="https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_Portal/6.2/html/Development_Guide/chap-Portlet_Development_Resources.html" target="_blank" rel="noopener">Portlet Development Resources - Red Hat</a></li>
+<li><a href="https://github.com/jboss-developer/jboss-portal-quickstarts" target="_blank" rel="noopener">Jboss Portal Quickstarts</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/imgs/qr-code.png" alt="Zhang Yu wechat" style="width: 200px; max-width: 100%;"/>
+    <div>扫一扫，用手机访问本站</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tech/" rel="tag"># Tech</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/04/Impact-Mapping/" rel="next" title="Impact Mapping">
+                <i class="fa fa-chevron-left"></i> Impact Mapping
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Zhang Yu</p>
+              <p class="site-description motion-element" itemprop="description">行是知之始，知是行之成</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、背景"><span class="nav-number">2.</span> <span class="nav-text">二、背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、一些概念"><span class="nav-number">3.</span> <span class="nav-text">三、一些概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是Portal？"><span class="nav-number">3.1.</span> <span class="nav-text">1. 什么是Portal？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-什么是Portlet？"><span class="nav-number">3.2.</span> <span class="nav-text">2. 什么是Portlet？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-什么是Portlet容器"><span class="nav-number">3.3.</span> <span class="nav-text">3. 什么是Portlet容器?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-什么是JSR168？"><span class="nav-number">3.4.</span> <span class="nav-text">4. 什么是JSR168？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、认识-Portal-和-Portlet"><span class="nav-number">4.</span> <span class="nav-text">三、认识 Portal 和 Portlet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Portal页面"><span class="nav-number">4.1.</span> <span class="nav-text">1. Portal页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Portlet-Rendering-Modes"><span class="nav-number">4.2.</span> <span class="nav-text">2. Portlet Rendering Modes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Window-States（窗口状态）"><span class="nav-number">4.3.</span> <span class="nav-text">3. Window States（窗口状态）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、对比"><span class="nav-number">5.</span> <span class="nav-text">四、对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Portlet-和-Widget"><span class="nav-number">5.1.</span> <span class="nav-text">1. Portlet 和 Widget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Portlet-和-Servlet"><span class="nav-number">5.2.</span> <span class="nav-text">2. Portlet 和 Servlet</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Portlet的生命周期"><span class="nav-number">6.</span> <span class="nav-text">五、Portlet的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">7.</span> <span class="nav-text">最后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">8.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Yu</span>
+  
+   <span style="margin-left:8px;">
+   <script src="http://s6.cnzz.com/stat.php?id=1263347220&web_id=1263347220" type="text/javascript"></script>
+   </span>
+
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+  
+
+  <div style="display: none;">
+    <script src="https://s19.cnzz.com/z_stat.php?id=1263347220&web_id=1263347220" language="JavaScript"></script>
+  </div>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
