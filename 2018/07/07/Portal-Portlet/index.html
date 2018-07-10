@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Tech," />
+  <meta name="keywords" content="Portal," />
 
 
 
@@ -82,24 +82,25 @@
 
 
 <meta name="description" content="一、前言　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：  Portal Portlet Portlet容器 JSR168 认识 Portal 和 Portlet Portlet和Widget、Servlet的对比 Portlet的生命周期">
-<meta name="keywords" content="Tech">
+<meta name="keywords" content="Portal">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Portal 和 Portlet">
 <meta property="og:url" content="http://yoursite.com/2018/07/07/Portal-Portlet/index.html">
 <meta property="og:site_name" content="若见喻笺">
 <meta property="og:description" content="一、前言　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：  Portal Portlet Portlet容器 JSR168 认识 Portal 和 Portlet Portlet和Widget、Servlet的对比 Portlet的生命周期">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/imgs/portal-architecture.png">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-architecture.png">
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-protocol.png">
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-page.png">
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-widget.png">
+<meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-servlet.png">
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-interface-diagram.png">
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-ibm.png">
-<meta property="og:updated_time" content="2018-07-08T14:25:16.000Z">
+<meta property="og:updated_time" content="2018-07-10T11:39:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Portal 和 Portlet">
 <meta name="twitter:description" content="一、前言　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：  Portal Portlet Portlet容器 JSR168 认识 Portal 和 Portlet Portlet和Widget、Servlet的对比 Portlet的生命周期">
-<meta name="twitter:image" content="http://yoursite.com/imgs/portal-architecture.png">
+<meta name="twitter:image" content="http://yoursite.com/imgs/portal-portlet-architecture.png">
 
 
 
@@ -324,8 +325,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Tech/" itemprop="url" rel="index">
-                    <span itemprop="name">Tech</span>
+                  <a href="/categories/Programmming/" itemprop="url" rel="index">
+                    <span itemprop="name">Programmming</span>
                   </a>
                 </span>
 
@@ -374,7 +375,7 @@
 <a id="more"></a>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　最近加入敏捷咨询的团队，客户是一个保险公司，我们的任务是对他们现有的技术架构进行分析，了解他们的痛点，对应做出敏捷转型的方案。<br>　　了解到他们目前是采用 IBM 的 Websphere服务器，采用Portal的架构模式。各个 portlet 之间相互调用，相互依赖，并不是完全的独立。因此他们的主要痛点在于，每次部署都需要很长时间的准备，此外，很难进行集成测试。当然，还有其他一些问题，但是经过小组讨论之后，进行敏捷转型，第一步是要帮助其构建持续集成、持续交付。<br>　　在此之前，笔者对Portal 这一套门户系统，并不了解，因此特意先做点准备工作。</p>
 <h2 id="三、一些概念"><a href="#三、一些概念" class="headerlink" title="三、一些概念"></a>三、一些概念</h2><p>　　先简单解释下<code>Portal</code>、<code>Portlet</code>、<code>Portlet 容器</code>和<code>JSR168</code>，然后再详细展开：</p>
-<img src="/imgs/portal-architecture.png" width="600" height="300">
+<img src="/imgs/portal-portlet-architecture.png" width="600" height="300">
 <p>　　<code>Portal</code>是一种web应用，<code>Portlet</code>是一种Web组件。通俗来说，<code>Portlet</code>就是一个<code>Portal</code>上的子窗口。<code>Portlet容器</code>是<code>Portlet</code>的运行时环境。<code>JSR168</code>是规范，为创建Portlet建立标准的API。</p>
 <h3 id="1-什么是Portal？"><a href="#1-什么是Portal？" class="headerlink" title="1. 什么是Portal？"></a>1. 什么是Portal？</h3><p>　　Portal，英文直译是“大门、入口”，这里指“门户”，现多用于互联网的门户网站和企业应用系统的门户系统。</p>
 <p>　　狭义上，门户网站，指通向某类综合性互联网信息资源并提供有关信息服务的应用系统。门户网站最初提供搜索引擎、目录服务，后来由于市场竞争日益激烈，门户网站不得不快速地拓展各种新的业务类型，希望通过门类众多的业务吸引和留驻互联网用户。在全球范围中，最为著名的门户网站则是谷歌以及雅虎，而在中国，最著名的门户网站有中国四大门户网站（新浪、网易、搜狐、腾讯），其他也有百度、新华网、人民网、凤凰网等也较为著名。</p>
@@ -427,7 +428,8 @@
 <li><code>Widget</code>通常直接与信息系统交互，来获取它们需要的内容，<code>Portal</code>则是聚合很多<code>Portlet</code>生成的内容</li>
 </ul>
 <img src="/imgs/portal-portlet-widget.png" width="600" height="300">
-<h3 id="2-Portlet-和-Servlet"><a href="#2-Portlet-和-Servlet" class="headerlink" title="2. Portlet 和 Servlet"></a>2. <code>Portlet</code> 和 <code>Servlet</code></h3><p>　　相似之处：</p>
+<h3 id="2-Portlet-和-Servlet"><a href="#2-Portlet-和-Servlet" class="headerlink" title="2. Portlet 和 Servlet"></a>2. <code>Portlet</code> 和 <code>Servlet</code></h3><img src="/imgs/portal-portlet-servlet.png" width="400" height="250">
+<p>　　相似之处：</p>
 <ul>
 <li>都是基于Java技术的web组件</li>
 <li>都是被专门的容器管理，<code>Portlet</code>被<code>portlet 容器</code>管理，<code>Servlet</code>被<code>Servlet容器</code>管理</li>
@@ -494,7 +496,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Tech/" rel="tag"># Tech</a>
+            <a href="/tags/Portal/" rel="tag"># Portal</a>
           
         </div>
       
@@ -516,6 +518,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/10/Java-JVM内存结构-vs-Java内存模型-vs-Java对象模型/" rel="prev" title="Java - JVM内存结构 vs Java内存模型 vs Java对象模型">
+                Java - JVM内存结构 vs Java内存模型 vs Java对象模型 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -592,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -603,7 +609,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -614,7 +620,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
