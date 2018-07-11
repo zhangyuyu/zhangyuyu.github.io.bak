@@ -96,7 +96,7 @@
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-servlet.png">
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-interface-diagram.png">
 <meta property="og:image" content="http://yoursite.com/imgs/portal-portlet-ibm.png">
-<meta property="og:updated_time" content="2018-07-10T11:39:13.000Z">
+<meta property="og:updated_time" content="2018-07-10T15:36:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Portal 和 Portlet">
 <meta name="twitter:description" content="一、前言　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：  Portal Portlet Portlet容器 JSR168 认识 Portal 和 Portlet Portlet和Widget、Servlet的对比 Portlet的生命周期">
@@ -364,28 +364,28 @@
       
         <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>　　本文是初识Portal 和Portlet，并对相关的概念进行扫盲，主要包括：</p>
 <ul>
-<li>Portal</li>
-<li>Portlet</li>
-<li>Portlet容器</li>
-<li>JSR168</li>
-<li>认识 Portal 和 Portlet</li>
-<li>Portlet和Widget、Servlet的对比</li>
-<li>Portlet的生命周期</li>
+<li><a href="#Portal">Portal</a></li>
+<li><a href="#Portlet">Portlet</a></li>
+<li><a href="#Portlet容器">Portlet容器</a></li>
+<li><a href="#JSR168">JSR168</a></li>
+<li><a href="#认识Portal和Portlet">认识 Portal 和 Portlet</a></li>
+<li><a href="#Widget">Portlet和Widget</a>、<a href="#Servlet">Servlet的对比</a></li>
+<li><a href="#Portlet的生命周期">Portlet的生命周期</a></li>
 </ul>
 <a id="more"></a>
 <h2 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h2><p>　　最近加入敏捷咨询的团队，客户是一个保险公司，我们的任务是对他们现有的技术架构进行分析，了解他们的痛点，对应做出敏捷转型的方案。<br>　　了解到他们目前是采用 IBM 的 Websphere服务器，采用Portal的架构模式。各个 portlet 之间相互调用，相互依赖，并不是完全的独立。因此他们的主要痛点在于，每次部署都需要很长时间的准备，此外，很难进行集成测试。当然，还有其他一些问题，但是经过小组讨论之后，进行敏捷转型，第一步是要帮助其构建持续集成、持续交付。<br>　　在此之前，笔者对Portal 这一套门户系统，并不了解，因此特意先做点准备工作。</p>
 <h2 id="三、一些概念"><a href="#三、一些概念" class="headerlink" title="三、一些概念"></a>三、一些概念</h2><p>　　先简单解释下<code>Portal</code>、<code>Portlet</code>、<code>Portlet 容器</code>和<code>JSR168</code>，然后再详细展开：</p>
 <img src="/imgs/portal-portlet-architecture.png" width="600" height="300">
 <p>　　<code>Portal</code>是一种web应用，<code>Portlet</code>是一种Web组件。通俗来说，<code>Portlet</code>就是一个<code>Portal</code>上的子窗口。<code>Portlet容器</code>是<code>Portlet</code>的运行时环境。<code>JSR168</code>是规范，为创建Portlet建立标准的API。</p>
-<h3 id="1-什么是Portal？"><a href="#1-什么是Portal？" class="headerlink" title="1. 什么是Portal？"></a>1. 什么是Portal？</h3><p>　　Portal，英文直译是“大门、入口”，这里指“门户”，现多用于互联网的门户网站和企业应用系统的门户系统。</p>
+<h3 id="1-什么是Portal？"><a href="#1-什么是Portal？" class="headerlink" title="1. 什么是Portal？"></a><span id="Portal">1. 什么是Portal？</span></h3><p>　　Portal，英文直译是“大门、入口”，这里指“门户”，现多用于互联网的门户网站和企业应用系统的门户系统。</p>
 <p>　　狭义上，门户网站，指通向某类综合性互联网信息资源并提供有关信息服务的应用系统。门户网站最初提供搜索引擎、目录服务，后来由于市场竞争日益激烈，门户网站不得不快速地拓展各种新的业务类型，希望通过门类众多的业务吸引和留驻互联网用户。在全球范围中，最为著名的门户网站则是谷歌以及雅虎，而在中国，最著名的门户网站有中国四大门户网站（新浪、网易、搜狐、腾讯），其他也有百度、新华网、人民网、凤凰网等也较为著名。</p>
 <p>　　广义上，这里是一个Web应用框架，它将各种应用系统、数据资源和互联网资源集成到一个信息管理平台之上，并以统一的用户界面提供给用户，并建立企业对客户、企业对内部员工和企业对企业的信息通道，使企业能够释放存储在企业内部和外部的各种信息。</p>
 <p>　　本文的Portal主要指广义上的概念，更多解释，可以查看<a href="https://baike.baidu.com/item/%E9%97%A8%E6%88%B7%E7%BD%91%E7%AB%99#2" target="_blank" rel="noopener">门户网站的百度百科</a></p>
-<h3 id="2-什么是Portlet？"><a href="#2-什么是Portlet？" class="headerlink" title="2. 什么是Portlet？"></a>2. 什么是Portlet？</h3><p>　　Portlet，门户组件，它是基于Java的Web组件，由Portlet容器管理，并由容器处理请求，生产动态内容。Portals使用Portlets作为可插拔用户接口组件，提供信息系统的表示层。Portlets实现了Web应用的模块化和用户中心化。</p>
+<h3 id="2-什么是Portlet？"><a href="#2-什么是Portlet？" class="headerlink" title="2. 什么是Portlet？"></a><span id="Portlet">2. 什么是Portlet？</span></h3><p>　　Portlet，门户组件，它是基于Java的Web组件，由Portlet容器管理，并由容器处理请求，生产动态内容。Portals使用Portlets作为可插拔用户接口组件，提供信息系统的表示层。Portlets实现了Web应用的模块化和用户中心化。</p>
 <p>　　从用户的角度来看，<code>Portlet</code>是门户网站站点中提供特定服务或信息（例如，新闻、广告）的窗口；<br>从应用程序开发者的角度来看，Portlet 是可插入的模块，它们被设计成在门户网站服务器的<code>Portlet 容器</code>中运行。</p>
 <p>　　更多解释，可以查看<a href="https://baike.baidu.com/item/Portlet/1069487?fr=aladdin" target="_blank" rel="noopener">Portlet的百度百科</a></p>
-<h3 id="3-什么是Portlet容器"><a href="#3-什么是Portlet容器" class="headerlink" title="3. 什么是Portlet容器?"></a>3. 什么是Portlet容器?</h3><p>　　Portlet容器提供Portlet需求的运行时环境并运行Portlet。它包含Portlets并控制它们的生命周期。容器提供Portlet参数的持久存储机制，它接受来自Portal的request，并在其持有的Portlet上执行request。容器不负责Portlet产生内容的聚合，Portal自己处理内容聚合。</p>
-<h3 id="4-什么是JSR168？"><a href="#4-什么是JSR168？" class="headerlink" title="4. 什么是JSR168？"></a>4. 什么是JSR168？</h3><p>　　JSR168是Java规范要求（Java Specification Request，JSR）的缩写，开发符合JSR168规范的Portlet将可以顺利移植到符合该规范的不同Portal平台上！</p>
+<h3 id="3-什么是Portlet容器"><a href="#3-什么是Portlet容器" class="headerlink" title="3. 什么是Portlet容器?"></a><span id="Portlet容器">3. 什么是Portlet容器?</span></h3><p>　　Portlet容器提供Portlet需求的运行时环境并运行Portlet。它包含Portlets并控制它们的生命周期。容器提供Portlet参数的持久存储机制，它接受来自Portal的request，并在其持有的Portlet上执行request。容器不负责Portlet产生内容的聚合，Portal自己处理内容聚合。</p>
+<h3 id="4-什么是JSR168？"><a href="#4-什么是JSR168？" class="headerlink" title="4. 什么是JSR168？"></a><span id="JSR168">4. 什么是JSR168？</span></h3><p>　　JSR168是Java规范要求（Java Specification Request，JSR）的缩写，开发符合JSR168规范的Portlet将可以顺利移植到符合该规范的不同Portal平台上！</p>
 <p>　　随着企业级Portal的大量涌现，不同提供商创建了不同的Portal组件API，即Portlet。不同的不兼容给应用服务商，Portal用户和Portal Server提供商都造成了问题。为了消除这些问题，JSR168，即Portlet规范提出，从而提供Portlet和Portal间的互操作性。</p>
 <img src="/imgs/portal-portlet-protocol.png" width="600" height="200"> 
 <p>　　JSR168的目标:</p>
@@ -398,7 +398,7 @@
 <li>保证了portlet在JSR 168门户中的二进制移植 </li>
 <li>能够以WSRP（Web Service for Remote Portlet）协议把JSR 168 portlet作为远程portlet运行。</li>
 </ul>
-<h2 id="三、认识-Portal-和-Portlet"><a href="#三、认识-Portal-和-Portlet" class="headerlink" title="三、认识 Portal 和 Portlet"></a>三、认识 Portal 和 Portlet</h2><p>　　<code>Portlet</code> 在 <code>Portlet 容器</code>中运行，容器接收<code>Porlet</code>生成的内容，并传递给<code>Portal</code>。由 <code>Portal</code>服务器组织成<code>Portal 页面</code>，并送交客户端设备（如浏览器）显示。</p>
+<h2 id="三、认识-Portal-和-Portlet"><a href="#三、认识-Portal-和-Portlet" class="headerlink" title="三、认识 Portal 和 Portlet"></a><span id="认识Portal和Portlet">三、认识 Portal 和 Portlet</span></h2><p>　　<code>Portlet</code> 在 <code>Portlet 容器</code>中运行，容器接收<code>Porlet</code>生成的内容，并传递给<code>Portal</code>。由 <code>Portal</code>服务器组织成<code>Portal 页面</code>，并送交客户端设备（如浏览器）显示。</p>
 <h3 id="1-Portal页面"><a href="#1-Portal页面" class="headerlink" title="1. Portal页面"></a>1. Portal页面</h3><p>　　<code>Portal</code>可以被视为一系列具有不同区域的网页。这些区域包含不同的窗口，每个窗口包含一个<code>Portlet</code>：<br><img src="/imgs/portal-portlet-page.png" width="600" height="300"></p>
 <p>　　Portlet 生成片段（Fragment），而 Portal 通常要添加上标题（Title）、控制按钮和其他装饰性元素（Decorations and Controls），而得到 Portlet 窗口（Portlet Window）。最后 Portal 将多个 Portlet 窗口聚合而成一个完整的文档，即 Portal 页面（Portal Page）。</p>
 <h3 id="2-Portlet-Rendering-Modes"><a href="#2-Portlet-Rendering-Modes" class="headerlink" title="2. Portlet Rendering Modes"></a>2. Portlet Rendering Modes</h3><p>　　<code>Portlet</code>有不同的视图模式，规范定义了3种模式：</p>
@@ -413,7 +413,7 @@
 <li>MINIMIZED（最小化）</li>
 <li>MAXIMIZED（最大化）</li>
 </ul>
-<h2 id="四、对比"><a href="#四、对比" class="headerlink" title="四、对比"></a>四、对比</h2><h3 id="1-Portlet-和-Widget"><a href="#1-Portlet-和-Widget" class="headerlink" title="1. Portlet 和 Widget"></a>1. <code>Portlet</code> 和 <code>Widget</code></h3><p>　　<code>Widget</code>是嵌入在较大网页中的网页，通常使用iFrame——内容来自单独的HTTP连接，并具有自己的CSS样式表，cookie等。最终合成发生在用户的浏览器中。<br>　　<code>Portlet</code>是软件模块，用来生成组合HTML页面的标记片段（Markup Fragment），这些Fragment共享通用的CSS样式表，cookie等。最终组合在<code>Portlet Server</code>上进行，然后页面再被传递到客户端浏览器。</p>
+<h2 id="四、对比"><a href="#四、对比" class="headerlink" title="四、对比"></a>四、对比</h2><h3 id="1-Portlet-和-Widget"><a href="#1-Portlet-和-Widget" class="headerlink" title="1. Portlet 和 Widget"></a><span id="Widget">1. <code>Portlet</code> 和 <code>Widget</code></span></h3><p>　　<code>Widget</code>是嵌入在较大网页中的网页，通常使用iFrame——内容来自单独的HTTP连接，并具有自己的CSS样式表，cookie等。最终合成发生在用户的浏览器中。<br>　　<code>Portlet</code>是软件模块，用来生成组合HTML页面的标记片段（Markup Fragment），这些Fragment共享通用的CSS样式表，cookie等。最终组合在<code>Portlet Server</code>上进行，然后页面再被传递到客户端浏览器。</p>
 <p>　　<code>Portlet</code>和<code>Widget</code>都提供了UI组件模型，因此具有很多相似之处:</p>
 <ul>
 <li>它们都提供用户和后端服务的交互;</li>
@@ -428,7 +428,7 @@
 <li><code>Widget</code>通常直接与信息系统交互，来获取它们需要的内容，<code>Portal</code>则是聚合很多<code>Portlet</code>生成的内容</li>
 </ul>
 <img src="/imgs/portal-portlet-widget.png" width="600" height="300">
-<h3 id="2-Portlet-和-Servlet"><a href="#2-Portlet-和-Servlet" class="headerlink" title="2. Portlet 和 Servlet"></a>2. <code>Portlet</code> 和 <code>Servlet</code></h3><img src="/imgs/portal-portlet-servlet.png" width="400" height="250">
+<h3 id="2-Portlet-和-Servlet"><a href="#2-Portlet-和-Servlet" class="headerlink" title="2. Portlet 和 Servlet"></a><span id="Servlet">2. <code>Portlet</code> 和 <code>Servlet</code></span></h3><img src="/imgs/portal-portlet-servlet.png" width="400" height="250">
 <p>　　相似之处：</p>
 <ul>
 <li>都是基于Java技术的web组件</li>
@@ -446,7 +446,7 @@
 <li><code>Portlet</code>可以在两种范围上存/取数据到session里: Portlet私有域和application域上</li>
 <li><code>Portlet</code>的response都无法设置字符编码，而Servlet 可以。</li>
 </ul>
-<h2 id="五、Portlet的生命周期"><a href="#五、Portlet的生命周期" class="headerlink" title="五、Portlet的生命周期"></a>五、Portlet的生命周期</h2><p>　　<code>Portlet API</code>包含一个<code>GenericPortlet</code>类，它实现<code>Portlet</code>，<code>EventPortlet</code>和<code>ResourceServingPortlet</code>接口并提供默认功能。开发人员通常应直接或间接扩展<code>GenericPortlet</code>类以实现其portlet。<br><img src="/imgs/portal-portlet-interface-diagram.png" width="600" height="300"></p>
+<h2 id="五、Portlet的生命周期"><a href="#五、Portlet的生命周期" class="headerlink" title="五、Portlet的生命周期"></a><span id="Portlet的生命周期">五、Portlet的生命周期</span></h2><p>　　<code>Portlet API</code>包含一个<code>GenericPortlet</code>类，它实现<code>Portlet</code>，<code>EventPortlet</code>和<code>ResourceServingPortlet</code>接口并提供默认功能。开发人员通常应直接或间接扩展<code>GenericPortlet</code>类以实现其portlet。<br><img src="/imgs/portal-portlet-interface-diagram.png" width="600" height="300"></p>
 <p>　　基本的<code>Portlet接口</code>，生命周期包括下面四个方法：</p>
 <ul>
 <li>init</li>
@@ -598,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
