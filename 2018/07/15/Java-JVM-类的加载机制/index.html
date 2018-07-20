@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/java-class-lifecycle.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-class-loader-parents-delegation-model.png">
-<meta property="og:updated_time" content="2018-07-16T13:35:45.000Z">
+<meta property="og:updated_time" content="2018-07-20T13:47:23.088Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java-JVM-类加载机制">
 <meta name="twitter:description" content="一、前言　　本篇对于类加载机制将从以下几个方面展开：  什么是类加载机制 类的生命周期 类加载的过程 类加载器">
@@ -489,7 +489,7 @@
 <li><p>第三次破坏：程序动态性<br>　　”动态性”指的是当前一些非常“热门”的名词：代码热替换、模块热部署等，简答的说就是机器不用重启，只要部署上就能用。<br>　　OSGi实现模块化热部署的关键则是它自定义的类加载器机制的实现。每一个程序模块(Bundle)都有一个自己的类加载器，当需要更换一个Bundle时，就把Bundle连同类加载器一起换掉以实现代码的热替换。在OSGi幻境下，类加载器不再是双亲委派模型中的树状结构，而是进一步发展为更加复杂的网状结构，当受到类加载请求时，OSGi将按照下面的顺序进行类搜索：<br>1）将java.＊开头的类委派给父类加载器加载。<br>2）否则，将委派列表名单内的类委派给父类加载器加载。<br>3）否则，将Import列表中的类委派给Export这个类的Bundle的类加载器加载。<br>4）否则，查找当前Bundle的ClassPath，使用自己的类加载器加载。<br>5）否则，查找类是否在自己的Fragment Bundle中，如果在，则委派给Fragment Bundle的类加载器加载。<br>6）否则，查找Dynamic Import列表的Bundle，委派给对应Bundle的类加载器加载。<br>7）否则，类加载器失败。<br>上面的查找顺序中，只有开头两点仍然符合双亲委派模型，其余的都是在平级的类加载器中进行的。</p>
 </li>
 </ul>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇主要是从类的生命周期包含七个阶段（加载、验证、准备、解析、初始化、使用和卸载）说起，然后对于类加载的五个阶段（加载、验证、准备、解析、初始化）进行详细展开，最后了解了类加载器的相关知识。<br>　　下一篇将讲述《<a href="">Java-JVM-内存结构</a>》。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>　　本篇主要是从类的生命周期包含七个阶段（加载、验证、准备、解析、初始化、使用和卸载）说起，然后对于类加载的五个阶段（加载、验证、准备、解析、初始化）进行详细展开，最后了解了类加载器的相关知识。<br>　　下一篇将讲述《<a href="http://zhangyuyu.github.io/2018/07/16/Java-JVM-%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" target="_blank" rel="noopener">Java-JVM-内存结构</a>》。</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
 <li><a href="http://www.ityouknow.com/jvm/2017/08/19/class-loading-principle.html" target="_blank" rel="noopener">java类的加载机制, 纯洁的微笑</a></li>
 <li><a href="https://www.cnblogs.com/z00377750/p/9176891.html" target="_blank" rel="noopener">【JVM】类加载机制, 风动静泉</a></li>
@@ -625,7 +625,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
