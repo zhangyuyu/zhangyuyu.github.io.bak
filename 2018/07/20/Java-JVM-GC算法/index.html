@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://yoursite.com/imgs/java-jvm-gc-cms.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-jvm-gc-g1-heap-allocation.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-jvm-gc-g1.png">
-<meta property="og:updated_time" content="2018-07-22T06:44:21.914Z">
+<meta property="og:updated_time" content="2018-07-22T13:59:49.807Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java-JVM-GC算法">
 <meta name="twitter:description" content="一、前言　　上一篇《Java-JVM-内存结构》讲述了 Java 虚拟机运行时的数据区域，那么这些内存里面，哪些需要回收，什么时候回收，如何回收呢？本篇将主要回顾JVM的垃圾收集算法：  垃圾收集 垃圾收集算法 垃圾收集器">
@@ -381,7 +381,7 @@
 <li><a href="http://zhangyuyu.github.io/2018/07/15/Java-JVM-%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="noopener">Java-JVM-类加载机制</a></li>
 <li><a href="http://zhangyuyu.github.io/2018/07/16/Java-JVM-%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" target="_blank" rel="noopener">Java-JVM-内存结构</a></li>
 <li><strong>Java-JVM-GC算法</strong>（本篇）</li>
-<li>Java-内存模型</li>
+<li><a href="http://zhangyuyu.github.io/2018/07/22/Java-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" target="_blank" rel="noopener">Java-内存模型</a></li>
 </ul>
 <h2 id="三、垃圾收集"><a href="#三、垃圾收集" class="headerlink" title="三、垃圾收集"></a>三、垃圾收集</h2><p>　　垃圾收集，Garbage Collection，通常被称为“GC”。这里所谓的垃圾指的是在系统运行过程当中所产生的一些无用的对象，这些对象占据着一定的内存空间，如果长期不被释放，可能导致OOM。<br>　　在C/C++里是由开发人员自己去申请、管理和释放内存空间，因此没有GC的概念。而在Java中，后台专门有一个专门用于垃圾回收的线程来进行监控、扫描，自动将一些无用的内存进行释放，这就是垃圾收集的一个基本思想，目的在于防止由开发人员引入的人为的内存泄露。</p>
 <h3 id="1-哪些需要回收"><a href="#1-哪些需要回收" class="headerlink" title="1. 哪些需要回收"></a>1. 哪些需要回收</h3><p>　　<a href="http://zhangyuyu.github.io/2018/07/16/Java-JVM-%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" target="_blank" rel="noopener">上文</a>说到，Java虚拟机运行时的数据区域主要有程序计数器、Java 虚拟机栈、本地方法栈、Java 堆、方法区、运行时常量池。</p>
