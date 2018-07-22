@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/imgs/java-class-lifecycle.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-class-loader-parents-delegation-model.png">
-<meta property="og:updated_time" content="2018-07-20T14:25:54.119Z">
+<meta property="og:updated_time" content="2018-07-22T06:44:16.323Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java-JVM-类加载机制">
 <meta name="twitter:description" content="一、前言　　本篇对于类加载机制将从以下几个方面展开：  什么是类加载机制 类的生命周期 类加载的过程 类加载器">
@@ -371,7 +371,7 @@
 <li><strong>Java-JVM-类加载机制</strong>（本篇）</li>
 <li><a href="http://zhangyuyu.github.io/2018/07/16/Java-JVM-%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" target="_blank" rel="noopener">Java-JVM-内存结构</a></li>
 <li><a href="http://zhangyuyu.github.io/2018/07/20/Java-JVM-GC%E7%AE%97%E6%B3%95/" target="_blank" rel="noopener">Java-JVM-GC算法</a></li>
-<li>Java-JVM-GC分析</li>
+<li>Java-内存模型</li>
 </ul>
 <h2 id="三、什么是类加载机制"><a href="#三、什么是类加载机制" class="headerlink" title="三、什么是类加载机制"></a><span id="什么是类加载机制">三、什么是类加载机制</span></h2><p>　　虚拟机把描述类的数据从<code>.class</code>文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java 类型，这就是虚拟机的类加载机制。类加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的数据结构的接口。</p>
 <p>　　加载.class文件的方式：</p>

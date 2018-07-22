@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/imgs/java-jvm-memory-structure.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-jvm-memory-thread.png">
 <meta property="og:image" content="http://yoursite.com/imgs/java-jvm-memory-error.png">
-<meta property="og:updated_time" content="2018-07-20T14:25:32.848Z">
+<meta property="og:updated_time" content="2018-07-22T06:44:09.403Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java-JVM-内存结构">
 <meta name="twitter:description" content="一、前言　　上一篇《Java-JVM-类加载机制》讲述了 JVM 类加载的过程，类加载的最终产品是位于堆区中的Class对象，本篇主要针对于Java 虚拟机运行时数据区域展开：  程序计数器 Java 虚拟机栈 本地方法栈 Java 堆 方法区 运行时常量池 直接内存">
@@ -375,7 +375,7 @@
 <li><a href="http://zhangyuyu.github.io/2018/07/15/Java-JVM-%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" target="_blank" rel="noopener">Java-JVM-类加载机制</a></li>
 <li><strong>Java-JVM-内存结构</strong>（本篇）</li>
 <li><a href="http://zhangyuyu.github.io/2018/07/20/Java-JVM-GC%E7%AE%97%E6%B3%95/" target="_blank" rel="noopener">Java-JVM-GC算法</a></li>
-<li>Java-JVM-GC分析</li>
+<li>Java-内存模型</li>
 </ul>
 <h2 id="三、运行时数据区域"><a href="#三、运行时数据区域" class="headerlink" title="三、运行时数据区域"></a>三、运行时数据区域</h2><p>　　Java 虚拟机在执行Java 程序的过程中，会把它所管理的内存划分为若干个不同的数据区域。这些区域都有各自的用途，以及创建个销毁的时间，有的区域随着虚拟机进程的启动而存在，有的区域则依赖于用户线程的启动和结束而建立和销毁。</p>
 <img src="/imgs/java-jvm-memory-structure.png" width="600" height="300">
