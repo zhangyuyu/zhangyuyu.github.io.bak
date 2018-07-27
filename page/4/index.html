@@ -264,6 +264,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Yu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="若见喻笺">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/" itemprop="url">Slf4j MDC使用和基于Logback的实现分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-17T14:01:52+02:00">
+                2017-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programmming/" itemprop="url" rel="index">
+                    <span itemprop="name">Programmming</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>　　上一篇<a href="http://zhangyuyu.github.io/2017/08/17/Log-Java%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86/" target="_blank" rel="noopener">Java日志管理</a>里面对Java相关的日志库进行了梳理，了解了常见的日志框架（Log Implement）和日志门面(Log Facade)。</p>
+<ul>
+<li>使用日志门面，开发者只需要针对门面接口开发，而调用组件的应用程序则可以搭配自己喜好的日志实现工具，目前来看Slf4j + LogBack组合方式是比较通用的方式。</li>
+<li>对于web应用而言，多线程的调用是很常见的，我们可能需要对一个用户的操作流程进行归类标记，用来区分哪个行为和哪个日志事件有关，MDC则很好的处理这个需求。</li>
+</ul>
+<p>本篇将介绍Slf4j + LogBack的组合方式，介绍MDC的使用，并结合源码对实现原理进行分析。</p>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>　　起源于最近看到项目使用了MDC，好奇这是个什么东西的情况下，系统的了解了Java的日志管理，并借此机会分析其实现原理，记录下来，理清思路。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/17/Log-Slf4j MDC 使用和基于 Logback的实现/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/17/Log-Java日志管理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1763,176 +1915,6 @@ $ vagrant init yungsang/coreos
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/12/函数式编程初探2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Yu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="若见喻笺">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/12/函数式编程初探2/" itemprop="url">函数式编程初探（二）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-12T19:35:10+01:00">
-                2016-11-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programmming/" itemprop="url" rel="index">
-                    <span itemprop="name">Programmming</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://zhangyuyu.github.io/2016/11/12/函数式编程初探1" target="_blank" rel="noopener">上一篇</a>文章中介绍函数式编程的概念以及三个具有普遍意义的基本构造单元，本篇文章会接着讲述一些柯里化与部分施用、缓存、缓求值、函数式的数据结构。</p>
-<h3 id="一、柯里化与部分施用"><a href="#一、柯里化与部分施用" class="headerlink" title="一、柯里化与部分施用"></a>一、柯里化与部分施用</h3><p>柯里化（currying）和函数的部分施用（partial application）都是从数学里借用过来的编程语言技法（基于20世纪haskell Curry等数学家的研究成果）。它们两者都有能力操纵函数的参数条目，一般是通过向一部分参数带入一个或多个默认值的办法来实现的。</p>
-<p>柯里化指的是从一个多参数函数变成一连串单参数函数的变化。调用者可以决定对多少个参数实施变换，余下的部分将衍生为一个参数数目较少的新函数。如函数process(x,y,z)完全柯里化之后变成process(x)(y)(z)。<br>部分施用是指提前带入一部分参数值，使一个多参数函数得以省略部分参数，从而转化为一个参数数目较少的函数。如在函数process(x,y,z)上部分施用一个参数，那么我们将得到process(y,z)。</p>
-<p>Groovy语言中部分施用与柯里化的对比：<br><figure class="highlight flix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">volume</span> </span>= &#123;h, w, l -&gt; h * w * l&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">area</span> </span>= volume.curry(<span class="number">1</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthPA</span> </span>= volume.curry(<span class="number">1</span>, <span class="number">1</span>)         <span class="comment">// &lt;1&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lengthC</span> </span>= volume.curry(<span class="number">1</span>).curry(<span class="number">1</span>)    <span class="comment">// &lt;2&gt;</span></span><br><span class="line"></span><br><span class="line">println <span class="string">"The volume of the 2x3x4 rectangular solid is $&#123;volume(2, 3, 4)&#125;"</span></span><br><span class="line">println <span class="string">"The area of the 3x4 rectangle is $&#123;area(3, 4)&#125;"</span></span><br><span class="line">println <span class="string">"The length of the 6 line is $&#123;lengthPA(6)&#125;"</span></span><br></pre></td></tr></table></figure></p>
-<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/currying.groovy" target="_blank" rel="noopener">github</a><br>柯里化常见的应用场景：函数工厂、模板方法模式、隐藏参数。</p>
-<h3 id="二、缓存"><a href="#二、缓存" class="headerlink" title="二、缓存"></a>二、缓存</h3><p>缓存是很常见的一种需求（同时也是制造隐晦错误的源头）。缓存有两种实现方式：一种是手工进行状态管理，另一种是采用记忆机制。</p>
-<h4 id="手工进行状态管理"><a href="#手工进行状态管理" class="headerlink" title="手工进行状态管理"></a>手工进行状态管理</h4><p>在代码里面增加一个filed，每次计算之前之前先去检查是否存在于缓存中。但是当我们将缓存的取值范围增大时，可能报出OutOfMemoryError的错误。</p>
-<p>缓存可以提高性能，但是缓存有代价：它提高了代码的非本质复杂性和维护负担。同时，编写缓存的代码还要兼顾执行的环境（比如缓存范围）。<br>代码示例参考下文<a href="#完美数的手工缓存实现">完美数的手工缓存实现</a></p>
-<h4 id="记忆机制"><a href="#记忆机制" class="headerlink" title="记忆机制"></a>记忆机制</h4><p>Groovy语言记忆函数的办法是，先将要记忆的函数定义成闭包，然后对该闭包执行memoize()方法来获得一个新函数，以后我们调用这个新函数的时候，其结果就会被缓存起来。<br>请保证所有被记忆的函数：</p>
-<ul>
-<li>没有副作用</li>
-<li>不依赖任何外部信息<br>代码示例参考下文<a href="#完美数的记忆实现">完美数的记忆实现</a></li>
-</ul>
-<h3 id="三、缓求值"><a href="#三、缓求值" class="headerlink" title="三、缓求值"></a>三、缓求值</h3><p>缓求值指尽可能地推迟求解表达式。缓求值的集合不会预先算好所有的元素，而是在用到的时才落实下来。这样做有几个好处：</p>
-<ul>
-<li>昂贵的运算只有到了绝对必要的时候才执行</li>
-<li>我们可以建立无限大的集合，只要一直接到请求，就一直送出元素</li>
-<li>按缓求值的方式来使用映射、筛选等函数式概念，可以产生更高效的代码。</li>
-</ul>
-<p>例如：<code>print length([2+1, 3*2, 1/0, 5-4])</code><br>对于严格求值的编程语言，执行（甚至编译）时，会发生<code>被零除</code>的异常；<br>对于非严格（也叫缓求值）的里，则会得出<code>4</code>的结果。</p>
-<p>缓求值在Groovy中的应用：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def prepend(val, closure) &#123; new LazyList(val, closure) &#125;</span><br><span class="line">def integers(n) &#123; prepend(n, &#123; integers(n + <span class="number">1</span>) &#125;) &#125;</span><br><span class="line"></span><br><span class="line">@Test</span><br><span class="line">public void lazy_list_acts_like_a_list() &#123;</span><br><span class="line">    def naturalNumbers = integers(<span class="number">1</span>)</span><br><span class="line">    assertEquals('<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span> <span class="number">10</span>', naturalNumbers.getHead(<span class="number">10</span>).join(' '))</span><br><span class="line">    def evenNumbers = naturalNumbers.filter &#123; it % <span class="number">2</span> == <span class="number">0</span> &#125;</span><br><span class="line">    assertEquals('<span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span> <span class="number">20</span>', evenNumbers.getHead(<span class="number">10</span>).join(' '))</span><br></pre></td></tr></table></figure></p>
-<h3 id="四、函数式的数据结构"><a href="#四、函数式的数据结构" class="headerlink" title="四、函数式的数据结构"></a>四、函数式的数据结构</h3><p>函数式语言里经常遇到返回两种截然不同的值的需求，它们用来建模这种行为的常用数据结构是Either。<br>使用Either表示两种结果的返回值，使用Option来表示有为空返回值的类型。Option类可近似看作为Either的子类。</p>
-<p>用Java的泛型来自己实现Either类如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Either</span>&lt;<span class="title">A</span>,<span class="title">B</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> A left = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> B right = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Either</span><span class="params">(A a,B b)</span> </span>&#123;</span><br><span class="line">        left = a;</span><br><span class="line">        right = b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">left</span><span class="params">(A a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(a,<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> A <span class="title">left</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLeft</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> left != <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isRight</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> right != <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> B <span class="title">right</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> right;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;A,B&gt; <span class="function">Either&lt;A,B&gt; <span class="title">right</span><span class="params">(B b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Either&lt;A,B&gt;(<span class="keyword">null</span>,b);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fold</span><span class="params">(F&lt;A&gt; leftOption, F&lt;B&gt; rightOption)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(right == <span class="keyword">null</span>)</span><br><span class="line">            leftOption.f(left);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            rightOption.f(right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>代码可参见《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/errorhandling/Either.java" target="_blank" rel="noopener">github</a><br>使用：<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> Either&lt;Exception, Integer&gt; parseNumberDefaults(final <span class="keyword">String</span> s) &#123;</span><br><span class="line">    <span class="keyword">if</span> (不满足)</span><br><span class="line">        <span class="keyword">return</span> Either.left(<span class="keyword">new</span> <span class="type">Exception</span>(<span class="string">"Invalid Number"</span>));</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        int number = <span class="keyword">new</span> <span class="type">RomanNumeral</span>(s).toInt();</span><br><span class="line">        <span class="keyword">return</span> Either.right(<span class="keyword">new</span> <span class="type">RomanNumeral</span>(number &gt;= MAX ? MAX : <span class="type">number</span>).toInt());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="五、完美数的示例"><a href="#五、完美数的示例" class="headerlink" title="五、完美数的示例"></a>五、完美数的示例</h3><p>案例：</p>
-<blockquote>
-<p>自然数分类规则：<br>完美数： 真约数之和 = 数本身<br>过剩数： 真约数之和 &gt; 数本身<br>不足数： 真约数之和 &lt; 数本身<br>真约数和：除了数本身之外，其余正约数的和。</p>
-</blockquote>
-<p>代码比较长，可以直接查看《函数式编程思想》的<a href="https://github.com/oreillymedia/functional_thinking/" target="_blank" rel="noopener">github</a>总结如下：<br>1.完美数的命令式解法<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/ImpNumberClassifierSimple.java</a><br>2.稍向函数式靠拢的完美数分类实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier/NumberClassifier.java</a><br>3.完美数分类的Java8实现<br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/java/number_classifier8/NumberClassifier.java</a><br><span id="完美数的手工缓存实现">4.完美数的手工缓存实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierCached.groovy</a><br><span id="完美数的记忆实现">5.完美数的记忆实现</span><br><a href="https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy" target="_blank" rel="noopener">https://github.com/oreillymedia/functional_thinking/blob/master/functional_thinking_examples/groovy/memoization/ClassifierMemoized.groovy</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1983,7 +1965,7 @@ $ vagrant init yungsang/coreos
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">72</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
